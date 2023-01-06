@@ -16,23 +16,23 @@ function mapSceControl(){
 	var f_cnt = -5;
 //	var msc_cnt = 0;
 
-	this.enable = true; //ŠO‚©‚ç‘€ì—pBtrue‚Å’Ç‰Á“®ì‰ÂBfalse‚Å•s‰Â(ó“ü’â~)
-	this.counter_runnning = true;//ƒJƒEƒ“ƒ^[‚ği‚ß‚é‚©‚Ç‚¤‚©
+	this.enable = true; //å¤–ã‹ã‚‰æ“ä½œç”¨ã€‚trueã§è¿½åŠ å‹•ä½œå¯ã€‚falseã§ä¸å¯(å—å…¥åœæ­¢)
+	this.counter_runnning = true;//ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ã‚’é€²ã‚ã‚‹ã‹ã©ã†ã‹
 
 	this.flame = f_cnt;
 
 	this.stage = 1;
 	this.keyuse = true;
 
-	var stage_data;//ƒ}ƒbƒvƒf[ƒ^ƒNƒ‰ƒX—p
-	var stage_msc;//ƒ}ƒbƒvƒVƒiƒŠƒI
-	var stage_bg;//bgƒOƒ‰ƒtƒBƒbƒN
-	var stage_mch; //ƒ}ƒbƒvƒ`ƒbƒvÀ•W
+	var stage_data;//ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã‚¯ãƒ©ã‚¹ç”¨
+	var stage_msc;//ãƒãƒƒãƒ—ã‚·ãƒŠãƒªã‚ª
+	var stage_bg;//bgã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯
+	var stage_mch; //ãƒãƒƒãƒ—ãƒãƒƒãƒ—åº§æ¨™
 	var stage_inisc; //initial scenario
-	var stage_ptn; //bgƒOƒ‰ƒtƒBƒbƒN•ªŠ„—pƒf[ƒ^(bg‚Ìspdata)
+	var stage_ptn; //bgã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯åˆ†å‰²ç”¨ãƒ‡ãƒ¼ã‚¿(bgã®spdata)
 
 	var colmap;
-	this.cmap = function () { return colmap; };   //“–‚½‚è”»’è—pƒ}ƒbƒvƒf[ƒ^[x,y]
+	this.cmap = function () { return colmap; };   //å½“ãŸã‚Šåˆ¤å®šç”¨ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿[x,y]
 
 	newdata(this.stage, this.keyuse);
 

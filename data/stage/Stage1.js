@@ -384,8 +384,8 @@ function Stage1(stageno) {
             var ptn = {};
 
             ptn.s = w[0];
-            ptn.x = w[1];
-            ptn.y = w[2];
+            ptn.x = w[1] + Math.floor(rnd.next() * (BLOCK_W/4)) *4 - BLOCK_W/2;
+            ptn.y = w[2] + Math.floor(rnd.next() * (BLOCK_W/4)) *4 - BLOCK_W/2;
             ptn.r = w[3];
             ptn.sc = w[4];
             ptn.ch = w[5];

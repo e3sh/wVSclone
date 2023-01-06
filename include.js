@@ -1,58 +1,68 @@
 ﻿//============================================
 //include
 //============================================
+
+var w = [
+//
+
 //画面表示や入力関係処理部
-document.write('<script type="text/javascript" src="dev/deviceControl.js"></script>');
-document.write('<script type="text/javascript" src="dev/screen.js"></script>');
-document.write('<script type="text/javascript" src="dev/inputControl.js"></script>');
-document.write('<script type="text/javascript" src="dev/inputKeyboard.js"></script>');
-document.write('<script type="text/javascript" src="dev/soundControl.js"></script>');
-document.write('<script type="text/javascript" src="dev/images.js"></script>');
+ "dev/deviceControl.js",
+ "dev/screen.js",
+ "dev/inputControl.js",
+ "dev/inputKeyboard.js",
+ "dev/soundControl.js",
+ "dev/images.js",
 
-document.write('<script type="text/javascript" src="dev/vartualkeyControl.js"></script>');
+ "dev/vartualkeyControl.js",
 //データ部(キャラクタやスプライトパターン制御用の設定）
-document.write('<script type="text/javascript" src="dev/geometoryTr.js"></script>');
-document.write('<script type="text/javascript" src="dev/Layout.js"></script>');
-document.write('<script type="text/javascript" src="data/spdata.js"></script>');
-document.write('<script type="text/javascript" src="data/character.js"></script>');
-document.write('<script type="text/javascript" src="data/motionPtn.js"></script>');
+ "dev/geometoryTr.js",
+ "dev/Layout.js",
+ "data/spdata.js",
+ "data/character.js",
+ "data/motionPtn.js",
 //データ部(ステージの敵の動きなどの設定)
-document.write('<script type="text/javascript" src="data/stage/Stage1.js"></script>');
-document.write('<script type="text/javascript" src="data/stage/Dangeon.js"></script>');
+ "data/stage/Stage1.js",
+ "data/stage/Dangeon.js",
 //データ部(キャラクタの動きなどの設定）
-document.write('<script type="text/javascript" src="data/scenario.js"></script>');
-document.write('<script type="text/javascript" src="data/scenario/player.js"></script>');
-document.write('<script type="text/javascript" src="data/scenario/player_bullet.js"></script>');
-document.write('<script type="text/javascript" src="data/scenario/friend.js"></script>');
-document.write('<script type="text/javascript" src="data/scenario/enemy.js"></script>');
-document.write('<script type="text/javascript" src="data/scenario/enemy_bullet.js"></script>');
-document.write('<script type="text/javascript" src="data/scenario/boss.js"></script>');
-document.write('<script type="text/javascript" src="data/scenario/common.js"></script>');
-document.write('<script type="text/javascript" src="data/scenario/item.js"></script>');
-document.write('<script type="text/javascript" src="data/scenario/effect.js"></script>');
-document.write('<script type="text/javascript" src="data/scenario/message.js"></script>');
-document.write('<script type="text/javascript" src="data/scenario/exevent.js"></script>');
+ "data/scenario.js",
+ "data/scenario/player.js",
+ "data/scenario/player_bullet.js",
+ "data/scenario/friend.js",
+ "data/scenario/enemy.js",
+ "data/scenario/enemy_bullet.js",
+ "data/scenario/boss.js",
+ "data/scenario/common.js",
+ "data/scenario/item.js",
+ "data/scenario/effect.js",
+ "data/scenario/message.js",
+ "data/scenario/exevent.js",
 //処理部
-document.write('<script type="text/javascript" src="proc/control/gObjCntl.js"></script>');
-document.write('<script type="text/javascript" src="proc/class/gObjClass.js"></script>');
-document.write('<script type="text/javascript" src="proc/control/mapSceCntl.js"></script>');
-document.write('<script type="text/javascript" src="proc/control/sceneControl.js"></script>');
+ "proc/control/gObjCntl.js",
+ "proc/class/gObjClass.js",
+ "proc/control/mapSceCntl.js",
+ "proc/control/sceneControl.js",
 
-document.write('<script type="text/javascript" src="proc/class/ocl_scmove.js"></script>');
+ "proc/class/ocl_scmove.js",
 //処理部（それぞれの場面）
-document.write('<script type="text/javascript" src="proc/scene/gameScene.js"></script>');
-document.write('<script type="text/javascript" src="proc/scene/sceneTitle.js"></script>');
-document.write('<script type="text/javascript" src="proc/scene/sceneGover.js"></script>');
-document.write('<script type="text/javascript" src="proc/scene/sceneConfig.js"></script>');
-document.write('<script type="text/javascript" src="proc/scene/sceneResult.js"></script>');
+ "proc/scene/gameScene.js",
+ "proc/scene/sceneTitle.js",
+ "proc/scene/sceneGover.js",
+ "proc/scene/sceneConfig.js",
+ "proc/scene/sceneResult.js",
 //処理部（状態管理）
-document.write('<script type="text/javascript" src="proc/state/stateConfig.js"></script>');
-document.write('<script type="text/javascript" src="proc/state/stateResult.js"></script>');
-document.write('<script type="text/javascript" src="proc/state/stateSystem.js"></script>'); 
-document.write('<script type="text/javascript" src="proc/state/stateGame.js"></script>');
-document.write('<script type="text/javascript" src="proc/control/stateControl.js"></script>');
-document.write('<script type="text/javascript" src="proc/bench.js"></script>');
-document.write('<script type="text/javascript" src="proc/CL4TreeM.js"></script>');
+ "proc/state/stateConfig.js",
+ "proc/state/stateResult.js",
+ "proc/state/stateSystem.js", 
+ "proc/state/stateGame.js",
+ "proc/control/stateControl.js",
+ "proc/bench.js",
+ "proc/CL4TreeM.js",
 //メイン
-document.write('<script type="text/javascript" src="proc/main_r.js"></script>');
+ "proc/main_r.js"
+];
+
+for (var i in w) {
+    document.write('<script type="text/javascript" src="' + w[i] + '"></script>');
+};
+
 

@@ -242,9 +242,9 @@ function sceneConfig(state) {
         }
 
     var menu = []
-    var mttl = ["LampUse.", "MapUse.", "ItemReset.", "ShotFree.", "SoundTest.", "StartFloor."];
+    var mttl = ["LampUse.", "MapUse.", "ItemReset.", "ShotFree.", "SoundTest.", "StartStage."];
     var w_message = ["面の開始からランプを所持する:  ", "面の開始から地図を所持する: ",
-	"死んだときにアイテム放出する: ", "弾を消費しない。:", "サウンドテスト : ", "開始フロア : "];
+	"死んだときにアイテム放出する: ", "弾を消費しない。:", "サウンドテスト : ", "開始面 : "];
     var mtyp = [0, 0, 0, 0, 1, 1];//menu type 0:select 1:number
 
     w_number[5] = 1; //開始面初期値

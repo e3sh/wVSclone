@@ -3,7 +3,7 @@
 function sceneTitle(state) {
 
     var dev = state.System.dev;
-    //éŒ¾•”
+    //å®£è¨€éƒ¨
     var work = dev.graphics[1];
     var work2 = dev.graphics[0];
     var ForgroundBG = dev.graphics[2];
@@ -76,13 +76,13 @@ function sceneTitle(state) {
     var cur_cnt;
 
     var tsel = new Number(0.0);
-    //ˆ—•”
+    //å‡¦ç†éƒ¨
 
     function scene_init() {
 
         tsel = 0.0;
 
-        //‰Šú‰»ˆ—
+        //åˆæœŸåŒ–å‡¦ç†
     }
 
     function scene_reset() {
@@ -165,7 +165,7 @@ function sceneTitle(state) {
         menusel = 0;
 
         //dev.sound.change(0);
-        //resetˆ—‚ğ‹Lq—\’è
+        //resetå‡¦ç†ã‚’è¨˜è¿°äºˆå®š
     }
 
     function scene_step() {
@@ -190,7 +190,7 @@ function sceneTitle(state) {
 
         if (!keylock) {
             if (Boolean(kstate[38])) {
-                if (kstate[38]) {//ª
+                if (kstate[38]) {//â†‘
                     menusel--;
                     if (menusel < 0) menusel = menu.length - 1;
                     keylock = true;
@@ -199,7 +199,7 @@ function sceneTitle(state) {
             }
 
             if ((kstate[40])) {
-                if (kstate[40]) {//«
+                if (kstate[40]) {//â†“
                     menusel++;
                     if (menusel > menu.length- 1) menusel = 0;
                     keylock = true;
@@ -209,16 +209,16 @@ function sceneTitle(state) {
 
             var zkey = false;
             if (Boolean(kstate[90])) {
-                if (kstate[90]) {//«
+                if (kstate[90]) {//â†“
                     zkey = true;
                 }
             }
             if (Boolean(kstate[32])) {
-                if (kstate[32]) {//«
+                if (kstate[32]) {//â†“
                     zkey = true;
                 }
             }
-            //‰æ–Êƒ^ƒbƒv‚Å‚àƒXƒ^[ƒg‚·‚é‚æ‚¤‚É
+            //ç”»é¢ã‚¿ãƒƒãƒ—ã§ã‚‚ã‚¹ã‚¿ãƒ¼ãƒˆã™ã‚‹ã‚ˆã†ã«
             /*
             if (mstate.button == 0) {
                 zkey = true;
@@ -311,7 +311,7 @@ function sceneTitle(state) {
             */
         }
 
-        wtxt.push("==DonichiDungeon==");
+        wtxt.push("==WebDungeonActionG==");
         wtxt.push("-----------------&");
 
         if (state.Config.use_audio) {
@@ -323,7 +323,7 @@ function sceneTitle(state) {
 //        wtxt.push("Push rMouse Button to Start");
 
         return 0;
-        //is
+        //é€²è¡Œ
     }
 
     function scene_draw() {
@@ -373,7 +373,7 @@ function sceneTitle(state) {
 //            work.putchr(menu[i].title, menu[i].x, menu[i].y);
 
         }
-        //•\¦
+        //è¡¨ç¤º
     }
 }
 

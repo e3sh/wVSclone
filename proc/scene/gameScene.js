@@ -729,7 +729,7 @@ function gameScene(state){
 	        work3.putchr8("[Z]", dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y - 16);
 	        work3.put(wweapon[state.Game.player.weapon], dev.layout.zanki_x + 96, dev.layout.zanki_y);
 
-	        work3.putchr("Floor " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y);
+	        work3.putchr("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y);
 
 	        work3.putchr("Time:" + Math.floor((7200 - mapsc.flame) / 6), dev.layout.time_x, dev.layout.time_y);
 
