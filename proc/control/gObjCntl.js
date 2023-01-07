@@ -748,7 +748,7 @@
             //	o.wn = i;
 
             if (o.visible) {
-
+                
                 if (o.normal_draw_enable) {
                     if (dev.gs.in_view(o.x, o.y)) o.draw(wscreen, o);
                 }
@@ -766,6 +766,9 @@
             wscreen.putchr8("obj:" + cdt.objectNum, 300, 16);
             wscreen.putchr8("col:" + debug_colnum/2, 300, 24);
             wscreen.putchr8("f:" + debug_cflag, 300, 32);
+
+            wscreen.putchr8("scrst"+ wscreen.count(),300,40);
+
         }
     }
 
@@ -806,42 +809,6 @@
         }
 
         wscreen.putFunc(cl);
-
-        /*
-        for (var i in obj) {
-        var o = obj[i];
-
-        //	o.wn = i;
-
-        if (o.visible) {
-
-        if ((o.type == 1) || (o.type == 3)) continue;
-
-        if ((o.type != 98) && (!flag)) continue;
-
-        if (o.normal_draw_enable) {
-        //l1    if (dev.gs.in_view(o.x, o.y)) {
-        var cl = {}
-        cl.x = o.x / 20;
-        cl.y = o.y / 20;
-        cl.w = o.hit_x / 20;
-        cl.h = o.hit_y / 20;
-        cl.c = col[o.type];
-
-        cl.draw = function (device) {
-        device.beginPath();
-        device.strokeStyle = this.c;
-        device.lineWidth = 2;
-        device.rect(dev.layout.map_x + this.x, dev.layout.map_y + this.y, this.w, this.h);
-        device.stroke();
-        }
-
-        wscreen.putFunc(cl);
-        }
-        }
-        }
-        */
-
     }
 
     // =======================================================
@@ -951,7 +918,7 @@
     }
 
     function cntl_draw(scrn, o) {
-
+        //alert("!");
         //表示
         if (Boolean(motion_ptn[o.mp].wait)) {
             o.mp_cnt_frm++;
@@ -981,6 +948,7 @@
 
         if ((w.x >= 0) && (w.x <= scrn.cw) && (w.y >= 0) && (w.y <= scrn.ch)) {
             scrn.put(ptn, w.x, w.y, wvh, wr, o.alpha, o.display_size);
+            scrn.putchr8("mp:"+ o.mp, w.x, w.y);
         }
 
     }
