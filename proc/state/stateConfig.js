@@ -113,7 +113,7 @@ function stateConfig(){
 
         //this.cold = true; //これはコンティニュー関係だからそのうちGameへ
 
-        this.debug = false; //debug表示　
-        //this.debug = true;
+        //this.debug = false; //debug表示　
+        this.debug = true;
     }
 }

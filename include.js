@@ -3,8 +3,28 @@
 //============================================
 
 var w = [
-//
+//WebGameCoreSystemMinifyFile
+"controller/coremin.js",
+/*
+//WebGameCoreSystem Files
+    //SystemControl
+    "controller/GameAssetManager.js",
+    "controller/GameTaskControl.js",
+    "controller/GameCore.js",
 
+    //deviceControls
+    "controller/inputKeyboard.js",
+    "controller/inputMouse.js",
+    "controller/DisplayControl.js",
+    "controller/soundControl.js",
+    "controller/offScreen.js",
+    "controller/offScreenTypeB.js",
+    "controller/spriteControl.js",
+    "controller/spriteFontControl.js",
+
+    //class
+    "controller/GameTaskClass.js",
+*/
 //画面表示や入力関係処理部
  "dev/deviceControl.js",
  "dev/screen.js",
@@ -12,7 +32,6 @@ var w = [
  "dev/inputKeyboard.js",
  "dev/soundControl.js",
  "dev/images.js",
-
  "dev/vartualkeyControl.js",
 //データ部(キャラクタやスプライトパターン制御用の設定）
  "dev/geometoryTr.js",
@@ -57,8 +76,13 @@ var w = [
  "proc/control/stateControl.js",
  "proc/bench.js",
  "proc/CL4TreeM.js",
-//メイン
- "proc/main_r.js"
+//tasks
+ "task/MainLoopTask.js",
+ "task/GameTask.js",
+
+ //メイン
+ "controller/main.js"
+// "proc/main_r.js" //non WGCS version
 ];
 
 for (var i in w) {

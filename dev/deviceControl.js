@@ -5,18 +5,22 @@
 //  単純に使う場合、不要かもしれない。
 //**************************************************************
 
-function deviceControl(){
+function deviceControl( g ){
 
     //initialize
 
     var SCREEN_PAGES = 4;
 
     var dsp = [];
-
+    //var dsp = g.screen;
+   /* 
     for (var i = 0; i < SCREEN_PAGES; i++) {
-        dsp[i] = new Screen("Layer" + i, 640, 480);
+        dsp[i] = g.screen[i];
     }
-    
+    */    
+    for (var i = 0; i < SCREEN_PAGES; i++) {
+        dsp[i] = new Screen(g.screen[i]);
+    }
     //dsp[0]:Layer0 背景用(Background用） 
     //dsp[1]:Layer1 中間面(Sprite用） 
     //dsp[2]:Layer2 前景用(Forground用） 
@@ -32,9 +36,10 @@ function deviceControl(){
 	this.gs = new geometoryTrance();
     this.layout = new gameLayout();
 
-    this.mouse_state = new inputControl("Layer3"); //<=現状ではマウス入力はWindow全体から行われるので引数無効
-
-    var keys = new inputKeyboard();
+    //this.mouse_state = new inputControl("Layer3"); //<=現状ではマウス入力はWindow全体から行われるので引数無効
+    this.mouse_state = g.mouse;
+    //var keys = new inputKeyboard();
+    var keys = g.keyboard;
 
     this.vkey_state = new vartualKeyControl();
 

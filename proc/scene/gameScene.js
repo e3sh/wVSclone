@@ -10,7 +10,7 @@ function gameScene(state){
     //宣言部
     var dev = state.System.dev;
 
-    var work = dev.graphics[1];
+	var work = dev.graphics[1];
     var work2 = dev.graphics[0];
     var work3 = dev.graphics[3];
     var forgroundBG = dev.graphics[2];
@@ -198,11 +198,18 @@ function gameScene(state){
 
 	    //lampf = true;
 	    //mapdisp = false;
-	    lampf = state.Config.lamp_use ? true : false;
+	    /*
+		lampf = state.Config.lamp_use ? true : false;
 	    mapdisp = state.Config.map_use ? false : true;
+	    */
+	   //debug code-- 2023/01/07
+		lampf = true ;
+	    mapdisp = false;
+		//^^^^^
 	}
 
 	function game_step() {
+		dev.gs.commit();
 
 	    if (!dev.sound.running()) {
 	        if (mapsc.flame < 7200) {
@@ -215,7 +222,7 @@ function gameScene(state){
 	        dev.sound.play();
 	    }
 
-　　    if (mapsc.flame == 7100) {
+		if (mapsc.flame == 7100) {
 	        dev.sound.change(2);
 	        dev.sound.play();
 
@@ -605,17 +612,17 @@ function gameScene(state){
                 */
 	            forgroundBG.putFunc(ButtomlineBackgroundDraw);
                                 
-                work2.clear("black");
+                //work2.clear("black");
 	            work2.draw();
-	            work2.reset();
+	            //work2.reset();
 
-	            forgroundBG.clear();
+	            //forgroundBG.clear();
 	            forgroundBG.draw();
-	            forgroundBG.reset();
+	            //forgroundBG.reset();
         }
 
         //==この↑は背景描画
-	    obCtrl.draw();
+	    obCtrl.draw(work);
 //	    obCtrl.drawPoint(work);
 
 	    //==　ここから文字表示画面（出来るだけ書き換えを少なくする）
@@ -650,9 +657,11 @@ function gameScene(state){
 	        work3.fill(dev.layout.hiscore_x + 12 * 6, dev.layout.hiscore_y, 12 * 7, 32); // , "darkblue");
 
 	        wt = ehighscore.read(state.Result.highscore);
-	        work3.putchr("Hi-Sc:" + wt, dev.layout.hiscore_x, dev.layout.hiscore_y);
+	        //work3.putchr("Hi-Sc:" + wt, dev.layout.hiscore_x, dev.layout.hiscore_y);
+			work3.putchr("Hi-Sc:" + wt, dev.layout.hiscore_x, dev.layout.hiscore_y);
 
 	        wt = escore.read(obCtrl.score);
+	        //work3.putchr("Score:" + wt, dev.layout.score_x, dev.layout.score_y);
 	        work3.putchr("Score:" + wt, dev.layout.score_x, dev.layout.score_y);
 
 	        //残機表示
@@ -833,7 +842,7 @@ function gameScene(state){
 	        //	        work3.fill(480, 0, 5, 480, "blue");
 	        work3.fill(0, 480-48, 640, 48);//, "darkblue");
 	        work3.draw();
-	        work3.reset();
+	        //work3.reset();
 	    }
 
 

@@ -122,7 +122,7 @@ function sceneTitle(state) {
         work2.putFunc(cl);
 */
 
-
+/*
         work2.put("Mayura1", 320 - 50 +8 , 208);
         work2.put("Unyuu1", 320 - 50 +8, 240);
 
@@ -136,6 +136,7 @@ function sceneTitle(state) {
         //work2.put("TrBox", 320 - 50 + 0 - 8, 304);
         work2.put("Key", 320 - 50 + 16 - 8, 304);
 
+
         work2.putchr("Player", 320, 208 - 8);
         work2.putchr("Enemy", 320, 240 - 8);
         //       work2.putchr("5en Coin", 320, 256 - 8);
@@ -144,6 +145,8 @@ function sceneTitle(state) {
         work2.putchr("Key", 320, 304 - 8);
         work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
 
+        work2.print("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
+*/
         if (state.Game.load() == 0) {
             //work2.putchr8("Savedata Found.", 0, 0);
 
@@ -338,8 +341,32 @@ function sceneTitle(state) {
         work.putFunc(cl);
 */
 
+        work2.put("Mayura1", 320 - 50 +8 , 208);
+        work2.put("Unyuu1", 320 - 50 +8, 240);
+
+        work2.put("Ball1", 320 - 100 + 0 -16, 272);
+        work2.put("BallB1", 320 - 100 + 16 - 16, 272);
+        work2.put("BallS1", 320 - 100 + 32 - 16, 272);
+        work2.put("BallL1", 320 - 100 + 48 - 16, 272);
+        work2.put("Lamp", 320 - 100 + 72 - 16, 272);
+        work2.put("Map", 320 - 100 + 96 - 16, 272);
+
+        //work2.put("TrBox", 320 - 50 + 0 - 8, 304);
+        work2.put("Key", 320 - 50 + 16 - 8, 304);
+
+        work2.putchr("Player", 320, 208 - 8);
+        work2.putchr("Enemy", 320, 240 - 8);
+        //       work2.putchr("5en Coin", 320, 256 - 8);
+        //       work2.putchr("10en Coin", 320, 272 - 8);
+        work2.putchr("Ball/Item", 320, 272 - 8);
+        work2.putchr("Key", 320, 304 - 8);
+        work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
+
+        work2.print("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
+
         for (var s in wtxt) {
-            work.putchr(wtxt[s], 0, 132 + 16 * s);
+            //work.putchr(wtxt[s], 0, 132 + 16 * s);
+            work.putchr(wtxt[s], 0, 132 + 16 * s);        
             //			work.putchr8(wtxt[s],0,0 + 8*s);
             //		        work.print(wtxt[s],0,0 + 16*s +200);	
         }
@@ -360,12 +387,12 @@ function sceneTitle(state) {
                 }
                 work.putFunc(o);
 
+                //work.putchr(menu[i].title, menu[i].x - 4, menu[i].y -1);
                 work.putchr(menu[i].title, menu[i].x - 4, menu[i].y -1);
 
-
             } else {
-                work.putchr(menu[i].title, menu[i].x, menu[i].y);
-
+                //work.putchr(menu[i].title, menu[i].x, menu[i].y);
+                work.putchr(menu[i].title, menu[i].x - 4, menu[i].y -1);    
             }
 
 

@@ -8,19 +8,19 @@
 //持つべき状態：
 //現在あつかっているConfig,Resultとあとあと必要となるだろうSystem,Gameなどであろう。
 //
-function stateControl(){
+function stateControl( g ){
 
     //設定パラメータ
-	this.Config = new stateConfig();
+	this.Config = new stateConfig( g );
 
 	//スコアなど（コンボとかはここ）
-	this.Result = new stateResult();
+	this.Result = new stateResult( g );
 
 	//デバイスパラメータやサウンド状況等(Devも）
-	this.System = new stateSystem();
+	this.System = new stateSystem( g );
 
 	//進行状態やプレイヤーステータス等(アイテムはここ）
-	this.Game = new stateGame();
+	this.Game = new stateGame( g );
 
 }
 /*
