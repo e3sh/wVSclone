@@ -946,9 +946,18 @@
 
         var w = o.gt.worldtoView(o.x, o.y);
 
+        /*
+        document.getElementById("manual_1").innerHTML = 
+        "!"+ ptn + "," + wvh + "," + wr +
+        "(" + Math.trunc(o.x) + "," + Math.trunc(o.y) + 
+        ")(" + Math.trunc(w.x) + "," + Math.trunc(w.y)+"</br>"+
+        "s:"+scrn+scrn.cw+","+scrn.ch;
+        */
+
         if ((w.x >= 0) && (w.x <= scrn.cw) && (w.y >= 0) && (w.y <= scrn.ch)) {
             scrn.put(ptn, w.x, w.y, wvh, wr, o.alpha, o.display_size);
-            scrn.putchr8("mp:"+ o.mp, w.x, w.y);
+            //scrn.putchr("mp:"+ o.mp, w.x, w.y);
+            //document.getElementById("manual_1").innerHTML += ".";
         }
 
     }

@@ -1,7 +1,7 @@
 @charset "Shift_JIS";
 
 * {
-	margin:0; padding:0; 	/*‘S—v‘f‚Ìƒ}[ƒWƒ“EƒpƒfƒBƒ“ƒO‚ðƒŠƒZƒbƒg*/
+	margin:0; padding:0; 	/*å…¨è¦ç´ ã®ãƒžãƒ¼ã‚¸ãƒ³ãƒ»ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ*/
 } 
 
 div {
@@ -46,3 +46,31 @@ canvas
 	left:0px ;
 	position : absolute;
 }
+/*
+canvas#Layer1
+{
+	width : 512px;
+	height :384px;
+	top :0px ;
+	left:512px ;
+	position : absolute;
+}
+
+canvas#Layer2
+{
+	width : 0px;
+	height :384px;
+	top :384px ;
+	left:0px ;
+	position : absolute;
+}
+
+canvas#Layer3
+{
+	width : 320px;
+	height :200px;
+	top :384px ;
+	left:512px ;
+	position : absolute;
+}
+*/

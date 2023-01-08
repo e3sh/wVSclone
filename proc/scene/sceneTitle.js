@@ -360,9 +360,9 @@ function sceneTitle(state) {
         //       work2.putchr("10en Coin", 320, 272 - 8);
         work2.putchr("Ball/Item", 320, 272 - 8);
         work2.putchr("Key", 320, 304 - 8);
-        work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
+        work2.putchr("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
 
-        work2.print("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
+        //work2.print("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
 
         for (var s in wtxt) {
             //work.putchr(wtxt[s], 0, 132 + 16 * s);

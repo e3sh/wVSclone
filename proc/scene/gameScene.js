@@ -10,10 +10,10 @@ function gameScene(state){
     //宣言部
     var dev = state.System.dev;
 
-	var work = dev.graphics[1];
-    var work2 = dev.graphics[0];
-    var work3 = dev.graphics[3];
-    var forgroundBG = dev.graphics[2];
+	var work = dev.graphics[1];//1
+    var work2 = dev.graphics[0];//0
+    var work3 = dev.graphics[3];//3
+    var forgroundBG = dev.graphics[2];//2
 
 	this.init = game_init;
 	this.reset = game_reset;
@@ -528,10 +528,17 @@ function gameScene(state){
 	                        //if (Boolean(tex_bg[mc.no])) {
 	                        if (Boolean(bgData[mc.no])) {
 	                            if (wfg) {
-	                                forgroundBG.putPattern(tex_bg, bgData[mc.no], w.x, w.y - 24, mc.w, mc.h);
+	                                forgroundBG.putPattern(
+										tex_bg, bgData[mc.no], 
+										w.x, 
+										w.y - 24, 
+										mc.w, mc.h);
 	                                //work2.putPattern(tex_bg, bgData[mc.no], w.x, w.y, mc.w, mc.h);
 	                            } else {
-	                                work2.putPattern(tex_bg, bgData[mc.no], w.x, w.y, mc.w, mc.h);
+	                                work2.putPattern(tex_bg, bgData[mc.no], 
+										w.x, 
+										w.y, 
+										mc.w, mc.h);
 	                            }
 
 	                            //work2.putchr(Number(mc.no).toString(), w.x, w.y);
@@ -613,11 +620,11 @@ function gameScene(state){
 	            forgroundBG.putFunc(ButtomlineBackgroundDraw);
                                 
                 //work2.clear("black");
-	            work2.draw();
+	            //work2.draw();
 	            //work2.reset();
 
 	            //forgroundBG.clear();
-	            forgroundBG.draw();
+	            //forgroundBG.draw();
 	            //forgroundBG.reset();
         }
 
@@ -635,10 +642,10 @@ function gameScene(state){
 	        scdispview = true;
 	    }
         
-	    //var scdispview = true;
+	    var scdispview = true;//debug
 
 	    if (scdispview) {
-
+			//work3.putFunc(ButtomlineBackgroundDraw);
 	        //work3.putchr("a", mapsc.flame / 20, mapsc.flame / 20);
 
 	        //work3.clear();
@@ -673,8 +680,10 @@ function gameScene(state){
 	            }
 	        } else {
 	            work3.put("Mayura1", dev.layout.zanki_x, dev.layout.zanki_y);
-	            work3.putchr("x" + zc, dev.layout.zanki_x + 16, dev.layout.zanki_y);
+	            work3.putchr8("x" + zc, dev.layout.zanki_x + 16, dev.layout.zanki_y);
 	        }
+
+			//document.getElementById("manual_1").innerHTML += ".";
 
 	        //ball表示
 	        if (Boolean(obCtrl.item[20])) {
@@ -776,19 +785,18 @@ function gameScene(state){
 	        work3.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
 	    }
 
-        if (obCtrl.interrapt && (obCtrl.SIGNAL == 1)) {
-            work3.putchr(" == PAUSE ==", 320 - 50, 200);
-            work3.putchr("Push <Z>key or [Space] ", 320 - 100, 220);
-            work3.putchr(" Return game.", 320 - 50, 240);
-            work3.putchr("Push <Q>key /", 320 - 100, 260);
-            work3.putchr("Save and Quit.", 320 - 50, 280); 
-
-        } else {
-            work3.fill(320 - 100, 200, 12 * 24, 20 * 5);
-        }
-
+        if (obCtrl.interrapt){
+			if (obCtrl.SIGNAL == 1) {
+            	work3.putchr(" == PAUSE ==", 320 - 50, 200);
+            	work3.putchr("Push <Z>key or [Space] ", 320 - 100, 220);
+            	work3.putchr(" Return game.", 320 - 50, 240);
+            	work3.putchr("Push <Q>key /", 320 - 100, 260);
+            	work3.putchr("Save and Quit.", 320 - 50, 280); 
+        	} else {
+            	work3.fill(320 - 100, 200, 12 * 24, 20 * 5);
+        	}
+		}
             //work.putchr(dev.sound.info() + "." + dev.sound.running(), 320 - 50, 260);
-        
 
         //debug　true　の場合以下表示
         if (state.Config.debug) {
@@ -840,15 +848,15 @@ function gameScene(state){
 	    if (scdispview) {
 //	        work3.clear();
 	        //	        work3.fill(480, 0, 5, 480, "blue");
-	        work3.fill(0, 480-48, 640, 48);//, "darkblue");
-	        work3.draw();
+	    //    work3.fill(0, 480-48, 640, 48);//, "darkblue");
+	        //work3.draw();
 	        //work3.reset();
 	    }
 
-
-	    //mapdisp = false;
+	    mapdisp = false;
 	    if (!mapdisp) {
 
+	        //work3.fill(dev.layout.map_x, dev.layout.map_y, 150, 150);
 	        work3.fill(dev.layout.map_x, dev.layout.map_y, 150, 150);
 
 	        var cl = {};
@@ -870,6 +878,7 @@ function gameScene(state){
 	            }
 
 	        }
+	        //work3.putFunc(cl);
 	        work3.putFunc(cl);
 
             /*

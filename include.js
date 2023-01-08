@@ -28,11 +28,11 @@ var w = [
 //画面表示や入力関係処理部
  "dev/deviceControl.js",
  "dev/screen.js",
- "dev/inputControl.js",
- "dev/inputKeyboard.js",
+ //"dev/inputControl.js",
+ //"dev/inputKeyboard.js",
  "dev/soundControl.js",
  "dev/images.js",
- "dev/vartualkeyControl.js",
+ //"dev/vartualkeyControl.js",
 //データ部(キャラクタやスプライトパターン制御用の設定）
  "dev/geometoryTr.js",
  "dev/Layout.js",
@@ -74,7 +74,7 @@ var w = [
  "proc/state/stateSystem.js", 
  "proc/state/stateGame.js",
  "proc/control/stateControl.js",
- "proc/bench.js",
+ //"proc/bench.js",
  "proc/CL4TreeM.js",
 //tasks
  "task/MainLoopTask.js",

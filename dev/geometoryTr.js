@@ -43,8 +43,8 @@ this.worldtoView = function (x, y) {
 
     var w = {}
 
-    w.x = x - this.world_x;
-    w.y = y - this.world_y;
+    w.x = Math.trunc(x - this.world_x);
+    w.y = Math.trunc(y - this.world_y);
 
     return w;
 }
@@ -60,8 +60,8 @@ this.viewpos = function (x, y) {
     //    this.world_x = x;
     //    this.world_y = y;
 
-    workWorldX = x;
-    workWorldY = y;
+    workWorldX = Math.trunc(x);
+    workWorldY = Math.trunc(y);
 }
 
 //viewposの設定を確定する（直接プロパティを触った場合は知らん）

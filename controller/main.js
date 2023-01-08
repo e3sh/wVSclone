@@ -3,7 +3,7 @@ function main_r() {
 
     //ロード順が確定しなくてエラーになるから、ここでプロトタイプ宣言してます。
     gObjectClass.prototype.sc_move = ocl_scMove;
-    //ちょっとみっともないかも。
+    //
 
     var sysParam = [
 	//    { canvasId: "Layer0", resolution: { w: 1920, h: 1280 } },
@@ -18,7 +18,7 @@ function main_r() {
     //Game Asset Setup
 
 	game.asset.imageLoad( "FontGraph","pict/aschr.png" );
-	//game.asset.imageLoad( "SPGraph","pict/Char.png" );
+	game.asset.imageLoad( "SPGraph","pict/cha.png" );
 
 	//var ad = game.asset.soundLoad("jump", "sound/jump");
 
@@ -44,7 +44,7 @@ function main_r() {
 	game.task.add(new taskMainLoop("main"));
 	game.task.add(new GameTask_FPScount("fps"));
 	game.task.add(new GameTask_FlipDisp("fldisp"));
-//	game.task.add(new GameTask_Test("test"));
+	game.task.add(new GameTask_Debug("debug"));
 //	game.task.add(new GameTask_Test2("fps"));
     //
     //document.getElementById("console").innerHTML = game.asset.check();

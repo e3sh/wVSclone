@@ -30,8 +30,7 @@ class GameTask_ClearDisp extends GameTask {
 	    g.screen[0].clear("black");
 	    g.screen[1].clear();
 	    g.screen[2].clear();
-	//    g.screen[3].clear();//UI表示画面は頻繁に書き換えないようにしている。
-        //g.dsp.reset();
+	    g.screen[3].clear();//UI表示画面は頻繁に書き換えないようにしたいので、数フレームに一回とかにするとか        //g.dsp.reset();
 	    //g.dsp.clear("black");
 	    //g.dsp.clear();
         //これで表示Bufferがクリアされ、先頭に全画面消去が登録される。
@@ -82,6 +81,27 @@ class GameTask_FPScount extends GameTask {
 
     draw(g){
         g.font["8x8white"].putchr("FPS:" + this.fps, 320, 0);
+    }
+
+}
+
+class GameTask_Debug extends GameTask {
+
+    constructor(id){
+        super(id);
+    }
+
+    step(g) {
+    }
+
+    draw(g){
+        var st = "screenbuffer</br>"  
+        + g.screen[0].count() + "</br>" 
+	    + g.screen[1].count() + "</br>"
+	    + g.screen[2].count() + "</br>"
+	    + g.screen[3].count();
+
+        document.getElementById("console").innerHTML = st;
     }
 
 }
