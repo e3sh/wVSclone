@@ -524,7 +524,7 @@ function gameScene(state){
 
 	                    if (mc.visible) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
 	                        var wfg = false;
-	                        if (mc.type == 11) wfg = true;
+							if (mc.type == 11) wfg = true;
 	                        //if (Boolean(tex_bg[mc.no])) {
 	                        if (Boolean(bgData[mc.no])) {
 	                            if (wfg) {

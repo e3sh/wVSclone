@@ -25,7 +25,7 @@ function GameAssetManager(){
 	        tex.src = uri;
 
 	        tex.ready = false;
-	        tex.addEventListener("load", function () {
+	        tex.addEventListener("load", function (e) {
 	            this.ready = true;
 	        });
 	

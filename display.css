@@ -16,26 +16,35 @@ div {
 
 div#manual_1 
 {
-	width : 640px;
-	height :110px;
-	top :768px ;
+	width : 639px;
+	height :256px;
+	top :769px ;
 	left:0px ;
 }
 	
 div#manual_2 
 {
-	width : 640px;
-	height :110px;
-	top :768px ;
+	width : 639px;
+	height :256px;
+	top :769px ;
 	left:640px ;
 }
 
 div#console 
 {
-	width : 320px;
-	height :460px;
+	width : 256px;
+	height :766px;
 	top :0px ;
 	left:1024px ;
+}
+
+div#status 
+{
+	width : 640px;
+	height :160px;
+	top :600px ;
+	left:0px ;
+	z-index: 2;
 }
 
 canvas
