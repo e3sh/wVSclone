@@ -1,5 +1,5 @@
 // task ==================================================================
-
+/*
 class GameTask_FlipDisp extends GameTask {
 	constructor(id){
 		super(id);
@@ -7,7 +7,7 @@ class GameTask_FlipDisp extends GameTask {
 
 	draw( g ) {
         g.sprite.allDrawSprite();//スプライトをBufferに反映する。
-	    g.screen[0].draw();
+        g.screen[0].draw();
 	    g.screen[1].draw();
 	    g.screen[2].draw();
 	    g.screen[3].draw();
@@ -36,7 +36,7 @@ class GameTask_ClearDisp extends GameTask {
         //これで表示Bufferがクリアされ、先頭に全画面消去が登録される。
 	}
 }
-
+*/
 class GameTask_FPScount extends GameTask {
 
     constructor(id){
@@ -99,7 +99,18 @@ class GameTask_Debug extends GameTask {
         + g.screen[0].count() + "</br>" 
 	    + g.screen[1].count() + "</br>"
 	    + g.screen[2].count() + "</br>"
-	    + g.screen[3].count();
+	    + g.screen[3].count() + "</br>";
+
+        var r = g.fpsload.result();
+
+        st += "fps:" + r.fps + "</br>"
+        //+ "int.max" + r.interval.max + "</br>"
+        //+ "int.min" + r.interval.min + "</br>"
+        + "int.ave" + r.interval.ave + "</br>"
+        //+ "wl .max" + r.workload.max + "</br>"
+        //+ "wl .min" + r.workload.min + "</br>"
+        + "wl .ave" + r.workload.ave + "</br>"
+        + Math.trunc((r.workload.ave / r.interval.ave)*100) + "%</br>";
 
         document.getElementById("console").innerHTML = st;
     }

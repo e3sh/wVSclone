@@ -25,6 +25,26 @@ function DisplayControl(canvas_id, c_w, c_h) {
     //加算合成を使用する。
     this.lighter_enable = true;//現在無効
 
+    var enable_flip_flag = true
+
+    this.view = buffer_.view;
+    this.flip = function( flg ){
+        enable_flip_flag = flg;
+        buffer_.flip(flg);
+    }
+    var intv = 1;
+    var bgcolor = "";
+ 
+    //以下のプロパティは内部では使用せず、外部参照し外から制御する為のパラメータ
+    //this.interval = int; // 自動更新での更新間隔(0:自動更新なし　1:毎回　2～:間隔)
+    //this.backgroundcolor = bgcolor; //defaultBackgroundcolor;
+
+    this.setInterval = function( num ){ intv = num; }
+    this.setBackgroundcolor = function( str ){ bgcolor = str; this.backgroundcolor = bgcolor;}
+
+    this.getInterval = function(){ return intv; }
+    this.getBackgroundcolor = function(){ return bgcolor;}
+
     //-------------------------------------------------------------
     ///マップチップ用パターン描画
     ///引数（省略不可
@@ -116,11 +136,15 @@ function DisplayControl(canvas_id, c_w, c_h) {
     //---------------------------------------------------------
     this.clear = function (c_str) {
 
-        buffer_.allClear(0, 0, canvas.width, canvas.height);
+        if (enable_flip_flag){
 
-        if (Boolean(c_str)) {
-            buffer_.fillRect(0, 0, canvas.width, canvas.height, c_str);
-        }
+            buffer_.allClear(0, 0, canvas.width, canvas.height);
+
+            if (c_str === void 0){ c_str = bgcolor; }
+            if (Boolean(c_str)) {
+                buffer_.fillRect(0, 0, canvas.width, canvas.height, c_str);
+            }
+        }   
     }
 
     //-----------------------------------------------------

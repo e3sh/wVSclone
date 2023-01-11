@@ -15,6 +15,8 @@ function gameScene(state){
     var work3 = dev.graphics[3];//3
     var forgroundBG = dev.graphics[2];//2
 
+	work2.backgroundcolor = "black";
+
 	this.init = game_init;
 	this.reset = game_reset;
 	this.step = game_step;
@@ -24,8 +26,6 @@ function gameScene(state){
 
 	var obCtrl;// = new gObjectControl(dev.graphics1, dev);
 	var mapsc;//  = new mapSceControl();
-
-	//gObjectClass.prototype.sc_move = ocl_scMove;
 
 	var escore;
 
@@ -53,6 +53,8 @@ function gameScene(state){
 
 	var mapdisp = false;
 	var lampf = false;
+
+	var mapv = false;
 
 	var fdrawcnt = 0;
 
@@ -143,16 +145,6 @@ function gameScene(state){
 	        mapsc.change(state.Game.nowstage);
 	        mapsc.reset(); //初期マップ展開
 
-	        /*
-	        var cmap = mapsc.cmap();
-	        //alert(cmap.length);
-	        for (var i = 0; i < cmap.length; i++) {
-	        for (var j = 0; j < cmap[i].length; j++) {
-	        if (cmap[i][j]) { work3.putchr8("*", 50 + i * 4, 50 + j * 4); }
-	        }
-	        }
-	        */
-
 	        bg_scroll = true;
 	        scroll_x = 0;
 	        scroll_y = 0;
@@ -183,28 +175,27 @@ function gameScene(state){
 	        scrollsw = 0;
 	    }
 
-	    tex_bg = dev.images.img[mapsc.bgImage()];
-	    mapChip = mapsc.mapChip();
+	    //tex_bg = dev.images[mapsc.bgImage()];
+	    tex_bg = dev.game.asset.image[mapsc.bgImage()].img;
+
+		mapChip = mapsc.mapChip();
 	    bgData = mapsc.bgPtn();
 
-	    work2.clear("darkgreen");
+	    //work2.clear("darkgreen");
 
-	    work2.reset();
+	    //work2.reset();
 
 	    escore = new gs_score_effect(obCtrl.score);
 	    ehighscore = new gs_score_effect(state.Result.highscore);
 
 	    sndcf = true;
 
-	    //lampf = true;
-	    //mapdisp = false;
-	    /*
 		lampf = state.Config.lamp_use ? true : false;
 	    mapdisp = state.Config.map_use ? false : true;
-	    */
+	    mapv = false;
 	   //debug code-- 2023/01/07
-		lampf = true ;
-	    mapdisp = false;
+		//lampf = true ;
+	    //mapdisp = false;
 		//^^^^^
 	}
 
@@ -480,18 +471,11 @@ function gameScene(state){
 	    return 0;
 	}
 
-    //this.BackSurfaceDraw = gSceneBackSurfaceDraw;
-
-    //this.FrontSurfaceDraw = gSceneFrontSurfaceDraw;
-
 	function game_draw() {
     /*
 	this.BackSurfaceDraw();
-
 	obCtrl.draw();
-
 	this.FrontSurfaceDraw();
-
 	return;
     */
 	    //	   work2.putImageTransform(tex_bg, 0, scroll_y - (480 * (1 - scrollsw)), 1, 0, 0, -1);
@@ -512,15 +496,9 @@ function gameScene(state){
 	            for (var i in mapChip) {
 	                var mc = mapChip[i];
 
-	                //	            if ((dev.gs.in_view(mc.x, mc.y)) || (dev.gs.in_view(mc.x + mc.w, mc.y)) ||
-	                //                    (dev.gs.in_view(mc.x, mc.y + mc.h)) || (dev.gs.in_view(mc.x + mc.w, mc.y + mc.h))||
-	                //                    (dev.gs.in_view(mc.x + mc.w/2, mc.y + mc.h/2))) {
-
 	                if (dev.gs.in_stage_range(mc.x, mc.y, mc.w, mc.h)) {
 	                    mc.view = true;//視界に入っている（当たり判定有効扱いの為のフラグ）
 	                    var w = dev.gs.worldtoView(mc.x, mc.y);
-
-	                    //work2.putchr(Number(mc.type).toString(16), w.x, w.y);
 
 	                    if (mc.visible) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
 	                        var wfg = false;
@@ -588,11 +566,7 @@ function gameScene(state){
 	                } else {
 	                    mc.view = false;
 	                }
-	                //	        work2.putImage(tex_bg, 0, scroll_y - 480);
-	                //	        work2.putImage(tex_bg, 0, scroll_y);
 	            }
-
-	            //obCtrl.drawPoint(forgroundBG, lampf);//Forgroundへ表示
 
 	            //縮小マップ枠
                 /*
@@ -618,14 +592,6 @@ function gameScene(state){
 	            }
                 */
 	            forgroundBG.putFunc(ButtomlineBackgroundDraw);
-                                
-                //work2.clear("black");
-	            //work2.draw();
-	            //work2.reset();
-
-	            //forgroundBG.clear();
-	            //forgroundBG.draw();
-	            //forgroundBG.reset();
         }
 
         //==この↑は背景描画
@@ -645,21 +611,8 @@ function gameScene(state){
 	    var scdispview = true;//debug
 
 	    if (scdispview) {
-			//work3.putFunc(ButtomlineBackgroundDraw);
-	        //work3.putchr("a", mapsc.flame / 20, mapsc.flame / 20);
-
-	        //work3.clear();
-	        //work3.draw();
-	        //work3.reset();
 
 	        var wtxt = [];
-	        /*
-	        if (!lampf) {
-	        work3.fill(0, 0, work3.cw, work3.ch, "blue"); // , "darkblue");
-	        } else {
-	        work3.fill(0, 0, work3.cw, work3.ch);  // , "darkblue");
-	        }
-	        */
 
 	        work3.fill(dev.layout.hiscore_x + 12 * 6, dev.layout.hiscore_y, 12 * 7, 32); // , "darkblue");
 
@@ -758,25 +711,8 @@ function gameScene(state){
 	        HpbarDraw.hp = w_hp; 
             HpbarDraw.mhp = state.Game.player.maxhp;
             HpbarDraw.br = state.Game.player.barrier;
-	        //var cl = { hp: w_hp, mhp: state.Game.player.maxhp, br: state.Game.player.barrier }
-            /*
-	        cl.draw = function (device) {
-	            device.beginPath();
-	            device.fillStyle = (this.br)?"skyblue":"limegreen";
-	            device.lineWidth = 1;
-	            device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, this.hp, 14);
-	            device.stroke();
-
-	            device.beginPath();
-	            device.strokeStyle = "white"; ;
-	            device.lineWidth = 1;
-	            device.rect(dev.layout.hp_x, dev.layout.hp_y, this.mhp, 15);
-	            device.stroke();
-	        }
-            */
 	        work3.putFunc(HpbarDraw);
            
-	        //work3.putchr(w_st, dev.layout.hp_x + 16 - w_st.length * 12, dev.layout.hp_y - 12);
             var wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
 
             if (state.Game.player.barrier) {
@@ -814,16 +750,8 @@ function gameScene(state){
 	        for (i in obCtrl.item) {
 	            wtxt.push("item[" + i + "]:" + obCtrl.item[i]);
 	        }
-            /*
-	        for (i in obCtrl.combo) {
-	            wtxt.push("combo[" + i + "]:" + obCtrl.combo[i]);
-	        }
 
-	        for (i in obCtrl.combomax) {
-	            wtxt.push("combomax[" + i + "]:" + obCtrl.combomax[i]);
-	        }
-            */
-	        var n1 = 0;
+			var n1 = 0;
 	        for (i in obCtrl.total) {
 	            if (i == 2) n1 = obCtrl.total[i];
 	        }
@@ -832,12 +760,8 @@ function gameScene(state){
 	        for (i in obCtrl.obCount) {
 	            if (i == 2) n2 = obCtrl.obCount[i];
 	        }
-	        //wtxt.push("rate:" + Math.floor((n1 / n2) * 100) + "par");
-
-	        //wtxt.push("hidan:" + obCtrl.hidan);
 
 	        wtxt.push("wx,wy:" + Math.floor(dev.gs.world_x) + "," + Math.floor(dev.gs.world_y));
-
 	        wtxt.push("play:" + Math.floor(dev.sound.info()) + "." + dev.sound.running() );
 
 	        for (var s in wtxt) {
@@ -853,8 +777,9 @@ function gameScene(state){
 	        //work3.reset();
 	    }
 
-	    mapdisp = false;
-	    if (!mapdisp) {
+		if (!mapdisp){ mapv = true; }
+	    //mapdisp = false;
+	    if (mapv) {
 
 	        //work3.fill(dev.layout.map_x, dev.layout.map_y, 150, 150);
 	        work3.fill(dev.layout.map_x, dev.layout.map_y, 150, 150);
@@ -881,34 +806,8 @@ function gameScene(state){
 	        //work3.putFunc(cl);
 	        work3.putFunc(cl);
 
-            /*
-	        for (var i in mapChip) {
-	            var mc = mapChip[i];
-	            if ((mc.visible) && ((mc.type == 11) || (mc.type == 12))) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
-
-	                var cl = {}
-	                cl.x = mc.x / 20;
-	                cl.y = mc.y / 20;
-	                cl.w = 1; //mc.w / 20;
-	                cl.h = 1; //mc.h / 20;
-	                cl.c = (mc.type == 12) ? "orange" : "blue";
-
-	                cl.draw = function (device) {
-	                    device.beginPath();
-	                    device.strokeStyle = this.c;
-	                    device.lineWidth = 1;
-	                    device.rect(dev.layout.map_x + this.x, dev.layout.map_y + this.y, this.w, this.h);
-	                    device.stroke();
-	                }
-
-	                work3.putFunc(cl);
-	            }
-	        }
-            */
 	        mapdisp = true;
 	    }           
-            
-
 	}
 }
 

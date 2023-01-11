@@ -7,6 +7,7 @@ function sceneConfig(state) {
     //宣言部
     var work = dev.graphics[1];
     var work2 = dev.graphics[0];
+
     //var text = dev.text;
     var text = dev.graphics[3]; 
 

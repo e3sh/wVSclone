@@ -13,15 +13,26 @@ function deviceControl( g ){
     for (var i = 0; i < SCREEN_PAGES; i++) {
         dsp[i] = new Screen(g, i);
     }
+
     //dsp[0]:Layer0 背景用(Background用） 
     //dsp[1]:Layer1 中間面(Sprite用） 
     //dsp[2]:Layer2 前景用(Forground用） 
     //dsp[3]:Layer3 最前面(Text/Status用） 
 
+    dsp[0].setBackgroundcolor("black");
+
+    //dsp[0].flip(false);
+    //dsp[3].view(false);
+    //dsp[0].setInterval(3);
+    //dsp[1].setInterval(3);
+    //dsp[2].setInterval(3);
+    dsp[3].setInterval(20);
+    
+
     this.graphics = dsp;
 
-	this.canvas = dsp; //使ってないと思うが互換性の為
-	this.text = dsp[3]; //前にText面があったときの名残で互換性の為残っている。
+	//this.canvas = dsp; //使ってないと思うが互換性の為
+	//this.text = dsp[3]; //前にText面があったときの名残で互換性の為残っている。
 
 	this.gs = new geometoryTrance();
     this.layout = new gameLayout();
@@ -32,30 +43,17 @@ function deviceControl( g ){
     this.key_state = keys;  //keys;
 
 	this.sound = new soundControl();
-	//this.images = {img : g.asset.Image };
-    
-    //document.getElementById("console").innerHTML = g.asset.Image;
 
-    //var list = [ "FontGraph", "SPGraph", "BG1", "BG2", "BG3" ];
-    //var img = []; for (var i in list) { img[i] = g.asset.Image[list[i]]; }
-    //img[0] = g.asset.Image["FontGraph"];
-    //img[1] = g.asset.Image["SPGraph"];
-    //img[2] = g.asset.Image["BG1"];
-    //img[3] = g.asset.Image["BG2"];
-    //img[4] = g.asset.Image["BG3"];
+    this.game = g;
+    /*
+    var img = [];
+    img["FontGraph"] = g.asset.image["FontGraph"].img;
+    img["SPGraph"]  = g.asset.image["SPGraph"].img;
+    img["bg1"]      = g.asset.image["bg1"].img;
+    img["bg2"]      = g.asset.image["bg2"].img;
+    img["bg3"]      = g.asset.image["bg3"].img;
 
-	this.images = new loadingImages();
-    
-}
-
-function imageLoad(g){
-
-    this.img = [];
-
-    img[0] = g.asset.Image["FontGraph"];
-    img[1] = g.asset.Image["SPGraph"];
-    img[2] = g.asset.Image["BG1"];
-    img[3] = g.asset.Image["BG2"];
-    img[4] = g.asset.Image["BG3"];
-
+	//this.images = new loadingImages();
+	this.images = img;
+    */
 }

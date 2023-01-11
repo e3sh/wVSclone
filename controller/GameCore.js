@@ -45,14 +45,10 @@ function GameCore( sysParam ) {
 
 	var task_ = new GameTaskControl( this );
 
-    //assetsetup (assetLoad)
-	var asset_ = new GameAssetManager();
-
 	//device setup
 	var keyboard_ = new inputKeyboard();
 	var mouse_ = new inputMouse();
 
-    //
 	var screen_ = [];
 
 	for (var i in sysParam) {
@@ -70,7 +66,7 @@ function GameCore( sysParam ) {
 	this.setSpFont = function (fontParam) {
 
 	    var fprm = {
-	        Image : asset_.image[ fontParam.id ],
+	        Image : asset_.image[ fontParam.id ].img,
 	        pattern: fontParam.pattern
 	    }
 	    var wf = new GameSpriteFontControl(this, fprm);
@@ -78,30 +74,59 @@ function GameCore( sysParam ) {
 	    font_[fontParam.name] = wf;
 	}
 
-    //var BG
-
 	//assetsetup
 	var asset_ = new GameAssetManager();
 
     // soundはassetを参照するので↑の後で宣言する。
     var sound_ = new soundControl( asset_ );
 
-	document.getElementById("console").innerHTML = "START GAME CORE";
+	//document.getElementById("console").innerHTML = "START GAME CORE";
 	// mainloop
+
+	var sysp_cnt = sysParam.length;
+
+	var tc = new bench();
+	var sintcnt = []; //screenIntervalCounter
+	for (var i = 0; i < sysp_cnt; i++) sintcnt[ i ] = 0;
 
 	function loop() {
 	    if (runStatus_) {
+			tc.start();
 
-	        task_.step();
+			document.getElementById("manual_1").innerHTML = "";
+			for (var i = 0; i < sysp_cnt; i++){
+				if (screen_[i].getInterval() - sintcnt[i] == 1){
+					screen_[i].reset();
+					document.getElementById("manual_1").innerHTML +=( i + ":" + screen_[i].getBackgroundcolor());
+					screen_[i].clear();
+	        		//これで表示Bufferがクリアされ、先頭に全画面消去が登録される。
+				}
+			}
+			task_.step();
 
 	        task_.draw();
-	        //run
+
+			for (var i = 0; i < sysp_cnt; i++){
+				if (screen_[i].getInterval() - sintcnt[i] == 1){
+					//if (screen_[i].view()) screen_[i].draw();
+				screen_[i].draw();
+				//これで全画面がCanvasに反映される。
+				}
+			}
+			sprite_.allDrawSprite();//スプライトをBufferに反映する。
+
+			tc.end();
+
+			for (var i = 0; i < sysp_cnt; i++) {
+				sintcnt[ i ]++;
+				if (sintcnt[ i ] >= screen_[ i ].getInterval()) sintcnt[ i ] = 0;
+			}
+			//run
 	        requestAnimationFrame(arguments.callee);
-	    } else {
+		} else {
 	        //pause
 	    }
 	}
-
 
 	//public propaty and method
 	this.task = task_;
@@ -116,6 +141,10 @@ function GameCore( sysParam ) {
     //
 	this.sprite = sprite_;
 	this.font = font_;
+
+	this.state = {};
+
+	this.fpsload = tc;
 
     // init
 	sprite_.useScreen(0);
@@ -137,5 +166,101 @@ function GameCore( sysParam ) {
 	//
 	//
 	//
+	function bench() {
+
+		var oldtime; var newtime = Date.now();
+		var cnt = 0; 
+	
+		var fps_log = []; var load_log = [];
+		var log_cnt = 0;
+		var log_max = 0;
+	
+		var workload; var interval;
+	
+		var fps = 0;
+	
+		//var ypos = 412;
+	
+		this.start = function () {
+	
+			oldtime = newtime;
+			newtime = Date.now();
+		}
+	
+		this.end = function () {
+	
+			workload = Date.now() - newtime;
+			interval = newtime - oldtime;
+	
+			if (log_cnt > log_max) log_max = log_cnt;
+			fps_log[log_cnt] = interval;
+			load_log[log_cnt] = workload;
+	
+			log_cnt++;
+			if (log_cnt > 59) log_cnt = 0;
+	
+			var w = 0;
+			for (var i = 0; i <= log_max; i++) {
+				w += fps_log[i];
+			}
+	
+			cnt++;
+	
+			fps = parseInt(1000 / (w / (log_max + 1)));
+		}
+	
+		this.result = function () {
+
+			var int_max = 0;
+			var int_min = 999;
+			var int_ave = 0;
+	
+			var load_max = 0;
+			var load_min = 999;
+			var load_ave = 0;
+	
+			var wlod = 0;
+			var wint = 0;
+			for (var i = 0; i <= log_max; i++) {
+				//fstr += fps_log[i] + " ";
+				//lstr += load_log[i] + " ";
+	
+				if (int_max < fps_log[i]) int_max = fps_log[i];
+				if (int_min > fps_log[i]) int_min = fps_log[i];
+	
+				if (load_max < load_log[i]) load_max = load_log[i];
+				if (load_min > load_log[i]) load_min = load_log[i];
+	
+				wlod += load_log[i];
+				wint += fps_log[i];
+			}
+	
+			int_ave = parseInt(wint / (log_max + 1));
+			load_ave = parseInt(wlod / (log_max + 1));
+		
+			var r = {};
+	
+			r.fps = fps;
+
+			var wl = {};
+			wl.log =  fps_log;
+			wl.max = load_max;
+			wl.min = load_min;
+			wl.ave = load_ave;
+
+			var iv = {};
+			iv.log = fps_log;
+			iv.max = int_max;
+			iv.min = int_min;
+			iv.ave = int_ave;
+
+			r.interval = iv;
+			r.workload = wl;
+
+			return r;
+		}
+
+	}
+
 }
 

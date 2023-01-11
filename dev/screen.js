@@ -7,7 +7,7 @@ function Screen(g,num) {//g.screen（DisplayControll）[num]
     var scrn = g.screen[num];
     document.getElementById("console").innerHTML = g.asset.Image;
     //キャラクタパターンテクスチャー
-    var tex_p = g.asset.image["SPGraph"];
+    var tex_p = g.asset.image["SPGraph"].img;
 
     this.cw = scrn.cw;
     this.ch = scrn.ch;
@@ -15,6 +15,18 @@ function Screen(g,num) {//g.screen（DisplayControll）[num]
     var fcolor = ["8x8white", "8x8red", "8x8green", "8x8blue", "stfont"];
 
     var sp_ptn = spdata();
+
+    this.view = scrn.view;
+    this.flip = scrn.flip;
+
+    //this.interval = scrn.interval; // 自動更新での更新間隔(0:自動更新なし　1:毎回　2～:間隔)
+    //this.backgroundcolor = scrn.backgroundcolor; //defaultBackgroundcolor;
+
+    this.setInterval = scrn.setInterval;
+    this.setBackgroundcolor = scrn.setBackgroundcolor;
+
+    this.getInterval = scrn.getIntarval;
+    this.getBackgroundcolor = scrn.getBackgroundcolor;
 
     //-------------------------------------------------------------
     ///スプライト描画

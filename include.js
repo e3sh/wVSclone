@@ -4,8 +4,8 @@
 
 var w = [
 //WebGameCoreSystemMinifyFile
-"controller/coremin.js",
-/*
+//"controller/coremin.js",
+
 //WebGameCoreSystem Files
     //SystemControl
     "controller/GameAssetManager.js",
@@ -18,20 +18,20 @@ var w = [
     "controller/DisplayControl.js",
     "controller/soundControl.js",
     "controller/offScreen.js",
-    "controller/offScreenTypeB.js",
+    //"controller/offScreenTypeB.js",
     "controller/spriteControl.js",
     "controller/spriteFontControl.js",
 
     //class
     "controller/GameTaskClass.js",
-*/
+
 //画面表示や入力関係処理部
  "dev/deviceControl.js",
  "dev/screen.js",
  //"dev/inputControl.js",
  //"dev/inputKeyboard.js",
  "dev/soundControl.js",
- "dev/images.js",
+ //"dev/images.js",
  //"dev/vartualkeyControl.js",
 //データ部(キャラクタやスプライトパターン制御用の設定）
  "dev/geometoryTr.js",

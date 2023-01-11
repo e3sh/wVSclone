@@ -26,6 +26,26 @@ function offScreen(){
         return buffer[buf_count];
     }
 
+    //propatys (add 2023/01/11)
+    var enable_draw_flag = true;
+    var enable_reset_flag = true;
+        
+    this.view = function ( flg ){ //flg : bool
+        if (flg === null) {
+            return enable_draw_flag;
+        }else{
+            enable_draw_flag = flg;
+        }
+    }
+
+    this.flip = function( flg ){
+        if (flg === null) {
+            return enable_reset_flag;
+        }else{
+            enable_reset_flag = flg;
+        }
+    }
+
     //-------------------------------------------------------------
     //SP_PUT
     //use img, sx, sy, sw, sh, dx, dy, dw, dh, m11, m12, m21, m22, tx, ty, alpha, r
@@ -234,8 +254,12 @@ function offScreen(){
     //----------------------------------------------------------
     this.reset = function () {
 
-        ef_item = [];
-        buf_count = 0;
+        if (ef_item.length > BUFFER_SIZE) ef_item.length = 0; 
+
+        if (enable_reset_flag){
+            ef_item = [];
+            buf_count = 0;
+        }
         //
     }
 
@@ -244,13 +268,13 @@ function offScreen(){
     //----------------------------------------------------------
     this.draw = function (device) {
 
-        for (var i = 0, loopend = ef_item.length; i < loopend; i++) {
-            ef_item[i].draw(device);
+        if (enable_draw_flag){
+            for (var i = 0, loopend = ef_item.length; i < loopend; i++) {
+                ef_item[i].draw(device);
+            }
+            if (efmax < ef_item.length) efmax = ef_item.length;
         }
-
-        if (efmax < ef_item.length) efmax = ef_item.length;
     }
-
     //----------------------------------------------------------
     //
     //----------------------------------------------------------
