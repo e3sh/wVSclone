@@ -13,7 +13,8 @@ function sce_player() {
         o.shot = 0;
         o.trigerSub = 10;
         o.shotSub = 0;
-
+        o.autotrig = 10;
+        o.autoshot = 0;
 
         //o.int_shot = 0;
         //	        o.mp = 1;
@@ -183,6 +184,12 @@ function sce_player() {
             o.trigerSub = 5;
         }
 
+        o.autotrig--;
+        if (o.autotrig <= 0) {
+            o.autoshot = 0;
+            o.autotrig = 5;
+        }
+
         //       if (eval(o.mouse_state.button) == 0) {
         if (zkey) {
             //o.vset(4);
@@ -192,8 +199,8 @@ function sce_player() {
                 o.sound.effect(7); //スイング音
                 o.triger = 15;
                 //o.set_object_ex(20, o.x, o.y, 0, 43, o.gameState.player.weapon + "_");
-//                switch (o.gameState.player.weapon) {
-//                    case 0:
+                switch (o.gameState.player.weapon) {
+                      case 0:
                         o.set_object(39); //wand
                         if ((powup > 0) || (o.config.shotfree)) {
                             o.set_object(6);
@@ -202,7 +209,7 @@ function sce_player() {
 
                             o.triger = 30;
                         }
-//                        break;
+                        break;
 //                    case 1:
 //                        o.set_object(10); //sword
 //                        break;
@@ -215,10 +222,16 @@ function sce_player() {
 //                    case 4:
 //                        o.set_object(36); //axe
 //                        break;
-//                    default:
-//                        o.set_object(39); //wand
-//                        break;
-//                }
+                      default:
+                        if ((powup > 0) || (o.config.shotfree)) {
+                            o.collect2();//wand 以外の武器使用時はショットボタンは画面内アイテム回収/玉消費
+                            o.item[20]--;
+                            if (o.item[20] < 0) o.item[20] = 0;
+
+                            o.triger = 30;
+                        }
+                        break;   
+                }
             }
         }
 
@@ -269,12 +282,13 @@ function sce_player() {
                 }
             }
         }
-
-        if (ckey) { //item drop
+        /*
+        if (ckey) { //item drop　->change　itemget　2023/1/12
+            
             if (o.shotSub == 0) {
                 o.shotSub = 1;
-
-                if (o.itemstack.length > 0) {
+                //　item　drop
+　                if (o.itemstack.length > 0) {
 
                     var w = o.itemstack.pop();
                     o.item[w]--;
@@ -285,11 +299,13 @@ function sce_player() {
                     o.vector, "common_vset0" //38
                     );
                 }
+                //o.collect2();
 
                 o.trigerSub = 30;
             }
+            
         }
-
+        */
 
         if (esckey) {
             if (o.shot == 0) {
@@ -301,11 +317,12 @@ function sce_player() {
 
         //AutoWeapon
         //o.vset(4);
-        if ((o.shot == 0) && (o.gameState.player.weapon !=0 )) {
-            o.shot = 1;
-
+        if ((o.autoshot == 0) && (o.gameState.player.weapon !=0 )) {
+//          if (o.gameState.player.weapon !=0 ) {
+            o.autoshot = 1;
+            //o.collect3();
             //o.sound.effect(7); //スイング音
-            o.triger = 15;
+            o.autotrig = 20;
             //o.set_object_ex(20, o.x, o.y, 0, 43, o.gameState.player.weapon + "_");
             switch (o.gameState.player.weapon) {
                 case 1:

@@ -260,6 +260,32 @@ gObjectClass.prototype.collect = function (src, dst) {
 
     this.message.push(msg);
 }
+
+gObjectClass.prototype.collect2 = function (src, dst) {
+    //src,dst:dummy　add_2023/1/12　
+
+    var msg = {};
+
+    msg.cmd = "collect2";
+    msg.src = src;
+    msg.dst = dst;
+
+    this.message.push(msg);
+}
+
+gObjectClass.prototype.collect3 = function (src, dst) {
+    //src,dst:dummy　add_2023/1/12　
+
+    var msg = {};
+
+    msg.cmd = "collect3";
+    msg.src = src;
+    msg.dst = dst;
+
+    this.message.push(msg);
+}
+
+
 //System系コマンド（ゲームの推移に対しての指示）
 gObjectClass.prototype.SIGNAL = function (src, dst) {
     //src,dst:dummy

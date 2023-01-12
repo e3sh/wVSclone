@@ -1,42 +1,3 @@
-// task ==================================================================
-/*
-class GameTask_FlipDisp extends GameTask {
-	constructor(id){
-		super(id);
-	}
-
-	draw( g ) {
-        g.sprite.allDrawSprite();//スプライトをBufferに反映する。
-        g.screen[0].draw();
-	    g.screen[1].draw();
-	    g.screen[2].draw();
-	    g.screen[3].draw();
-        //これで全画面がCanvasに反映される。
-        //(DrawではBufferに登録されるだけで、Canvasに反映されていない。)	
-	}
-}
-
-class GameTask_ClearDisp extends GameTask {
-	constructor(id){
-		super(id);
-	}
-
-	draw( g ) {
-	    g.screen[0].reset();
-	    g.screen[1].reset();
-	    g.screen[2].reset();
-	    g.screen[3].reset();
-
-	    g.screen[0].clear("black");
-	    g.screen[1].clear();
-	    g.screen[2].clear();
-	    g.screen[3].clear();//UI表示画面は頻繁に書き換えないようにしたいので、数フレームに一回とかにするとか        //g.dsp.reset();
-	    //g.dsp.clear("black");
-	    //g.dsp.clear();
-        //これで表示Bufferがクリアされ、先頭に全画面消去が登録される。
-	}
-}
-*/
 class GameTask_FPScount extends GameTask {
 
     constructor(id){
@@ -95,21 +56,27 @@ class GameTask_Debug extends GameTask {
     }
 
     draw(g){
-        var st = "screenbuffer</br>"  
-        + g.screen[0].count() + "</br>" 
-	    + g.screen[1].count() + "</br>"
-	    + g.screen[2].count() + "</br>"
-	    + g.screen[3].count() + "</br>";
+        const SC_NUM = 4;
+
+        var st = "bench:sc_buffer(max)/intv/bgcolor</br>";  
+ 
+        for (var i=0 ; i < SC_NUM ;i++){
+            st += "sc[" + i + "]" 
+            + g.screen[i].count() + " / " 
+            + g.screen[i].getInterval() + " / " 
+            + g.screen[i].getBackgroundcolor()
+            + " , ";
+        }
 
         var r = g.fpsload.result();
 
-        st += "fps:" + r.fps + "</br>"
+        st += "</br>fps:" + r.fps + "</br>"
         //+ "int.max" + r.interval.max + "</br>"
         //+ "int.min" + r.interval.min + "</br>"
-        + "int.ave" + r.interval.ave + "</br>"
+        + "intv.ave:(" + r.interval.ave + "ms) "
         //+ "wl .max" + r.workload.max + "</br>"
         //+ "wl .min" + r.workload.min + "</br>"
-        + "wl .ave" + r.workload.ave + "</br>"
+        + "load.ave:(" + r.workload.ave + "ms)</br>workload:"
         + Math.trunc((r.workload.ave / r.interval.ave)*100) + "%</br>";
 
         document.getElementById("console").innerHTML = st;

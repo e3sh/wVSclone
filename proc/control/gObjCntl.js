@@ -513,7 +513,7 @@
                             o.crash = null;
                         } else {
                             if (o.type == 2) {
-                                this.combo_sub(2);
+                                //this.combo_sub(2);
                             }
                         }
                     }
@@ -690,7 +690,14 @@
 
                     obj[i].change_sce(7);
                 }
+                /*
+                //bomb時に画面内アイテム回収モードにしてみる2023/1/12追記
+                if (obj[i].type == 4) {//アイテム
+                        obj[i].change_sce(30);
+                }
+                */
             }
+            
         }
     }
     //特定のchのみ消す（timeoverリセット用）
@@ -716,6 +723,36 @@
                     o.change_sce(30);
                 }
             }
+        }
+    }
+    //
+    command["collect2"] = function (o, src, dst) {
+        for (i in obj) {
+
+            //画面内にいるアイテムのみ　2023/1/12追加コマンド
+            var onst = o.gt.in_view_range(
+                obj[i].x - (obj[i].hit_x / 2),
+                obj[i].y - (obj[i].hit_y / 2), obj[i].hit_x, obj[i].hit_y);
+
+            if (onst) {
+                //アイテム回収モードにする
+                if (obj[i].type == 4) {//アイテム
+                        obj[i].change_sce(30);
+                }
+            }
+            
+        }
+    }
+
+    command["collect3"] = function (o, src, dst) {
+        for (i in obj) {
+            //自機の半径n内にいるアイテムのみ　2023/1/12追加コマンド
+            if (obj[i].type == 4){//アイテム
+                if ( o.target_d( obj[i].x, obj[i].y ) < 100){//半径
+                        obj[i].change_sce(30);
+                }
+            }
+            
         }
     }
 

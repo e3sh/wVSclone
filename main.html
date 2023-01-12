@@ -11,7 +11,10 @@
 <body onLoad="main_r()">
 <div id = "manual_1">
 　操作方法：<br />移動(Move):　方向キー(ArrowKey)<br />攻撃(Action):　[Z] or [Space]<br />
-アイテム使用(Use):　[X] or [Ctrl]<br />アイテムを置く(Put):　[C]<br />一時停止(Pause)]:　[ESC]<br>
+アイテム使用(Use):　[X] or [Ctrl]<br />一時停止(Pause)]:　[ESC]<br>
+WAND以外の武器使用時は攻撃(Action)操作で玉を消費して画面内のアイテムを回収します。<br/>
+
+
 Edge/Chrome
  </div>
 <div id = "manual_2">
@@ -20,15 +23,14 @@ Edge/Chrome
 (S):青の玉:一定時間バリアを貼る(Shield)<br />
 (B):赤の玉:視界内の敵にダメージ＆弾消し(Bomd)<br />
 地図：マップ表示／ランプ：敵などを地図に表示<br>
-<input id ="debug_cb" type = "checkbox" >debug</input>
-<input id ="lamp_cb" type = "checkbox" >lamp</input>
+即時反映:<input id ="debug_cb" type = "checkbox" >debug</input>
+フロア変更時に反映:<input id ="lamp_cb" type = "checkbox" >lamp</input>
 <input id ="mapview_cb" type = "checkbox" >map</input>
 </div>
-<div id = "console">
+<div id = "side_menu">
 　操作方法：<br />移動(Move):　方向キー(ArrowKey)<br />
 攻撃(Action):　[Z] or [Space]<br />
 アイテム使用(Use):　[X] or [Ctrl]<br />
-アイテムを置く(Put):　[C]<br />
 一時停止(Pause)]:　[ESC]<br>
 <br>
 ・キーを持った状態で扉に入ると次のフロアへ。<br />
@@ -39,12 +41,11 @@ Edge/Chrome
 <br>
 敵もアイテムを拾うため、鍵や地図、ランプなどが<br />
 落ちていない場合がありますが、倒せば落とします<br />
-<br /><br />
-InternetExplorer9/Chrome<br />
+<br />WAND以外の武器使用時は攻撃(Action)操作で玉を消費して画面内のアイテムを回収します。<br />
+Edge/Chrome<br />
 <br />
-2012/04/08
 </div>
-<div id = "status">
+<div id = "console">
 status display .....
 </div>
 <canvas id = "Layer0"></canvas>

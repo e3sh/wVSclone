@@ -43,18 +43,7 @@ function sceneResult(state) {
 };
 
     menu.push(m);
-/*
-    m = {};
-    m.title = "End.";
-    m.x = 100;
-    m.y = 180;
-    m.w = 120;
-    m.h = 16
-    m.sel = false;
-    m.func = function () { return 2; };
 
-    menu.push(m);
-*/
     //処理部
 
     function scene_init() {
@@ -131,8 +120,8 @@ function sceneResult(state) {
         }
         work2.putchr("Hi-Sc:" + wt, dev.layout.hiscore_x, dev.layout.hiscore_y);
 */
-        work2.draw();
-        work2.reset();
+        //work2.draw();
+        //work2.reset();
 /*
         var w_mes = ["dummy", "dummy", "敵機撃破", "dummy", "スコアアイテム取得", "dummy"];
 
@@ -245,8 +234,8 @@ function sceneResult(state) {
             }
             work2.putFunc(o);
 
-            work2.draw();
-            work2.reset();
+            //work2.draw();
+            //work2.reset();
 
             wipecnt += 8;
 

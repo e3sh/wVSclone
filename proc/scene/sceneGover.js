@@ -142,8 +142,8 @@ function sceneGover(state) {
             work2.putchr8(wtxt[s], 300, 16 + 8 * s);
         }
 */
-        work2.draw();
-        work2.reset();
+        //work2.draw();
+        //work2.reset();
 
         state.Game.cold = true;
 
@@ -247,8 +247,8 @@ function sceneGover(state) {
             }
             work2.putFunc(o);
 
-            work2.draw();
-            work2.reset();
+            //work2.draw();
+            //work2.reset();
 
             wipecnt += 8;
 

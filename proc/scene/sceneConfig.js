@@ -137,10 +137,10 @@ function sceneConfig(state) {
                     bl[2].click = false;
                 }
 
-                text.clear();
-                text.reset();
+                //text.clear();
+                //text.reset();
                 text.print(tmes, tmsx, tmsy, "white");
-                text.draw();
+                //text.draw();
             }
 
             if (res) {
@@ -229,10 +229,10 @@ function sceneConfig(state) {
 
                     bl[0].title = ts + res;
 
-                    text.clear();
-                    text.reset();
+                    //text.clear();
+                    //text.reset();
                     text.print(tmes + res, tmsx, tmsy, "white");
-                    text.draw();
+                    //text.draw();
                 }
 
                 //     bl[1].lamp = false;
@@ -295,8 +295,8 @@ function sceneConfig(state) {
     m.msg = "Exit.";
     m.jp = 2; //Return Scene
     m.func = function () {
-        text.clear();
-        text.reset();
+        //text.clear();
+        //text.reset();
         return this.jp;
     };
     menu.push(m);
@@ -405,7 +405,7 @@ function sceneConfig(state) {
         work2.putFunc(cl);
         work2.draw();
 
-        work2.reset();
+        //work2.reset();
 
         for (i in w_number) {
             if (Boolean(w_number[i])) {
@@ -670,8 +670,8 @@ function sceneConfig(state) {
             w_number[5] = 1;
             */
 
-            text.clear();
-            text.reset();
+            //text.clear();
+            //text.reset();
             text.print("設定初期化しました。", 100, 320, "white");
 
             if (Boolean(localStorage)) {
@@ -681,7 +681,7 @@ function sceneConfig(state) {
                 text.print("ローカルストレージが使用できない?"
                         , 100, 340, "white");
             }
-            text.draw();
+            //text.draw();
 
 
             for (var i = 0; i < mtyp.length; i++) {
@@ -701,8 +701,8 @@ function sceneConfig(state) {
 
         if (save_on) {
 
-            text.clear();
-            text.reset();
+            //text.clear();
+            //text.reset();
 
             if (state.Config.save() == 0) {
                 text.print("設定をセーブしました。"//this.msg + localStorage.length
@@ -728,7 +728,7 @@ function sceneConfig(state) {
                         , 100, 320, "white");
             }
             */
-            text.draw();
+            //text.draw();
 
             save_on = false;
         }

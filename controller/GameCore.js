@@ -93,11 +93,11 @@ function GameCore( sysParam ) {
 	    if (runStatus_) {
 			tc.start();
 
-			document.getElementById("manual_1").innerHTML = "";
+			//document.getElementById("manual_1").innerHTML = "";
 			for (var i = 0; i < sysp_cnt; i++){
 				if (screen_[i].getInterval() - sintcnt[i] == 1){
 					screen_[i].reset();
-					document.getElementById("manual_1").innerHTML +=( i + ":" + screen_[i].getBackgroundcolor());
+					//debug:document.getElementById("manual_1").innerHTML +=( i + ":" + screen_[i].getBackgroundcolor());
 					screen_[i].clear();
 	        		//これで表示Bufferがクリアされ、先頭に全画面消去が登録される。
 				}

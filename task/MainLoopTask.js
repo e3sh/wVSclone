@@ -5,22 +5,39 @@ class taskMainLoop extends GameTask {
         super(id);
     }
 	
-    state; 	elm_dbg;  scene;
+    state; 	scene;
+    elm_dbg;  elm_lamp; elm_map;
 
     init(g){// task.add時に実行される。
 		//asset(contents) load
         this.state = new stateControl(g);
 		
         this.elm_dbg = document.getElementById("debug_cb");
-        this.elm_dbg.checked = this.state.Config.debug;
+        this.elm_lamp = document.getElementById("lamp_cb");
+        this.elm_map = document.getElementById("mapview_cb");
     
         this.scene = new sceneControl(this.state);
+
+        g.state = this.state;
     }
    
     pre = function (g) {
+        this.state.Config.debug = this.elm_dbg.checked;
+        this.state.Config.lamp_use = this.elm_lamp.checked; 
+        this.state.Config.map_use = this.elm_map.checked;
     }
 
     step = function (g) {
+        if (this.elm_dbg.checked != this.state.Config.debug) {
+            this.state.Config.debug = this.elm_dbg.checked; 
+        };
+        if (this.elm_lamp.checked != this.state.Config.lamp_use){ 
+            this.state.Config.lamp_use = this.elm_lamp.checked; 
+        };
+        
+        if (this.elm_map.checked != this.state.Config.map_use){ 
+            this.state.Config.map_use = this.elm_map.checked; 
+        }
         this.scene.step();
     }
 

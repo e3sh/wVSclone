@@ -5,7 +5,7 @@
 function Screen(g,num) {//g.screen（DisplayControll）[num]
 
     var scrn = g.screen[num];
-    document.getElementById("console").innerHTML = g.asset.Image;
+    //document.getElementById("console").innerHTML = g.asset.Image;
     //キャラクタパターンテクスチャー
     var tex_p = g.asset.image["SPGraph"].img;
 

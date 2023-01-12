@@ -35,7 +35,7 @@ function main_r() {
     //Game Task Setup
 	//game.task.add(new GameTask_ClearDisp("cldisp"));
 	game.task.add(new taskMainLoop("main"));
-	game.task.add(new GameTask_FPScount("fps"));
+	//game.task.add(new GameTask_FPScount("fps"));
 	//game.task.add(new GameTask_FlipDisp("fldisp"));
 	game.task.add(new GameTask_Debug("debug"));
 	//	game.task.add(new GameTask_Test2("fps"));

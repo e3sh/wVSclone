@@ -30,7 +30,7 @@ div#manual_2
 	left:640px ;
 }
 
-div#console 
+div#side_menu 
 {
 	width : 256px;
 	height :766px;
@@ -38,13 +38,14 @@ div#console
 	left:1024px ;
 }
 
-div#status 
+div#console 
 {
 	width : 640px;
 	height :160px;
 	top :600px ;
 	left:0px ;
 	z-index: 2;
+	color : #FFFFFF ;
 }
 
 canvas
