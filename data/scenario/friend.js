@@ -3,6 +3,7 @@
 //　各オブジェクトの行動を指定するリスト。
 //
 //支援機（オプション）の動作に関するシナリオ
+/*
 function sce_friend_rotate() {
     //　味方（支援機）の動作(rotation) 右回転
     //-----------------------------------------------------------------------
@@ -75,7 +76,7 @@ function sce_friend_rotate() {
         return f;
     }
 }
-
+*/
 function sce_friend_start() {
     //　味方（支援機）の発進
     //-----------------------------------------------------------------------
@@ -332,7 +333,7 @@ function sce_friend_boom() {
 
 //支援機（オプション）の動作に関するシナリオ
 function sce_friend_rotate_full() {
-    //　味方（支援機）の動作(rotation) 右回転(axe用?）
+    //　味方（支援機）の動作(rotation) 左右回転(axe用?）
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
         o.vset(0);
@@ -343,6 +344,9 @@ function sce_friend_rotate_full() {
         o.rotatecount = 0;
 
         o.attack = 2;
+
+        o.startv = o.vector;
+        o.leftrotate = (o.vector > 179)? true : false;
     }
 
     this.move = function (scrn, o) {
@@ -362,15 +366,76 @@ function sce_friend_rotate_full() {
 
         o.rotatecount++;
         if (o.rotatecount > 20) {
-            o.vector = (o.vector + 18) % 360;
             o.rotatecount = 0;
             o.status = 0;
+        }
+        if (o.leftrotate) {
+            o.vector = (o.startv + (360 - (o.rotatecount * 18)))%360;
+        } else {
+            o.vector = (o.startv + (o.rotatecount * 18))%360;
         }
 
         o.x = o.parent.x + o.Cos(o.vector) * 35;
         o.y = o.parent.y + o.Sin(o.vector) * 35;
 
-        o.vector = (o.vector + 18) % 360;
+        if (o.status == 0) f = 1; //未使用ステータスの場合は削除
+
+        return f;
+    }
+}
+
+function sce_friend_rotate() {
+    //　味方（支援機）の動作(rotation) 左右回転　4分の1(sword/wand)
+    //-----------------------------------------------------------------------
+    this.init = function (scrn, o) {
+        //o.vector = Math.floor(Math.random() * 360);
+        o.vset(0);
+
+        o.leftrotate = (o.vector > 179)? true : false;
+        if (o.leftrotate){
+            o.startv = (o.vector + 60 ) % 360;
+        }else{
+            o.startv = (360 + (o.vector - 60)) % 360;
+        }
+
+        o.x += o.Cos(o.vector) * 35;
+        o.y += o.Sin(o.vector) * 35;
+
+        o.rotatecount = 0;
+
+        o.attack = 1;
+    }
+
+    this.move = function (scrn, o) {
+
+        //if (!o.config.option) o.status = 0;
+
+        var f = 0;
+
+        if (!Boolean(o.parent)) {
+            o.change_sce(7);
+            return 1;
+        }
+        
+        if (o.damageflag) {
+            o.set_object_ex(6, o.x + o.Cos(o.vector) * 40, o.y + o.Sin(o.vector) * 40, o.vector, "effect_hit");
+
+            o.damageflag = false;
+        }
+
+        o.rotatecount++;
+        if (o.rotatecount > 10) {
+            o.rotatecount = 0;
+            o.status = 0;
+        }
+        if (o.leftrotate) {
+            o.vector = o.startv - (o.rotatecount * 12);
+        } else {
+            o.vector = (o.startv + (o.rotatecount * 12))%360;
+        }
+
+        o.x = o.parent.x + o.Cos(o.vector) * 35;
+        o.y = o.parent.y + o.Sin(o.vector) * 35;
 
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 
