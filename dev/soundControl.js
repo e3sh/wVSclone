@@ -1,6 +1,6 @@
 //**************************************************************
 //soundControl
-//ƒTƒEƒ“ƒh
+//ã‚µã‚¦ãƒ³ãƒ‰
 //
 //**************************************************************
 
@@ -121,7 +121,7 @@ function soundControl() {
 
 
         pla.pause();
-        pla.currentTime = 0;//firefox?‚Ì‚İ‚±‚ê‚Å‘O‚Ì‰¹‚ªo‚Ä‚µ‚Ü‚¤BpauseŒø‚¢‚Ä‚È‚¢H
+        pla.currentTime = 0;//firefox?ã®ã¿ã“ã‚Œã§å‰ã®éŸ³ãŒå‡ºã¦ã—ã¾ã†ã€‚pauseåŠ¹ã„ã¦ãªã„ï¼Ÿ
         
         if (Boolean(sd[soundname])) {
             //alert("sound/" + sd[soundname] + ext);
@@ -203,7 +203,7 @@ function soundControl() {
     this.running = function () 
     {
         if (!dev_ready) return;
-        //return (snd[plnum].pos < 99);//ogg‚¾‚Æ‚±‚ê‚Å‚¤‚Ü‚­‚¢‚Á‚½‚è‚¢‚©‚È‚©‚Á‚½‚èEE
+        //return (snd[plnum].pos < 99);//oggã ã¨ã“ã‚Œã§ã†ã¾ãã„ã£ãŸã‚Šã„ã‹ãªã‹ã£ãŸã‚Šãƒ»ãƒ»
         return (!snd[plnum].ended);
 
     }

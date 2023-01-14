@@ -455,17 +455,17 @@ function sce_ememy_timeover() {
 function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリストのうち1つを返す
 
     var ITEMLIST = [
-        22, 27, 26, 21, //KEY,MAP,LAMP,1UP
+        22, 27, 26, 21, //KEY,MAP,LAMP,1UP　
         15, 16, 17, 18, 19, //WEAPONS
         23, 24, 25, //COLORBALLS
-    //    20, //BALL
+        20, //BALL
     //    35,//:COINはPASS
         00
     ];
 
     var rc = 0; //nonitem
-    for (var i of pick) {
-        for (var j of ITEMLIST){
+    for (var i of ITEMLIST){ //持っているもののうち、優先順位が高いものを選択
+        for (var j of pick) {
             if (i == j ){
                rc = j;
                return rc;

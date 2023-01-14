@@ -77,7 +77,7 @@ function stateConfig(){
         this.shotfree = false;
         this.startstage = 1;
 
-        //this.use_audio = true;
+        this.use_audio = true;
         //this.debug = false; //debug表示　
         this.debug = false;
     }
