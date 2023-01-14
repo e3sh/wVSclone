@@ -44,6 +44,7 @@ function Screen(g,num) {//g.screen（DisplayControll）[num]
     	//Debug(error回避)用
         if (!Boolean(d)) {
             scrn.buffer.fillText(sp, x, y);
+            return;
         }
 
         if (!Boolean(m)) { m = 0; }

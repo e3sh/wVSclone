@@ -257,6 +257,7 @@ function Stage1(stageno) {
             chip.type = w[6] + 10; //当たり判定混合用に背景ユニットはtype+10で処理することにする。
             chip.view = false;
             chip.visible = w[7];
+            chip.lookf = false;
 
             map_cp.push(chip);
         }

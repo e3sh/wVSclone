@@ -239,7 +239,7 @@ function sce_ememy_move_std(){
 
 function sce_ememy_move_std2() {
     //　自機を追跡してくるパターン。
-    //　60F毎に向き変更。
+    //　60F毎に向き変更。iteminv_view 2023/1/14
     //-----------------------------------------------------------------------
 
     this.init = function (scrn, o) {
@@ -252,7 +252,11 @@ function sce_ememy_move_std2() {
         o.get_target(98);
 
        // o.pick_enable = false;
+
+       o.custom_draw_enable = true;
     }
+
+    this.draw = sce_enemy_inv_gr;
 
     this.move = function (scrn, o) {
         o.frame++;
@@ -447,3 +451,90 @@ function sce_ememy_timeover() {
         return o.sc_move();
     }
 }
+
+function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリストのうち1つを返す
+
+    var ITEMLIST = [
+        22, 27, 26, 21, //KEY,MAP,LAMP,1UP
+        15, 16, 17, 18, 19, //WEAPONS
+        23, 24, 25, //COLORBALLS
+    //    20, //BALL
+    //    35,//:COINはPASS
+        00
+    ];
+
+    var rc = 0; //nonitem
+    for (var i of pick) {
+        for (var j of ITEMLIST){
+            if (i == j ){
+               rc = j;
+               return rc;
+            }
+        }
+    }
+    return rc;
+   
+    /*
+    ENEMY INV CHECK (敵の持ち物チェック）
+        (ITEMLIST)  MotionPatternNo. SPDATAName
+        15 WAND     MP38    Wand
+        16 SWORD    MP15    Knife
+        17 AXE      MP37    Axe
+        18 SPEAR    MP35    Spear
+        19 BOOM     MP36    Boom
+        20 BALL     MP26    Ball1-3
+        21 1UP      MP 1    Mayura1-4
+        22 KEY      MP27    Key
+        23 B_BALL   MP28    BallB1-3
+        24 S_BALL   MP29    BallS1-3
+        25 L_BALL   MP30    BallL1-3
+        26 LAMP     MP33    Lamp
+        27 MAP      MP34    Map
+        (35 COIN)   MP32    Coin1-4
+        (40 TRBOX)DISPLAY用 MP39 TrBox
+        
+        表示優先順位
+        1)KEY　LANP　MAP　1UP
+        2)WEAPON全般
+        3)COLORBALL
+    */
+}
+
+function sce_enemy_inv_gr(scrn, o){
+    var spname = [];
+
+    spname[15] = "Wand";
+    spname[16] = "Knife";
+    spname[17] = "Axe";
+    spname[18] = "Spear";
+    spname[19] = "Boom";
+    spname[20] = "Ball1";
+    spname[21] = "Mayura1";
+    spname[22] = "Key";
+    spname[23] = "BallB1";
+    spname[24] = "BallS1";
+    spname[25] = "BallL1";
+    spname[26] = "Lamp";
+    spname[27] = "Map";
+
+    var w = o.gt.worldtoView(o.x, o.y);
+
+    if ((w.x >= 0) && (w.x <= scrn.cw) && (w.y >= 0) && (w.y <= scrn.ch)) {
+        //scrn.putchr8("@", w.x, w.y);
+        w.x = w.x + o.Cos(o.vector) * 16;
+        w.y = w.y + o.Sin(o.vector) * 16;
+
+        var f = sce_enemy_inv_check(o.pick);
+        if (f != 0 ){
+            // o.vector = (o.startv + (o.rotatecount * 12))%360;
+            //w.x = w.x + o.Cos(o.vector) * 16;
+            //w.y = w.y + o.Sin(o.vector) * 16;
+            scrn.put(spname[f], w.x, w.y); 
+            //scrn.putchr8(spname[f], w.x, w.y);
+        } else {
+            //scrn.putchr8("@", w.x, w.y);
+        }
+        //scrn.put(ptn, w.x, w.y, wvh, wr, o.alpha, o.display_size);
+    }
+}
+

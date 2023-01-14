@@ -501,16 +501,19 @@ function gameScene(state){
 	                    var w = dev.gs.worldtoView(mc.x, mc.y);
 
 	                    if (mc.visible) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
+							mc.lookf = true;　//画面内に入ったことがあるたフラグ
 	                        var wfg = false;
 							if (mc.type == 11) wfg = true;
 	                        //if (Boolean(tex_bg[mc.no])) {
 	                        if (Boolean(bgData[mc.no])) {
 	                            if (wfg) {
+									
 	                                forgroundBG.putPattern(
 										tex_bg, bgData[mc.no], 
 										w.x, 
 										w.y - 24, 
 										mc.w, mc.h);
+										
 	                                //work2.putPattern(tex_bg, bgData[mc.no], w.x, w.y, mc.w, mc.h);
 	                            } else {
 	                                work2.putPattern(tex_bg, bgData[mc.no], 
@@ -540,7 +543,8 @@ function gameScene(state){
 	                            //work2.putchr(Number(mc.no).toString(), w.x, w.y);
 	                        }
 	                    }
-	                    //壁の当たり判定有無確認用のデバックコード
+	                    
+						//壁の当たり判定有無確認用のデバックコード
                         /*
 	                    if (mc.c) {
 	                        var cl = {}
@@ -559,10 +563,10 @@ function gameScene(state){
 	                        }
 
 	                        work2.putFunc(cl);
-
+						forgroundBG.putFunc(cl);
 	                    }
-                        */
-	                    //    work2.putchr(Number(mc.type).toString(16), w.x, w.y);
+	                    work2.putchr((mc.type).toString(16), w.x, w.y);
+						*/
 	                } else {
 	                    mc.view = false;
 	                }
@@ -716,8 +720,8 @@ function gameScene(state){
             var wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
 
             if (state.Game.player.barrier) {
-                wst = "!!SHIELD!!";       
-            }
+                wst = "HP:" + w_hp +"/SHIELD";       
+			}
 	        work3.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
 	    }
 
@@ -791,17 +795,17 @@ function gameScene(state){
 	        cl.draw = function (device) {
 
 	            for (var i = 0, loopend = this.mcp.length; i < loopend; i++) {
-
-	                var mc = this.mcp[i];
-	                if ((mc.visible) && ((mc.type == 11) || (mc.type == 12))) {
-	                    device.beginPath();
-	                    device.strokeStyle = (mc.type == 12) ? "orange" : "blue";
-	                    device.lineWidth = 1;
-	                    device.rect(dev.layout.map_x + mc.x / 20, dev.layout.map_y + mc.y / 20, 2, 2);
-	                    device.stroke();
-	                }
+                	var mc = this.mcp[i];
+					if (mc.lookf){
+	                	if ((mc.visible) && ((mc.type == 11) || (mc.type == 12))) {
+	                    	device.beginPath();
+	                    	device.strokeStyle = (mc.type == 12) ? "orange" : "blue";
+	                    	device.lineWidth = 1;
+	                    	device.rect(dev.layout.map_x + mc.x / 20, dev.layout.map_y + mc.y / 20, 2, 2);
+	                    	device.stroke();
+	                	}
+					}
 	            }
-
 	        }
 	        //work3.putFunc(cl);
 	        work3.putFunc(cl);

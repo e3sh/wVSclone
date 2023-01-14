@@ -6,6 +6,8 @@
 // 自機の動作に関するシナリオ
 function sce_player() {
 
+    const SHIELD_TIME = 300;
+
     // 自機の移動　====
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
@@ -48,13 +50,13 @@ function sce_player() {
 
         o.frame++;
 
-        if (o.frame <= 300) {
+        if (o.frame <= SHIELD_TIME) {
             o.hp = o.maxhp; //出現して5秒間は無敵(60fps)
             o.attack = 10;
             o.gameState.player.barrier = true;
             //    o.damageflag = false;
         }
-        if (o.frame == 301) {
+        if (o.frame == SHIELD_TIME) {
             //無敵時間終わったら元に戻す
             o.hp = o.before_hp;
             o.attack = 1;
@@ -250,7 +252,7 @@ function sce_player() {
 
                     if (w == 24) {
                         o.sound.effect(10);
-                        o.before_hp = o.hp;
+                        if (!o.gameState.player.barrier) o.before_hp = o.hp;
                         o.frame = 0;
                         o.item[24]--;
                         //    o.set_object_ex(20, o.x, o.y, 0, 44, "Shield");
@@ -258,7 +260,7 @@ function sce_player() {
 
                     if (w == 25) {
                         o.sound.effect(10);
-                        if (o.frame <= 180) {
+                        if (o.frame <= SHIELD_TIME) {
                             o.before_hp += 3;
                             o.maxhp++;
 
@@ -361,11 +363,14 @@ function sce_player() {
 
         //Damege表示
         if (o.damageflag) {
-            if (o.frame > 180) o.set_object_ex(20, o.x, o.y, 0, 42, "-" + o.damage.no);
+            if (o.frame > SHIELD_TIME) {
+                o.set_object_ex(20, o.x, o.y, 0, 42, "-" + o.damage.no);
+                o.gameState.player.hp = o.hp;
+            }
             o.set_object_ex(6, o.x, o.y, o.vector, "effect_hit");
             o.damage.count = 15;
 
-            o.gameState.player.hp = o.hp;
+            //o.gameState.player.hp = o.hp;
         }
 
         var wvec = this.vector;

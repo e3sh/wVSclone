@@ -695,6 +695,7 @@ function scenario() {
 
     sc_init["ememy_move_std2"] = w.init;
     sc_move["ememy_move_std2"] = w.move;
+    sc_draw["ememy_move_std2"] = w.draw;//add.2023/1/14
 
     //--------------------------------
     w = new sce_ememy_generator();

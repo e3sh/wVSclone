@@ -23,8 +23,8 @@ function ocl_scMove()
                     //    var wc = 22
                     //var wc = (this.chr == 14) ? 22 : 35; //ボスは鍵を出すとりあえず。その他はCoinなど
 
-                    if (this.chr == 14) {
-                        this.set_object_ex(22, this.x, this.y, Math.floor(Math.random() * 360), 36);
+                    if (this.chr == 14) { //BOSSからBOSS
+                        this.set_object_ex(22, this.x, this.y, Math.floor(Math.random() * 360), 36);//sce_boss_1();
 
                     } else {
                         for (var i = 0, loopend = Math.floor(Math.random() * 3) + 1; i < loopend; i++) {
@@ -42,7 +42,7 @@ function ocl_scMove()
                     //}
                     //ついでに宝箱を落としてみる。
                     if (itemf) this.set_object_ex(40, this.x, this.y, 0, "enemy_trbox");
-
+                    //(宝箱は敵扱いなのでドロップしたアイテムは出現した箱に即時回収)
                     this.add_score(this.score);
                     break;
                 case 4: //アイテム(敵がアイテムを取得する場合の事は考えていない。/<=拾うようにした）
@@ -53,7 +53,7 @@ function ocl_scMove()
                                 this.crash.pick.push(this.chr);
                             } else {
                                 //                    this.add_score(this.score);
-                                if ((this.chr != 21) && (this.chr != 22)) {
+                                if ((this.chr != 21) && (this.chr != 22)) {//1up or Key
                                     this.sound.effect(9); //cursor音
                                 }
                                 this.get_item(this.chr);

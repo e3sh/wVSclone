@@ -205,7 +205,7 @@ function sce_friend_straight() {
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
         o.vset(0);
-        o.get_target(98);
+        //o.get_target(98);
         o.startflag = true;
 
         o.x += o.Cos(o.vector) * 35;
@@ -219,13 +219,18 @@ function sce_friend_straight() {
     this.move = function (scrn, o) {
 
         var f = 0;
-
+        /*
         if (o.startflag) {
             o.get_target(98);
             o.startflag = false;
             return 0;
         }
-
+        */
+        if (!Boolean(o.parent)) {
+            o.change_sce(7);
+            return 1;
+        }
+        /*
         if (o.target.type != 98) {//ターゲットが自機じゃなくなった場合
             if (o.startflag) {
                 o.get_target(98);
@@ -234,7 +239,7 @@ function sce_friend_straight() {
                 o.change_sce(7);
             }
         }
-
+        */
         if (o.damageflag) {
             o.set_object_ex(6, o.x + o.Cos(o.vector) * 40, o.y + o.Sin(o.vector) * 40, o.vector, "effect_hit");
 
@@ -243,15 +248,15 @@ function sce_friend_straight() {
 
         o.shotcount++;
         if (o.shotcount > 10) {
-            o.vector = (o.target.vector + 315) % 360;
+            o.vector = (o.parent.vector + 315) % 360;
             o.shotcount = 0;
             o.status = 0;
         }
 
         var r = Math.abs(o.shotcount - 5);
 
-        o.x = o.target.x + o.Cos(o.vector) * (50 - r) ;
-        o.y = o.target.y + o.Sin(o.vector) * (50 - r) ;
+        o.x = o.parent.x + o.Cos(o.vector) * (50 - r) ;
+        o.y = o.parent.y + o.Sin(o.vector) * (50 - r) ;
 
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 
@@ -264,7 +269,7 @@ function sce_friend_boom() {
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
         o.vset(4);
-        o.get_target(98);
+        o.get_target(98);//消したらバグる。
         o.startflag = true;
 
         o.x += o.Cos(o.vector) * 35;
@@ -282,13 +287,18 @@ function sce_friend_boom() {
         o.vector = o.bup_vector;
 
         var f = 0;
-
+        /*
         if (o.startflag) {
-            o.get_target(98);
+            //o.get_target(98);
             o.startflag = false;
             return 0;
         }
-
+        */
+        if (!Boolean(o.parent)) {
+            o.change_sce(7);
+            return 1;
+        }
+        /*
         if (o.target.type != 98) {//ターゲットが自機じゃなくなった場合
             if (o.startflag) {
                 o.get_target(98);
@@ -297,25 +307,26 @@ function sce_friend_boom() {
                 o.change_sce(7);
             }
         }
-
+        */
         if (o.damageflag) {
             o.set_object_ex(6, o.x + o.Cos(o.vector) * 40, o.y + o.Sin(o.vector) * 40, o.vector, "effect_hit");
 
             o.damageflag = false;
-
+            o.status = 2;
             // f = 1; //敵にダメージで消滅
         }
 
         o.shotcount++;
         if (o.shotcount > 30) {
             //o.target_rotate_r(45);
-            o.vector = o.target_v(o.target.x, o.target.y);
+            o.vector = o.target_v(o.parent.x, o.parent.y);
+
         }
         o.vset(4);
 
         o.bup_vector = o.vector;
 
-        if ((o.target_d(o.target.x, o.target.y) < 24) || (o.shotcount > 180)) {
+        if ((o.target_d(o.parent.x, o.parent.y) < 24) || (o.shotcount > 180)) {
             o.status = 0;
         }
 
