@@ -16,26 +16,30 @@ div {
 
 div#manual_1 
 {
-	width : 639px;
-	height :256px;
-	top :769px ;
-	left:0px ;
+	width : 1020px;
+	height :188px;
+	top :0x ;
+	left:1px ;
+	z-index: 2;
+	color : #FFFFFF ;
 }
 	
 div#manual_2 
 {
-	width : 639px;
-	height :256px;
-	top :769px ;
-	left:640px ;
+	width : 320px;
+	height :280px;
+	top :196px ;
+	left:700px ;
+	z-index: 2;
+	color : #FFFFFF ;
 }
 
-div#side_menu 
+div#undermenu 
 {
-	width : 256px;
-	height :766px;
-	top :0px ;
-	left:1024px ;
+	width : 1020px;
+	height :72px;
+	top :768px ;
+	left:0px ;
 }
 
 div#console 

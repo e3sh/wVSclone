@@ -154,7 +154,7 @@ function sceneConfig(state) {
         }
     }
 
-        function sel_number() {
+    function sel_number() {
 
             var res;
             var bl = [];
@@ -240,7 +240,7 @@ function sceneConfig(state) {
 
                 return res;
             }
-        }
+    }
 
     var menu = []
     var mttl = ["LampUse.", "MapUse.", "ItemReset.", "ShotFree.", "SoundTest.", "StartStage."];
@@ -271,8 +271,6 @@ function sceneConfig(state) {
     m = new btn();
     m.setup("Save.", 100, 360, 120, 16); 
     m.msg = "Save.";
-//    m.config = this.config;
-//    m.result = this.result;
     m.func = function () {
         save_on = true;
         keylock = true;
@@ -295,13 +293,9 @@ function sceneConfig(state) {
     m.msg = "Exit.";
     m.jp = 2; //Return Scene
     m.func = function () {
-        //text.clear();
-        //text.reset();
         return this.jp;
     };
     menu.push(m);
-
-    //
 
     var cur_cnt;
 
@@ -309,49 +303,7 @@ function sceneConfig(state) {
 
 
     //処理部
-/*
-    this.config_load = function () {
-
-        if (Boolean(localStorage)) {
-
-            var t = ["fullpower", "sideshot", "itemreset", "option", "dummy", "startstage"];
-
-            var f = false;
-
-            for (var i = 0; i <= 3; i++) {
-                if (Boolean(localStorage.getItem(t[i]))) {
-                    f = true;
-                    w_config[i] = (localStorage.getItem(t[i]) == "on") ? true : false;
-                    this.config[t[i]] = w_config[i];
-                }
-            }
-
-            if (Boolean(localStorage.getItem(t[5]))) {
-                f = true;
-                w_number[5] = parseInt(localStorage.getItem(t[5]));
-                this.config[t[5]] = w_number[5];
-
-//                wm.title = mttl[5] + w_number[5];
-            }
-
-//            alert(f ? "load" : "nondata");
-        } else {
- //           alert("non localstorage");
-        }
-    }
-*/
     function scene_init() {
-    /*
-        this.config.fullpower = false;
-        this.config.sideshot = false;
-        this.config.itemreset = true;
-        this.config.option = false;
-        this.config.startstage = 1;
-
-        this.config.cold = true;
-        this.config.debug = false;
-//        this.config.debug = true;
-    */
         state.Config.reset();
         state.Config.load();
         //===================
@@ -381,6 +333,8 @@ function sceneConfig(state) {
         wipecnt = 0;
         cur_cnt = 0;
 
+        work2.setBackgroundcolor("darkblue");
+        /*
         work2.clear("darkblue");
 
         cl = {};
@@ -404,9 +358,7 @@ function sceneConfig(state) {
         }
         work2.putFunc(cl);
         work2.draw();
-
-        //work2.reset();
-
+        */
         for (i in w_number) {
             if (Boolean(w_number[i])) {
                 before_wn[i] = w_number[i];
@@ -516,7 +468,10 @@ function sceneConfig(state) {
                     menu[i].click = true;
 
                     var n = menu[i].func();
-                    if (n != 0) return n;
+                    if (n != 0) {
+                        work2.setBackgroundcolor("black");
+                        return n;
+                    }
                 }
             }
         } else {
@@ -772,6 +727,28 @@ function sceneConfig(state) {
     }
 
     function scene_draw() {
+
+        cl = {};
+        cl.w = work.cw;
+        cl.h = work.ch;
+        cl.draw = function (device) {
+            var max = this.h;
+            if (max < this.w) max = this.w;
+
+            device.beginPath();
+
+            for (var i = 0; i < max; i += 16) {
+                device.moveTo(i, 0);
+                device.lineTo(i, this.h);
+                device.moveTo(0, i);
+                device.lineTo(this.w, i);
+            }
+            device.strokeStyle = "lightgray";
+            device.lineWidth = "1";
+            device.stroke();
+        }
+        work2.putFunc(cl);
+        work2.draw();
 
         for (var s in wtxt) {
             work.putchr(wtxt[s], 0, 100 + 16 * s);

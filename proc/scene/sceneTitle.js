@@ -60,8 +60,9 @@ function sceneTitle(state) {
 
     function scene_reset() {
 
-        dev.graphics[3].clear();
-
+        //dev.graphics[3].clear();
+        document.getElementById("manual_1").style.visibility =  'visible';
+        document.getElementById("manual_2").style.visibility =  'visible';
 
         for (var i in menu) {
             menu[i].sel=false;
@@ -71,8 +72,8 @@ function sceneTitle(state) {
         wipecnt = 0;
         cur_cnt = 0;
 
-        work2.clear("black");
-        ForgroundBG.clear();
+        //work2.clear("black");
+        //ForgroundBG.clear();
 
         if (state.Game.load() == 0) {
             menu[1].title = "Continue";
@@ -142,13 +143,18 @@ function sceneTitle(state) {
         }
 
         if ((zkey)&&(!keylock)) {
+
             for (var i in menu) {
 
                 if (menu[i].sel) {
                     var n = menu[i].func();
                     //dev.sound.change(0);
                     //dev.sound.play(0);
-                    if (n != 0) return n;
+                    if (n != 0) {
+                        document.getElementById("manual_1").style.visibility =  'hidden';
+                        document.getElementById("manual_2").style.visibility =  'hidden';
+                        return n;
+                    }
                 }
             }
         }
@@ -230,7 +236,7 @@ function sceneTitle(state) {
         work2.putchr("Enemy", 320, 240 - 8);
         work2.putchr("Ball/Item", 320, 272 - 8);
         work2.putchr("Key", 320, 304 - 8);
-        work2.putchr("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
+        work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
 
         for (var s in wtxt) {
             work.putchr(wtxt[s], 0, 132 + 16 * s);        
