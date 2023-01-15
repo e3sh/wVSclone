@@ -244,15 +244,22 @@ function sce_ememy_move_std2() {
 
     this.init = function (scrn, o) {
         o.vset(2);
-        o.wmapc = false;
-        o.colcnt = 0;
-        o.lockon_flag = false;
-        o.growf = true;
+        o.wmapc = false; //衝突連続状態
+        o.colcnt = 0;  //衝突状態カウント
+        o.lockon_flag = false; //追跡状態
+        o.growf = true; //出現した状態　20flameでfalse
 
         o.get_target(98);
 
        // o.pick_enable = false;
+       o.autotrig = 10;
+       o.autoshot = 0;
+       o.weapongetf = false;
+       o.weapontype = 0;
 
+       o.pickgetf = false; //何か持っているか?
+       o.pickviewitem = 0;
+       
        o.custom_draw_enable = true;
     }
 
@@ -266,7 +273,8 @@ function sce_ememy_move_std2() {
         }
 
         if (Boolean(o.target)) {
-            if (o.target_d(o.target.x, o.target.y) < 200) { o.lockon_flag = true; }
+        //    if (o.target_d(o.target.x, o.target.y) < 300) { o.lockon_flag = true; }  
+            o.lockon_flag = (o.target_d(o.target.x, o.target.y) < 180)? true :false ; 
         }
 
         if ((o.wmapc) && (o.lockon_flag)) {
@@ -290,7 +298,7 @@ function sce_ememy_move_std2() {
             o.colcnt = 0;
         }
 
-        if (o.vector > 300) { o.mp = 5; } else { o.mp = 4; }
+        if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
 
         if (o.mapCollision) {
             o.colcnt++;
@@ -298,14 +306,59 @@ function sce_ememy_move_std2() {
             //o.wmapc = true;
         }
 
-        if (o.frame > 16) {
+        o.autotrig--;
+        if (o.autotrig <= 0) {
+            o.autoshot = 0;
+            o.autotrig = 5;
+        }
 
-            if (o.lockon_flag) o.target_rotate_r(45);
+        if (o.lockon_flag) {
+            if ((o.autoshot == 0) && (o.weapongetf)) {
+                o.autoshot = 1;
+                o.autotrig = 25;
+                switch (o.weapontype) {
+                case 1:
+                    o.set_object(41); //sword
+                    break;
+                case 2:
+                    o.set_object(42); //axe
+                    break;
+                case 3:
+                    o.set_object(43); //boom
+                    break;
+                case 4:
+                    o.set_object(44); //spare
+                    break;
+                default:
+                    o.set_object(45); //wand
+                    break;
+                }
+            }
+        }
+        
+        if (o.frame > 20) {
+
+            if (o.lockon_flag) {
+                o.target_rotate_r(45);
+            }
 
             o.vset(2);
 
             o.frame = 0;
             o.get_target(98);
+            
+            //inventry check
+            var f = sce_enemy_inv_check(o.pick);
+            if (f != 0 ){
+                o.pickgetf = true;
+                o.pickviewitem = f;
+
+                var wt = sce_enemy_weapon_check(f);
+                if (wt != 0){
+                    o.weapongetf = true;
+                    o.weapontype = wt;
+                }
+            }                
 
             o.growf = false;
         }
@@ -314,6 +367,31 @@ function sce_ememy_move_std2() {
 
         return o.sc_move();
     }
+}
+
+function sce_enemy_weapon_check( item ){//アイテムリストが武器かどうかをチェック
+
+    var ITEMLIST = [];
+
+    ITEMLIST[1] = 16; //SWORD
+    ITEMLIST[2] = 17; //AXE
+    ITEMLIST[3] = 19; //BOOM
+    ITEMLIST[4] = 18; //SPEAR
+    ITEMLIST[5] = 15; //Wand
+
+    //    16, 18, 19, 17, 15, //WEAPONS
+    //　item: 15 WAND, 16 SWORD, 17 AXE, 18 SPEAR, 19 BOOM 
+    //  rc 0 NONE, 1 SWORD, 2 SPARE, 3 BOOM, 4 AXE, 5 WAND, 99 Dummy
+
+    var rc = 0; //nonitem
+    
+    for (var i of ITEMLIST){ //武器リストと突き合わせ
+        if (i == item ){
+            rc = ITEMLIST.indexOf(i);
+            return rc;
+        }
+    }
+    return rc;
 }
 
 function sce_ememy_generator() {
@@ -336,10 +414,13 @@ function sce_ememy_generator() {
         o.frame++;
 
         if (Boolean(o.target)) {
-            if (o.target_d(o.target.x, o.target.y) < 200) { o.lockon_flag = true; }
+            if (o.target_d(o.target.x, o.target.y) < 300) { o.lockon_flag = true; }
         }
 
         if (o.frame > 180) {
+            if (o.gencnt >= 5){ //5匹産んだら移動開始
+                o.change_sce("ememy_move_std2");
+            }
 
             if ((o.lockon_flag) && (o.gencnt < 5)) {
                 var v = o.target_v();
@@ -503,6 +584,10 @@ function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリスト
 function sce_enemy_inv_gr(scrn, o){
     var spname = [];
 
+    if (!o.pickgetf) return;　//アイテム持っていない場合、処理せず。
+    if (o.weapongetf && o.lockon_flag) return; //武器使用時表示しない。
+  
+
     spname[15] = "Wand";
     spname[16] = "Knife";
     spname[17] = "Axe";
@@ -524,16 +609,16 @@ function sce_enemy_inv_gr(scrn, o){
         w.x = w.x + o.Cos(o.vector) * 16;
         w.y = w.y + o.Sin(o.vector) * 16;
 
-        var f = sce_enemy_inv_check(o.pick);
-        if (f != 0 ){
+        var f = o.pickviewitem; //sce_enemy_inv_check(o.pick);
+        //if (f != 0 ){
             // o.vector = (o.startv + (o.rotatecount * 12))%360;
             //w.x = w.x + o.Cos(o.vector) * 16;
             //w.y = w.y + o.Sin(o.vector) * 16;
             scrn.put(spname[f], w.x, w.y); 
-            //scrn.putchr8(spname[f], w.x, w.y);
-        } else {
+            //scrn.putchr8(o.weapontype, w.x+10, w.y+10);
+        //} else {
             //scrn.putchr8("@", w.x, w.y);
-        }
+        //}
         //scrn.put(ptn, w.x, w.y, wvh, wr, o.alpha, o.display_size);
     }
 }

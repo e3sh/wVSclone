@@ -269,7 +269,7 @@ function sce_friend_boom() {
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
         o.vset(4);
-        o.get_target(98);//消したらバグる。
+        o.get_target(o.parent.type);//消したらバグる。
         o.startflag = true;
 
         o.x += o.Cos(o.vector) * 35;
@@ -313,7 +313,7 @@ function sce_friend_boom() {
 
             o.damageflag = false;
             o.status = 2;
-            // f = 1; //敵にダメージで消滅
+            //f = 1; //敵にダメージで消滅
         }
 
         o.shotcount++;

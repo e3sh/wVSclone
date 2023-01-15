@@ -46,6 +46,7 @@ div#console
 	left:0px ;
 	z-index: 2;
 	color : #FFFFFF ;
+	visibility : hidden;
 }
 
 canvas

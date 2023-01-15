@@ -12,6 +12,8 @@ class taskMainLoop extends GameTask {
 		//asset(contents) load
         this.state = new stateControl(g);
 		
+        this.elm_divcnsl = document.getElementById("console");
+
         this.elm_dbg = document.getElementById("debug_cb");
         this.elm_lamp = document.getElementById("lamp_cb");
         this.elm_map = document.getElementById("mapview_cb");
@@ -30,6 +32,7 @@ class taskMainLoop extends GameTask {
     step = function (g) {
         if (this.elm_dbg.checked != this.state.Config.debug) {
             this.state.Config.debug = this.elm_dbg.checked; 
+            this.elm_divcnsl.style.visibility =  (this.elm_dbg.checked) ? 'visible' : 'hidden';
         };
         if (this.elm_lamp.checked != this.state.Config.lamp_use){ 
             this.state.Config.lamp_use = this.elm_lamp.checked; 

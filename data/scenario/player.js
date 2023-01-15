@@ -331,13 +331,13 @@ function sce_player() {
                     o.set_object(10); //sword
                     break;
                 case 2:
-                    o.set_object(38); //spare
+                    o.set_object(38); //axe
                     break;
                 case 3:
                     o.set_object(37); //boom
                     break;
                 case 4:
-                    o.set_object(36); //axe
+                    o.set_object(36); //spare
                     break;
                 default:
 //                    o.set_object(39); //wand

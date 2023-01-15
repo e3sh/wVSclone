@@ -18,7 +18,6 @@ var w = [
     "controller/DisplayControl.js",
     "controller/soundControl.js",
     "controller/offScreen.js",
-    //"controller/offScreenTypeB.js",
     "controller/spriteControl.js",
     "controller/spriteFontControl.js",
 
@@ -28,14 +27,10 @@ var w = [
 //画面表示や入力関係処理部
  "dev/deviceControl.js",
  "dev/screen.js",
- //"dev/inputControl.js",
- //"dev/inputKeyboard.js",
  "dev/soundControl.js",
- //"dev/images.js",
- //"dev/vartualkeyControl.js",
-//データ部(キャラクタやスプライトパターン制御用の設定）
  "dev/geometoryTr.js",
  "dev/Layout.js",
+//データ部(キャラクタやスプライトパターン制御用の設定）
  "data/spdata.js",
  "data/character.js",
  "data/motionPtn.js",
@@ -74,7 +69,6 @@ var w = [
  "proc/state/stateSystem.js", 
  "proc/state/stateGame.js",
  "proc/control/stateControl.js",
- //"proc/bench.js",
  "proc/CL4TreeM.js",
 //tasks
  "task/MainLoopTask.js",
@@ -82,7 +76,6 @@ var w = [
 
  //メイン
  "controller/main.js"
-// "proc/main_r.js" //non WGCS version
 ];
 
 for (var i in w) {
