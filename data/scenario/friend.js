@@ -213,7 +213,7 @@ function sce_friend_straight() {
 
         o.shotcount = 0;
 
-        o.attack = 1;
+        //o.attack = 1;
     }
 
     this.move = function (scrn, o) {
@@ -279,7 +279,7 @@ function sce_friend_boom() {
 
         o.bup_vector = o.vector;
 
-        o.attack = 1;
+        //o.attack = 1;
     }
 
     this.move = function (scrn, o) {
@@ -354,7 +354,7 @@ function sce_friend_rotate_full() {
 
         o.rotatecount = 0;
 
-        o.attack = 2;
+        //o.attack = 2;
 
         o.startv = o.vector;
         o.leftrotate = (o.vector > 179)? true : false;
@@ -414,7 +414,7 @@ function sce_friend_rotate() {
 
         o.rotatecount = 0;
 
-        o.attack = 1;
+        //o.attack = 1;
     }
 
     this.move = function (scrn, o) {
