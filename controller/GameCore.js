@@ -93,6 +93,8 @@ function GameCore( sysParam ) {
 	    if (runStatus_) {
 			tc.start();
 
+			task_.step();
+
 			//document.getElementById("manual_1").innerHTML = "";
 			for (var i = 0; i < sysp_cnt; i++){
 				if (screen_[i].getInterval() - sintcnt[i] == 1){
@@ -102,8 +104,7 @@ function GameCore( sysParam ) {
 	        		//これで表示Bufferがクリアされ、先頭に全画面消去が登録される。
 				}
 			}
-			task_.step();
-
+			//task_.step();
 	        task_.draw();
 
 			for (var i = 0; i < sysp_cnt; i++){

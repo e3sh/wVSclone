@@ -4,12 +4,12 @@ function sceneResult(state) {
     
     var dev = state.System.dev;
     //宣言部
-    var work = dev.graphics[1];//
-    var work2 = dev.graphics[0];
+    var work = dev.graphics[3];//メニュー(最上面)
+    var work2 = dev.graphics[2];//メイン描画面(FG)
 	//var text = dev.text;
-    var text = dev.graphics[3];
+    //var text = dev.graphics[3];//文字表示面
 
-    var inp = dev.mouse_state;
+    //var inp = dev.mouse_state;
     var keys = dev.key_state;
 
     this.init = scene_init;
@@ -38,8 +38,8 @@ function sceneResult(state) {
     m.h = 16;
     m.sel = false;
     m.func = function () {
-	text.clear();
-	 return 11; 
+	//text.clear();
+	 return 11; //GameScene:1 + ContinueFlag:+10
 };
 
     menu.push(m);
@@ -88,8 +88,14 @@ function sceneResult(state) {
                 device.stroke();
             }
         }
+        //ゲーム画面の描画を停止(Flip/Drawを自動で実行するのを停止)
+        dev.graphics[0].setInterval(0);//BG
+        dev.graphics[1].setInterval(0);//SPRITE
+        work2.setInterval(0);//<-dev.g2　FG
+
         work2.putFunc(o);
-/*
+        work2.draw();
+        /*
         var wsc = state.Result.score;
         var wd = [];
         var wt = "";
@@ -188,20 +194,22 @@ function sceneResult(state) {
 
 //        if ((mstate.button == 0) && (!keylock)) {
         counter ++;
-//        if (counter > 125) {
-          if (!dev.sound.running()){
-//        if ((zkey)&&(!keylock)) {
-            for (var i in menu) {
+        if (counter > 30) {
+            if (!dev.sound.running()){
+                if ((zkey)&&(!keylock)) {
+                    for (var i in menu) {
 
-                if (menu[i].sel) {
-                    var n = menu[i].func();
-                    if (n != 0) {
- //                       wipef = true;
- //                       ret_code = n;
-                        return n;
+                        if (menu[i].sel) {
+                            var n = menu[i].func();
+                            if (n != 0) {
+                                wipef = true;
+                                ret_code = n;
+                                //return n;
+                            }
+                        }
+                    //return 2;
                     }
                 }
-                //            return 2;
             }
         }
 
@@ -213,8 +221,8 @@ function sceneResult(state) {
 
             o.cw = work2.cw;
             o.ch = work2.ch;
-            o.y1 = work2.ch/2 - wipecnt
-            o.y2 = work2.ch / 2 + wipecnt
+            o.y1 = wipecnt + 1;
+            o.y2 = work2.ch - wipecnt - 2;
 
             o.draw = function (device) {
 
@@ -234,12 +242,13 @@ function sceneResult(state) {
             }
             work2.putFunc(o);
 
-            //work2.draw();
-            //work2.reset();
+            work2.draw();
+            work2.reset();
 
             wipecnt += 8;
 
-            if (work2.ch / 2 - wipecnt < 0) { return ret_code; }
+            //if (work2.ch / 2 - wipecnt < 0) { return ret_code; }
+            if (work2.ch - wipecnt < 0) { return ret_code; }
 
         }
 

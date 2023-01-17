@@ -5,13 +5,13 @@ function sceneConfig(state) {
     var dev = state.System.dev;
 
     //宣言部
-    var work = dev.graphics[1];
+    var work = dev.graphics[3];
     var work2 = dev.graphics[0];
 
     //var text = dev.text;
-    var text = dev.graphics[3]; 
+    var text = dev.graphics[2]; 
 
-    var inp = dev.mouse_state;
+    //var inp = dev.mouse_state;
     var keys = dev.key_state;
 
     this.init = scene_init;
@@ -136,11 +136,10 @@ function sceneConfig(state) {
                     keylock = true;
                     bl[2].click = false;
                 }
-
-                //text.clear();
-                //text.reset();
+                text.reset();    
+                text.clear();
                 text.print(tmes, tmsx, tmsy, "white");
-                //text.draw();
+                text.draw();
             }
 
             if (res) {
@@ -297,9 +296,9 @@ function sceneConfig(state) {
     };
     menu.push(m);
 
-    var cur_cnt;
+    //var cur_cnt;
 
-    var tsel = new Number(0.0);
+    //var tsel = new Number(0.0);
 
 
     //処理部
@@ -323,6 +322,9 @@ function sceneConfig(state) {
     }
 
     function scene_reset() {
+        dev.graphics[0].setInterval(0);//BG　WORK2
+		dev.graphics[1].setInterval(0);//SPRITE
+		dev.graphics[2].setInterval(0);//FG
 
         for (var i in menu) {
             menu[i].sel = false;
@@ -333,8 +335,9 @@ function sceneConfig(state) {
         wipecnt = 0;
         cur_cnt = 0;
 
+
         work2.setBackgroundcolor("darkblue");
-        /*
+        work2.reset();
         work2.clear("darkblue");
 
         cl = {};
@@ -358,7 +361,7 @@ function sceneConfig(state) {
         }
         work2.putFunc(cl);
         work2.draw();
-        */
+        
         for (i in w_number) {
             if (Boolean(w_number[i])) {
                 before_wn[i] = w_number[i];
@@ -371,7 +374,7 @@ function sceneConfig(state) {
                 
                 confmenu[i].set(w_config[i]);
             } else {
-                var wcm = new sel_number();
+                //var wcm = new sel_number();
                 confmenu[i].set(w_number[i]);
             }
         }
@@ -390,11 +393,11 @@ function sceneConfig(state) {
 
         wtxt = [];
 
-        var mstate = inp.check_last();
+        //var mstate = inp.check_last();
         var kstate = keys.check();
 
-        var x = mstate.x;
-        var y = mstate.y;
+        //var x = mstate.x;
+        //var y = mstate.y;
 
         var zkey = false;
         var lkey = false;
@@ -625,8 +628,8 @@ function sceneConfig(state) {
             w_number[5] = 1;
             */
 
-            //text.clear();
-            //text.reset();
+            text.reset();
+            text.clear();
             text.print("設定初期化しました。", 100, 320, "white");
 
             if (Boolean(localStorage)) {
@@ -636,8 +639,7 @@ function sceneConfig(state) {
                 text.print("ローカルストレージが使用できない?"
                         , 100, 340, "white");
             }
-            //text.draw();
-
+            text.draw();
 
             for (var i = 0; i < mtyp.length; i++) {
 
@@ -727,28 +729,6 @@ function sceneConfig(state) {
     }
 
     function scene_draw() {
-
-        cl = {};
-        cl.w = work.cw;
-        cl.h = work.ch;
-        cl.draw = function (device) {
-            var max = this.h;
-            if (max < this.w) max = this.w;
-
-            device.beginPath();
-
-            for (var i = 0; i < max; i += 16) {
-                device.moveTo(i, 0);
-                device.lineTo(i, this.h);
-                device.moveTo(0, i);
-                device.lineTo(this.w, i);
-            }
-            device.strokeStyle = "lightgray";
-            device.lineWidth = "1";
-            device.stroke();
-        }
-        work2.putFunc(cl);
-        work2.draw();
 
         for (var s in wtxt) {
             work.putchr(wtxt[s], 0, 100 + 16 * s);

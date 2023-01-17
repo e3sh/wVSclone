@@ -532,7 +532,7 @@
         if (f == 0) {
             restart_count++;
 
-            if (restart_count > 90) {
+            if (restart_count > 180) {//3秒後
                 before_int = this.interrapt;
                 before_SIG = this.SIGNAL;
                 this.interrapt = true;
