@@ -187,8 +187,17 @@
                             o.colitem.obj = o;
                         }
 
-                        cdt.register(o.x - o.hit_x / 2, o.y - o.hit_y / 2,
-                            o.x + o.hit_x / 2, o.y + o.hit_y / 2,
+                        cdt.register(
+                            /*
+                            o.x + o.center_x - o.hit_x/2, 
+                            o.y + o.center_y - o.hit_y/2,
+                            o.x + o.center_x + o.hit_x/2, 
+                            o.y + o.center_y + o.hit_y/2,
+                            */
+                            o.x - o.hit_x/2, 
+                            o.y - o.hit_y/2,
+                            o.x + o.hit_x/2, 
+                            o.y + o.hit_y/2,
 		                    o.colitem);
 
                         o.crash = null;
@@ -482,7 +491,7 @@
                 var wo_crst = 0;
                 var wo_vect = 0;
 
-                if ((o.type == 1) || (o.type == 3)) {
+                if ((o.type == 1) || (o.type == 3)) { 
                     //弾の場合はそのまま消滅
                 } else {
                     var bf = true;
@@ -787,13 +796,36 @@
             if (o.visible) {
                 
                 if (o.normal_draw_enable) {
-                    if (dev.gs.in_view(o.x, o.y)) o.draw(wscreen, o);
+                    if (dev.gs.in_view(o.x, o.y)){
+                        o.draw(wscreen, o);
+    
+                        if (state.Config.debug) {
+                            var w = o.gt.worldtoView(o.x, o.y);
+                            var cl = {}
+                            //cl.x = w.x + o.center_x - o.hit_x/2 ;
+                            //cl.y = w.y + o.center_y - o.hit_y/2 ;
+                            cl.x = w.x - o.hit_x/2 ;
+                            cl.y = w.y - o.hit_y/2 ;
+                            cl.w = o.hit_x;
+                            cl.h = o.hit_y;
+                            cl.draw = function(device){
+                                device.beginPath();
+                                device.strokeStyle = "green";
+                                device.lineWidth = 2;
+                                device.rect(this.x, this.y, this.w, this.h );
+                                device.stroke();
+                            }
+                            if (o.type != 5) wscreen.putFunc(cl);
+                            wscreen.putchr8(o.hp, w.x, w.y);
+                        } 
+                    }
                 }
 
                 if (o.custom_draw_enable) {
                     if (Boolean(o.custom_draw)) {
                         o.custom_draw(wscreen, o);
                     }
+
                 }
             }
         }
@@ -804,7 +836,7 @@
             wscreen.putchr8("col:" + debug_colnum/2, 300, 24);
             wscreen.putchr8("f:" + debug_cflag, 300, 32);
 
-            wscreen.putchr8("scrst"+ wscreen.count(),300,40);
+            //wscreen.putchr8("scrst"+ wscreen.count(),300,40);
 
         }
     }

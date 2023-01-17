@@ -505,7 +505,7 @@ function gameScene(state){
 	                    var w = dev.gs.worldtoView(mc.x, mc.y);
 
 	                    if (mc.visible) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
-							mc.lookf = true;　//画面内に入ったことがあるたフラグ
+							mc.lookf = true;　//画面内に入ったことがあるフラグ
 	                        var wfg = false;
 							if (mc.type == 11) wfg = true;
 	                        //if (Boolean(tex_bg[mc.no])) {
@@ -549,28 +549,28 @@ function gameScene(state){
 	                    }
 	                    
 						//壁の当たり判定有無確認用のデバックコード
-                        /*
-	                    if (mc.c) {
-	                        var cl = {}
-	                        cl.x = w.x;
-	                        cl.y = w.y;
-	                        cl.w = mc.w;
-	                        cl.h = mc.h;
+                        if (state.Config.debug){
+	                    	if (mc.c) {
+	                        	var cl = {}
+	                        	cl.x = w.x;
+	                        	cl.y = w.y;
+	                        	cl.w = mc.w;
+	                        	cl.h = mc.h;
 
-	                        cl.draw = function (device) {
-	                            device.beginPath();
+	                        	cl.draw = function (device) {
+	                            	device.beginPath();
 
-	                            device.strokeStyle = "green";
-	                            device.lineWidth = 1;
-	                            device.rect(this.x, this.y, this.w, this.h);
-	                            device.stroke();
-	                        }
+	                            	device.strokeStyle = "green";
+	                            	device.lineWidth = 3;
+	                            	device.rect(this.x, this.y, this.w, this.h);
+	                            	device.stroke();
+	                        	}
 
-	                        work2.putFunc(cl);
-						forgroundBG.putFunc(cl);
-	                    }
-	                    work2.putchr((mc.type).toString(16), w.x, w.y);
-						*/
+	                        	work2.putFunc(cl);
+								forgroundBG.putFunc(cl);
+	                    	}
+	                    	work2.putchr((mc.type).toString(16), w.x, w.y);
+						}
 	                } else {
 	                    mc.view = false;
 	                }
