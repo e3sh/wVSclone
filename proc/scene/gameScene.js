@@ -110,7 +110,11 @@ function gameScene(state){
 	}
 
 	function game_reset(contflg) {
-
+	    //ゲーム画面の描画を開始(Flip/Drawを自動で実行　各フレームで)
+		dev.graphics[0].setInterval(1);//BG
+		dev.graphics[1].setInterval(1);//SPRITE
+		dev.graphics[2].setInterval(1);//FG
+		
 	    work3.clear();
 
 	    if (!Boolean(contflg)) { contflg = false; }
@@ -266,7 +270,7 @@ function gameScene(state){
 	                return 5; //result
 	        }
 
-	        if (obCtrl.SIGNAL == 4649) {//リスターとシグナルが来た(自機が死んで1.5sec位あと）
+	        if (obCtrl.SIGNAL == 4649) {//リスターとシグナルが来た(自機が死んで3.0sec位あと）
 	            dead_cnt++;
 	            if (dead_cnt < 3) {
 	                if (state.Config.itemreset) {

@@ -4,8 +4,8 @@ function sceneGover(state) {
     var dev = state.System.dev;
 
     //宣言部
-    var work = dev.graphics[1];
-    var work2 = dev.graphics[0];
+    var work = dev.graphics[1]; //文字表示面で使用
+    var work2 = dev.graphics[0]; //メイン画面
 
     var inp = dev.mouse_state;
     var keys = dev.key_state;
@@ -29,8 +29,9 @@ function sceneGover(state) {
     var menusel;
 
     var menu = [];
-/*    
+    
     var m = {};
+    /*
     m.title = "Continue.";
     m.x = 320-50;
     m.y = 180;
@@ -40,7 +41,8 @@ function sceneGover(state) {
     m.func = function () { return 11; };
 
     menu.push(m);
-*/
+    */
+   
     m = {};
     m.title = "End.";
     m.x = 320-50;
@@ -96,7 +98,9 @@ function sceneGover(state) {
                 device.stroke(); 
             }
         }
+        work2.setInterval(0);
         work2.putFunc(o);
+        work2.draw();
 /*
         var wsc = state.Result.score;
         var wd = [];

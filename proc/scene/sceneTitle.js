@@ -4,11 +4,11 @@ function sceneTitle(state) {
 
     var dev = state.System.dev;
     //宣言部
-    var work = dev.graphics[1];
+    var work = dev.graphics[3];
     var work2 = dev.graphics[0];
-    var ForgroundBG = dev.graphics[2];
+    //var ForgroundBG = dev.graphics[2];
 
-    var inp = dev.mouse_state;
+    //var inp = dev.mouse_state;
     var keys = dev.key_state;
 
     this.init = scene_init;
@@ -23,6 +23,8 @@ function sceneTitle(state) {
 
     var wipef;
     var wipecnt;
+
+    var ret_code = 0;
 
     var menusel = 0;
 
@@ -59,6 +61,16 @@ function sceneTitle(state) {
     }
 
     function scene_reset() {
+        dev.graphics[0].setInterval(0);//BG　WORK2
+		dev.graphics[1].setInterval(0);//SPRITE
+		dev.graphics[2].setInterval(0);//FG
+		//dev.graphics[3].setInterval(6);//TEXTTEXT　DeviceControlで[0]のBackgroundColor”Black”と設定している。
+        //今後は各Sceneで設定したほうが良い。
+        //TitleにはすべてのSceneから戻ってくる可能性があるので画面状態が分からない。手動にした画面を一度クリア。
+        dev.graphics[0].reset(); dev.graphics[0].clear(); dev.graphics[0].draw();//BG　WORK2
+		dev.graphics[1].reset(); dev.graphics[1].clear(); dev.graphics[1].draw();//SPRITE
+		dev.graphics[2].reset(); dev.graphics[2].clear(); dev.graphics[2].draw();//FG
+        //↑drawまでしないと、Canvasには反映しません。
 
         //dev.graphics[3].clear();
         document.getElementById("manual_1").style.visibility =  'visible';
@@ -71,9 +83,44 @@ function sceneTitle(state) {
         wipef = false;
         wipecnt = 0;
         cur_cnt = 0;
+        ret_code = 0;
 
-        //work2.clear("black");
+        work2.reset();
+        work2.clear("black");
         //ForgroundBG.clear();
+        wtxt = [];
+        wtxt.push("==WebDungeonActionG==");
+        wtxt.push("-----------------&");
+
+        if (state.Config.use_audio) {
+            //wtxt.push("audio on");
+        } else {
+            wtxt.push("audio off");
+        }
+        work2.put("Mayura1", 320 - 50 +8 , 208);
+        work2.put("Unyuu1", 320 - 50 +8, 240);
+
+        work2.put("Ball1", 320 - 100 + 0 -16, 272);
+        work2.put("BallB1", 320 - 100 + 16 - 16, 272);
+        work2.put("BallS1", 320 - 100 + 32 - 16, 272);
+        work2.put("BallL1", 320 - 100 + 48 - 16, 272);
+        work2.put("Lamp", 320 - 100 + 72 - 16, 272);
+        work2.put("Map", 320 - 100 + 96 - 16, 272);
+
+        //work2.put("TrBox", 320 - 50 + 0 - 8, 304);
+        work2.put("Key", 320 - 50 + 16 - 8, 304);
+
+        work2.putchr("Player", 320, 208 - 8);
+        work2.putchr("Enemy", 320, 240 - 8);
+        work2.putchr("Ball/Item", 320, 272 - 8);
+        work2.putchr("Key", 320, 304 - 8);
+        work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
+
+        for (var s in wtxt) {
+            work2.putchr(wtxt[s], 0, 132 + 16 * s);        
+        }
+
+        work2.draw();
 
         if (state.Game.load() == 0) {
             menu[1].title = "Continue";
@@ -82,9 +129,6 @@ function sceneTitle(state) {
             menu[1].title = "";
             menu[1].jp = 0;
         }
-        
-        //work2.draw();
-        //work2.reset();
 
         state.Game.cold = true;
 
@@ -98,6 +142,8 @@ function sceneTitle(state) {
     }
 
     function scene_step() {
+
+        work2.draw();
 
         wtxt = [];
 
@@ -153,7 +199,9 @@ function sceneTitle(state) {
                     if (n != 0) {
                         document.getElementById("manual_1").style.visibility =  'hidden';
                         document.getElementById("manual_2").style.visibility =  'hidden';
-                        return n;
+                        wipef = true;
+                        ret_code = n;
+                        //return n;
                     }
                 }
             }
@@ -163,7 +211,8 @@ function sceneTitle(state) {
         if ((!zkey) && (keywait == 0)) keylock = false;
 
         if (wipef) {
-
+            return ret_code;
+            /*
             var o = {};
 
             o.cw = work2.cw;
@@ -187,13 +236,13 @@ function sceneTitle(state) {
             }
             work2.putFunc(o);
 
-            //work2.draw();
-            //work2.reset();
+            work2.draw();
+            work2.reset();
 
             wipecnt += 4;
 
-            if (work2.ch / 2 - wipecnt < 0) { return 1; }
-
+            if (work2.ch / 2 - wipecnt < 0) { return ret_code; }
+            */
         }
 
         for (i in menu) {
@@ -204,43 +253,11 @@ function sceneTitle(state) {
             }
         }
 
-        wtxt.push("==WebDungeonActionG==");
-        wtxt.push("-----------------&");
-
-        if (state.Config.use_audio) {
-            //wtxt.push("audio on");
-        } else {
-            wtxt.push("audio off");
-        }
-
         return 0;
         //進行
     }
 
     function scene_draw() {
-
-        work2.put("Mayura1", 320 - 50 +8 , 208);
-        work2.put("Unyuu1", 320 - 50 +8, 240);
-
-        work2.put("Ball1", 320 - 100 + 0 -16, 272);
-        work2.put("BallB1", 320 - 100 + 16 - 16, 272);
-        work2.put("BallS1", 320 - 100 + 32 - 16, 272);
-        work2.put("BallL1", 320 - 100 + 48 - 16, 272);
-        work2.put("Lamp", 320 - 100 + 72 - 16, 272);
-        work2.put("Map", 320 - 100 + 96 - 16, 272);
-
-        //work2.put("TrBox", 320 - 50 + 0 - 8, 304);
-        work2.put("Key", 320 - 50 + 16 - 8, 304);
-
-        work2.putchr("Player", 320, 208 - 8);
-        work2.putchr("Enemy", 320, 240 - 8);
-        work2.putchr("Ball/Item", 320, 272 - 8);
-        work2.putchr("Key", 320, 304 - 8);
-        work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
-
-        for (var s in wtxt) {
-            work.putchr(wtxt[s], 0, 132 + 16 * s);        
-        }
 
         for (var i in menu) {
 
