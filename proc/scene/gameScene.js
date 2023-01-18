@@ -484,19 +484,22 @@ function gameScene(state){
     */
 	    //	   work2.putImageTransform(tex_bg, 0, scroll_y - (480 * (1 - scrollsw)), 1, 0, 0, -1);
 
-	    scenechange = true;
+	    //scenechange = true;
         
 	    if ((scroll_x != dev.gs.world_x) || (scroll_y != dev.gs.world_y)) {
 
-	        scenechange = false;
+	        //scenechange = false;
 
 	        scroll_x = dev.gs.world_x;
 	        scroll_y = dev.gs.world_y;
-	    }
+		}else{
+			//debug
+			//forgroundBG.putchr("scenechange", 100, 100);
+		}
 	    
         //scenechange = false;
-	    if (!scenechange) {
-
+		//if (!scenechange) {
+		if (true) {
 	            for (var i in mapChip) {
 	                var mc = mapChip[i];
 
@@ -507,25 +510,31 @@ function gameScene(state){
 	                    if (mc.visible) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
 							mc.lookf = true;　//画面内に入ったことがあるフラグ
 	                        var wfg = false;
-							if (mc.type == 11) wfg = true;
+							if (mc.type == 11) wfg = true; //Forground表示のパターン(壁)
 	                        //if (Boolean(tex_bg[mc.no])) {
 	                        if (Boolean(bgData[mc.no])) {
 	                            if (wfg) {
-									
-	                                forgroundBG.putPattern(
+									var shiftx = 0;
+									var shifty = -24;
+									shiftx = Math.trunc((w.x - dev.gs.viewwidth/2) /20);
+									shifty = Math.trunc((w.y - dev.gs.viewheight/2) /20);
+		
+									forgroundBG.putPattern(
+										tex_bg, bgData[mc.no], 
+										w.x + shiftx,
+										w.y + shifty,
+										mc.w,// + Math.abs(shiftx)+1, 
+										mc.h // + Math.abs(shifty)+1
+									);
+									//work2.putPattern(tex_bg, bgData[mc.no], w.x, w.y, mc.w, mc.h);
+								} else {
+									work2.putPattern(
 										tex_bg, bgData[mc.no], 
 										w.x, 
-										w.y - 24, 
-										mc.w, mc.h);
-										
-	                                //work2.putPattern(tex_bg, bgData[mc.no], w.x, w.y, mc.w, mc.h);
-	                            } else {
-	                                work2.putPattern(tex_bg, bgData[mc.no], 
-										w.x, 
 										w.y, 
-										mc.w, mc.h);
-	                            }
-
+										mc.w, mc.h
+									);
+								}
 	                            //work2.putchr(Number(mc.no).toString(), w.x, w.y);
 	                        } else {
 	                            var cl = {}
@@ -569,7 +578,7 @@ function gameScene(state){
 	                        	work2.putFunc(cl);
 								forgroundBG.putFunc(cl);
 	                    	}
-	                    	work2.putchr((mc.type).toString(16), w.x, w.y);
+	                    	//work2.putchr((mc.type).toString(16), w.x, w.y);
 						}
 	                } else {
 	                    mc.view = false;
