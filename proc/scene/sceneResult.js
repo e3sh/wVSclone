@@ -265,7 +265,7 @@ function sceneResult(state) {
             }
 
             var stage = state.Game.nowstage;
-            wtxt.push(" == Floor -" + stage + "- Clear ==");
+            wtxt.push(" == Stage -" + stage + "- Clear ==");
 //        wtxt.push(" == Result Scene (Stage Clear) ==");
 //        wtxt.push("---------------");
 //        wtxt.push("Push rMouse Button to Start");

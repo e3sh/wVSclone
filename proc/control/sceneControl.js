@@ -14,7 +14,7 @@ function sceneControl(state) {
         sceneList[i].init();
     }
 
-    var scene = sceneList[2];
+    //var scene = sceneList[2];
 
     var rc = 2; // 最初のSceneはTitle
     var runscene = rc;
