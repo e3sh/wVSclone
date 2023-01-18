@@ -95,6 +95,33 @@ function gameScene(state){
 	    device.rect(dev.layout.hp_x, dev.layout.hp_y, this.mhp, 15);
 	    device.stroke();
 	}
+	//縮小マップ表示
+	var SubmapDraw = { mcp : mapChip, draw :
+		 function (device) {
+			for (var i = 0, loopend = this.mcp.length; i < loopend; i++) {
+				var mc = this.mcp[i];
+				if (mc.lookf){
+					//if ((mc.visible) && ((mc.type == 11) || (mc.type == 12))) {
+					if (mc.visible) {
+						var c = ["dimgray", "steelblue", "orange"];
+
+						device.beginPath();
+						//device.strokeStyle = (mc.type == 12) ? "orange" : "blue";
+						device.strokeStyle = c[mc.type -10];
+						device.lineWidth = 1;
+						device.rect(dev.layout.map_x + mc.x / 20, dev.layout.map_y + mc.y / 20, 2, 2);
+						device.stroke();
+					}
+				}
+			}
+		}
+	}
+	//forgroundBG.putFunc(cl);//submapは[2]に表示、点は[3]に表示に変更
+
+	mapdisp = true;
+
+
+
 
 	//処理部
 
@@ -191,6 +218,7 @@ function gameScene(state){
 		mapChip = mapsc.mapChip();
 	    bgData = mapsc.bgPtn();
 
+		SubmapDraw.mcp = mapChip; 
 	    //work2.clear("darkgreen");
 
 	    //work2.reset();
@@ -608,9 +636,14 @@ function gameScene(state){
 	                device.fillRect(dev.layout.map_x, dev.layout.map_y, 150, 150);
 	            }
                 */
-                if (mapdisp && lampf) forgroundBG.putFunc(SubmapframeDraw);
-
-	            obCtrl.drawPoint(forgroundBG, lampf); //Forgroundへ表示
+                if (!mapdisp || lampf) {
+					forgroundBG.putFunc(SubmapframeDraw);
+					if (!mapdisp) work3.putFunc(SubmapDraw);//mapdispはfalseで表示(今となってはなぜかわからん/そのうち修正)
+					obCtrl.drawPoint(work3, lampf);
+				}
+				//if (!mapdisp) work3.putFunc(SubmapDraw);
+				//obCtrl.drawPoint(forgroundBG, lampf); //Forground[2]へ表示
+	            //if (lampf) obCtrl.drawPoint(work3, lampf); //g[3]へ表示
 
 	            //一番下の行消す(clipすんのがいいかも
                 /*
@@ -808,10 +841,11 @@ function gameScene(state){
 
 		if (!mapdisp){ mapv = true; }
 	    //mapdisp = false;
+		/*
 	    if (mapv) {
 
 	        //work3.fill(dev.layout.map_x, dev.layout.map_y, 150, 150);
-	        work3.fill(dev.layout.map_x, dev.layout.map_y, 150, 150);
+	        //work3.fill(dev.layout.map_x, dev.layout.map_y, 150, 150);
 
 	        var cl = {};
 
@@ -836,11 +870,12 @@ function gameScene(state){
 					}
 	            }
 	        }
-	        //work3.putFunc(cl);
 	        work3.putFunc(cl);
+	        //forgroundBG.putFunc(cl);//submapは[2]に表示、点は[3]に表示に変更
 
 	        mapdisp = true;
-	    }           
+	    } 
+		*/          
 	}
 }
 
