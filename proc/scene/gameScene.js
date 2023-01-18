@@ -65,6 +65,12 @@ function gameScene(state){
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.3)";
 	    device.fillRect(dev.layout.map_x, dev.layout.map_y, 150, 150);
+	    /*
+		device.beginPath();
+	    device.strokeStyle = "rgba(0,0,255,0.5)";
+	    device.rect(dev.layout.map_x, dev.layout.map_y, 150, 150);
+	    device.stroke();
+		*/
 	}
 
 	//一番下の行消す(clipすんのがいいかも
@@ -84,7 +90,7 @@ function gameScene(state){
 	    device.stroke();
 
 	    device.beginPath();
-	    device.strokeStyle = "white"; ;
+	    device.strokeStyle = "white"; 
 	    device.lineWidth = 1;
 	    device.rect(dev.layout.hp_x, dev.layout.hp_y, this.mhp, 15);
 	    device.stroke();
@@ -516,15 +522,23 @@ function gameScene(state){
 	                            if (wfg) {
 									var shiftx = 0;
 									var shifty = -24;
-									shiftx = Math.trunc((w.x - dev.gs.viewwidth/2) /20);
-									shifty = Math.trunc((w.y - dev.gs.viewheight/2) /20);
-		
+									shiftx = Math.trunc((w.x - dev.gs.viewwidth/2) /24);
+									shifty = Math.trunc((w.y - dev.gs.viewheight/2) /24);
+									/*
 									forgroundBG.putPattern(
 										tex_bg, bgData[mc.no], 
-										w.x + shiftx,
-										w.y + shifty,
+										w.x + shiftx/2,
+										w.y + shifty/2,
 										mc.w,// + Math.abs(shiftx)+1, 
 										mc.h // + Math.abs(shifty)+1
+									);
+									*/	
+										forgroundBG.putPattern(
+										tex_bg, bgData[mc.no], 
+										w.x + shiftx,// - Math.abs(shiftx)/2,
+										w.y + shifty,// - Math.abs(shifty)/2,
+										mc.w,// + Math.abs(shiftx)/2, 
+										mc.h //+ Math.abs(shifty)/2
 									);
 									//work2.putPattern(tex_bg, bgData[mc.no], w.x, w.y, mc.w, mc.h);
 								} else {
@@ -594,8 +608,7 @@ function gameScene(state){
 	                device.fillRect(dev.layout.map_x, dev.layout.map_y, 150, 150);
 	            }
                 */
-                
-	            forgroundBG.putFunc(SubmapframeDraw);
+                if (mapdisp && lampf) forgroundBG.putFunc(SubmapframeDraw);
 
 	            obCtrl.drawPoint(forgroundBG, lampf); //Forgroundへ表示
 
@@ -701,7 +714,6 @@ function gameScene(state){
                         dev.layout.zanki_x + i * 20 + 136, dev.layout.zanki_y + 8);
 	                }
 	            }
-
 	        }
 
 	        n = 0;
@@ -810,10 +822,14 @@ function gameScene(state){
 	            for (var i = 0, loopend = this.mcp.length; i < loopend; i++) {
                 	var mc = this.mcp[i];
 					if (mc.lookf){
-	                	if ((mc.visible) && ((mc.type == 11) || (mc.type == 12))) {
-	                    	device.beginPath();
-	                    	device.strokeStyle = (mc.type == 12) ? "orange" : "blue";
-	                    	device.lineWidth = 1;
+	                	//if ((mc.visible) && ((mc.type == 11) || (mc.type == 12))) {
+	                	if (mc.visible) {
+							var c = ["dimgray", "steelblue", "orange"];
+
+							device.beginPath();
+	                    	//device.strokeStyle = (mc.type == 12) ? "orange" : "blue";
+	                    	device.strokeStyle = c[mc.type -10];
+							device.lineWidth = 1;
 	                    	device.rect(dev.layout.map_x + mc.x / 20, dev.layout.map_y + mc.y / 20, 2, 2);
 	                    	device.stroke();
 	                	}
