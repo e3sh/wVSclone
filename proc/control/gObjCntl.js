@@ -989,6 +989,12 @@
     function cntl_draw(scrn, o) {
         //alert("!");
         //表示
+        
+        //shadow 
+        //bullet/effectには影つけない
+        var sdwf = ((o.type != 1)&&(o.type !=3)&&(o.type !=5))? true : false;
+        //var sdwf = (o.type !=5)? true : false;
+        //
         if (Boolean(motion_ptn[o.mp].wait)) {
             o.mp_cnt_frm++;
             if (o.mp_cnt_frm > motion_ptn[o.mp].wait / 2) {
@@ -1015,6 +1021,24 @@
 
         var w = o.gt.worldtoView(o.x, o.y);
 
+        if (sdwf){//shadow draw
+            var cl = {}
+            cl.x = w.x;
+            cl.y = w.y; 
+            cl.w = o.center_x * o.display_size;
+            cl.h = o.center_y * o.display_size;
+            cl.draw = function(device){
+                device.beginPath();
+                device.fillStyle = "rgba(0,0,0,0.6)";
+                device.ellipse(this.x, this.y + this.h, this.w, this.h/4, 0,  0, Math.PI*2, true );
+
+                //device.ellipse(this.x, this.y, this.w*10, this.h*10, 0,  0, Math.PI*2, true );
+                //device.fillStyle = "darkyellow";
+                //device.arc(this.x, this.y,  30, 0,  Math.PI*2, true );
+                device.fill();
+            }
+            scrn.putFunc(cl);
+        }
         /*
         document.getElementById("manual_1").innerHTML = 
         "!"+ ptn + "," + wvh + "," + wr +
@@ -1023,11 +1047,11 @@
         "s:"+scrn+scrn.cw+","+scrn.ch;
         */
 
-        if ((w.x >= 0) && (w.x <= scrn.cw) && (w.y >= 0) && (w.y <= scrn.ch)) {
+        //if ((w.x >= 0) && (w.x <= scrn.cw) && (w.y >= 0) && (w.y <= scrn.ch)) {
             scrn.put(ptn, w.x, w.y, wvh, wr, o.alpha, o.display_size);
             //scrn.putchr("mp:"+ o.mp, w.x, w.y);
             //document.getElementById("manual_1").innerHTML += ".";
-        }
+        //}
 
     }
 
