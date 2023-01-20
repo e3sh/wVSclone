@@ -366,10 +366,13 @@ function sce_player() {
             if (o.frame > SHIELD_TIME) {
                 o.set_object_ex(20, o.x, o.y, 0, 42, "-" + o.damage.no);
                 o.gameState.player.hp = o.hp;
+                o.set_object_ex(6, o.x, o.y, o.vector, "effect_hit");
+            }else{
+                o.set_object_ex(6, o.x, o.y, o.vector, "effect_hit_shield");
             }
-            o.set_object_ex(6, o.x, o.y, o.vector, "effect_hit");
             o.damage.count = 15;
 
+            //effect_hit_shield
             //o.gameState.player.hp = o.hp;
         }
 

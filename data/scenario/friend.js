@@ -241,7 +241,7 @@ function sce_friend_straight() {
         }
         */
         if (o.damageflag) {
-            o.set_object_ex(6, o.x + o.Cos(o.vector) * 40, o.y + o.Sin(o.vector) * 40, o.vector, "effect_hit");
+            //o.set_object_ex(6, o.x + o.Cos(o.vector) * 40, o.y + o.Sin(o.vector) * 40, o.vector, "effect_hit");
 
             o.damageflag = false;
         }
@@ -309,7 +309,7 @@ function sce_friend_boom() {
         }
         */
         if (o.damageflag) {
-            o.set_object_ex(6, o.x + o.Cos(o.vector) * 40, o.y + o.Sin(o.vector) * 40, o.vector, "effect_hit");
+            //o.set_object_ex(6, o.x + o.Cos(o.vector) * 40, o.y + o.Sin(o.vector) * 40, o.vector, "effect_hit");
 
             o.damageflag = false;
             o.status = 2;
@@ -370,7 +370,7 @@ function sce_friend_rotate_full() {
         }
 
         if (o.damageflag) {
-            o.set_object_ex(6, o.x + o.Cos(o.vector) * 40, o.y + o.Sin(o.vector) * 40, o.vector, "effect_hit");
+            //o.set_object_ex(6, o.x + o.Cos(o.vector) * 40, o.y + o.Sin(o.vector) * 40, o.vector, "effect_hit");
 
             o.damageflag = false;
         }
@@ -429,7 +429,7 @@ function sce_friend_rotate() {
         }
         
         if (o.damageflag) {
-            o.set_object_ex(6, o.x + o.Cos(o.vector) * 40, o.y + o.Sin(o.vector) * 40, o.vector, "effect_hit");
+            //o.set_object_ex(6, o.x + o.Cos(o.vector) * 40, o.y + o.Sin(o.vector) * 40, o.vector, "effect_hit");
 
             o.damageflag = false;
         }

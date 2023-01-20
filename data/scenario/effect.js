@@ -86,6 +86,67 @@ function sce_effect_hit() {
     }
 }
 
+function sce_effect_hit_shield() {
+    //Hit　移動停止させて、表示を爆発(hit)にし1/4秒後に消える。
+    //-----------------------------------------------------------------------
+    this.init = function (scrn, o) {
+        o.vset(0);
+        o.mp = 11;
+        o.type = 5; //　その他
+        o.status = 5; //廃棄処理中　
+        o.frame = 0;
+
+        //o.alpha = 254;
+
+        o.normal_draw_enable = false;
+        o.custom_draw_enable = true;    }
+
+    this.move = function (scrn, o) {
+
+        switch (o.frame) {
+            case 5:
+                //
+                break;
+            case 30:
+                //            return -1;
+                o.status = 0;
+                break;
+            default:
+                break;
+        };
+        o.frame++;
+
+        //if (o.frame > 30) o.alpha -= 3;
+         //   if (o.frame >= 30) o.status = 0; //return -1;
+
+        return o.sc_move();
+    }
+
+    this.draw = function (scrn, o) {
+
+        //var w = o.gt.worldtoView(o.x, o.y);
+        var w = o.gt.worldtoView(o.x, o.y);
+
+        var cl = {};
+        cl.x = w.x; 
+        cl.y = w.y; 
+        cl.r = o.frame % 15;
+        cl.c = (o.frame > 15)?"red":"white";
+
+        cl.draw = function (device) {
+
+            device.beginPath();
+            //device.fillStyle = "white";
+            device.strokeStyle = this.c;
+            device.lineWidth = "2";
+            device.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
+            device.stroke();
+            //device.fill();
+        }
+        scrn.putFunc(cl);
+    }
+}
+
 function sce_effect_billboard( num ) {
     //看板の動き(だんだん消えていくパターン）
     //-----------------------------------------------------------------------

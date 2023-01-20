@@ -533,7 +533,7 @@ function gameScene(state){
 	    
         //scenechange = false;
 		//if (!scenechange) {
-		if (true) {
+		function BGDraw() {
 	            for (var i in mapChip) {
 	                var mc = mapChip[i];
 
@@ -656,8 +656,48 @@ function gameScene(state){
                 */
 	            forgroundBG.putFunc(ButtomlineBackgroundDraw);
         }
+		
+		function BGShadowDraw() {
+			for (var i in mapChip) {
+				var mc = mapChip[i];
 
+				if (dev.gs.in_stage_range(mc.x, mc.y, mc.w, mc.h)) {
+					mc.view = true;//視界に入っている（当たり判定有効扱いの為のフラグ）
+					var w = dev.gs.worldtoView(mc.x, mc.y);
+
+					if (mc.visible) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
+						if (mc.type == 11) {//Forground表示のパターン(壁)に影をつける
+
+							var shiftx = 0;
+							var shifty = -24;
+							shiftx = Math.trunc((w.x - dev.gs.viewwidth/2) /24) + 4;
+							shifty = Math.trunc((w.y - dev.gs.viewheight/2) /24) + 4;
+
+							var cl = {}
+							cl.x = w.x - shiftx;
+							cl.y = w.y - shifty;
+							cl.w = mc.w;
+							cl.h = mc.h;
+
+							cl.draw = function (device) {
+								device.beginPath();
+
+								device.fillStyle = "rgba(0,0,0,0.6)"//"blue";
+								//device.lineWidth = 1;
+								device.fillRect(this.x, this.y, this.w, this.h);
+							}
+							work2.putFunc(cl);
+							//work2.putchr(Number(mc.no).toString(), w.x, w.y);
+						}
+					}
+				}
+			}
+		}
+		
+		BGDraw();
+		BGShadowDraw(); 
         //==この↑は背景描画
+		obCtrl.drawShadow(work2);//objectのshadowを背景面に反映
 	    obCtrl.draw(work);
 //	    obCtrl.drawPoint(work);
 

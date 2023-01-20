@@ -10,9 +10,12 @@ function ocl_scMove()
 
             switch (this.type) {//自身のタイプが...
                 case 1: //自弾
+                    //this.change_sce("effect_hit"); //弾が煙出さない場合は6 
                 case 3: //敵弾
                     this.sound.effect(12); //hit音
-                    this.change_sce("effect_hit"); //弾が煙出さない場合は6
+                    //this.change_sce("effect_hit"); //弾が煙出さない場合は6
+                    this.change_sce("effect_vanish"); //弾が煙出さない場合は6
+                    //↑ここで弾を消しているので削除すると弾が消えなくなる。2023/01/20消してしまってbugったので記録。
                     break;
                 case 2: //敵
                     this.display_size *= 2; //爆発を大きくする
@@ -71,7 +74,8 @@ function ocl_scMove()
             //            this.set_object_ex(20, this.x, this.y, 0, 39, this.damage.no + " "); //damege表示
             var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
             if (onst) {
-                this.sound.effect(12); //hit音
+                this.set_object_ex(6, this.x, this.y, this.vector, "effect_hit");
+                //this.sound.effect(12); //hit音
             }
         }
 

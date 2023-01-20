@@ -683,6 +683,14 @@ function scenario() {
     sc_init["effect_hit"] = w.init;
     sc_move["effect_hit"] = w.move;
 
+    //barrier hit effect.
+    w = new sce_effect_hit_shield();
+
+    //alias
+    sc_init["effect_hit_shield"] = w.init;
+    sc_move["effect_hit_shield"] = w.move;
+    sc_draw["effect_hit_shield"] = w.draw;
+
     //敵の動き。
     //--------------------------------
     w = new sce_ememy_move_std();

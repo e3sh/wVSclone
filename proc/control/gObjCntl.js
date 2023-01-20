@@ -124,9 +124,8 @@
 
         map_sc = mapsc;
 
-
         //    var mstate = dev.mouse_state.check();
-        var mstate = dev.mouse_state.check_last();
+        //var mstate = dev.mouse_state.check_last();
         var kstate = dev.key_state.check();
 
         this.nonmove = 0;
@@ -169,7 +168,7 @@
             continue;
             }
             */
-            o.mouse_state = mstate;
+            //o.mouse_state = mstate;
             o.key_state = kstate;
 
             if (o.move(scrn, o, mapsc) != 0) {
@@ -491,7 +490,7 @@
                 var wo_crst = 0;
                 var wo_vect = 0;
 
-                if ((o.type == 1) || (o.type == 3)) { 
+                if ((o.type == 1) || (o.type == 3)) {
                     //弾の場合はそのまま消滅
                 } else {
                     var bf = true;
@@ -880,6 +879,39 @@
         wscreen.putFunc(cl);
     }
 
+    //BG面にCharacter用のShadowをDrawする。用に作成
+    this.drawShadow = function(wscreen){
+
+        if (!Boolean(wscreen)) wscreen = scrn;
+
+        var cl = {};
+        cl.obj = obj;
+        cl.draw = function (device) {
+            for (var i in this.obj) {
+                var o = this.obj[i];
+                
+                if (!o.visible) continue;
+                //shadow 
+                //bullet/effectには影つけない
+                if ((o.type == 1) || (o.type == 3) || (o.type == 5 )) continue;
+                if (!o.gt.in_view(o.x,o.y)) continue;
+                if (o.normal_draw_enable) {
+                    var w = o.gt.worldtoView(o.x, o.y);
+
+                    var ww = o.center_x * o.display_size;
+                    var wh = o.center_y * o.display_size;
+ 
+                    device.beginPath();
+                    device.fillStyle = "rgba(0,0,0,0.6)";
+                    device.ellipse(w.x, w.y + wh, ww, wh/4, 0,  0, Math.PI*2, true );
+
+                    device.fill();
+                }
+            }
+        }
+        wscreen.putFunc(cl);
+    }
+
     // =======================================================
     // オブジェクトのセット
     this.set_s = set_sce;
@@ -992,7 +1024,7 @@
         
         //shadow 
         //bullet/effectには影つけない
-        var sdwf = ((o.type != 1)&&(o.type !=3)&&(o.type !=5))? true : false;
+        //var sdwf = ((o.type != 1)&&(o.type !=3)&&(o.type !=5))? true : false;
         //var sdwf = (o.type !=5)? true : false;
         //
         if (Boolean(motion_ptn[o.mp].wait)) {
@@ -1020,7 +1052,7 @@
         };
 
         var w = o.gt.worldtoView(o.x, o.y);
-
+        /*
         if (sdwf){//shadow draw
             var cl = {}
             cl.x = w.x;
@@ -1039,6 +1071,7 @@
             }
             scrn.putFunc(cl);
         }
+        */
         /*
         document.getElementById("manual_1").innerHTML = 
         "!"+ ptn + "," + wvh + "," + wr +
