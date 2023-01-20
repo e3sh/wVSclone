@@ -512,6 +512,31 @@ function sce_player() {
 
             barriref = true;
         }
+        
+        lbar = {}
+
+        lbar.hp = o.hp;
+        lbar.mhp = o.maxhp;
+        var w = o.gt.worldtoView(o.x, o.y);
+
+        lbar.x = w.x;
+        lbar.y = w.y;
+        lbar.br = barriref ? "skyblue" : "limegreen";
+
+        lbar.draw = function(device){
+            device.beginPath();
+	        device.fillStyle = this.br;
+	        device.lineWidth = 1;
+	        device.fillRect(this.x -16, this.y +16+3, (this.hp/this.mhp)*32, 2);
+	        device.stroke();
+
+	        device.beginPath();
+	        device.strokeStyle = "white"; 
+	        device.lineWidth = 1;
+	        device.rect(this.x -17, this.y+16+2, 34, 4);
+	        device.stroke();
+        }
+        scrn.putFunc(lbar);
     }
 }
 

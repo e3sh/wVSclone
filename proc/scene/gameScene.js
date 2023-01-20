@@ -86,13 +86,13 @@ function gameScene(state){
 	    device.beginPath();
 	    device.fillStyle = (this.br) ? "skyblue" : "limegreen";
 	    device.lineWidth = 1;
-	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, this.hp, 14);
+	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, (this.hp/this.mhp)*100, 14);
 	    device.stroke();
 
 	    device.beginPath();
 	    device.strokeStyle = "white"; 
 	    device.lineWidth = 1;
-	    device.rect(dev.layout.hp_x, dev.layout.hp_y, this.mhp, 15);
+	    device.rect(dev.layout.hp_x, dev.layout.hp_y, 102, 15);
 	    device.stroke();
 	}
 	//縮小マップ表示
