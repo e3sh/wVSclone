@@ -214,7 +214,7 @@ function sce_boss_2(){
         return o.sc_move();
     }
 }
-
+/*
 function sce_boss_damage_gr(scrn, o) {
     //Bossのダメージゲージ表示
 
@@ -239,6 +239,41 @@ function sce_boss_damage_gr(scrn, o) {
         device.stroke();
         device.beginPath();
         device.arc(this.x, this.y, 34 + 10, 0, 2 * Math.PI, false);
+        device.stroke();
+    }
+    scrn.putFunc(cl);
+    //        scrn.putchr8(o.display_size+ " ", o.x+100, o.y+100);
+}
+*/
+function sce_boss_damage_gr(scrn, o) {
+    //Bossのダメージゲージ表示
+
+    cl = {};
+    var w = o.gt.worldtoView(o.x, o.y);
+    cl.x = w.x;
+    cl.y = w.y;
+    //cl.sr = ((360 * ((o.maxhp - o.hp) / o.maxhp) - 90) * (Math.PI / 180));
+    cl.sr = (o.hp / o.maxhp) * 0.5 * Math.PI;
+    cl.draw = function (device) {
+        var st = (1.25 -0.5) * Math.PI;
+        var ed = (0.75 -0.5) * Math.PI;
+        var v = st - this.sr;
+
+        device.beginPath();
+        device.strokeStyle = "limegreen";//"white";
+        device.lineWidth = "5";
+        device.beginPath();
+        device.arc(this.x, this.y, 32 + 10, st, v, true);
+        device.stroke();
+
+        device.beginPath();
+        device.strokeStyle = "silver";
+        device.lineWidth = "1";
+        device.arc(this.x, this.y, 30 + 10, st, ed, true);
+
+        device.stroke();
+        device.beginPath();
+        device.arc(this.x, this.y, 34 + 10, st, ed, true);
         device.stroke();
     }
     scrn.putFunc(cl);

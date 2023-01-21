@@ -4,8 +4,8 @@ function sceneGover(state) {
     var dev = state.System.dev;
 
     //宣言部
-    var work = dev.graphics[1]; //文字表示面で使用
-    var work2 = dev.graphics[0]; //メイン画面
+    var work = dev.graphics[3]; //文字表示面で使用
+    var work2 = dev.graphics[2]; //メイン画面
 
     var inp = dev.mouse_state;
     var keys = dev.key_state;
@@ -98,7 +98,10 @@ function sceneGover(state) {
                 device.stroke(); 
             }
         }
-        work2.setInterval(0);
+        //ゲーム画面の描画を停止(Flip/Drawを自動で実行するのを停止)
+        dev.graphics[0].setInterval(0);//BG
+        dev.graphics[1].setInterval(0);//SPRITE
+        work2.setInterval(0);//<-dev.g2　FG
         work2.putFunc(o);
         work2.draw();
 /*
