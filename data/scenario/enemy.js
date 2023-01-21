@@ -606,6 +606,9 @@ function sce_enemy_inv_gr(scrn, o){
 
     if ((w.x >= 0) && (w.x <= scrn.cw) && (w.y >= 0) && (w.y <= scrn.ch)) {
         //scrn.putchr8("@", w.x, w.y);
+        var tx = w.x;
+        var ty = w.y;
+
         w.x = w.x + o.Cos(o.vector) * 16;
         w.y = w.y + o.Sin(o.vector) * 16;
 
@@ -617,7 +620,13 @@ function sce_enemy_inv_gr(scrn, o){
             scrn.put(spname[f], w.x, w.y); 
             //scrn.putchr8(o.weapontype, w.x+10, w.y+10);
         //} else {
-            //scrn.putchr8("@", w.x, w.y);
+        if (o.pick.length > 1){
+            w.x = tx - o.Cos(o.vector) * o.center_x;
+            w.y = ty - o.Sin(o.vector) * o.center_y;
+
+            scrn.put("TrBox", w.x, w.y, 0, 0, 255, 0.75);
+            //scrn.putchr8(o.pick.length, w.x, w.y);
+        }
         //}
         //scrn.put(ptn, w.x, w.y, wvh, wr, o.alpha, o.display_size);
     }
