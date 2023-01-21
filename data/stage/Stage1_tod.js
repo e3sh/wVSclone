@@ -1,5 +1,4 @@
 ﻿//　ステージの設定(用語が混乱してるけど　マップ、マップシナリオ、マップチップの統合）
-
 function Stage1_tod( seed, keyuse ) {
 
     var dgn;
@@ -8,20 +7,17 @@ function Stage1_tod( seed, keyuse ) {
     dgn.create();
 
     var rnd = new myrnd(seed);
-
     var mp = dgn.map;
-
     this.scenario = mapScenro;
-
     this.bgImage = mapBgImage;
-
     this.bgLayout = mapBgLayout;
-
     this.initial = mapInitial;
-
     this.bgPtn = mapBgPattern;
-
     var gamemode = keyuse; //鍵があるかないか
+
+    var cmap = [];
+    this.colmap = cmap;
+
 //    alert(keyuse);
     //　マップ設定値
     //  
@@ -38,64 +34,14 @@ function Stage1_tod( seed, keyuse ) {
     function mapScenro() {
 
         var ms = []; 
-        //  開始フレーム,座標,,角度,シナリオ,キャラ
-//	[　//[-1, 240, 608, 0, "player", 0],
-//	[-1, 208, 608, 0, "friend_start", 10],
-//	[-1, 272, 608, 0, "friend_start", 10],
-//	[-1, 240, 240, 0, 28, 18],
-        //	[-1, 320, 320, 0, 29, 19],
-/*
-	[50, 240, 0, 180, 11, 1],
-	[100, 440, 140, 225, 10, 1],
-	[100, 40, 140, 135, 9, 1],
-	[120, 440, 140, 225, 10, 1],
-	[120, 40, 140, 135, 9, 1],
-	[140, 440, 140, 225, 10, 1],
-	[140, 40, 140, 135, 9, 1],
-	[160, 440, 140, 225, 10, 1],
-	[160, 40, 140, 135, 9, 1],
-	[180, 440, 140, 225, 10, 1],
-	[180, 40, 140, 135, 9, 1],
-    */
-    /*
-	[250, 140, 000, 180, 2, 1],
-	[250, 340, 000, 180, 3, 1],
-	[280, 140, 000, 180, 2, 1],
-	[280, 340, 000, 180, 3, 1],
-	[310, 140, 000, 180, 2, 1],
-	[310, 340, 000, 180, 3, 1],
-	[340, 140, 000, 180, 2, 1],
-	[340, 340, 000, 180, 3, 1],
-//	[390, 464, 200, 0, "effect_warnning_mark", 1],
-	[440, 479, 200, 270, 15, 1],
-//	[450, 16, 220, 0, "effect_warnning_mark", 1],
-	[500, 1, 220, 90, 15, 1],
-//	[700, 240, 0, 180, 23, 14],
-	[900, 120, 0, 180, 19, 1],
-	[900, 360, 0, 180, 19, 1],
-*/
-//	[1120, 480, 0, 180, 37, 2], //eventmessagetest
-//	[1500, 240, 40, 180, 34, 14], //回転ボス
-//	[1550, 240, 40, 180, "message_bosstriger", 2], //ボス戦割り込みトリガ
-//	[1600, 480, 0, 180, 53, 2], //endmessage
-//	[1700, 480, 0, 180, 54, 2], //result画面要求
-        //	[1800, -1, -1, 180, 0, 4],//
- //   	[7110, 320, 240, 180, "message_billboard_tover", 1], //message
-        //       [7200, 320, 240, 180, "message_bosstriger", 1], //gover画面要求 120秒後
 
         for (var i = 0; i < dgn.mw - 1; i+=2) {
             for (var j = 0; j < dgn.mh - 1; j+=2) {
                 ms.push([7000, i * 80 + 32, j * 80 + 32, 180, "common_vset0", 4]);
-               // ms.push([700, 1 * 80 + 32, 10 * 80 + 32, 180, "en_bullet_homing", 4]);
-               // ms.push([700, 10 * 80 + 32, 1 * 80 + 32, 180, "en_bullet_homing", 4]);
-               // ms.push([700, 10 * 80 + 32, 10 * 80 + 32, 180, "en_bullet_homing", 4]);
             }
         }
-
-
-	ms.push([600000, -1, -1, 0, 0, 0]);
+    	ms.push([600000, -1, -1, 0, 0, 0]);
     
-        //
         // フレームカウントでソートされていること。
 
         var map_sc = []; //　出現パターン
@@ -114,61 +60,15 @@ function Stage1_tod( seed, keyuse ) {
 
             map_sc.push(ptn);
         }
-        /*
-        for (var e in map_sc) {
-
-            var pt = map_sc[e];
-            /*
-            var wx = Math.floor(pt.x / 96);
-            var wy = Math.floor(pt.y / 96);
-
-            var f = true;
-
-            for (var i in rlist) {
-            if ((rlist[i].x == wx) && (rlist[i].y == wy)) {
-
-            f =false;
-            //    break;
-            }
-
-            }
-            */
-            //            if (f) {
-            //var vr = Math.floor(Math.random() * rlist.length);
-
-            //                pt.x = rlist[vr].x * 96 + 75;
-            //                pt.y = rlist[vr].y * 96 + 75;
-/*
-            pt.x = Math.floor(pt.x / 80) * 80 + 32;
-            pt.y = Math.floor(pt.y / 80) * 80 + 32;
-
-            //            }
-
-        }
-
-        */
         return map_sc;
-
     }
 
     function mapBgImage() {
 
         var tex_bg = new Image();
         tex_bg.src = "pict/cha.png";
-/*
-        var tex_bg = []; 
-
-        tex_bg[ 0 ] = new Image();
-        tex_bg[0].src = "pict/sky.jpg";
-
-        tex_bg[ 1 ] = new Image();
-        tex_bg[1].src = "pict/space.jpg";
-
-        tex_bg[ 2 ] = new Image();
-        tex_bg[2].src = "pict/effect.jpg";
-*/
-
-        return tex_bg;
+        //return tex_bg;
+        return "bg2";
     }
 
     function mapBgLayout() {
@@ -241,10 +141,7 @@ function Stage1_tod( seed, keyuse ) {
                             mc.push(w);
                         }
                 }
-  //             mc.push(w);
-            
                 sy += sz_h;
-
             }
             sx += sz_w;
         }
@@ -258,14 +155,7 @@ function Stage1_tod( seed, keyuse ) {
                             2,   //doortype
                             true
                         ];
-
         mc.push(w);
-
-
-
-
-
-
 
         //枠の当たり判定
 
@@ -313,14 +203,6 @@ function Stage1_tod( seed, keyuse ) {
 
     function mapInitial(stageno) { //flag = true 初期マップ展開有り　false 自機リスタート
 
-/*    
-        var ms = [];
-        //  開始フレーム,座標,,角度,シナリオ,キャラ
-
-        //var r = Math.floor(Math.random()*rlist.length);
-        //ms.push([false, rlist[r].x * 96 + 10, rlist[r].y * 96 + 10, 0, "player", 0]);
-        ms.push([false, 4 * 80 + 32, 4 * 80 + 32, 0, "player", 0]);
-*/
         var smap = [];
         var shuffled = [];
 
@@ -335,8 +217,6 @@ function Stage1_tod( seed, keyuse ) {
                     smap[cnt] = {};
                     smap[cnt].x = i;
                     smap[cnt].y = j;
-                    //smap[cnt].o = false;
-
                     cnt++;
                 }
             }
@@ -469,21 +349,7 @@ function Stage1_tod( seed, keyuse ) {
 
             ms.push(w);
         }       
-        /*
-            for (var i in rlist) {
 
-                w = [true,
-            rlist[i].x * 96 + 48,
-            rlist[i].y * 96 + 48,
-            Math.floor(Math.random()*360),
-            "common_vset0",
-            1
-            ];
-
-                ms.push(w);
-
-            }
-*/
         var map_sc = []; //　出現パターン
 
         for (var j in ms) {
@@ -503,9 +369,7 @@ function Stage1_tod( seed, keyuse ) {
 
         return map_sc;
         //マップの初期配置とマップチップの座標リストなど
-
         //自機の発進処理もここに入れ込んでしまう方がスマートだと思われる。
-
         //flagはマップの初期化をするかどうか(trueでリスタート？）
     }
 
