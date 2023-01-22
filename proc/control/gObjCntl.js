@@ -345,7 +345,7 @@
             for (var k = 0, loopend = mapchip.length; k < loopend; k++) {
                 var w = mapchip[k];
 
-                w.colitem && w.colitem.remove();
+                //w.colitem && w.colitem.remove();
                 //if ((w.c) && (w.view)) { //画面外は当たり判定を行わない
                 if (w.c) { //表示させなかった画面外の壁も当たり判定を行う
 
@@ -419,6 +419,7 @@
                         o.mapColY = true;
                     }
 
+                    //if(true){
                     if (c) {
                         //if ((w.type == 10) && ((o.type == 1) || (o.type == 1))) {
                         //delete mapchip[m];
@@ -429,9 +430,9 @@
                             if (o.type == 98) {
                                 o.doorflag = true;
                             }
-                            o.mapCollision = bupCol;
-                            o.mapColX = bupColX;
-                            o.mapColY = bupColY;
+                            o.mapCollision = bupCol;// || o.mapCollision;
+                            o.mapColX = bupColX;// || o.mapColX;
+                            o.mapColY = bupColY;// || o.mapColY;
                         }
                     }
                 }
@@ -446,34 +447,37 @@
 
             if (o.type == 5) continue;//その他(effect)は地形当たり判定しない。
 
+            ///*2023/01/22 debug(動作忘れたため)
             //地形との当たり判定（MAP配列）
-            var lt = {};
-            var rb = {};
+            if (Boolean(cmap)){ //cmap有効の場合cmapで当たり判定
+                var lt = {};
+                var rb = {};
 
-            lt.x = o.x - o.hit_x / 2;
-            lt.y = o.y - o.hit_y / 2;
-            rb.x = o.x + o.hit_x / 2;
-            rb.y = o.y + o.hit_y / 2;
+                lt.x = o.x - o.hit_x / 2;
+                lt.y = o.y - o.hit_y / 2;
+                rb.x = o.x + o.hit_x / 2;
+                rb.y = o.y + o.hit_y / 2;
 
-            lt.mx = Math.floor((lt.x - 96) / 32);
-            lt.my = Math.floor((lt.y - 96) / 32);
-            rb.mx = Math.floor((rb.x - 96) / 32);
-            rb.my = Math.floor((rb.y - 96) / 32);
+                lt.mx = Math.floor((lt.x - 96) / 32);
+                lt.my = Math.floor((lt.y - 96) / 32);
+                rb.mx = Math.floor((rb.x - 96) / 32);
+                rb.my = Math.floor((rb.y - 96) / 32);
 
 
-            if ((lt.mx < 0) || (lt.my < 0) ||
-                (rb.mx > cmap.length) || (rb.my > cmap.length)) {
-                o.mapCollision = true;
-            } else
+                if ((lt.mx < 0) || (lt.my < 0) ||
+                    (rb.mx > cmap.length) || (rb.my > cmap.length)) {
+                    o.mapCollision = true;
+                } else
 
                 if ((cmap[Math.floor((lt.x - 96) / 32)][Math.floor((lt.y - 96) / 32)]) ||
-                (cmap[Math.floor((lt.x - 96) / 32)][Math.floor((rb.y - 96) / 32)]) ||
-                (cmap[Math.floor((rb.x - 96) / 32)][Math.floor((lt.y - 96) / 32)]) ||
-                (cmap[Math.floor((rb.x - 96) / 32)][Math.floor((rb.y - 96) / 32)])) {
+                    (cmap[Math.floor((lt.x - 96) / 32)][Math.floor((rb.y - 96) / 32)]) ||
+                    (cmap[Math.floor((rb.x - 96) / 32)][Math.floor((lt.y - 96) / 32)]) ||
+                    (cmap[Math.floor((rb.x - 96) / 32)][Math.floor((rb.y - 96) / 32)])) {
 
                     o.mapCollision = true;
                 }
-
+            }
+            //*/
             //
             var onst = o.gt.in_stage_range(o.x - (o.hit_x / 2), o.y - (o.hit_y / 2), o.hit_x, o.hit_y);
             //画面外？

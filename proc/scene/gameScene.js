@@ -29,32 +29,32 @@ function gameScene(state){
 
 	var escore;
 
-	var scr_cnt = 0;
+	//var scr_cnt = 0;
 	var dead_cnt = 0;
 
 	var tex_bg = [];
 	var mapChip = [];
 	var bgData = [];
 
-	var ldflg = false;
+	//var ldflg = false;
 
 	var bg_scroll = true;
 	var scroll_x = 0;
 	var scroll_y = 0;
 	var scrollsw = 0;
 
-	var scenechange = false;
+	//var scenechange = false;
 
 	var enemy_combo = 0;
 	var item_combo = 0;
-	var ec_draw_count = 0;
+	//var ec_draw_count = 0;
 
-	var sndcf = false;
+	//var sndcf = false;
 
 	var mapdisp = false;
 	var lampf = false;
 
-	var mapv = false;
+	//var mapv = false;
 
 	var fdrawcnt = 0;
 

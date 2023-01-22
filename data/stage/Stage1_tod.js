@@ -15,8 +15,8 @@ function Stage1_tod( seed, keyuse ) {
     this.bgPtn = mapBgPattern;
     var gamemode = keyuse; //鍵があるかないか
 
-    var cmap = [];
-    this.colmap = cmap;
+    //var cmap = [];
+    //this.colmap = cmap;
 
 //    alert(keyuse);
     //　マップ設定値
@@ -68,7 +68,7 @@ function Stage1_tod( seed, keyuse ) {
         var tex_bg = new Image();
         tex_bg.src = "pict/cha.png";
         //return tex_bg;
-        return "bg2";
+        return "bg3";
     }
 
     function mapBgLayout() {
@@ -82,7 +82,7 @@ function Stage1_tod( seed, keyuse ) {
 
         var w = [];
 
-        var sz = 64;
+        var sz = 128; var pw = 16;//64+16
 
                 var sx = 0;  
                 var sy = 0;
@@ -90,21 +90,21 @@ function Stage1_tod( seed, keyuse ) {
 
         for (var i = 0; i < dgn.mw - 1; i++) {
             sy = 0;
-            var sz_w = ((i % 2) == 1) ? 16 : sz;
+            var sz_w = ((i % 2) == 1) ? pw : sz;
 
             for (var j = 0; j < dgn.mh - 1; j++) {
 
-                var sz_h = ((j % 2) == 1) ? 16 : sz;
+                var sz_h = ((j % 2) == 1) ? pw : sz;
 
                 if (((j % 2) == 0) && ((i % 2) == 0)) {//床の場合
 
                         w = [0,
                             sx,
                             sy,
-                            sz+16,//sz_w,
-                            sz+16,//sz_h,
+                            sz,//sz_w,
+                            sz,//sz_h,
                             false,
-                            1,
+                            0,
                             true
                         ];
 
@@ -113,7 +113,7 @@ function Stage1_tod( seed, keyuse ) {
 
                 if (((j % 2) == 1) && ((i % 2) == 1)) {//柱の場合
 
-                        w = [12,
+                        w = [11,
                             sx,
                             sy,
                             sz_w,
@@ -127,28 +127,38 @@ function Stage1_tod( seed, keyuse ) {
 
                 } else {
 
-                        if (mp[i][j] != "  ") {
-                            w = [9,// + ((sz_w>sz_h)?0:1),
-                            sx,
-                            sy,
-                            sz_w,
-                            sz_h,
-                            true,
-                            0,
-                            true
+                    if (mp[i][j] != "  ") {
+                        w = [11,// + ((sz_w>sz_h)?0:1),
+                        sx,
+                        sy,
+                        sz_w,
+                        sz_h,
+                        true,
+                        1,
+                        true
                         ];
-
-                            mc.push(w);
-                        }
+                    }else{
+                        w = [0,// + ((sz_w>sz_h)?0:1),
+                        sx,
+                        sy,
+                        sz_w,
+                        sz_h,
+                        false,
+                        0,
+                        true
+                        ];
+                    }
+                    mc.push(w);
+               
                 }
                 sy += sz_h;
             }
-            sx += sz_w;
+        sx += sz_w;
         }
 
-        w = [5,
-            Math.floor(rnd.next()*((dgn.mw - 1)/2))*80,
-            Math.floor(rnd.next()*((dgn.mw - 1)/2))*80,
+        w = [13,
+            Math.floor(rnd.next()*((dgn.mw - 1)/2))*(sz + pw),
+            Math.floor(rnd.next()*((dgn.mw - 1)/2))*(sz + pw),
                             64,
                             64,
                             true,
@@ -158,23 +168,23 @@ function Stage1_tod( seed, keyuse ) {
         mc.push(w);
 
         //枠の当たり判定
-
-        var w = [11, 0, 0, 80 * 10 + 80, 4, true,
+        blsz = sz + pw;
+        var w = [11, 0, 0, blsz * 10 + blsz, pw, true,
                         1, true
                         ];
         mc.push(w);
 
-        var w = [11, 0, 80 * 10 + 60 , 80*10+80, 36, true,
+        var w = [11, 0, blsz * 10 + blsz , blsz * 10 + blsz, pw, true,
                         1, true 
                         ];
         mc.push(w);
 
-        var w = [11, 0, 0, 4, 80 * 10 + 60, true,
+        var w = [11, 0, 0, pw, blsz * 10 + blsz, true,
                         1, true
                         ];
         mc.push(w);
 
-        var w = [11, 80*10 +60 , 0, 4, 80*10 + 60, true,
+        var w = [11, blsz*10 + blsz, 0, pw, blsz*10 + blsz, true,
                         1, true
                         ];
         mc.push(w);
@@ -192,9 +202,10 @@ function Stage1_tod( seed, keyuse ) {
             chip.w = w[3];
             chip.h = w[4];
             chip.c = w[5];
-            chip.type = w[6];//0　壊れる　1　壊れないで使ってる
+            chip.type = w[6] + 10;// blocktype (+10) 0　壊れる　1　壊れないで使ってる
             chip.view = false;
             chip.visible = w[7];
+            chip.lookf = true;
 
             map_cp.push(chip);
         }
@@ -234,11 +245,15 @@ function Stage1_tod( seed, keyuse ) {
             shuffled[dnum]=w;
         }
 
+
+        var SW = 64;
+        var SZ = SW;
+
         var ms = [];
         //  開始フレーム,座標,,角度,シナリオ,キャラ
         ms.push([false,
-       smap[shuffled[0]].x * 40 + 32,
-       smap[shuffled[0]].y * 40 + 32,
+       smap[shuffled[0]].x * SW + SZ,
+       smap[shuffled[0]].y * SW + SZ,
         0, "player", 0]);
 
 
@@ -254,8 +269,8 @@ function Stage1_tod( seed, keyuse ) {
             var nm = shuffled[i];
 
             w = [true,
-                    smap[nm].x * 40 + 32,
-                    smap[nm].y * 40 + 32,
+                    smap[nm].x * SW + SZ,
+                    smap[nm].y * SW + SZ,
                     Math.floor(rnd.next() * 4) * 90, //Math.floor(Math.random() * 360),
                     "ememy_move_std",
                     //"common_vset2",
@@ -272,8 +287,8 @@ function Stage1_tod( seed, keyuse ) {
             var nm = shuffled[i];
 
             w = [true,
-                    smap[nm].x * 40 + 32,
-                    smap[nm].y * 40 + 32,
+                    smap[nm].x * SW + SZ,
+                    smap[nm].y * SW + SZ,
                     Math.floor(rnd.next() * 4) * 90, //Math.floor(Math.random() * 360),
                     "ememy_moveshot_1",
             //"common_vset2",
@@ -290,8 +305,8 @@ function Stage1_tod( seed, keyuse ) {
             var nm = shuffled[i];
 
             w = [true,
-                    smap[nm].x * 40 + 32,
-                    smap[nm].y * 40 + 32,
+                    smap[nm].x * SW + SZ,
+                    smap[nm].y * SW + SZ,
                     Math.floor(rnd.next() * 4) * 90, //Math.floor(Math.random() * 360),
                     "sce_ememy_randomshot",
             //"common_vset2",
@@ -308,8 +323,8 @@ function Stage1_tod( seed, keyuse ) {
             var nm = shuffled[i];
 
             w = [true,
-                    smap[nm].x * 40 + 32,
-                    smap[nm].y * 40 + 32,
+                    smap[nm].x * SW + SZ,
+                    smap[nm].y * SW + SZ,
                     Math.floor(rnd.next() * 360),
                     "common_vset0",
                     20
@@ -324,8 +339,8 @@ function Stage1_tod( seed, keyuse ) {
         nm = shuffled[lst];
 
         w = [true,
-                    smap[nm].x * 40 + 32,
-                    smap[nm].y * 40 + 32,
+                    smap[nm].x * SW + SZ,
+                    smap[nm].y * SW + SZ,
                     Math.floor(rnd.next() * 360),
                     "common_vset0",
                     21
@@ -340,8 +355,8 @@ function Stage1_tod( seed, keyuse ) {
             nm = shuffled[lst];
 
             w = [true,
-                    smap[nm].x * 40 + 32,
-                    smap[nm].y * 40 + 32,
+                    smap[nm].x * SW + SZ,
+                    smap[nm].y * SW + SZ,
                     Math.floor(rnd.next() * 360),
                     "common_vset0",
                     22
@@ -377,12 +392,22 @@ function Stage1_tod( seed, keyuse ) {
 
         var sp =
         // SP NO.","X","Y","ADDX","ADDY"
-    	[[0, 0, 128, 80, 80],
-        [ 5, 192, 0, 32, 32],
-    	[ 9, 0, 208, 16, 16],
-    	[10, 0, 208, 64, 16],
-    	[11, 80, 128, 16, 64],
-    	[12, 80, 208, 16, 16]
+           // SP NO.","X","Y","ADDX","ADDY"
+        [[0, 128 - 96, 128 - 128, 95, 95],
+           [1, 224 - 96, 128 - 128, 95, 95],
+           [2, 128 - 96, 128 - 128, 31, 31],
+           [3, 224 - 96, 128 - 128, 31, 31],
+           [4, 256 - 96, 128 - 128, 31, 31],
+           [5, 288 - 96, 128 - 128, 31, 31],
+           [6, 224 - 96, 160 - 128, 31, 31],
+           [11, 256 - 96, 160 - 128, 31, 31],
+           [7, 288 - 96, 160 - 128, 31, 31],
+           [8, 224 - 96, 192 - 128, 31, 31],
+           [9, 256 - 96, 192 - 128, 31, 31],
+           [10, 288 - 96, 192 - 128, 31, 31],
+           [11, 256 - 96, 160 - 128, 31, 31],
+           [12, 96 - 96, 192 - 128, 31, 31],
+           [13,  0, 0, 32, 32],
         ];
 
         var bg_ptn = []; // BGパターン

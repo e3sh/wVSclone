@@ -161,7 +161,7 @@ function Stage1(stageno) {
                             j * BLOCK_H + 32 + 32 * vy[k],
                             32,
                             32,
-                            false, //cr[k],
+                            false, //cr[k];
                             1 + (cr[k] ? 0 : -1), //dgn.type[i][j],
                             true
                         ];

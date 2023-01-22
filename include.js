@@ -37,8 +37,8 @@ var w = [
  //データ部(ステージの敵の動きなどの設定)
  "data/stage/Stage1.js",
  "data/stage/Dangeon.js",
- //"data/stage/Stage1_tod.js",
- //"data/stage/Dangeon_tod.js",
+ "data/stage/Stage1_tod.js",
+ "data/stage/Dangeon_tod.js",
 //データ部(キャラクタの動きなどの設定）
  "data/scenario.js",
  "data/scenario/player.js",
