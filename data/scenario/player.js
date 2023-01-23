@@ -18,6 +18,8 @@ function sce_player() {
         o.autotrig = 10;
         o.autoshot = 0;
 
+        o.mvkeytrig = 0;        
+        o.maxspeed = 6;
         //o.int_shot = 0;
         //	        o.mp = 1;
         o.custom_draw_enable = true;
@@ -57,7 +59,7 @@ function sce_player() {
             //    o.damageflag = false;
         }
         if (o.frame == SHIELD_TIME) {
-            //無敵時間終わったら元に戻す
+            //無敵時間終わったら瞬間に元に戻す
             o.hp = o.before_hp;
             o.attack = 1;
             o.gameState.player.hp = o.before_hp;
@@ -65,12 +67,14 @@ function sce_player() {
         }
 
         o.vset(0);
-        var speed = 6;
+        var speed = 0;
 
         var upkey = false;
         var downkey = false;
         var leftkey = false;
         var rightkey = false;
+
+        var v = o.vector;
 
         if (Boolean(o.key_state[37])) {
             if (o.key_state[37]) {//<=
@@ -111,12 +115,21 @@ function sce_player() {
         }
 
         if (upkey || downkey || leftkey || rightkey) {
+            //加速制御
+            //動き始め(30f[0.5s]はゆっくりとなるように(手触り感調整)
+            //o.mvkeytrig++;
+            o.mvkeytrig = (o.mvkeytrig++ > 30)?30 : o.mvkeytrig;
+            speed = (o.mvkeytrig/4 > o.maxspeed)? o.maxspeed: o.mvkeytrig/5;
+            //speed = (o.mvkeytrig > 20)? o.maxspeed: 2;
+            //if (v != o.vector) o.mvkeytrig=0;
+
             o.vset(speed);
+        }else{
+            o.mvkeytrig--;
+            o.mvkeytrig = (o.mvkeytrig-- < 0)?0 : o.mvkeytrig;
         }
 
         if (o.vector > 180) { o.mp = 2; } else { o.mp = 1; }
-
-        var v = o.vector;
 
         var powup = 0;
         var oneup = 0;
@@ -324,20 +337,24 @@ function sce_player() {
             o.autoshot = 1;
             //o.collect3();
             //o.sound.effect(7); //スイング音
-            o.autotrig = 20;
+            o.autotrig = 20; //0.3s
             //o.set_object_ex(20, o.x, o.y, 0, 43, o.gameState.player.weapon + "_");
             switch (o.gameState.player.weapon) {
                 case 1:
                     o.set_object(10); //sword
+                    //o.autotrig = 30;
                     break;
                 case 2:
                     o.set_object(38); //axe
+                    //o.autotrig = 30;
                     break;
                 case 3:
                     o.set_object(37); //boom
+                    //o.autotrig = 30;
                     break;
                 case 4:
                     o.set_object(36); //spare
+                    //o.autotrig = 30;
                     break;
                 default:
 //                    o.set_object(39); //wand
@@ -493,6 +510,9 @@ function sce_player() {
         var barriref = false;
         var cl = {};
         //Shield
+        //var tw = o.gt.worldtoView(o.x, o.y);
+        //scrn.putchr8("@"+o.mvkeytrig, tw.x, tw.y);
+
         if (o.frame <= 300) {
 
             var w = o.gt.worldtoView(o.x, o.y);

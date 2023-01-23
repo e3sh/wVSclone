@@ -354,9 +354,72 @@ function gameScene(state){
 	    }
 
 	    //item
-            
 	    for (i in obCtrl.item) {
-	        if (i == 21) {//extend
+		//	
+			/*
+			switch(i){
+				case 15://wand
+		            if (obCtrl.item[15] > 0) {
+		                obCtrl.item[15] = 0;
+	    	            state.Game.player.weapon = 0;
+	        	        //dev.sound.effect(9); //cursor音
+	            	}
+					break;
+				case 16://sword
+		            if (obCtrl.item[16] > 0) {
+		                obCtrl.item[16] = 0;
+	    	            state.Game.player.weapon = 1;
+	        	        //dev.sound.effect(9); //cursor音
+	            	}
+					break;
+				case 17://axe
+		            if (obCtrl.item[17] > 0) {
+		                obCtrl.item[17] = 0;
+	    	            state.Game.player.weapon = 2;
+	        	        //dev.sound.effect(9); //cursor音
+	            	}
+					break;
+				case 18://boom
+		            if (obCtrl.item[18] > 0) {
+		                obCtrl.item[18] = 0;
+	    	            state.Game.player.weapon = 4;
+	        	        //dev.sound.effect(9); //cursor音
+	            	}
+					break;
+				case 19://spare
+	            	if (obCtrl.item[19] > 0) {
+	               		obCtrl.item[19] = 0;
+	                	state.Game.player.weapon = 3;
+	                	//dev.sound.effect(9); //cursor音
+	            	}
+					break;
+				case 21://extend
+					if (obCtrl.item[21] > 0) {
+	                	obCtrl.item[21] = 0;
+	                	dead_cnt--;
+	                	dev.sound.effect(11); //get音
+					}
+					break;
+				case 26://lamp
+		            if (obCtrl.item[26] > 0) {
+		                obCtrl.item[26] = 0;
+	    	            lampf = true;
+	        	        //dev.sound.effect(9); //cursor音
+	            	}
+					break;
+				case 27://map
+		            if (obCtrl.item[27] > 0) {
+		                obCtrl.item[27] = 0;
+	    	            mapdisp = false;
+	        	        //dev.sound.effect(9); //cursor音
+	        	    }
+					break;
+				default:
+					break;
+			}
+		}
+		*/
+			if (i == 21) {//extend
 	            if (obCtrl.item[21] > 0) {
 	                obCtrl.item[21] = 0;
 	                dead_cnt--;
@@ -380,42 +443,56 @@ function gameScene(state){
 	        //weapons
 	        if (i == 15) {//wand
 	            if (obCtrl.item[15] > 0) {
-	                obCtrl.item[15] = 0;
+					if (state.Game.player.weapon == 0){
+						
+					}
+		            obCtrl.item[15] = 0;
 	                state.Game.player.weapon = 0;
 	                //dev.sound.effect(9); //cursor音
 	            }
 	        }
 	        if (i == 16) {//sword
 	            if (obCtrl.item[16] > 0) {
-	                obCtrl.item[16] = 0;
+					if (state.Game.player.weapon == 1){
+
+					}
+					obCtrl.item[16] = 0;
 	                state.Game.player.weapon = 1;
 	                //dev.sound.effect(9); //cursor音
 	            }
 	        }
 	        if (i == 17) {//axe
 	            if (obCtrl.item[17] > 0) {
-	                obCtrl.item[17] = 0;
+					if (state.Game.player.weapon == 2){
+
+					}
+		            obCtrl.item[17] = 0;
 	                state.Game.player.weapon = 2;
 	                //dev.sound.effect(9); //cursor音
 	            }
 	        }
 	        if (i == 19) {//spare
 	            if (obCtrl.item[19] > 0) {
-	                obCtrl.item[19] = 0;
+					if (state.Game.player.weapon == 3){
+
+					}
+					obCtrl.item[19] = 0;
 	                state.Game.player.weapon = 3;
 	                //dev.sound.effect(9); //cursor音
 	            }
 	        }
 	        if (i == 18) {//boom
 	            if (obCtrl.item[18] > 0) {
-	                obCtrl.item[18] = 0;
+					if (state.Game.player.weapon == 4){
+
+					}
+		            obCtrl.item[18] = 0;
 	                state.Game.player.weapon = 4;
 	                //dev.sound.effect(9); //cursor音
 	            }
 	        }
 
 	    }
-
         //
 
 	    var w = 0;

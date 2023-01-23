@@ -256,6 +256,12 @@
                         map_sc.add(o.x, o.y, 0, 20, 39, wid);
                     }
 
+                    if ((ms.src >= 15) && (ms.src <= 19)) {
+                        var wid = "Weapon!";
+                        dev.sound.effect(11); //get音
+                        map_sc.add(o.x, o.y, 0, 20, 39, wid);
+                    }
+
                     var f = false;
                     //if ((ms.src == 20) || (ms.src == 23) || (ms.src == 24) || (ms.src == 25)) {
                     if ((ms.src == 23) || (ms.src == 24) || (ms.src == 25)) {

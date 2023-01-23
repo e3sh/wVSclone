@@ -257,6 +257,9 @@ function sce_ememy_move_std2() {
        o.weapongetf = false;
        o.weapontype = 0;
 
+        o.mvkeytrig = 0;        
+        o.maxspeed = 2;
+
        o.pickgetf = false; //何か持っているか?
        o.pickviewitem = 0;
        
@@ -268,13 +271,25 @@ function sce_ememy_move_std2() {
     this.move = function (scrn, o) {
         o.frame++;
 
+        var speed = 0;
+
         if (o.growf) {
             if (o.mapCollision) o.mapCollision = false; ;
         }
 
-        if (Boolean(o.target)) {
+        if (Boolean(o.target)) {　//target(自機が存在している場合)一定距離だとロックオン
         //    if (o.target_d(o.target.x, o.target.y) < 300) { o.lockon_flag = true; }  
-            o.lockon_flag = (o.target_d(o.target.x, o.target.y) < 180)? true :false ; 
+            o.lockon_flag = (o.target_d(o.target.x, o.target.y) < 240)? true :false ; 
+        }
+
+        if (!o.wmapc) {
+            o.mvkeytrig = (o.mvkeytrig++ > 30)?30 : o.mvkeytrig;
+            speed = (o.mvkeytrig/15 > o.maxspeed)? o.maxspeed: o.mvkeytrig/15
+        }else{
+            o.mvkeytrig = 0;
+            //o.mvkeytrig--;
+            //o.mvkeytrig = (o.mvkeytrig-- < 0)?0 : o.mvkeytrig;
+            //o.wmapc = false;
         }
 
         if ((o.wmapc) && (o.lockon_flag)) {
@@ -289,22 +304,22 @@ function sce_ememy_move_std2() {
                     nv = i;
                 }
             }
-
             o.vector = nv;
-            o.vset(2);
+            
+            o.vset(speed);
 
             o.wmapc = false;
 
-            o.colcnt = 0;
+            //o.colcnt = 0;
         }
 
         if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
 
         if (o.mapCollision) {
             o.colcnt++;
-            if (o.colcnt > 2) o.wmapc = true;
+            if (o.colcnt > 30) o.wmapc = true;
             //o.wmapc = true;
-        }
+        } else { o.colcnt = 0;}
 
         o.autotrig--;
         if (o.autotrig <= 0) {
@@ -315,7 +330,7 @@ function sce_ememy_move_std2() {
         if (o.lockon_flag) {
             if ((o.autoshot == 0) && (o.weapongetf)) {
                 o.autoshot = 1;
-                o.autotrig = 25;
+                o.autotrig = 30;
                 switch (o.weapontype) {
                 case 1:
                     o.set_object(41); //sword
@@ -337,12 +352,12 @@ function sce_ememy_move_std2() {
         }
         
         if (o.frame > 20) {
-
+            //ロックオン中は20f毎に向き調整
             if (o.lockon_flag) {
-                o.target_rotate_r(45);
+                o.target_rotate_r(120);//45);
             }
 
-            o.vset(2);
+            o.vset(speed);
 
             o.frame = 0;
             o.get_target(98);
