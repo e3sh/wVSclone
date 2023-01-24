@@ -359,7 +359,10 @@ function sce_player() {
                     //o.autotrig = 30;
                     break;
                 case 5:
-                    o.set_object(46)
+                    o.set_object_ex(46, o.x, o.y, o.vector - 10, "common_vset10");
+                    o.set_object_ex(46, o.x, o.y, o.vector, "common_vset10");
+                    o.set_object_ex(46, o.x, o.y, o.vector + 10, "common_vset10");
+                    //o.set_object(46)
                     o.set_object(47); //Bow and Arrow
                     //o.autotrig = 30;
                     break;

@@ -453,3 +453,43 @@ function sce_friend_rotate() {
         return f;
     }
 }
+
+function sce_friend_front() {
+    //　味方（支援機）の動作 前で停滞
+    //-----------------------------------------------------------------------
+    this.init = function (scrn, o) {
+        o.vset(0);
+        o.startflag = true;
+
+        o.x += o.Cos(o.vector) * 35;
+        o.y += o.Sin(o.vector) * 35;
+
+        o.shotcount = 0;
+    }
+
+    this.move = function (scrn, o) {
+
+        var f = 0;
+        if (!Boolean(o.parent)) {
+            o.change_sce(6);
+            return 1;
+        }
+
+        if (o.damageflag) {
+            o.damageflag = false;
+        }
+
+        o.shotcount++;
+        if (o.shotcount > 20) {
+            o.shotcount = 0;
+            o.status = 0;
+        }
+
+        o.x = o.parent.x + o.Cos(o.vector) * (35 - o.shotcount/2);
+        o.y = o.parent.y + o.Sin(o.vector) * (35 - o.shotcount/2) ;
+
+        if (o.status == 0) f = 1; //未使用ステータスの場合は削除
+
+        return f;
+    }
+}

@@ -746,7 +746,12 @@ function scenario() {
     sc_init["friend_rotate_full"] = w.init;
     sc_move["friend_rotate_full"] = w.move;
 
+    //支援機動作　停滞
+    //-----------------------------------------------------------------------
+    w = new sce_friend_front();
 
+    sc_init["friend_front"] = w.init;
+    sc_move["friend_front"] = w.move;
     //=============================================================================
     //ExEvent処理用シナリオ
     //-----------------------------------------------------------------------
