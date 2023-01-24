@@ -358,6 +358,11 @@ function sce_player() {
                     o.set_object(36); //spare
                     //o.autotrig = 30;
                     break;
+                case 5:
+                    o.set_object(46)
+                    o.set_object(47); //Bow and Arrow
+                    //o.autotrig = 30;
+                    break;
                 default:
 //                    o.set_object(39); //wand
                     break;
@@ -366,7 +371,7 @@ function sce_player() {
 
         if (o.gameState.player.weapon != o.before_weapon) {
 
-            var ww = [15, 16, 17, 19, 18];
+            var ww = [15, 16, 17, 19, 18, 50];
 
             var w = ww[o.before_weapon];
             var wv = (o.vector + 180) % 360;

@@ -429,6 +429,17 @@ function gameScene(state){
 	            }
 	        }
 
+			if (i == 50) {//bow
+	            if (obCtrl.item[50] > 0) {
+					if (state.Game.player.weapon == 5){
+						state.Game.player.level++;
+					}else state.Game.player.level = 0;
+		            obCtrl.item[50] = 0;
+	                state.Game.player.weapon = 5;
+	                //dev.sound.effect(9); //cursor音
+	            }
+	        }
+
 	    }
         
 		//
@@ -810,7 +821,7 @@ function gameScene(state){
 	        }
 	        if (n > 0) work3.put("Key", dev.layout.zanki_x + 64, dev.layout.zanki_y);
 
-	        var wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear"];
+	        var wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Arrow"];
 
 	        if (!Boolean(state.Game.player.weapon)) state.Game.player.weapon = 0;
 	        if (!Boolean(state.Game.player.level)) state.Game.player.level = 0;

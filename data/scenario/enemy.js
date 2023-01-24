@@ -344,6 +344,10 @@ function sce_ememy_move_std2() {
                 case 4:
                     o.set_object(44); //spare
                     break;
+                case 6:
+                    o.set_object(49); //bow and arrow
+                    o.set_object(48); //bow and arrow
+                    break;
                 default:
                     o.set_object(45); //wand
                     break;
@@ -393,10 +397,11 @@ function sce_enemy_weapon_check( item ){//アイテムリストが武器かど�
     ITEMLIST[3] = 19; //BOOM
     ITEMLIST[4] = 18; //SPEAR
     ITEMLIST[5] = 15; //Wand
+    ITEMLIST[6] = 50; //Bow
 
     //    16, 18, 19, 17, 15, //WEAPONS
-    //　item: 15 WAND, 16 SWORD, 17 AXE, 18 SPEAR, 19 BOOM 
-    //  rc 0 NONE, 1 SWORD, 2 SPARE, 3 BOOM, 4 AXE, 5 WAND, 99 Dummy
+    //　item: 15 WAND, 16 SWORD, 17 AXE, 18 SPEAR, 19 BOOM 50:BOw
+    //  rc 0 NONE, 1 SWORD, 2 SPARE, 3 BOOM, 4 AXE, 5 WAND, 6 BOW 99 Dummy
 
     var rc = 0; //nonitem
     
@@ -552,7 +557,7 @@ function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリスト
 
     var ITEMLIST = [
         22, 27, 26, 21, //KEY,MAP,LAMP,1UP　
-        15, 16, 17, 18, 19, //WEAPONS
+        15, 16, 17, 18, 19, 50, //WEAPONS
         23, 24, 25, //COLORBALLS
         20, //BALL
     //    35,//:COINはPASS
@@ -588,7 +593,7 @@ function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリスト
         27 MAP      MP34    Map
         (35 COIN)   MP32    Coin1-4
         (40 TRBOX)DISPLAY用 MP39 TrBox
-        
+        50 BOW      MP43    Bow
         表示優先順位
         1)KEY　LANP　MAP　1UP
         2)WEAPON全般
@@ -616,6 +621,8 @@ function sce_enemy_inv_gr(scrn, o){
     spname[25] = "BallL1";
     spname[26] = "Lamp";
     spname[27] = "Map";
+    spname[50] = "Bow";
+    
 
     var w = o.gt.worldtoView(o.x, o.y);
 

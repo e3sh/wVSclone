@@ -312,6 +312,7 @@ function Stage1(stageno) {
             ["common_vset0", 17, 1], //axe
             ["common_vset0", 18, 1], //spare
             ["common_vset0", 19, 1], //boom
+            ["common_vset0", 50, 1], //bow
             ["ememy_generator", 1, 3],//generator
             ["boss_0", 34, Math.floor(stageno / 5) - 1], //bx
             ["boss_0", 14, (stageno % 15 != 0) ? 1 : 0], //b0
@@ -341,6 +342,7 @@ function Stage1(stageno) {
             ["common_vset0", 17, 1], //axe
             ["common_vset0", 18, 1], //spare
             ["common_vset0", 19, 1], //boom
+            ["common_vset0", 50, 1], //bow
             ["ememy_move_std2", 1, e_mstd],
             ["ememy_generator", 1, 5],
             ["ememy_moveshot_1", 1, e_mv],
