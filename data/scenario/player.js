@@ -337,7 +337,9 @@ function sce_player() {
             o.autoshot = 1;
             //o.collect3();
             //o.sound.effect(7); //スイング音
-            o.autotrig = 20; //0.3s
+            var wdelay = ((o.gameState.player.level >3 )? 3 : o.gameState.player.level)*4;
+            // lv.0 20 0.3s /lv.1 16 0.25s /lv.2 12 0.2s /lv.3 08 0.12s(Max)
+            o.autotrig = 20 -wdelay;//20 0.3s
             //o.set_object_ex(20, o.x, o.y, 0, 43, o.gameState.player.weapon + "_");
             switch (o.gameState.player.weapon) {
                 case 1:

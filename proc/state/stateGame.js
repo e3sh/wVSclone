@@ -13,9 +13,11 @@ function stateGame() {
     this.player.zanki = 2;
     this.player.hp = 10;
     this.player.maxhp = this.player.hp;
-    this.player.weapon = 0;
+    this.player.weapon = 0;//初期装備0:wand
     //this.player.equip.--- etc...
     //this.player.status.dex --- etc..
+    this.player.speed = 6;//maxspeed 現在未使用/SpeedUp実装時使用？
+    this.player.level = 0;//現状weaponLevelで使用予定
 
     this.outviewMove = true;
     this.outviewCollision =true;
