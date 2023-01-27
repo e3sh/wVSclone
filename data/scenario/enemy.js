@@ -263,6 +263,8 @@ function sce_ememy_move_std2() {
        o.pickgetf = false; //何か持っているか?
        o.pickviewitem = 0;
        
+       o.display_size = 1.0;
+
        o.custom_draw_enable = true;
     }
 
@@ -381,7 +383,13 @@ function sce_ememy_move_std2() {
 
             o.growf = false;
         }
-
+        /*
+        if (o.growf){
+            o.display_size = 0.3 + (0.7/(6-(o.frame / 5)));
+        }else{
+            o.display_size = 1.0;
+        }
+        */
         //o.growf = false;
 
         return o.sc_move();
@@ -412,6 +420,32 @@ function sce_enemy_weapon_check( item ){//アイテムリストが武器かど�
         }
     }
     return rc;
+}
+
+function sce_ememy_move_gen_grow(){
+    //　ジェネレータから発生して動き出すまでの演出パターン。
+    //　add 2023/1/27
+    //-----------------------------------------------------------------------
+    this.init = function (scrn, o) {
+        o.vset(2);
+        o.get_target(98);
+        o.display_size = 0.3;
+    }
+
+    this.move = function (scrn, o) {
+        o.frame++;
+        o.mapCollision = false; ;
+
+        if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
+
+        o.display_size = 0.3 + (0.7 * (o.frame / 20));
+        
+        if (o.frame > 20) {
+            o.change_sce("ememy_move_std2"); //出現完了でシナリオを通常に変更
+        }
+
+        return o.sc_move();
+    }
 }
 
 function sce_ememy_generator() {
@@ -445,7 +479,9 @@ function sce_ememy_generator() {
             if ((o.lockon_flag) && (o.gencnt < 5)) {
                 var v = o.target_v();
 
-                o.set_object_ex(1, o.x + o.Cos(v) * 32, o.y + o.Sin(v) * 32, v, "ememy_move_std2");
+                o.set_object_ex(1, o.x + o.Cos(v) * 20, o.y + o.Sin(v) * 20, v, 
+                //"ememy_move_std2");
+                "ememy_move_gen_grow");
                 o.gencnt++;
             }
             o.frame = 0;

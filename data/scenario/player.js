@@ -116,13 +116,16 @@ function sce_player() {
 
         if (upkey || downkey || leftkey || rightkey) {
             //加速制御
-            //動き始め(30f[0.5s]はゆっくりとなるように(手触り感調整)
+            //動き始め(15f[0.25s]はゆっくりとなるように(手触り感調整)
             //o.mvkeytrig++;
-            o.mvkeytrig = (o.mvkeytrig++ > 30)?30 : o.mvkeytrig;
-            speed = (o.mvkeytrig/4 > o.maxspeed)? o.maxspeed: o.mvkeytrig/5;
-            //speed = (o.mvkeytrig > 20)? o.maxspeed: 2;
+            //if (v != o.vector) o.mvkeytrig = 12; //入力方向が変わったあとの加速まで 3fwait　0.05s
+            o.mvkeytrig = (o.mvkeytrig++ > 30)?30 : o.mvkeytrig; // keyoff後の加速維持動作入力猶予0.25s
+            //speed = (o.mvkeytrig/4 > o.maxspeed)? o.maxspeed: o.mvkeytrig/5;
+            //speed = (o.mvkeytrig > 8)? o.maxspeed: o.maxspeed * (o.mvkeytrig/8);
+            speed = (o.mvkeytrig > 15)? o.maxspeed: 1; //加速始動時　15fwait　0.25s
             //if (v != o.vector) o.mvkeytrig=0;
-
+            
+            //speed = o.maxspeed;
             o.vset(speed);
         }else{
             o.mvkeytrig--;

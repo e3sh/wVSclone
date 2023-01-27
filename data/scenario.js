@@ -706,6 +706,14 @@ function scenario() {
     sc_draw["ememy_move_std2"] = w.draw;//add.2023/1/14
 
     //--------------------------------
+    
+    w = new sce_ememy_move_gen_grow();//add.2023/1/27
+
+    sc_init["ememy_move_gen_grow"] = w.init;
+    sc_move["ememy_move_gen_grow"] = w.move;
+
+    //--------------------------------
+
     w = new sce_ememy_generator();
 
     sc_init["ememy_generator"] = w.init;
