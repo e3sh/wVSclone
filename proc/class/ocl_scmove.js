@@ -26,14 +26,14 @@ function ocl_scMove()
                     //    var wc = 22
                     //var wc = (this.chr == 14) ? 22 : 35; //ボスは鍵を出すとりあえず。その他はCoinなど
 
-                    if (this.chr == 14) { //BOSSからBOSS
-                        this.set_object_ex(22, this.x, this.y, Math.floor(Math.random() * 360), 36);//sce_boss_1();
-
-                    } else {
+                    //if (this.chr == 14) { //BOSSからBOSS
+                    //    this.set_object_ex(22, this.x, this.y, Math.floor(Math.random() * 360), 36);//sce_boss_1();
+                    //鍵はフィールドに設定してBOSSの座標に置くことで持たすように変更するのでここで出すようにしてたのは中止‗2023/01/28
+                    //} else {
                         for (var i = 0, loopend = Math.floor(Math.random() * 3) + 1; i < loopend; i++) {
                             this.set_object_ex(35, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
                         }
-                    }
+                    //}
                     //敵が拾ったアイテムを落とす。
                     var itemf = false;
                     for (var i = 0, loopend = this.pick.length; i < loopend; i++) {

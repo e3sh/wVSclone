@@ -10,7 +10,14 @@ function sce_ememy_move_n(num1, num2) {
 
     this.init = function (scrn, o) {
         o.vset(1);
+
+        o.pickgetf = false;
+        o.pickviewitem = 0;
+
+        o.custom_draw_enable = true;
     }
+
+    this.draw = sce_enemy_inv_gr;
 
     this.move = function (scrn, o) {
 
@@ -35,6 +42,12 @@ function sce_ememy_move_n(num1, num2) {
                 o.vset(1);
                 break;
             case 140:
+                //inventry check
+                var f = sce_enemy_inv_check(o.pick);
+                if (f != 0 ){
+                    o.pickgetf = true;
+                    o.pickviewitem = f;
+                } 
                 //    o.set_object(103);
                 break;
             case 160:
@@ -63,7 +76,14 @@ function sce_ememy_turn( num ){
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
         o.vset(4);
+
+        o.pickgetf = false;
+        o.pickviewitem = 0;
+
+        o.custom_draw_enable = true;
     }
+
+    this.draw = sce_enemy_inv_gr;
 
     this.move = function (scrn, o) {
 
@@ -86,6 +106,12 @@ function sce_ememy_turn( num ){
                 break;
             case 45:
                 o.frame = 1;
+                //inventry check
+                var f = sce_enemy_inv_check(o.pick);
+                if (f != 0 ){
+                    o.pickgetf = true;
+                    o.pickviewitem = f;
+                }
                 break;
             default:
                 break;
@@ -124,7 +150,14 @@ function sce_ememy_moveshot() {
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
         o.vset(4);
+
+        o.pickgetf = false;
+        o.pickviewitem = 0;
+    
+        o.custom_draw_enable = true;
     }
+
+    this.draw = sce_enemy_inv_gr;
 
     this.move = function (scrn, o) {
 
@@ -133,6 +166,12 @@ function sce_ememy_moveshot() {
         if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
 
         if (o.frame % 50 == 5) {
+            //inventry check
+            var f = sce_enemy_inv_check(o.pick);
+            if (f != 0 ){
+                o.pickgetf = true;
+                o.pickviewitem = f;
+            }
             //            o.set_object(12);
             if (o.frame > 3600) {
                 o.set_object_ex(5, o.x, o.y, o.vector, "en_bullet_homing");
@@ -159,7 +198,14 @@ function sce_ememy_randomshot() {
         o.hit_y *= 1.5;
 
         o.hp = 20;
+
+        o.pickgetf = false;
+        o.pickviewitem = 0;
+
+        o.custom_draw_enable = true;
     }
+
+    this.draw = sce_enemy_inv_gr;
 
     this.move = function (scrn, o) {
 
@@ -186,10 +232,15 @@ function sce_ememy_randomshot() {
             //			o.vector = 170 + Math.floor( Math.random() * 20 );
             o.vset(2);
             o.frame = 0;
+
+            //inventry check
+            var f = sce_enemy_inv_check(o.pick);
+            if (f != 0 ){
+                o.pickgetf = true;
+                o.pickviewitem = f;
+            }    
         }
-
         return o.sc_move();
-
     }
 }
 

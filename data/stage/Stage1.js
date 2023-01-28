@@ -296,11 +296,11 @@ function Stage1(stageno) {
 
         var rcnt = 1;
 
-
         if ((stageno % 5) == 0) {
             //bossstage
             var stmap = [
             ["common_vset0", 20, 20], //ball
+            ["common_vset0", 22, 1], //key
             ["common_vset0", 21, 1], //extend
             ["common_vset0", 23, 7], //b
             ["common_vset0", 24, 7], //s
@@ -318,6 +318,7 @@ function Stage1(stageno) {
             ["boss_0", 14, (stageno % 15 != 0) ? 1 : 0], //b0
             ["boss_1", 14, (stageno % 15 == 0) ? 1 : 0] //b2
             ];
+
         } else {
             //normalstage
 
@@ -353,8 +354,6 @@ function Stage1(stageno) {
 
             //["ememy_timeover", 33, 0]//l
         }
-
-        
 
         //var stmap = [[]];
 
@@ -396,6 +395,29 @@ function Stage1(stageno) {
             map_sc.push(ptn);
         }
 
+        //鍵の設定
+        //5の倍数面は敵(ボス/中ボス)に鍵を持たせるために同じ座標に鍵を設定する。
+        var key_idx = -1;
+
+        for (var i in map_sc){
+            var w = map_sc[i];
+
+            if (w.ch == 22){ //Key
+                key_idx = i;
+                break;
+            }
+        }
+        if (key_idx < 0) alert("KEY not Found!");
+
+        for (var i in map_sc){
+            var w = map_sc[i];
+
+            if (w.ch == 14){ //BOSS の位置に鍵を移動する。
+                map_sc[key_idx].x = w.x ;
+                map_sc[key_idx].y = w.y ;
+                break;
+            }
+        }
         return map_sc;
         //マップの初期配置とマップチップの座標リストなど
         //flagはマップの初期化をするかどうか(trueでリスタート？）

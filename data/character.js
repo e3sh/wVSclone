@@ -124,9 +124,9 @@ function character(){
 
 	//Use Number 0-12,14-27,30,32-45,103
 	//46-50 
-	[46, 44, 1, BULLET_P, 24, 8, 48, 16, "common_vset8", 15, 5, 5, 5, 5, 0, 0],//arrow friend
-	[47, 43, 1, BULLET_P,  8, 8, 16, 16, "friend_front", 30, 5, 5, 5, 5, 0, 0],//bow enemy
-	[48, 44, 1, BULLET_E, 24, 8, 48, 16, "common_vset8", 30, 5, 5, 5, 5, 0, 0],//arrow enemy
+	[46, 44, 1, BULLET_P, 24, 8, 16, 16, "common_vset8", 15, 5, 5, 5, 5, 0, 0],//arrow friend
+	[47, 43, 1, BULLET_P,  8, 8, 16, 16, "friend_front", 30, 5, 5, 5, 5, 0, 0],//bow friend
+	[48, 44, 1, BULLET_E, 24, 8, 16, 16, "common_vset8", 30, 5, 5, 5, 5, 0, 0],//arrow enemy
 	[49, 43, 1, BULLET_E,  8, 8, 16, 16, "friend_front", 30, 5, 5, 5, 5, 0, 0],//bow enemy
 	[50, 43, 1, ITEM, 24, 8, 48, 16, 30, 30, 5, 5, 5, 5, 0, 100],//item bow
 	

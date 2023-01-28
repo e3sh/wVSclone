@@ -60,6 +60,7 @@ function scenario() {
     //alias
     sc_init["ememy_move_n_l"] = w.init;
     sc_move["ememy_move_n_l"] = w.move;
+    sc_draw["ememy_move_n_l"] = w.draw; //add 2023/01/28
 
     // START SET　移動開始で速さ2のベクトルを与える
     //-----------------------------------------------------------------------
@@ -131,6 +132,7 @@ function scenario() {
     //alias
     sc_init["ememy_turn_r"] = w.init;
     sc_move["ememy_turn_r"] = w.move;
+    sc_draw["ememy_turn_r"] = w.draw; //add 2023/01/28
 
     //　左に回りながら移動する敵の動き、途中弾撃つ
     //-----------------------------------------------------------------------
@@ -197,6 +199,7 @@ function scenario() {
     //alias
     sc_init["ememy_moveshot_1"] = w.init;
     sc_move["ememy_moveshot_1"] = w.move;
+    sc_draw["ememy_moveshot_1"] = w.draw; //add 2023/01/28
 
     //　味方（支援機）の動作(rotation)
     //-----------------------------------------------------------------------
@@ -241,6 +244,7 @@ function scenario() {
     //alias
     sc_init["sce_ememy_randomshot"] = w.init;
     sc_move["sce_ememy_randomshot"] = w.move;
+    sc_draw["sce_ememy_randomshot"] = w.draw; //add 2023/01/28
 
     // 自機ホーミング弾
     //-----------------------------------------------------------------------
