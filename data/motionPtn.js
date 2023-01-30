@@ -330,8 +330,21 @@ function motionPattern(){
 	["Arrow", -1, -1]
     ];
 
+	//InfoCursor
+	//=================================================
+	no = 45;
+
+	mp[no] = {};
+
+	mp[no].wait = 10;
+	mp[no].pattern = [
+    ["Cursor1", -1, -1],
+    ["Cursor2", -1, -1],
+    ["Cursor3", -1, -1],
+    ["Cursor2", -1, -1]
+];
+
 	//
-//
 //@@
 	return mp;
 }

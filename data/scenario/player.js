@@ -59,6 +59,7 @@ function sce_player() {
             o.hp = o.maxhp; //出現して5秒間は無敵(60fps)
             o.attack = 10;
             o.gameState.player.barrier = true;
+            o.lighton = true;
             //    o.damageflag = false;
         }
         if (o.frame == SHIELD_TIME) {
@@ -67,6 +68,7 @@ function sce_player() {
             o.attack = 1;
             o.gameState.player.hp = o.before_hp;
             o.gameState.player.barrier = false;
+            o.lighton = false;
         }
 
         o.vset(0);

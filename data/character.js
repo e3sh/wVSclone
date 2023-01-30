@@ -131,7 +131,7 @@ function character(){
 	[50, 43, 1, ITEM, 24, 8, 48, 16, 30, 30, 5, 5, 5, 5, 0, 100],//item bow
 	
 	//InformationCursor処理用(MotionPattern準備中)(MP仮)
-	[100, 44, 1, ETC, 8, 8, 16, 16, "effect_informationCursor", 30, 5, 5, 5, 5, 0, 0], //InformationCursor
+	[100, 45, 1, ETC, 8, 8, 16, 16, "effect_informationCursor", 30, 5, 5, 5, 5, 0, 0], //InformationCursor
 
 
 //以下ExtEventの処理用//今の運用では使用せずに運用できる為、ほぼ過去互換用

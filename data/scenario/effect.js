@@ -316,7 +316,7 @@ function sce_effect_informationCursor() {
         o.type = 5; //　その他
         o.frame = 0;
 
-        o.display_size = 2.0;
+        o.display_size = 1.0;
 
         o.normal_draw_enable = false;
         //o.custom_draw_enable = true;
@@ -329,8 +329,8 @@ function sce_effect_informationCursor() {
         if (!Boolean(o.parent)) return 1;
         if (o.parent.status == 0) return 1;
 
-        o.x = o.parent.x + o.Cos(o.vector)*150;
-        o.y = o.parent.y + o.Sin(o.vector)*150;
+        o.x = o.parent.x + o.Cos(o.vector) * 80;
+        o.y = o.parent.y + o.Sin(o.vector) * 80;
 
         if (!o.gt.in_view(o.gameState.key_x, o.gameState.key_y)){
             if (o.gameState.keyon) o.normal_draw_enable = o.gameState.lamp; //
