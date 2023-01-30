@@ -122,7 +122,7 @@ function character(){
 	//宝箱
 	[40, 39, 1, ENEMY, 16, 16, 16, 16, 30, 30, 5, 5, 5, 5, 0, 100],
 
-	//Use Number 0-12,14-27,30,32-45,103
+	//Use Number 0-12,14-27,30,32-50,100,103
 	//46-50 
 	[46, 44, 1, BULLET_P, 24, 8, 16, 16, "common_vset8", 15, 5, 5, 5, 5, 0, 0],//arrow friend
 	[47, 43, 1, BULLET_P,  8, 8, 16, 16, "friend_front", 30, 5, 5, 5, 5, 0, 0],//bow friend
@@ -130,6 +130,9 @@ function character(){
 	[49, 43, 1, BULLET_E,  8, 8, 16, 16, "friend_front", 30, 5, 5, 5, 5, 0, 0],//bow enemy
 	[50, 43, 1, ITEM, 24, 8, 48, 16, 30, 30, 5, 5, 5, 5, 0, 100],//item bow
 	
+	//InformationCursor処理用(MotionPattern準備中)(MP仮)
+	[100, 44, 1, ETC, 8, 8, 16, 16, "effect_informationCursor", 30, 5, 5, 5, 5, 0, 0], //InformationCursor
+
 
 //以下ExtEventの処理用//今の運用では使用せずに運用できる為、ほぼ過去互換用
 	[103, 8, 1, BULLET_E, 8, 8, 6, 6, 103, 103, 5, 5, 5, 5, 0, 0], //使用されている様子

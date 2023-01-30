@@ -60,6 +60,10 @@ function gObjectClass() {
     this.old_x = this.x;
     this.old_y = this.y;
 
+    this.lighton = false; //SubMapで強調表示するか？drawPointで使用。2023/01/30
+    this.prioritySurface = false; //SP面以外に表示する場合に、BoolでfalseでDrawで標準面に表示しtrueで表示しない。
+    //(Booleanで運用するか、表示面[数値]で運用するかは状況次第）で。ObjCtrlにDrawPs実装し、GameSceneから呼ぶ 。2023/01/30  
+
     //角度からラジアンに変換
     function ToRadian(d) { return (d * (Math.PI / 180.0)); }
 
@@ -310,6 +314,20 @@ gObjectClass.prototype.reset_combo = function (src, dst) {
 
     this.message.push(msg);
 }
+//itemのchrでフィールドに存在するか調べる。（KeyInformationCursor実装用）
+//SIGNALだとGameSceneに指示なのでコマンド追加。2023/01/29
+gObjectClass.prototype.search_target_item = function (src, dst) {
+    //src:chr番号,dst:dummy
+
+    var msg = {};
+
+    msg.cmd = "search_target_item";
+    msg.src = src; 
+    msg.dst = dst;
+
+    this.message.push(msg);
+}
+
 //自分から目標( tx, ty )の
 //	方向角度を調べる(上が角度0の0-359)
 gObjectClass.prototype.target_r = function (tx, ty) {

@@ -38,12 +38,15 @@ function sce_player() {
         o.before_hp = o.hp;
         o.before_weapon = o.gameState.player.weapon;
 
+        o.lighton = true;
+
         o.doorflag = false;
 
         //残機無限増やしの抑制の為、ExtendItemを状況により消す。
         if (o.gameState.player.zanki >= Math.floor(o.gameState.nowstage / 5) + 2) {
             o.bomb4(21); //Extendのステータスを0にする。
         }
+        o.set_object(100);//InformationCursorSetup
     }
 
     this.draw = damage_gr1;

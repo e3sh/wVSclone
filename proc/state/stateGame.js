@@ -23,6 +23,15 @@ function stateGame() {
     this.outviewCollision =true;
     this.outviewHit = true;
 
+    //keySearch infomation display (gameSceneでセット、objCtrlで参照予定)2023/01/29-
+    this.keyon = false;
+    this.key_x = 0;
+    this.key_y = 0;
+
+    //GameStatus 使用中でtrueにする。GameSceneでセット。各Objから参照用2023/01/30 
+    this.lamp = false;
+    this.map = false;
+
     this.load = function () {
         //中断セーブからの復帰
 

@@ -57,6 +57,7 @@ function gameScene(state){
 	//var mapv = false;
 
 	var fdrawcnt = 0;
+	var drawexecute = false;
 
 
 	//縮小マップ枠
@@ -118,10 +119,7 @@ function gameScene(state){
 	}
 	//forgroundBG.putFunc(cl);//submapは[2]に表示、点は[3]に表示に変更
 
-	mapdisp = true;
-
-
-
+	mapdisp = true;　//以前の処理では自動で消されない画面に書いていたので常時表示処理させる為に常にtrue；
 
 	//処理部
 
@@ -150,6 +148,9 @@ function gameScene(state){
 		
 	    work3.clear();
 
+		//フロアチェンジ前の座標がSubmapが見たことにされる為、1度表示されて正しい座標に移動後から壁のlookfを有効にする。	
+		drawexecute = false;
+		
 	    if (!Boolean(contflg)) { contflg = false; }
 	    scenechange = false;
 
@@ -239,6 +240,10 @@ function gameScene(state){
 
 	function game_step() {
 		dev.gs.commit();
+
+		//StateGameに今の状態を反映
+		state.Game.lamp = lampf; 
+		state.Game.map =  !mapdisp; //現状の処理で使用時falseとなっているの為Not演算で反転
 
 	    if (!dev.sound.running()) {
 	        if (mapsc.flame < 7200) {
@@ -347,7 +352,7 @@ function gameScene(state){
 	            }
 	        }
 	    } else {
-	        bg_scroll = true;
+	        //bg_scroll = true;
 	        mapsc.enable = true;
 	        mapsc.counter_runnning = true;
 	        //			demo_mode = false;
@@ -523,13 +528,13 @@ function gameScene(state){
 	            //if (mstate.button == 1) obCtrl.interrapt = false;
 	        }
 	    }
-
+		/*
 	    if (bg_scroll) scroll_y++;
 	    if (scroll_y > 480) {
 	        scroll_y = 0;
 	        scrollsw = 1 - scrollsw;
 	    }
-
+		*/
 	    if (state.Result.highscore < obCtrl.score) state.Result.highscore = obCtrl.score;
 
 	    return 0;
@@ -568,7 +573,7 @@ function gameScene(state){
 	                    var w = dev.gs.worldtoView(mc.x, mc.y);
 
 	                    if (mc.visible) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
-							mc.lookf = true;　//画面内に入ったことがあるフラグ
+							mc.lookf = drawexecute;//true;　//画面内に入ったことがあるフラグ
 	                        var wfg = false;
 							if (mc.type == 11) wfg = true; //Forground表示のパターン(壁)
 	                        //if (Boolean(tex_bg[mc.no])) {
@@ -725,6 +730,7 @@ function gameScene(state){
         //==この↑は背景描画
 		obCtrl.drawShadow(work2);//objectのshadowを背景面に反映
 	    obCtrl.draw(work);
+	    obCtrl.draw(forgroundBG, true); //prioritySurface = true の物を別Screenに描画する処理(通常のDrawではパスされる。）
 //	    obCtrl.drawPoint(work);
 
 	    //==　ここから文字表示画面（出来るだけ書き換えを少なくする）
@@ -946,8 +952,11 @@ function gameScene(state){
 
 	        mapdisp = true;
 	    } 
-		*/          
+		*/ 
+		drawexecute = true;         
 	}
+
+
 }
 
 function gs_score_effect( sc ){

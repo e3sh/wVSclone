@@ -545,6 +545,7 @@
         var f = 0;
         for (i in obj) {
             if (obj[i].type == 98) f++;
+            //if (obj[i].type == 4) and 
         }
 
         if (f == 0) {
@@ -788,13 +789,58 @@
 
         //		this.SIGNAL = src;
     }
+    command["search_target_item"] = function (o, src, dst) {
+        //稼働中objに対象のCHNOが存在するか？(KEYSEARCH用) 
+        //無かったら、敵の持ち物をチェックする。
+        //ない場合はkeyon=false;//自分の持ち物にある場合はこれでチェックしない。
+        //戻り値はState.game.keyon,key_x,key_yに入れる。
+        var onflag = false;
+        var wx = 0;
+        var wy = 0;
+
+        for (var i in obj) {
+            var wo = obj[i];
+            if (wo.type == 2){//enemy
+                //wo.lighton = true;                
+                for (var j of wo.pick){
+                    if (j == src){
+                        onflag = true;
+                        wx = wo.x;
+                        wy = wo.y;
+                        wo.lighton = true;
+                    }
+                    if (onflag) break;
+                }
+                continue;
+            }
+            if (wo.type == 4){//item
+                //wo.lighton = true;
+                if (wo.chr == src){
+                    onflag = true;
+                    wx = wo.x;
+                    wy = wo.y;
+                    wo.lighton = true;
+                    break;
+                } 
+                continue;
+            }
+        }
+
+        state.Game.keyon = onflag;
+        state.Game.key_x = wx;
+        state.Game.key_y = wy;
+    }
+
+
 
 
     // draw ======================================
     // オブジェクトの描画
 
-    this.draw = function (wscreen) {
+    this.draw = function (wscreen, mode) {
 
+        if (!Boolean(mode)) mode = false;
+        //mode: prioritySurface
         if (!Boolean(wscreen)) wscreen = scrn;
 
         for (var i in obj) {
@@ -802,7 +848,7 @@
 
             //	o.wn = i;
 
-            if (o.visible) {
+            if (o.visible && (o.prioritySurface == mode)) {
                 
                 if (o.normal_draw_enable) {
                     if (dev.gs.in_view(o.x, o.y)){
@@ -839,7 +885,7 @@
             }
         }
 
-        if (state.Config.debug) {
+        if (state.Config.debug && mode) {
             //debug 
             wscreen.putchr8("obj:" + cdt.objectNum, 300, 16);
             wscreen.putchr8("col:" + debug_colnum/2, 300, 24);
@@ -860,6 +906,8 @@
 
         if (!Boolean(wscreen)) wscreen = scrn;
 
+        var nt = Date.now();
+
         var cl = {};
 
         cl.obj = obj;
@@ -871,7 +919,7 @@
 
                 if (o.visible) {
 
-                    if ((o.type == 1) || (o.type == 3)) continue;
+                    if ((o.type == 1) || (o.type == 3) || (o.type == 5)) continue;
 
                     if ((o.type != 98) && (!flag)) continue;
 
@@ -879,7 +927,21 @@
                         device.beginPath();
                         device.strokeStyle = this.col[o.type];
                         device.lineWidth = 2;
-                        device.rect(dev.layout.map_x + o.x / 20, dev.layout.map_y + o.y / 20, o.hit_x / 20, o.hit_y / 20);
+                        device.rect(
+                            dev.layout.map_x + o.x / 20, 
+                            dev.layout.map_y + o.y / 20,
+                            o.hit_x / 20, o.hit_y / 20);
+                        device.stroke();
+                    }
+
+                    if (o.lighton) {
+                        device.beginPath();
+                        device.strokeStyle = this.col[o.type];
+                        device.lineWidth = 1;
+                        device.arc(
+                            dev.layout.map_x + (o.x + o.hit_x/2) / 20,
+                            dev.layout.map_y + (o.y + o.hit_y/2) / 20,
+                             (nt%27)/9*2, 0, 2 * Math.PI, false);
                         device.stroke();
                     }
                 }

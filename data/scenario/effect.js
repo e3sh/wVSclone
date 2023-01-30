@@ -304,3 +304,99 @@ function sce_effect_bombExp() {
     }
 }
 
+//"search_target_item"
+
+function sce_effect_informationCursor() {
+    //存在する方向を示す（鍵(22)用)
+    //視野(画面)内にある場合は表示消す。自分が持っている場合も表示消す。見つかってない場合も表示させない。
+    //フィールドに落ちている場所または持っている敵の方向を示すようにする。
+    //-----------------------------------------------------------------------
+    this.init = function (scrn, o) {
+        o.vset(0);
+        o.type = 5; //　その他
+        o.frame = 0;
+
+        o.display_size = 2.0;
+
+        o.normal_draw_enable = false;
+        //o.custom_draw_enable = true;
+
+        o.prioritySurface = true;//UI Surfaceに表示したい。
+    }
+
+    this.move = function (scrn, o) {
+
+        if (!Boolean(o.parent)) return 1;
+        if (o.parent.status == 0) return 1;
+
+        o.x = o.parent.x + o.Cos(o.vector)*150;
+        o.y = o.parent.y + o.Sin(o.vector)*150;
+
+        if (!o.gt.in_view(o.gameState.key_x, o.gameState.key_y)){
+            if (o.gameState.keyon) o.normal_draw_enable = o.gameState.lamp; //
+        }else{
+            o.normal_draw_enable = false;
+        }
+
+        //switch (o.frame) {
+        //    case 5:
+                //
+        //        break;
+        //    case 30://0.5s毎に処理
+                o.search_target_item(22);
+                o.vector = o.target_r(o.gameState.key_x,o.gameState.key_y);
+
+                //if (!o.gt.in_view(o.gameState.key_x, o.gameState.key_y)){
+                //    if (o.gameState.keyon) o.normal_draw_enable = true;
+                //}else{
+                //    o.normal_draw_enable = false;
+                //}
+                //o.x = o.parent.x;
+                //o.y = o.parent.y;
+                //鍵
+                //o.target_r(o.gameState.key_x,o.gameState.key_y)
+                //            return -1;
+                //o.status = 0;
+        //        o.frame = 0;
+        //        break;
+        //    case 180:
+        //        break;
+        //    default:
+        //        break;
+        //};
+        o.frame++;
+
+        //if (o.frame > 30) o.alpha -= 3;
+         //   if (o.frame >= 30) o.status = 0; //return -1;
+
+        return o.sc_move();
+    }
+
+    this.draw = function (scrn, o) {
+
+        //TestStatusView
+        /*
+        scrn.putchr8("frm:" + o.frame, scrn.cw/2,scrn.ch/2);
+        scrn.putchr8("keyon:" + o.gameState.keyon, scrn.cw/2,scrn.ch/2 +8);
+        if (o.gameState.keyon){
+            scrn.putchr8("x:" + o.gameState.key_x, scrn.cw/2,scrn.ch/2 +16);
+            scrn.putchr8("y:" + o.gameState.key_y, scrn.cw/2,scrn.ch/2 +24);
+            var r = o.target_r(o.gameState.key_x,o.gameState.key_y);
+
+            scrn.putchr8("r:" + Math.trunc(r),scrn.cw/2, scrn.ch/2 +32);
+            if (!o.gt.in_view(o.gameState.key_x, o.gameState.key_y)){//物が画面内にない場合矢印表示
+                var w = o.gt.worldtoView(o.x, o.y);
+
+                scrn.put("Arrow", 
+                    w.x + o.Cos(r)*150, 
+                    w.y + o.Sin(r)*150, 
+                    0, r, 255, 2.0);
+            }                
+                //scrn.putchr8("[]"
+                // , w.x + o.Cos(r)*150
+                // , w.y + o.Sin(r)*150
+                //);
+        }
+       */
+    }
+}

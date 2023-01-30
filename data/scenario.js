@@ -764,6 +764,14 @@ function scenario() {
 
     sc_init["friend_front"] = w.init;
     sc_move["friend_front"] = w.move;
+
+    // wVSc追加分
+    //-----------------------------------------------------------------------
+    w = new sce_effect_informationCursor()
+
+    sc_init["effect_informationCursor"] = w.init;
+    sc_move["effect_informationCursor"] = w.move;
+    sc_draw["effect_informationCursor"] = w.draw;
     //=============================================================================
     //ExEvent処理用シナリオ
     //-----------------------------------------------------------------------
