@@ -88,7 +88,7 @@ function sceneGover(state) {
 
             for (var i = 0; i < this.ch; i += 4) {
                 device.beginPath();
-
+                device.lineWidth = 1;
                 device.moveTo(0, i);
                 device.lineTo(this.cw, i);
 
@@ -242,11 +242,13 @@ function sceneGover(state) {
 //                device.fillStyle = "black";
 
                 device.beginPath();
+                device.lineWidth = 8;
                 device.moveTo(0, this.y1);
                 device.lineTo(this.cw, this.y1);
                 device.stroke();
 
                 device.beginPath();
+                device.lineWidth = 8;
                 device.moveTo(0, this.y2);
                 device.lineTo(this.cw, this.y2);
                 //    device.stroke();
@@ -257,9 +259,9 @@ function sceneGover(state) {
             //work2.draw();
             //work2.reset();
 
-            wipecnt += 8;
+            wipecnt += 3;
 
-            if (work2.ch / 2 - wipecnt < 0) { return ret_code; }
+            if (wipecnt > work2.ch/2) { return ret_code; }
 
         }
 
