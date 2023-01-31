@@ -6,7 +6,7 @@
 //**************************************************************
 function deviceControl( g ){
     //document.getElementById("console").innerHTML = image(g.asset.image["BG1"]);
-    var SCREEN_PAGES = 4;
+    var SCREEN_PAGES = g.screen.length; //alert("g:"+ g.screen.length);
 
     var dsp = [];
 
@@ -17,7 +17,8 @@ function deviceControl( g ){
     //dsp[0]:Layer0 背景用(Background用） 
     //dsp[1]:Layer1 中間面(Sprite用） 
     //dsp[2]:Layer2 前景用(Forground用） 
-    //dsp[3]:Layer3 最前面(Text/Status用） 
+    //dsp[3]:Layer3 前面(Text/Status/UI用） 
+    //dsp[4]:Layer4 最前面(sceneCtrl_WipeEffect用） 
 
     dsp[0].setBackgroundcolor("black");
 

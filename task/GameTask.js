@@ -56,7 +56,7 @@ class GameTask_Debug extends GameTask {
     }
 
     draw(g){
-        const SC_NUM = 4;
+        const SC_NUM = g.screen.length;
 
         var st = "bench:sc_buffer(max)/intv/bgcolor</br>";  
  

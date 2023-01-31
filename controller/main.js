@@ -7,11 +7,12 @@ function main_r() {
 
     var sysParam = [
 	//    { canvasId: "Layer0", resolution: { w: 1920, h: 1280 } },
-		{ canvasId: "Layer0", resolution: { w: 640, h: 480 } },
-		{ canvasId: "Layer1", resolution: { w: 640, h: 480 } },
-        { canvasId: "Layer2", resolution: { w: 640, h: 480 } },
-        { canvasId: "Layer3", resolution: { w: 640, h: 480 } }
-    ]
+		{ canvasId: "Layer0", resolution: { w: 640, h: 480 } },//BGSurface
+		{ canvasId: "Layer1", resolution: { w: 640, h: 480 } },//SPSurface
+        { canvasId: "Layer2", resolution: { w: 640, h: 480 } },//FGSurface
+        { canvasId: "Layer3", resolution: { w: 640, h: 480 } },//UISurface
+        { canvasId: "Layer4", resolution: { w: 640, h: 480 } } //Effect
+	]
 
 	var game = new GameCore( sysParam );
 

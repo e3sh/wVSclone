@@ -57,7 +57,9 @@ function sceneResult(state) {
             menu[i].sel = false;
         }
 
-        wipef = false;
+        //wipef = false;
+        wipef = true;
+
         wipecnt = 2;
         ret_code = 0;
 
@@ -204,7 +206,7 @@ function sceneResult(state) {
                             if (n != 0) {
                                 wipef = true;
                                 ret_code = n;
-                                //return n;
+                                return n;
                             }
                         }
                     //return 2;
@@ -250,7 +252,7 @@ function sceneResult(state) {
             wipecnt += 3;
 
             //if (work2.ch / 2 - wipecnt < 0) { return ret_code; }
-            if (wipecnt > work2.ch/2) { return ret_code; }
+            if (wipecnt > work2.ch/2) wipef = false;//return ret_code; }
 
         }
 

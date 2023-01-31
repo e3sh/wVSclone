@@ -2,7 +2,7 @@
 function sceneControl(state) {
 //sceneが増えてきてmainがすっきりとしなくなったので分離の為作成。2011/05/04
 
-    var scrn = state.System.dev.graphics[3];//UIscreen
+    var scrn = state.System.dev.graphics[4];//Wipescreen
 
     var sceneList = [];
 
@@ -49,7 +49,7 @@ function sceneControl(state) {
 
         rc = sceneList[runscene].step();
 
-        wipeEffectCount = (wipeEffectCount > 0) ? wipeEffectCount-4 : 0;
+        wipeEffectCount = (wipeEffectCount > 0) ? wipeEffectCount-3 : 0;
     }
 
     this.draw = function(){
