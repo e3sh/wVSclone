@@ -35,6 +35,7 @@ function main_r() {
    
     //Game Task Setup
 	//game.task.add(new GameTask_ClearDisp("cldisp"));
+	//game.task.add(new GameTask_Load("load"));
 	game.task.add(new taskMainLoop("main"));
 	//game.task.add(new GameTask_FPScount("fps"));
 	//game.task.add(new GameTask_FlipDisp("fldisp"));
@@ -44,6 +45,7 @@ function main_r() {
     //document.getElementById("console").innerHTML = game.asset.check();
 	//ad.volume = 0.5;
     //ad.play();
+	//var t = game.task.read("main"); t.enable = false; t.visible = false;
 
 	game.run();
 }

@@ -22,6 +22,7 @@ div#manual_1
 	left:1px ;
 	z-index: 2;
 	color : #FFFFFF ;
+	visibility : hidden;
 }
 	
 div#manual_2 
@@ -32,6 +33,7 @@ div#manual_2
 	left:700px ;
 	z-index: 2;
 	color : #FFFFFF ;
+	visibility : hidden;
 }
 
 div#undermenu 

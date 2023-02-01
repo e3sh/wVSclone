@@ -83,3 +83,48 @@ class GameTask_Debug extends GameTask {
     }
 
 }
+
+class GameTask_Load extends GameTask {
+
+    constructor(id){
+        super(id);
+    }
+        scrn;
+        fontsc;
+
+    init(g){
+        this.scrn = g.screen[4];
+        g.font["8x8white"].useScreen(4);
+        this.fontsc =  g.font["8x8white"];
+
+    }
+
+    step(g) {
+    }
+
+    draw(g){
+        var st = g.asset.check();
+
+        var f = g.asset.image["FontGraph"].ready;
+
+        for (var i in st){
+
+            if (f){
+                this.fontsc.putchr(i + " " + st[i], 0, i*16 +16);
+            }else{
+                this.scrn.print(i + " " + st[i], 0, i*16 +16);
+            }
+        }
+        /*
+        var st = g.asset.namelist();
+        for (var i in st){
+            g.screen[4].print(i + " " + st[i] + (g.asset.image[st[i]].ready?"o":"x"), 0, i*16 +116);   
+            //img_[i].loadcheck()?"o":"x";
+            
+        }
+        */
+
+
+    }
+
+}

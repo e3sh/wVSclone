@@ -50,9 +50,15 @@ function GameAssetManager(){
 
         this.img = new Image(); 
         this.img.src = uri;
-        this.img.addEventListener("load", function (e) {
-            this.ready = true;
-        });
+        this.loadcheck= function() {
+            this.ready = this.img.complete; //alert("load "+uri);
+            return  this.img.complete;
+        }
+
+        //this.img.addEventListener("load", {ready: this.ready, handleEvent: loadcheck});
+    
+        //this.ready = this.img.ready;
+
     }
 
     //========== Audio Asset 
@@ -107,20 +113,42 @@ function GameAssetManager(){
     //==========   
     this.check = function () {
 
-        var st = "<br>";
+        var st = [];
 
         for (var i in img_) {
             var stw = img_[i].uri.split("/", 20)
-            st += i + " " + stw[stw.length-1] + " " + (img_[i].ready?"o":"x") + "<br>";
+
+            st.push( "[" + i + "] " + stw[stw.length-1] + " " + (img_[i].loadcheck()?"o":"x") );
             //img でreadyState　はIEのみの為、使用しない。
         }
 
         for (var i in snd_) {
             var stw = snd_[i].uri.split("/", 20)
-            st += i + " " + stw[stw.length - 1] + " " + (snd_[i].ready ? "o" : "x") + "<br>";
+            st.push( "[" + i + "] " + stw[stw.length - 1] + " " + (snd_[i].ready ? "o" : "x") );
         }
 
         return st;
+    }
+
+    this.namelist = function(){
+
+        var st = [];
+
+        for (var i in img_) {
+            var stw = img_[i].uri.split("/", 20)
+
+            st.push( i );
+            //img でreadyState　はIEのみの為、使用しない。
+        }
+
+        for (var i in snd_) {
+            var stw = snd_[i].uri.split("/", 20)
+            st.push( i );
+        }
+
+        return st;
+
+
     }
     //
 }
