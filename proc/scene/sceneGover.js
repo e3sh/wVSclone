@@ -16,6 +16,8 @@ function sceneGover(state) {
     this.step = scene_step;
     this.draw = scene_draw;
 
+    this.reset_enable = true;
+
     var keylock;
     var keywait = 0;
 

@@ -19,12 +19,12 @@ function sceneConfig(state) {
     this.step = scene_step;
     this.draw = scene_draw;
 
+    this.reset_enable = true;
+    this.score = 0;
+    this.config = state.Config;
+
     var keylock;
     var keywait = 0;
-
-    this.score = 0;
-
-    this.config = state.Config;
 
     var w_config = [];
     var w_number = [];

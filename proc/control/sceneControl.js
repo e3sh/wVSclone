@@ -11,21 +11,27 @@ function sceneControl(state) {
     sceneList[3] = new sceneGover(state);
     sceneList[4] = new sceneConfig(state); //state.Config.load()はここ//configをlocalstorageから復帰
     sceneList[5] = new sceneResult(state); 
+    sceneList[6] = new scenePause(state); 
 
     var wipeEffectCount; 
 
     var clRect = function(x,y,w,h){this.draw = function(device){ device.clearRect(x,y,w,h);}}
 
-
-
     for (var i in sceneList) {
         sceneList[i].init();
     }
-
     //var scene = sceneList[2];
 
-    var rc = 2; // 最初のSceneはTitle
+    const TITLERC = 2;
+
+    var rc = TITLERC; // 最初のSceneはTitle
     var runscene = rc;
+
+    function reset(){
+        for (var i in sceneList){
+            sceneList[i].reset_enable = true; 
+        }        
+    }
 
     this.step = function() {
 
@@ -38,15 +44,18 @@ function sceneControl(state) {
                 rc = rc % 10;
                 fg = true;
 
-               //次の面に行く場合に
+               //次の面に行く場合にはWipe表示(GameStartの時もやりたいかも)
                 wipeEffectCount = scrn.cw/2;
             }
-
+            
             runscene = rc;
-
-            sceneList[runscene].reset( fg );
+    
+            if (sceneList[runscene].reset_enable) {
+                if (runscene == TITLERC) reset();//TITLEに戻るときにすべてのsceneのreset_enableをtrueに戻しておく。
+                //GameSceneのPauseから復帰のステータスが残ったままになってしまい、quit後の再実行時不具合になるため。
+                sceneList[runscene].reset( fg );
+            }
         }
-
         rc = sceneList[runscene].step();
 
         wipeEffectCount = (wipeEffectCount > 0) ? wipeEffectCount-3 : 0;

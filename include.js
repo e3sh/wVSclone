@@ -65,6 +65,7 @@ var w = [
  "proc/scene/sceneGover.js",
  "proc/scene/sceneConfig.js",
  "proc/scene/sceneResult.js",
+ "proc/scene/scenePause.js",
 //処理部（状態管理）
  "proc/state/stateConfig.js",
  "proc/state/stateResult.js",

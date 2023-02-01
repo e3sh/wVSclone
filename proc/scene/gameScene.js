@@ -22,6 +22,7 @@ function gameScene(state){
 	this.step = game_step;
 	this.draw = game_draw;
 
+	this.reset_enable = true;
 	this.score = 0;
 
 	var obCtrl;// = new gObjectControl(dev.graphics1, dev);
@@ -58,7 +59,6 @@ function gameScene(state){
 
 	var fdrawcnt = 0;
 	var drawexecute = false;
-
 
 	//縮小マップ枠
 	var SubmapframeDraw = {}
@@ -240,6 +240,7 @@ function gameScene(state){
 
 	function game_step() {
 		dev.gs.commit();
+		this.reset_enable = true; // reset無しで戻ってきたときにtrueに変更
 
 		//StateGameに今の状態を反映
 		state.Game.lamp = lampf; 
@@ -272,6 +273,16 @@ function gameScene(state){
 	            mapsc.counter_runnning = false;
 
 	            dev.sound.volume(0.0);
+
+				state.Game.item = obCtrl.item;
+				state.Game.itemstack = obCtrl.itemstack;
+				state.Game.player.zanki = 2 - dead_cnt;
+
+				obCtrl.interrapt = false;
+				obCtrl.SIGNAL = 0;
+
+				this.reset_enable = false;
+				return 6;//pause
 	        }
 
 	        if (obCtrl.SIGNAL == 6055) {//boss戦に入ったのでマップシナリオカウント停止
@@ -475,6 +486,7 @@ function gameScene(state){
 	            obCtrl.move(mapsc);
 	            mapsc.step(obCtrl);
 	        } else {
+				/*
 	            //var mstate = dev.mouse_state.check_last();
 	            var kstate = dev.key_state.check();
 
@@ -526,6 +538,7 @@ function gameScene(state){
 	                dev.sound.volume(1.0);
 	            }
 	            //if (mstate.button == 1) obCtrl.interrapt = false;
+				*/
 	        }
 	    }
 		/*
@@ -859,7 +872,7 @@ function gameScene(state){
 			}
 	        work3.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
 	    }
-
+		/*
         if (obCtrl.interrapt){
 			if (obCtrl.SIGNAL == 1) {
             	work3.putchr(" == PAUSE ==", 320 - 50, 200);
@@ -871,6 +884,7 @@ function gameScene(state){
             	work3.fill(320 - 100, 200, 12 * 24, 20 * 5);
         	}
 		}
+		*/
             //work.putchr(dev.sound.info() + "." + dev.sound.running(), 320 - 50, 260);
 
         //debug　true　の場合以下表示
