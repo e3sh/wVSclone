@@ -7,16 +7,24 @@
 function sce_player() {
 
     const SHIELD_TIME = 300;
+    const TRIG_WAIT = 20;
 
     // 自機の移動　====
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
-        o.triger = 10;
-        o.shot = 0;
-        o.trigerSub = 10;
-        o.shotSub = 0;
-        o.autotrig = 10;
-        o.autoshot = 0;
+        o.triger = 10;//Zkey Lockwait Counter
+        o.shot = 0; //Zkey trig ok:0 ng:1
+        o.trigerSub = 10; //Xkey Lockwait Counter
+        o.shotSub = 0; //Xkey trig ok:0 ng:1
+        o.autotrig = 10;//AutoWeapon wait counter
+        o.autoshot = 0;//Autowapon trig ok:0 ng:1
+
+        o.jump = 0;
+        o.jpcount = 40;
+        o.jpvec = -8;
+
+        o.shiftx = 0;
+        o.shifty = 0;
 
         o.mvkeytrig = 0;        
         o.maxspeed = 6;
@@ -71,9 +79,9 @@ function sce_player() {
             o.lighton = false;
         }
 
-        o.vset(0);
+        if (o.jump == 0) o.vset(0);
         var speed = 0;
-
+        
         var upkey = false;
         var downkey = false;
         var leftkey = false;
@@ -131,7 +139,7 @@ function sce_player() {
             //if (v != o.vector) o.mvkeytrig=0;
             
             //speed = o.maxspeed;
-            o.vset(speed);
+            if (o.jump == 0) o.vset(speed);
         }else{
             o.mvkeytrig--;
             o.mvkeytrig = (o.mvkeytrig-- < 0)?0 : o.mvkeytrig;
@@ -230,7 +238,7 @@ function sce_player() {
                             o.item[20]--;
                             if (o.item[20] < 0) o.item[20] = 0;
 
-                            o.triger = 30;
+                            o.triger = TRIG_WAIT;
                         }
                         break;
 //                    case 1:
@@ -251,7 +259,7 @@ function sce_player() {
                             o.item[20]--;
                             if (o.item[20] < 0) o.item[20] = 0;
 
-                            o.triger = 30;
+                            o.triger = TRIG_WAIT;
                         }
                         break;   
                 }
@@ -301,15 +309,15 @@ function sce_player() {
                         o.set_object_ex(20, o.x, o.y, 0, 43, "+3");
                     }
 
-                    o.trigerSub = 30;
+                    o.trigerSub = TRIG_WAIT;
                 }
             }
         }
-        /*
+        
         if (ckey) { //item drop　->change　itemget　2023/1/12
-            
-            if (o.shotSub == 0) {
-                o.shotSub = 1;
+            if (o.shot == 0 && o.jump == 0) {
+                o.shot = 1;
+                /*
                 //　item　drop
 　                if (o.itemstack.length > 0) {
 
@@ -323,18 +331,34 @@ function sce_player() {
                     );
                 }
                 //o.collect2();
+                */
+                o.jump = 1;
+                o.jpcount = 40;
+                o.jpvec = -5.0;
 
-                o.trigerSub = 30;
+                o.triger = TRIG_WAIT;
             }
             
         }
-        */
 
         if (esckey) {
             if (o.shot == 0) {
                 o.shot = 1;
                 o.SIGNAL(1); //pause
-                o.triger = 30;
+                o.triger = TRIG_WAIT;
+            }
+        }
+
+        if (o.jump == 1){
+            o.autoshot = 1;
+            o.jpcount--;
+            o.shifty = o.shifty + o.jpvec;
+            o.jpvec = o.jpvec + 0.4;
+            o.prioritySurface = true;
+            if (o.shifty > 0){
+                o.jump = 0;
+                o.shifty = 0;
+                o.prioritySurface = false;
             }
         }
 
@@ -535,8 +559,8 @@ function sce_player() {
 
             var w = o.gt.worldtoView(o.x, o.y);
 
-            cl.x = w.x;
-            cl.y = w.y;
+            cl.x = w.x + o.shiftx;
+            cl.y = w.y + o.shifty;
             cl.r = 30 + o.frame % 5;
             cl.c = "rgb(" + 255 + "," + (255 - o.frame) + "," + (255 - o.frame) + ")"; 
             cl.draw = function (device) {

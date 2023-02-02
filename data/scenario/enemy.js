@@ -522,7 +522,16 @@ function sce_ememy_generator() {
             if (o.target_d(o.target.x, o.target.y) < 300) { o.lockon_flag = true; }
         }
 
+        if (o.frame > 120 && o.frame%3==0) {
+            //発生予兆
+            //o.x = o.old_x + (1 - o.frame%3)*4;
+            //o.display_size = 1.0 + (1 - o.frame%6)*0.05;
+            o.display_size = 1.0 + ((o.frame-120)/200);
+
+            if (o.frame > 160) o.display_size = 1.05 + (1 - o.frame%6)*0.05;
+        }
         if (o.frame > 180) {
+            o.display_size = 1.0;
             if (o.gencnt >= 5){ //5匹産んだら移動開始
                 o.change_sce("ememy_move_std2");
             }

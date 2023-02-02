@@ -64,6 +64,11 @@ function gObjectClass() {
     this.prioritySurface = false; //SP面以外に表示する場合に、BoolでfalseでDrawで標準面に表示しtrueで表示しない。
     //(Booleanで運用するか、表示面[数値]で運用するかは状況次第）で。ObjCtrlにDrawPs実装し、GameSceneから呼ぶ 。2023/01/30  
 
+    this.shiftx = 0; //扱い座標と表示座標をずらす場合に使用 2023/02/02
+    this.shifty = 0; //
+
+    //this.jump; this.jumpcount; //これはplayerでしか使用しないから個別でよい
+
     //角度からラジアンに変換
     function ToRadian(d) { return (d * (Math.PI / 180.0)); }
 

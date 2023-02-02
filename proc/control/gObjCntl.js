@@ -1015,8 +1015,8 @@
         o.x = x;
         o.y = y;
 
-        o.startx = x;
-        o.starty = y;
+        o.startx = x; //何に使ってる？
+        o.starty = y; //
 
         o.vector = r;
         o.chr = ch;
@@ -1153,7 +1153,10 @@
         */
 
         //if ((w.x >= 0) && (w.x <= scrn.cw) && (w.y >= 0) && (w.y <= scrn.ch)) {
-            scrn.put(ptn, w.x, w.y, wvh, wr, o.alpha, o.display_size);
+            scrn.put(ptn,
+                 w.x + o.shiftx, 
+                 w.y + o.shifty, 
+                 wvh, wr, o.alpha, o.display_size);
             //scrn.putchr("mp:"+ o.mp, w.x, w.y);
             //document.getElementById("manual_1").innerHTML += ".";
         //}

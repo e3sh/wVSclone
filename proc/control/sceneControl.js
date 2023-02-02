@@ -40,14 +40,18 @@ function sceneControl(state) {
             //wipeEffectCount = scrn.cw/2;
 
             var fg = false; // continue flag
-            if (rc >= 10) {
+            if (rc >= 10) { //resultからGameSceneへ戻るときは+10(としてContinueであることを知らせている。過去の名残。returnを
+                //状態ステータスのオブジェクト参照とかにすればスマートなのでよいが、困ってないので何か都合が悪い状況になったら修正する。)
                 rc = rc % 10;
                 fg = true;
-
-               //次の面に行く場合にはWipe表示(GameStartの時もやりたいかも)
+               //continue flag on時(次の面に行く場合)にはWipe表示
                 wipeEffectCount = scrn.cw/2;
             }
-            
+            //(GameStartの時もWipe表示)TITLE画面からGameSceneへ来た時
+            if (runscene == TITLERC && rc==1) wipeEffectCount = scrn.cw/2;
+            //移動してくるときにWipe有りなしを指定したいのでrc＝{nextscene:num,　continue:bool,　wipeview:bool}
+            //みたいに変更する？そのうちに
+
             runscene = rc;
     
             if (sceneList[runscene].reset_enable) {
