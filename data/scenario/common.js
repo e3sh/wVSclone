@@ -12,6 +12,7 @@ function sce_common_vset(num) {
 
     this.move = function (scrn, o) {
 
+        //if (o.mapCollision) o.vset(0);
         return o.sc_move();
     }
 }

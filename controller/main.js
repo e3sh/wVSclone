@@ -1,10 +1,6 @@
 ﻿// main
 function main_r() {
 
-    //ロード順が確定しなくてエラーになるから、ここでプロトタイプ宣言してます。
-    gObjectClass.prototype.sc_move = ocl_scMove;
-    //
-
     var sysParam = [
 	//    { canvasId: "Layer0", resolution: { w: 1920, h: 1280 } },
 		{ canvasId: "Layer0", resolution: { w: 640, h: 480 } },//BGSurface

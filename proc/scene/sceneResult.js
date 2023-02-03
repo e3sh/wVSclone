@@ -189,13 +189,11 @@ function sceneResult(state) {
  //       var mstate = inp.check_last();
         var kstate = keys.check();
 
-        var zkey = false;
-        if (Boolean(kstate[90])) {
-            if (kstate[90]) {//↓
-                zkey = true;
-            }
-        }
+        var zkey = false; if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
+        var xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
+        var ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
 
+        zkey = zkey || xkey || ckey; //any key
 //        if ((mstate.button == 0) && (!keylock)) {
         counter ++;
         if (counter > 30) {

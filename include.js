@@ -58,7 +58,7 @@ var w = [
  "proc/control/mapSceCntl.js",
  "proc/control/sceneControl.js",
 
- "proc/class/ocl_scmove.js",
+ //"proc/class/ocl_scmove.js",
 //処理部（それぞれの場面）
  "proc/scene/gameScene.js",
  "proc/scene/sceneTitle.js",

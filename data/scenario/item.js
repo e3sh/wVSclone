@@ -37,6 +37,8 @@ function sce_item_direct_homing() {
             default:
                 break;
         };
+        if (o.mapCollision) o.change_sce("common_vset0");
+
         o.frame++;
 
         return o.sc_move();

@@ -68,6 +68,20 @@ function gObjectClass() {
     this.shifty = 0; //
 
     //this.jump; this.jumpcount; //これはplayerでしか使用しないから個別でよい
+    this.jump = 0; //敵でも使うのでここに追加
+    this.jpvec = -5.0;
+
+    //Typeによって当たり判定/ダメージ判定をするが、//
+    //状況により個別に判定状態を切り替えられるようにフラグ管理も追加。2023/02/03
+    this.colcheck = true; //false true:当たり判定する。//対objということで地形はtypeで判定
+    this.dmgcheck = true; //false trueの場合　o.hp-o.attackする。アイテムの場合はセット時にattack0,かな
+
+    this.setType = function(type){
+        this.type = type;
+        //type （98:自機、0:味方、1:自弾、2:敵機、3:敵弾、4:アイテム、5:只の絵）
+        this.colcheck = !(type == 5);
+        this.dmgcheck = !(type == 4 || type == 5);
+    }
 
     //角度からラジアンに変換
     function ToRadian(d) { return (d * (Math.PI / 180.0)); }
@@ -82,18 +96,18 @@ gObjectClass.prototype.test = function () { return 0; }
 
 gObjectClass.prototype.reset = function () {
 
-    status = 0; //StatusValue.NoUse;
-    type = 5;   //TypeValue.Etc;
-    visible = false;
-    mp_cnt_frm = 0;
-    mp_cnt_anm = 0;
+    this.status = 0; //StatusValue.NoUse;
+    this.type = 5;   //TypeValue.Etc;
+    this.visible = false;
+    this.mp_cnt_frm = 0;
+    this.mp_cnt_anm = 0;
 
-    scenario = [];
+    this.scenario = [];
 
     this.normal_draw_enable = true;
     this.custom_draw_enable = false;
 
-    damegeflag = false;
+    this.damegeflag = false;
 }
 
 //移動物処理用の関数のデフォルト
@@ -405,3 +419,146 @@ gObjectClass.prototype.Sin = function (vec) { return Math.sin((vec - 90) * (Math
 
 // cos 0-360 ↑方向が0の数値をいれて処理する
 gObjectClass.prototype.Cos = function (vec) { return Math.cos((vec - 90) * (Math.PI / 180.0)); }
+
+gObjectClass.prototype.sc_move = function()
+{
+    var f = 0;
+    if (this.status == 2) {//状態が衝突の場合
+        switch (this.type) {//自身のタイプが...
+        case 1: //自弾
+        case 3: //敵弾
+            this.sound.effect(12); //hit音
+            this.change_sce("effect_vanish"); 
+            //↑ここで弾を消しているので削除すると弾が消えなくなる。2023/01/20消してしまってbugったので記録。
+            break;
+        case 2: //敵
+            this.display_size *= 2; //爆発を大きくする
+            this.change_sce(7);
+            this.sound.effect(8); //爆発音
+            for (var i = 0, loopend = Math.floor(Math.random() * 3) + 1; i < loopend; i++) {//Coin
+                this.set_object_ex(35, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
+            }
+            //敵が拾ったアイテムを落とす。
+            var itemf = false; 
+            for (var i = 0, loopend = this.pick.length; i < loopend; i++) {
+                var num = this.pick[i];
+                this.set_object_ex(num, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
+                if (num != 35) itemf = true;//敵がCoin以外の何かを拾っていた場合true(宝箱を出すようにする）
+            }
+            if (itemf) this.set_object_ex(40, this.x, this.y, 0, "enemy_trbox");
+            //(宝箱は敵扱いなのでドロップしたアイテムは出現した箱に即時回収)
+            this.add_score(this.score);
+            break;
+        case 4: //アイテム(敵がアイテムを取得する場合の事は考えていない。/<=拾うようにした）
+            if (Boolean(this.crash)) {
+                if (this.crash.pick_enable) {//
+                    this.change_sce(6); //拾われたので消す
+                    if (this.crash.type == 2) {//相手が敵の場合
+                        this.crash.pick.push(this.chr);
+                    } else {//自分の場合
+                        if ((this.chr != 21) && (this.chr != 22)) {//1up or Key
+                            this.sound.effect(9); //cursor音
+                        }
+                        this.get_item(this.chr);
+                    }
+                }
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+    if (this.damageflag){
+        this.damage.count = 15;
+        var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
+        if (onst) {
+            this.set_object_ex(6, this.x, this.y, this.vector, "effect_hit");
+            //this.sound.effect(12); //hit音
+        }
+    }
+    var wvec = this.vector;
+    var wvx = this.vx; var wvy = this.vy;
+
+    if (this.damage.count > 0) {
+        this.damage.count--;
+        this.vector = (this.damage.vector + 180) % 360;
+        this.vset(this.damage.dist / 10);
+    }
+
+    if (this.status == 0) f = 1; //未使用ステータスの場合は削除
+
+    // 移動処理
+    if (this.mapCollision != true) {
+        this.colcnt = 0;
+
+        this.old_x = this.x;
+        this.old_y = this.y;
+
+        this.x += this.vx;
+        this.y += this.vy;
+
+        this.vector = wvec;
+        this.vx = wvx;
+        this.vy = wvy;
+    } else {
+        if (this.colcnt == 0) {
+            this.x = this.old_x;
+            this.y = this.old_y;
+
+            switch (this.type) {//自身のタイプが...
+            case 1: //自弾
+            case 3: //敵弾
+                f = 1;
+                break;
+            default:
+                if (this.mapColX) {
+                    this.vx *= -1;
+                    this.vector = 360 - this.vector;
+                    if (this.vector < 0) this.vector = 180 + (180 + this.vector);
+                }
+                if (this.mapColY) {
+                    this.vy *= -1;
+                    this.vector = 180 + this.vector;
+                    if (this.vector > 360) this.vector = 360 + 180 - this.vector;
+                    this.vector = this.vector % 360;
+                }
+                if ((!this.mapColX) && (!this.mapColY)) {
+                    this.vx *= -1;
+                    this.vy *= -1;
+                    this.vector = (this.vector + 180) % 360;
+                }
+                break;
+            }
+        }
+        this.colcnt++;
+            
+        if (this.colcnt > 30) {
+            this.vector = this.target_r(this.startx, this.starty);
+            this.vset(1);
+
+            this.x += this.vx ;// * (this.colcount - 30);
+            this.y += this.vy; //* (this.colcount - 30);
+        }
+    }
+    if (this.x < 0 || this.x > this.gt.ww) { f = 2; }
+    if (this.y < 0 || this.y > this.gt.wh) { f = 2; }
+
+    if (f != 0) {
+        if (f == 2) this.reset_combo(this.type);
+        return -1; //0以外を返すと削除される。
+    };
+    /*    
+    if (this.colcnt > 60) {
+        if (Boolean(this.crash)) {
+               //この場合は物に当たっているはず(味方同士とか）
+            this.crash.mapCollision = false;
+        } else {
+            this.colcnt =  Math.floor(Math.random() * 60)
+        }
+    }
+    */
+    this.damageflag = false;
+
+    return 0;
+}

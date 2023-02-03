@@ -334,7 +334,8 @@ function sce_player() {
                 */
                 o.jump = 1;
                 o.jpcount = 40;
-                o.jpvec = -5.0;
+                o.jpvec = -6.0;
+                o.colcheck = false;
 
                 o.triger = TRIG_WAIT;
             }
@@ -359,6 +360,7 @@ function sce_player() {
                 o.jump = 0;
                 o.shifty = 0;
                 o.prioritySurface = false;
+                o.colcheck = true;
             }
         }
 
@@ -488,7 +490,7 @@ function sce_player() {
         o.vx = wvx;
         o.vy = wvy;
 
-        if (o.doorflag) {
+        if (o.doorflag && o.jump == 0) {
             if (keyget > 0) {
                 o.item[22] = 0;
 
@@ -497,10 +499,8 @@ function sce_player() {
                 o.SIGNAL(835);
                 //    o.hp = 10;
             }
-
             o.doorflag = false;
-        }
-
+        }else{ o.doorflag = false; }
 
         var f = 0;
 
@@ -538,6 +538,8 @@ function sce_player() {
             o.sound.play(5);
 
             o.bomb4(33); //timeoverキャラのステータスを0にする。
+
+            
         }
 
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除

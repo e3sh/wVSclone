@@ -168,7 +168,7 @@ function sceneGover(state) {
         //進行
         wtxt = [];
 
-        var mstate = inp.check_last();
+        //var mstate = inp.check_last();
         var kstate = keys.check();
 
         var zkey = false;
@@ -193,16 +193,24 @@ function sceneGover(state) {
             }
 
             var zkey = false;
+            /*
             if (Boolean(kstate[90])) {
                 if (kstate[90]) {//↓
                     zkey = true;
                 }
             }
+            */
             if (Boolean(kstate[32])) {
                 if (kstate[32]) {//↓
                     zkey = true;
                 }
             }
+
+            var zkey = false; if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
+            var xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
+            var ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
+    
+            zkey = zkey || xkey || ckey; //any key
 
             if (keylock) {
                 dev.sound.effect(9);

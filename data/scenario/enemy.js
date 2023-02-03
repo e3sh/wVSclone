@@ -240,6 +240,44 @@ function sce_ememy_randomshot() {
                 o.pickviewitem = f;
             }    
         }
+
+        if (o.jump == 1 ) {
+            o.shifty = o.shifty + o.jpvec;
+            o.jpvec = o.jpvec + 0.4;
+            o.prioritySurface = true;
+
+            o.mapCollision = false;
+            if (o.shifty > 0){
+                o.jump = 0;
+                o.shifty = 0;
+                o.prioritySurface = false;
+                o.colcheck = true;
+
+                o.vset(2);
+                o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+
+                o.wmapc = false;
+            }            
+            return o.sc_move();
+        }
+        if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
+
+        if (o.mapCollision) {
+            if (o.colcnt > 1) {//連続衝突するとジャンプして回避してみる
+                o.wmapc = true;
+                speed = 2;
+
+                o.jump = 1;
+                o.jpvec = -6.0;
+                o.colcheck = false;
+
+                o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+                o.vset(speed);
+                //o.wmapc = true;
+            } else { 
+                o.colcheck = true;
+            }
+        }
         return o.sc_move();
     }
 }
@@ -257,6 +295,26 @@ function sce_ememy_move_std(){
     this.move = function (scrn, o) {
         o.frame++;
 
+        if (o.jump == 1 ) {
+            o.shifty = o.shifty + o.jpvec;
+            o.jpvec = o.jpvec + 0.4;
+            o.prioritySurface = true;
+
+            o.mapCollision = false;
+            if (o.shifty > 0){
+                o.jump = 0;
+                o.shifty = 0;
+                o.prioritySurface = false;
+                o.colcheck = true;
+
+                o.vset(2);
+                o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+
+                o.wmapc = false;
+            }            
+            return o.sc_move();
+        }
+
         if (o.wmapc) {
             var v = (Math.floor(Math.random() * 2) == 0) ? 1 : 3;
             //o.vector = v;
@@ -268,14 +326,26 @@ function sce_ememy_move_std(){
 
             o.vset(2);
 
-            o.colcnt = 0;
+            //o.colcnt = 0;
         }
 
         if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
 
         if (o.mapCollision) {
-            o.colcnt++;
-            if (o.colcnt > 10) o.wmapc = true;
+            if (o.colcnt > 1) {//連続衝突するとジャンプして回避してみる
+                o.wmapc = true;
+                speed = 2;
+
+                o.jump = 1;
+                o.jpvec = -6.0;
+                o.colcheck = false;
+
+                o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+                o.vset(speed);
+                //o.wmapc = true;
+            } else { 
+                o.colcheck = true;
+            }
         }
 
         /*
@@ -298,7 +368,9 @@ function sce_ememy_move_std2() {
         o.wmapc = false; //衝突連続状態
         o.colcnt = 0;  //衝突状態カウント
         o.lockon_flag = false; //追跡状態
-        o.growf = true; //出現した状態　20flameでfalse
+        //o.growf = true; //出現した状態　20flameでfalse
+
+        o.colcheck = true;
 
         o.get_target(98);
 
@@ -308,8 +380,14 @@ function sce_ememy_move_std2() {
        o.weapongetf = false;
        o.weapontype = 0;
 
-        o.mvkeytrig = 0;        
-        o.maxspeed = 2;
+       o.jump = 0;
+       o.jpvec = -5.0;
+
+       o.shiftx = 0;
+       o.shifty = 0;
+
+       o.mvkeytrig = 0;        
+       o.maxspeed = 2;
 
        o.pickgetf = false; //何か持っているか?
        o.pickviewitem = 0;
@@ -324,13 +402,28 @@ function sce_ememy_move_std2() {
     this.move = function (scrn, o) {
         o.frame++;
 
-        var speed = 0;
+        if (o.jump == 1 ) {
+            o.shifty = o.shifty + o.jpvec;
+            o.jpvec = o.jpvec + 0.4;
+            o.prioritySurface = true;
+            if (o.shifty > 0){
+                o.jump = 0;
+                o.shifty = 0;
+                o.prioritySurface = false;
+                o.colcheck = true;
 
-        if (o.growf) {
-            if (o.mapCollision) o.mapCollision = false; ;
+                o.wmapc = false;
+            }            
+            return o.sc_move();
         }
 
-        if (Boolean(o.target)) {　//target(自機が存在している場合)一定距離だとロックオン
+        var speed = 0;
+
+        //if (o.growf) {
+        //    if (o.mapCollision) o.mapCollision = false; ;
+        //}
+
+        if (Boolean(o.target)) {//target(自機が存在している場合)一定距離だとロックオン
         //    if (o.target_d(o.target.x, o.target.y) < 300) { o.lockon_flag = true; }  
             o.lockon_flag = (o.target_d(o.target.x, o.target.y) < 240)? true :false ; 
         }
@@ -364,15 +457,31 @@ function sce_ememy_move_std2() {
             o.wmapc = false;
 
             //o.colcnt = 0;
+        }else{
+            //o.vset(maxspeed);
         }
 
         if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
 
         if (o.mapCollision) {
-            o.colcnt++;
-            if (o.colcnt > 30) o.wmapc = true;
-            //o.wmapc = true;
-        } else { o.colcnt = 0;}
+            //o.colcnt++;
+            if (o.colcnt > 1) {//連続衝突するとジャンプして回避してみる
+                o.wmapc = true;
+                speed = o.maxspeed;
+
+                o.jump = 1;
+                o.jpvec = -6.0;
+                o.colcheck = false;
+
+                o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+                o.vset(speed);
+                //o.wmapc = true;
+            } else { 
+                o.colcheck = true;
+            }
+        }else{
+            //o.colcnt = 0;
+        }
 
         o.autotrig--;
         if (o.autotrig <= 0) {
@@ -413,7 +522,6 @@ function sce_ememy_move_std2() {
             if (o.lockon_flag) {
                 o.target_rotate_r(120);//45);
             }
-
             o.vset(speed);
 
             o.frame = 0;
@@ -431,8 +539,7 @@ function sce_ememy_move_std2() {
                     o.weapontype = wt;
                 }
             }                
-
-            o.growf = false;
+            //o.growf = false;
         }
         /*
         if (o.growf){
@@ -481,17 +588,19 @@ function sce_ememy_move_gen_grow(){
         o.vset(2);
         o.get_target(98);
         o.display_size = 0.3;
+        o.colcheck = false;
     }
 
     this.move = function (scrn, o) {
         o.frame++;
-        o.mapCollision = false; ;
+        //o.mapCollision = false; ;
 
         if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
 
         o.display_size = 0.3 + (0.7 * (o.frame / 20));
         
         if (o.frame > 20) {
+            o.colcheck = true;
             o.change_sce("ememy_move_std2"); //出現完了でシナリオを通常に変更
         }
 
@@ -508,8 +617,8 @@ function sce_ememy_generator() {
         o.gencnt = 0;
         o.lockon_flag = false;
         o.mp = 31; //絵だけ青ウニュウに
-        o.hit_x = 8;
-        o.hit_y = 8;
+        //o.hit_x = 8;　//重なり対策で当たり判定を小さく
+        //o.hit_y = 8;
 
         o.get_target(98);
         o.hp = 18;
@@ -561,6 +670,7 @@ function sce_enemy_trbox() {
 
         o.vset(0);
 
+        o.colcheck = true;
         o.attack = 0;//宝箱から攻撃くらったら困るので0
     }
 

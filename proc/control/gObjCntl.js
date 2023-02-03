@@ -143,7 +143,8 @@
 
             if (!onst) {
                 if ((o.type == 1) || (o.type == 3)) {
-                    o.status = 0; //画面外から弾が飛んでこないようにする処理(飛んできたら難しすぎたので）
+                    //o.status = 0; //画面外から弾が飛んでこないようにする処理(飛んできたら難しすぎたので）
+                    //↑コメントアウトしていると画面外から弾が来るようになる。
                 }
             }
 
@@ -171,7 +172,7 @@
             //o.mouse_state = mstate;
             o.key_state = kstate;
 
-            if (o.move(scrn, o, mapsc) != 0) {
+            if (o.move(scrn, o, mapsc) != 0) {//戻り値0がNormalEnd‗/Normal以外はコリジョンリストに載せない。
                 o.colitem && o.colitem.remove();
                 o.colitem = null;
                 delete obj[i];
@@ -390,6 +391,8 @@
 
                 if (flag == 0) continue;
 
+                if (!(o.colcheck && e.colcheck)) continue;//両方とも衝突チェック有りの場合に処理
+
                 if ((Math.abs(o.x - e.x) < (o.hit_x + e.hit_x) / 2) && (Math.abs(o.y - e.y) < (o.hit_y + e.hit_y) / 2)) {
 
                     o.status = 2;
@@ -509,11 +512,14 @@
 
                         var whp = o.hp;
 
-                        if (o.type == 4) o.hp = 0; //item取得の場合はhp減少が発生しないようにする。
+                        //if (o.type == 4) o.hp = 0; //item取得の場合はhp減少が発生しないようにする。
                         //(アイテムに当たり判定があるのは自分と友軍なので取得の判定はアイテムが衝突死したところで行う)
+                        //hpが攻撃力ではなくなっているのではないかと思うので不要？ダメージ有りアイテムは個別にdmgcheckをtrueに
+                        //すればよいかも
 
                         if (o.type != o.crash.type) {
-                            if (o.crash.type != 4) o.hp -= o.crash.attack; // ((o.crash.hp > 0) ? o.crash.hp : 1);
+                            //if (o.crash.type != 4) o.hp -= o.crash.attack; // ((o.crash.hp > 0) ? o.crash.hp : 1);
+                            if (o.crash.dmgcheck) o.hp -= o.crash.attack; // ((o.crash.hp > 0) ? o.crash.hp : 1);
                         } else {
                             o.mapCollision = true; // whp = -1; //同じtype同士が衝突した場合はダメージ発生無しの衝突処理のみ
                         }
@@ -530,6 +536,9 @@
                             }
                             o.crash = null;
                         } else {
+                            if (o.type == 98){
+                                state.Game.player.hp = o.hp;
+                            }
                             if (o.type == 2) {
                                 //this.combo_sub(2);
                             }
@@ -550,6 +559,7 @@
 
         if (f == 0) {
             restart_count++;
+            //state.Game.player.hp = 0;
 
             if (restart_count > 180) {//3秒後
                 before_int = this.interrapt;
@@ -1025,7 +1035,8 @@
         o.mp = ch_ptn[ch].mp;
         o.hp = ch_ptn[ch].hp;
         o.maxhp = o.hp;
-        o.type = ch_ptn[ch].type;
+        //o.type = ch_ptn[ch].type; 
+        o.setType( ch_ptn[ch].type );
         o.center_x = ch_ptn[ch].center_x;
         o.center_y = ch_ptn[ch].center_y;
         o.hit_x = ch_ptn[ch].size_x;
