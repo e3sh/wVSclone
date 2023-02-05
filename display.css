@@ -57,12 +57,32 @@ div#console
 
 canvas
 {
-	width : 1024px;
-	height :768px;
 	top :0px ;
 	left:0px ;
 	position : absolute;
 }
+@media (max-width : 599px){
+	canvas
+	{
+		width : 320px;
+		height :240px;
+	}
+}
+@media (min-width : 600px)and(max-width : 1024px){
+	canvas
+	{
+		width : 640px;
+		height :480px;
+	}
+}
+@media (min-width : 1025px){
+	canvas
+	{
+		width : 1024px;
+		height :768px;
+	}
+}
+
 /*
 canvas#Layer1
 {
