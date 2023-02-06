@@ -76,8 +76,8 @@ function sceneTitle(state) {
         //↑drawまでしないと、Canvasには反映しません。
 
         //dev.graphics[3].clear();
-        document.getElementById("manual_1").style.visibility =  'visible';
-        document.getElementById("manual_2").style.visibility =  'visible';
+        //document.getElementById("manual_1").style.visibility =  'visible';
+        //document.getElementById("manual_2").style.visibility =  'visible';
 
         for (var i in menu) {
             menu[i].sel=false;
@@ -200,8 +200,8 @@ function sceneTitle(state) {
                     //dev.sound.change(0);
                     //dev.sound.play(0);
                     if (n != 0) {
-                        document.getElementById("manual_1").style.visibility =  'hidden';
-                        document.getElementById("manual_2").style.visibility =  'hidden';
+                        //document.getElementById("manual_1").style.visibility =  'hidden';
+                        //document.getElementById("manual_2").style.visibility =  'hidden';
                         wipef = true;
                         ret_code = n;
                         //return n;

@@ -38,17 +38,12 @@ div#manual_2
 
 div#undermenu 
 {
-	width : 1020px;
 	height :72px;
-	top :768px ;
 	left:0px ;
 }
 
 div#console 
 {
-	width : 640px;
-	height :160px;
-	top :600px ;
 	left:0px ;
 	z-index: 2;
 	color : #FFFFFF ;
@@ -67,13 +62,39 @@ canvas
 		width : 320px;
 		height :240px;
 	}
+	div#undermenu 
+	{
+		width : 316px;
+		top :240px ;
+	}
+	div#console 
+	{
+		width : 320px;
+		height :160px;
+		top :80px ;
+	}
+
 }
-@media (min-width : 600px)and(max-width : 1024px){
+@media (min-width : 600px){
 	canvas
 	{
 		width : 640px;
 		height :480px;
 	}
+
+	div#undermenu 
+	{
+		width : 636px;
+		top :480px ;
+	}
+
+	div#console 
+	{
+		width : 640px;
+		height :160px;
+		top :320px ;
+	}
+
 }
 @media (min-width : 1025px){
 	canvas
@@ -81,7 +102,21 @@ canvas
 		width : 1024px;
 		height :768px;
 	}
+
+	div#undermenu 
+	{
+		width : 1020px;
+		top :768px ;
+	}
+
+	div#console 
+	{
+		width : 640px;
+		height :160px;
+		top :600px ;
+	}
 }
+
 
 /*
 canvas#Layer1
