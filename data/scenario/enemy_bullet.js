@@ -11,8 +11,9 @@ function sce_en_bullet_homing(flag) {
         o.get_target(98);
         o.lifecount = 0;
 
+        //o.mp = 45;
         //o.cancelcol = flag;
-        o.cancelcol = true;
+        o.cancelcol = false;
         //o.display_size = 2.0;
     }
 

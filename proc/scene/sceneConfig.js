@@ -44,7 +44,6 @@ function sceneConfig(state) {
     //
     function btn() {
 
-        //
         this.title = "button"; //button title
         this.x = 0;
         this.y = 0;
@@ -104,8 +103,11 @@ function sceneConfig(state) {
 
             for (var j = 0; j < 2; j++) {
                 m = new btn();
-                m.setup((j == 0) ? "  On" : "  Off",
-                x + 160 + 80 * j, y, 80, 16);
+                m.setup(
+                    (j == 0) ? "  On" : "  Off",
+                    x + 160 + 80 * j, 
+                    y, 80, 16
+                    );
                 m.msg = msg + ((j == 0) ? "有効" : "無効");
                 m.sw = (j == 0) ? true : false;
                 m.num = num;
@@ -136,10 +138,15 @@ function sceneConfig(state) {
                     keylock = true;
                     bl[2].click = false;
                 }
-                text.reset();    
+
+                var restxt =  (bl[1].select || bl[2].select) ?"-":((res) ? "有効" : "無効");
+
+                //text.reset();    
                 text.clear();
-                text.print(tmes, tmsx, tmsy, "white");
+                text.print(tmes + restxt, tmsx+2, tmsy+1, "black");
+                text.print(tmes + restxt, tmsx, tmsy, "white");
                 text.draw();
+                text.reset();
             }
 
             if (res) {
@@ -149,6 +156,9 @@ function sceneConfig(state) {
                 bl[1].lamp = false;
                 bl[2].lamp = true;
             }
+
+
+
             return res;
         }
     }
@@ -228,12 +238,13 @@ function sceneConfig(state) {
 
                     bl[0].title = ts + res;
 
-                    //text.clear();
                     //text.reset();
+                    text.clear();
+                    text.print(tmes + res, tmsx+2, tmsy+1, "black");
                     text.print(tmes + res, tmsx, tmsy, "white");
-                    //text.draw();
+                    text.draw();
+                    text.reset();
                 }
-
                 //     bl[1].lamp = false;
                 //    bl[2].lamp = false;
 
@@ -242,26 +253,26 @@ function sceneConfig(state) {
     }
 
     var menu = []
-    var mttl = ["LampUse.", "MapUse.", "ItemReset.", "ShotFree.", "SoundTest.", "StartStage."];
+    var mttl = ["LampUse.", "MapUse.", "ItemReset.", "ShotFree.", "SoundTest.", "StartStage.", "DebugStatus", "BulletErace"];
     var w_message = ["面の開始からランプを所持する:  ", "面の開始から地図を所持する: ",
-	"死んだときにアイテム放出する: ", "弾を消費しない。:", "サウンドテスト : ", "開始面 : "];
-    var mtyp = [0, 0, 0, 0, 1, 1];//menu type 0:select 1:number
+	"死んだときにアイテム放出する: ", "弾を消費しない。:", "サウンドテスト : ", "開始面 : ", "デバッグステータス表示:", "画面外からの弾を消す:"];
+    var mtyp = [0, 0, 0, 0, 1, 1, 0, 0];//menu type 0:select 1:number
 
     w_number[5] = 1; //開始面初期値
 
     var confmenu = [];
 
     var menu_x = 60;
-    var menu_y = 180;
+    var menu_y = 148;
 
     for (var i = 0; i < mttl.length ; i++) {
 
         if (mtyp[i] == 0) {
             var wcm = new sel_menu();
-            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 100, 320);
+            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 100, 336);
         } else {
             var wcm = new sel_number();
-            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 100, 320);
+            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 100, 336);
         }
 
         confmenu.push(wcm);
@@ -296,11 +307,6 @@ function sceneConfig(state) {
     };
     menu.push(m);
 
-    //var cur_cnt;
-
-    //var tsel = new Number(0.0);
-
-
     //処理部
     function scene_init() {
         state.Config.reset();
@@ -312,11 +318,11 @@ function sceneConfig(state) {
         w_config[3] = state.Config.shotfree;
         w_config[4] = false;
         w_config[5] = false;
+        w_config[6] = state.Config.debug;
+        w_config[7] = state.Config.bulletmode;
 
         w_number[4] = 0;
         w_number[5] = state.Config.startstage;
-
-        //        tsel = 0.0;
 
         //初期化処理
     }
@@ -334,7 +340,6 @@ function sceneConfig(state) {
         wipef = false;
         wipecnt = 0;
         cur_cnt = 0;
-
 
         work2.setBackgroundcolor("darkblue");
         work2.reset();
@@ -428,6 +433,9 @@ function sceneConfig(state) {
                     if (menusel < 0) menusel = menu.length - 1;
                     keylock = true;
                     keywait = 10;
+                    text.clear();
+                    text.draw();
+                    text.reset();
                 }
             }
 
@@ -442,6 +450,9 @@ function sceneConfig(state) {
                     if (menusel > menu.length- 1) menusel = 0;
                     keylock = true;
                     keywait = 10
+                    text.clear();
+                    text.draw();
+                    text.reset();
                 }
             }
 
@@ -490,19 +501,7 @@ function sceneConfig(state) {
         if ((!zkey) && (keywait == 0)) keylock = false;
 
         //if (mstate.button == -1) keylock = false;
-/*
-        var wi = -1;
-        for (i in menu) {
-            if ((mstate.x >= menu[i].x) && (mstate.x <= menu[i].x + menu[i].w)
-                && (mstate.y >= menu[i].y) && (mstate.y <= menu[i].y + menu[i].h)) {
 
-                menu[i].select = true;
-                wi = i;
-            } else {
-                menu[i].select = false;
-            }
-        }
-*/
         var wi = -1;
         var wmesel = menusel;
 
@@ -530,27 +529,9 @@ function sceneConfig(state) {
                 menu[n].select = true;
             }
         }
-/*
-        for (i in confmenu) {
-            for (j in confmenu[i].button) {
-                var w = confmenu[i].button[j];
 
-                if ((mstate.x >= w.x) && (mstate.x <= w.x + w.w)
-                && (mstate.y >= w.y) && (mstate.y <= w.y + w.h)) {
-
-                    w.select = true;
-                    wi = i;
-                } else {
-                    w.select = false;
-                }
-            }
-        }
-*/
         wtxt.push("== Configration ==");
         wtxt.push("-----------------%");
-        //        wtxt.push("menu:" + wi);
-
-        //        wtxt.push("Push rMouse Button to Start");
 
         for (i in confmenu) {
             w_config[i] = confmenu[i].result();
@@ -561,35 +542,14 @@ function sceneConfig(state) {
             }
         }
 
-/*
-        for (i in w_config) {
-            if (w_config[i]) {
-                menu[i * 3 + 1].lamp = true;
-                menu[i * 3 + 2].lamp = false;
-            } else {
-                menu[i * 3 + 1].lamp = false;
-                menu[i * 3 + 2].lamp = true;
-            }
-        }
-*/
-//
-/*
-        for (i in w_number) {
-            if (Boolean(w_number[i])) {
-                if (w_number[i] != before_wn[i]) {
-                    menu[i * 3 + 1].lamp = false;
-                    menu[i * 3 + 2].lamp = false;
-                    menu[i * 3 + 1].sel = false;
-                    menu[i * 3 + 2].sel = false;
-                }
-            }
-        }
-*/
-//===================
+        //===================
         state.Config.lamp_use = w_config[0];
         state.Config.map_use = w_config[1];
         state.Config.itemreset = w_config[2];
         state.Config.shotfree = w_config[3];
+        state.Config.debug = w_config[6];
+        state.Config.bulletmode = w_config[7];
+
 
         if (!Boolean(sndtst)) sndtst = w_number[4];
 
@@ -613,33 +573,31 @@ function sceneConfig(state) {
             w_config[3] = state.Config.shotfree;
             w_config[4] = false;
             w_config[5] = false;
+            w_config[6] = state.Config.debug;
+            w_config[7] = state.Config.bulletmode;
 
             w_number[4] = 0;
             w_number[5] = state.Config.startstage;
-            
-            /*         
-            w_config[0] = false;
-            w_config[1] = false;
-            w_config[2] = true;
-            w_config[3] = false;
-            w_config[4] = false;
-            w_config[5] = false;
 
-            w_number[5] = 1;
-            */
-
-            text.reset();
             text.clear();
+
+            text.print("設定初期化しました。", 102, 321, "black");
             text.print("設定初期化しました。", 100, 320, "white");
 
             if (Boolean(localStorage)) {
                 localStorage.clear();
+                text.print("ローカルストレージクリア。", 102, 341, "black");
                 text.print("ローカルストレージクリア。", 100, 340, "white");
+
             } else {
                 text.print("ローカルストレージが使用できない?"
+                        , 102, 341, "black");
+                text.print("ローカルストレージが使用できない?"
                         , 100, 340, "white");
+
             }
             text.draw();
+            text.reset();
 
             for (var i = 0; i < mtyp.length; i++) {
 
@@ -649,7 +607,6 @@ function sceneConfig(state) {
                 } else {
                     var wcm = new sel_number();
                     confmenu[i].set(w_number[i]);
-                   
                 }
             }
 
@@ -657,36 +614,25 @@ function sceneConfig(state) {
         }
 
         if (save_on) {
-
-            //text.clear();
-            //text.reset();
-
+            text.clear();
+        
             if (state.Config.save() == 0) {
                 text.print("設定をセーブしました。"//this.msg + localStorage.length
+            , 102, 321, "black");
+                text.print("設定をセーブしました。"
             , 100, 320, "white");
+
+
             } else {
+                text.print("ローカルストレージが使用できない?"
+                        , 102, 321, "black");
                 text.print("ローカルストレージが使用できない?"
                         , 100, 320, "white");
 
             }
-
-            /*
-            if (Boolean(localStorage)) {
-                localStorage.setItem("fullpower", (this.config.fullpower) ? "on" : "off");
-                localStorage.setItem("sideshot", (this.config.sideshot) ? "on" : "off");
-                localStorage.setItem("itemreset", (this.config.itemreset) ? "on" : "off");
-                localStorage.setItem("option", (this.config.option) ? "on" : "off");
-                localStorage.setItem("startstage", new String(this.config.startstage));
-  //              localStorage.setItem("highscore", new String(this.result.highscore));
-                text.print("設定をセーブしました。"//this.msg + localStorage.length
-                , 100, 320, "white");
-            } else {
-                text.print("ローカルストレージが使用できない?"
-                        , 100, 320, "white");
-            }
-            */
-            //text.draw();
-
+            text.draw();
+            text.reset();
+            
             save_on = false;
         }
         return 0;

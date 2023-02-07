@@ -24,15 +24,20 @@ class taskMainLoop extends GameTask {
     }
    
     pre = function (g) {
-        this.state.Config.debug = this.elm_dbg.checked;
-        this.state.Config.lamp_use = this.elm_lamp.checked; 
-        this.state.Config.map_use = this.elm_map.checked;
+        this.elm_dbg.checked = this.state.Config.debug;
+        this.elm_lamp.checked = this.state.Config.lamp_use; 
+        this.elm_map.checked = this.state.Config.map_use;
+        this.elm_dbg.checked = this.state.Config.debug; 
+
+        //this.state.Config.debug = this.elm_dbg.checked;
+        //this.state.Config.lamp_use = this.elm_lamp.checked; 
+        //this.state.Config.map_use = this.elm_map.checked;
     }
 
     step = function (g) {
         if (this.elm_dbg.checked != this.state.Config.debug) {
-            this.state.Config.debug = this.elm_dbg.checked; 
-            this.elm_divcnsl.style.visibility =  (this.elm_dbg.checked) ? 'visible' : 'hidden';
+            this.state.Config.debug = this.elm_dbg.checked ; 
+            //this.elm_divcnsl.style.visibility =  (this.elm_dbg.checked ) ? 'visible' : 'hidden';
         };
         if (this.elm_lamp.checked != this.state.Config.lamp_use){ 
             this.state.Config.lamp_use = this.elm_lamp.checked; 
@@ -42,6 +47,7 @@ class taskMainLoop extends GameTask {
             this.state.Config.map_use = this.elm_map.checked; 
         }
         this.scene.step();
+
     }
 
     draw = function (g) {

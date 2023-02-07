@@ -51,6 +51,9 @@ class GameTask_Debug extends GameTask {
     constructor(id){
         super(id);
     }
+    init(g){
+        g.font["8x8white"].useScreen(3);
+    }
 
     step(g) {
     }
@@ -80,8 +83,33 @@ class GameTask_Debug extends GameTask {
         + Math.trunc((r.workload.ave / r.interval.ave)*100) + "%</br>";
 
         document.getElementById("console").innerHTML = st;
-    }
 
+        if (g.state.Config.debug){
+            var sl = [];
+
+            sl.push("bench:sc_buffer(max)/intv/bgcolor)");  
+            st = "";
+            for (var i=0 ; i < SC_NUM ;i++){
+            st += "sc[" + i + "]" 
+            + g.screen[i].count() + "/" 
+            + g.screen[i].getInterval() + "/" 
+            + g.screen[i].getBackgroundcolor()
+            + ",";
+            }
+            sl.push(st);
+
+            var r = g.fpsload.result();
+
+            sl.push("fps:" + r.fps);
+            sl.push("intv.ave:(" + r.interval.ave + "ms) load.ave:(" + r.workload.ave + "ms)");
+            sl.push("workload:"+ Math.trunc((r.workload.ave / r.interval.ave)*100) + "%");
+
+            g.font["8x8white"].useScreen(3);
+            for(var i=0; i < sl.length; i++){
+                g.font["8x8white"].putchr(sl[i], 0, 400+ i*8);
+            }
+        }
+    }
 }
 
 class GameTask_Load extends GameTask {

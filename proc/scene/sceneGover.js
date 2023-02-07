@@ -69,7 +69,7 @@ function sceneGover(state) {
             menu[i].sel = false;
         }
 
-        wipef = false;
+        wipef = true;//false;
         wipecnt = 2;
         ret_code = 0;
 
@@ -81,12 +81,6 @@ function sceneGover(state) {
         o.ch = work2.ch;
 
         o.draw = function (device) {
-            /*
-            var imgdt = device.getImageData(0, 0, this.cw, this.ch);
-            convert_image_to_gray_scale(imgdt.data);
-
-            device.putImageData(imgdt, 0, 0);
-            */
 
             for (var i = 0; i < this.ch; i += 4) {
                 device.beginPath();
@@ -106,53 +100,6 @@ function sceneGover(state) {
         work2.setInterval(0);//<-dev.g2　FG
         work2.putFunc(o);
         work2.draw();
-/*
-        var wsc = state.Result.score;
-        var wd = [];
-        var wt = "";
-
-        for (i = 0; i < 7; i++) {
-            var num = wsc % 10;
-            wd[7 - i] = num;
-            wsc = (wsc - num) / 10;
-        }
-
-        for (i in wd) {
-            wt = wt + "" + wd[i];
-        }
-        work2.putchr("Score:" + wt, dev.layout.score_x, dev.layout.score_y);
-
-        wsc = state.Result.highscore;
-        wd = [];
-        wt = "";
-
-        for (i = 0; i < 7; i++) {
-            var num = wsc % 10;
-            wd[7 - i] = num;
-            wsc = (wsc - num) / 10;
-        }
-
-        for (i in wd) {
-            wt = wt + "" + wd[i];
-        }
-        work2.putchr("Hi-Sc:" + wt, dev.layout.hiscore_x, dev.layout.hiscore_y);
-*/
-/*
-        var wtxt = [];
-
-        for (i in this.result.item) {
-            wtxt.push("item[" + i + "]:" + this.result.item[i]);
-        }
-
-        for (i in this.result.combo) {
-            wtxt.push("combo[" + i + "]:" + this.result.combo[i]);
-        }
-        for (var s in wtxt) {
-            work2.putchr8(wtxt[s], 300, 16 + 8 * s);
-        }
-*/
-        //work2.draw();
-        //work2.reset();
 
         state.Game.cold = true;
 
@@ -217,18 +164,18 @@ function sceneGover(state) {
             }
         }
 //        if ((mstate.button == 0) && (!keylock)) {
-        if ((zkey) && (!keylock)) {
+        if ((zkey)&&(!keylock)) {
             for (var i in menu) {
 
                 if (menu[i].sel) {
                     var n = menu[i].func();
                     if (n != 0) {
-                        //                       wipef = true;
-                        //                       ret_code = n;
+                        //wipef = true;
+                        ret_code = n;
                         return n;
                     }
                 }
-                //            return 2;
+        //return 2;
             }
         }
 
@@ -243,8 +190,8 @@ function sceneGover(state) {
 
             o.cw = work2.cw;
             o.ch = work2.ch;
-            o.y1 = work2.ch/2 - wipecnt
-            o.y2 = work2.ch / 2 + wipecnt
+            o.y1 = wipecnt + 1;
+            o.y2 = work2.ch - wipecnt - 2;
 
             o.draw = function (device) {
 
@@ -266,13 +213,13 @@ function sceneGover(state) {
             }
             work2.putFunc(o);
 
-            //work2.draw();
-            //work2.reset();
+            work2.draw();
+            work2.reset();
 
             wipecnt += 3;
 
-            if (wipecnt > work2.ch/2) { return ret_code; }
-
+            //if (work2.ch / 2 - wipecnt < 0) { return ret_code; }
+            if (wipecnt > work2.ch/3) wipef = false;//return ret_code; }
         }
 
         for (i in menu) {
@@ -338,6 +285,18 @@ function sceneGover(state) {
         }
 
         for (var s in wtxt) {
+            var o = {}
+            o.x = 320-72;
+            o.y = 132 + 16 * s;
+            o.w = 12 * wtxt[i].length;
+            o.h = 16;
+            o.draw = function (device) {
+                device.beginPath();
+                device.fillStyle = "navy";
+                device.fillRect(this.x, this.y, this.w, this.h);
+            }
+            work.putFunc(o);
+
             work.putchr(wtxt[s], 320-72, 132 + 16 * s);
             //			work.putchr8(wtxt[s],0,0 + 8*s);
             //		        work.print(wtxt[s],0,0 + 16*s +200);	

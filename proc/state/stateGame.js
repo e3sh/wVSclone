@@ -19,10 +19,10 @@ function stateGame() {
     this.player.speed = 6;//maxspeed 現在未使用/SpeedUp実装時使用？
     this.player.level = 0;//現状weaponLevelで使用予定
 
-    this.outviewMove = true;
-    this.outviewCollision =true;
-    this.outviewHit = true;
-
+    this.outviewMove = true;//未使用
+    this.outviewCollision =true;//画面外の敵も壁の当たり判定処理を行う。
+    this.outviewHit = true;//未使用
+    
     //keySearch infomation display (gameSceneでセット、objCtrlで参照予定)2023/01/29-
     this.keyon = false;
     this.key_x = 0;

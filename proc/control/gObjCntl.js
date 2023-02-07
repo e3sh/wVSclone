@@ -143,8 +143,8 @@
 
             if (!onst) {
                 if ((o.type == 1) || (o.type == 3)) {
-                    //o.status = 0; //画面外から弾が飛んでこないようにする処理(飛んできたら難しすぎたので）
-                    //↑コメントアウトしていると画面外から弾が来るようになる。
+                    if (state.Config.bulletmode) o.status = 0; //画面外から弾が飛んでこないようにする処理(飛んできたら難しすぎたので）
+                    //.bulletmode：trueで表示画面外の弾は消滅。
                 }
             }
 
@@ -476,14 +476,15 @@
                 if ((lt.mx < 0) || (lt.my < 0) ||
                     (rb.mx > cmap.length) || (rb.my > cmap.length)) {
                     o.mapCollision = true;
-                } else
-
-                if ((cmap[Math.floor((lt.x - 96) / 32)][Math.floor((lt.y - 96) / 32)]) ||
-                    (cmap[Math.floor((lt.x - 96) / 32)][Math.floor((rb.y - 96) / 32)]) ||
-                    (cmap[Math.floor((rb.x - 96) / 32)][Math.floor((lt.y - 96) / 32)]) ||
-                    (cmap[Math.floor((rb.x - 96) / 32)][Math.floor((rb.y - 96) / 32)])) {
-
-                    o.mapCollision = true;
+                } else {
+                    if (Boolean(cmap[lt.mx])){
+                        if (Boolean(cmap[lt.mx][lt.my])) o.mapCollision = true; // 
+                        if (Boolean(cmap[lt.mx][rb.my])) o.mapCollision = true; //
+                    }
+                    if (Boolean(cmap[rb.mx])){
+                        if (Boolean(cmap[rb.mx][lt.my])) o.mapCollision = true; //
+                        if (Boolean(cmap[rb.mx][rb.my])) o.mapCollision = true; //
+                    }
                 }
             }
             //*/

@@ -73,12 +73,6 @@ function sceneResult(state) {
         o.ch = work2.ch;
 
         o.draw = function (device) {
-            /*
-            var imgdt = device.getImageData(0, 0, this.cw, this.ch);
-            convert_image_to_gray_scale(imgdt.data);
-
-            device.putImageData(imgdt, 0, 0);
-            */
 
             for (var i = 0; i < this.ch; i += 4) {
                 device.beginPath();
@@ -99,87 +93,6 @@ function sceneResult(state) {
 
         work2.putFunc(o);
         work2.draw();
-        /*
-        var wsc = state.Result.score;
-        var wd = [];
-        var wt = "";
-
-        for (i = 0; i < 7; i++) {
-            var num = wsc % 10;
-            wd[7 - i] = num;
-            wsc = (wsc - num) / 10;
-        }
-
-        for (i in wd) {
-            wt = wt + "" + wd[i];
-        }
-        work2.putchr("Score:" + wt, dev.layout.score_x, dev.layout.score_y);
-
-        wsc = state.Result.highscore;
-        wd = [];
-        wt = "";
-
-        for (i = 0; i < 7; i++) {
-            var num = wsc % 10;
-            wd[7 - i] = num;
-            wsc = (wsc - num) / 10;
-        }
-
-        for (i in wd) {
-            wt = wt + "" + wd[i];
-        }
-        work2.putchr("Hi-Sc:" + wt, dev.layout.hiscore_x, dev.layout.hiscore_y);
-*/
-        //work2.draw();
-        //work2.reset();
-/*
-        var w_mes = ["dummy", "dummy", "敵機撃破", "dummy", "スコアアイテム取得", "dummy"];
-
-        var wtxt = [];
-        /*
-        for (i in this.result.item) {
-        wtxt.push("item[" + i + "]:" + this.result.item[i]);
-        }
-        */
-/*
-        for (i in this.result.combo) {
-            wtxt.push("連続" + w_mes[i] + "数 : " + this.result.combo[i]);
-        }
-
-        for (i in this.result.combomax) {
-            wtxt.push("最大連続" + w_mes[i] + "数 : " + this.result.combomax[i]);
-        }
-
-        var n1 = 0;
-        for (i in this.result.total) {
-            if (i == 2) n1 = this.result.total[i];
-            //    wtxt.push("total[" + i + "]:" + obCtrl.total[i]);
-        }
-
-        var n2 = 1;
-        for (i in this.result.obCount) {
-            if (i == 2) n2 = this.result.obCount[i];
-            //    wtxt.push("ob[" + i + "]:" + obCtrl.obCount[i]);
-        }
-        wtxt.push("敵機撃墜率 : " + Math.floor((n1 / n2) * 100) + " %");
-
-        wtxt.push("被弾回数 : " + this.result.hidan);
-
-        text.reset();
-
-        for (var s in wtxt) {
-            text.print(wtxt[s], 100, 150 + 16 * s, "yellow");
-        }
-
-        text.clear();
-        text.draw();
-        text.reset();
-*/
-        keylock = true;
-
-        counter = 0;
-
-        //reset処理を記述予定
     }
 
     function scene_step() {
@@ -204,7 +117,7 @@ function sceneResult(state) {
                         if (menu[i].sel) {
                             var n = menu[i].func();
                             if (n != 0) {
-                                wipef = true;
+                                //wipef = true;
                                 ret_code = n;
                                 return n;
                             }
@@ -252,8 +165,7 @@ function sceneResult(state) {
             wipecnt += 3;
 
             //if (work2.ch / 2 - wipecnt < 0) { return ret_code; }
-            if (wipecnt > work2.ch/2) wipef = false;//return ret_code; }
-
+            if (wipecnt > work2.ch/3) wipef = false;//return ret_code; }
         }
 
         for (i in menu) {

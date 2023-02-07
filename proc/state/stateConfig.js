@@ -11,6 +11,7 @@ function stateConfig(){
     this.use_audio;
     
     this.debug;
+    this.bulletmode;
 
     configReset();//値の初期化
 
@@ -21,20 +22,20 @@ function stateConfig(){
 
         if (Boolean(localStorage)) {
 
-            var t = ["lamp_use", "map_use", "itemreset", "shotfree", "startstage"];
+            var t = ["lamp_use", "map_use", "itemreset", "shotfree", "debug", "bulletmode", "startstage"];
 
             var f = false;
 
-            for (var i = 0; i <= 3; i++) {
+            for (var i = 0; i <= 5; i++) {
                 if (Boolean(localStorage.getItem(t[i]))) {
                     f = true;
                     this[t[i]] = (localStorage.getItem(t[i]) == "on") ? true : false;
                 }
             }
 
-            if (Boolean(localStorage.getItem(t[4]))) {
+            if (Boolean(localStorage.getItem(t[6]))) {
                 f = true;
-                this[t[4]] = parseInt(localStorage.getItem(t[4]));
+                this[t[6]] = parseInt(localStorage.getItem(t[6]));
             }
 
             ret_code = f ? 0 : 1; //alert(f ? "load" : "nondata");
@@ -56,6 +57,8 @@ function stateConfig(){
             localStorage.setItem("map_use", (this.map_use) ? "on" : "off");
             localStorage.setItem("itemreset", (this.itemreset) ? "on" : "off");
             localStorage.setItem("shotfree", (this.shotfree) ? "on" : "off");
+            localStorage.setItem("debug", (this.debug) ? "on" : "off");
+            localStorage.setItem("bulletmode", (this.bulletmode) ? "on" : "off");
             localStorage.setItem("startstage", new String(this.startstage));
 
         } else {
@@ -78,7 +81,9 @@ function stateConfig(){
         this.startstage = 1;
 
         this.use_audio = true;
-        //this.debug = false; //debug表示　
-        this.debug = false;
+
+        this.debug = false; //trueでdebugステータス表示。
+        this.bulletmode = false; //trueで画面外から弾が飛んでこなくなる。
+        
     }
 }
