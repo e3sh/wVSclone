@@ -28,7 +28,7 @@ function sce_en_bullet_homing(flag) {
                 o.vset(2);
                 break;
             case 15:
-                //		        o.get_target( 98 );
+                //o.get_target( 98 );
                 o.frame = 9;
                 break;
             default:
@@ -102,6 +102,7 @@ function sce_en_bullet_hominglaser() {
         o.vset(2);
         o.get_target(98);
 
+        //o.display_size = 2.0;
         o.display_size = 2.0;
         o.alpha = 128;
 
@@ -130,6 +131,7 @@ function sce_en_bullet_hominglaser() {
             default:
                 break;
         };
+
         if (o.frame%5==0)o.set_object_ex(32, o.x, o.y, o.vector, 56);
 
         o.w_cnt++
@@ -255,13 +257,14 @@ function sce_en_bullet_laser_tail() {
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
         o.vset(0);
-        o.display_size = 2.0;
+        o.display_size = 1.5;
     }
 
     this.move = function (scrn, o) {
 
-        if (o.frame > 10) o.status = 0; //時間が来たら消す。
+        if (o.frame > 20) o.status = 0; //時間が来たら消す。
 
+        o.display_size = 1.5 + o.frame /20;
         o.frame++;
 
         return o.sc_move();

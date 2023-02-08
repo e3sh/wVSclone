@@ -151,7 +151,7 @@ function motionPattern(){
 
 //	mp[no].wait = 20;
 	mp[no].pattern = [
-	["Key", 0, 0]
+	["sKey", 0, 0]
     ];
 
 	//B
@@ -348,8 +348,30 @@ function motionPattern(){
     ["Cursor2", -1, -1],
     ["Cursor3", -1, -1],
     ["Cursor2", -1, -1]
-];
+	]
+	//BarningFire
+	//=================================================
+	no = 46;
 
+	mp[no] = {};
+
+	mp[no].wait = 10;
+	
+	mp[no].pattern = [
+		["Barn1", -1, -1],
+		["Barn2", -1, -1],
+		["Barn3", -1, -1]
+		];
+/*	
+	mp[no].pattern = [
+    ["Barn1", 1, 0],
+    ["Barn1", 1, 2],
+    ["Barn2", 1, 0],
+    ["Barn2", 1, 2],
+    ["Barn3", 1, 0],
+    ["Barn3", 1, 2]
+	];
+*/
 	//
 //@@
 	return mp;

@@ -174,7 +174,7 @@ function sce_ememy_moveshot() {
             }
             //            o.set_object(12);
             if (o.frame > 3600) {
-                o.set_object_ex(5, o.x, o.y, o.vector, "en_bullet_homing");
+                o.set_object_ex(8, o.x, o.y, o.vector, "en_bullet_homing");
             } else {
                 o.set_object_ex(5, o.x, o.y, o.vector, "en_bullet_turn");
             }
@@ -750,7 +750,7 @@ function sce_ememy_timeover() {
 
         o.lifecount++;
         if ((o.lifecount % 300) == 250) {
-            o.set_object_ex(5, o.x, o.y, o.vector, "en_bullet_homing");
+            o.set_object_ex(8, o.x, o.y, o.vector, "en_bullet_homing");
         }
 
         if (o.cancelcol) this.mapCollision = false;
@@ -821,7 +821,7 @@ function sce_enemy_inv_gr(scrn, o){
     spname[19] = "Boom";
     spname[20] = "Ball1";
     spname[21] = "Mayura1";
-    spname[22] = "Key";
+    spname[22] = "sKey";
     spname[23] = "BallB1";
     spname[24] = "BallS1";
     spname[25] = "BallL1";
