@@ -820,7 +820,7 @@ function sce_enemy_inv_gr(scrn, o){
     spname[18] = "Spear";
     spname[19] = "Boom";
     spname[20] = "Ball1";
-    spname[21] = "Mayura1";
+    spname[21] = "miniMay";
     spname[22] = "sKey";
     spname[23] = "BallB1";
     spname[24] = "BallS1";

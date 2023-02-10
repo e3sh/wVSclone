@@ -774,15 +774,18 @@ function gameScene(state){
 
 	        //残機表示
 	        var zc = 2 - dead_cnt;
-
 	        if (zc < 3) {
 	            for (var i = 0; i < 2 - dead_cnt; i++) {
 	                work3.put("Mayura1", dev.layout.zanki_x + i * 32, dev.layout.zanki_y);
-	            }
+				}
 	        } else {
 	            work3.put("Mayura1", dev.layout.zanki_x, dev.layout.zanki_y);
-	            work3.putchr8("x" + zc, dev.layout.zanki_x + 16, dev.layout.zanki_y);
+				work3.putchr8("x" + zc, dev.layout.zanki_x + 16, dev.layout.zanki_y);
 	        }
+
+			//Lamp/map
+			if(!mapdisp){ work3.put("Map",36,12) }//dev.layout.zanki_x + 360, dev.layout.zanki_y-16);}
+			if(lampf) { work3.put("Lamp",12,12) }//dev.layout.zanki_x + 336, dev.layout.zanki_y-16);}
 
 			//document.getElementById("manual_1").innerHTML += ".";
 
@@ -818,7 +821,7 @@ function gameScene(state){
 	            work3.putchr8("[X]", dev.layout.zanki_x + 132 - 16, dev.layout.zanki_y - 16);
 	            n = witem.length;
 
-	            if (n >= 18) n = 18;
+	            if (n >= 17) {n = 15; work3.putchr8("...", dev.layout.zanki_x + n * 20 + 128, dev.layout.zanki_y + 8);}
 	            //if (n >= 7) n = 7;
 
 	            for (var i = 0; i < n; i++) {
