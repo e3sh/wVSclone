@@ -429,6 +429,7 @@ gObjectClass.prototype.sc_move = function()
         case 3: //敵弾
             this.sound.effect(12); //hit音
             this.change_sce("effect_vanish"); 
+            this.damageflag = false;
             //↑ここで弾を消しているので削除すると弾が消えなくなる。2023/01/20消してしまってbugったので記録。
             break;
         case 2: //敵
@@ -445,8 +446,8 @@ gObjectClass.prototype.sc_move = function()
                 this.set_object_ex(num, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
                 if (num != 35) itemf = true;//敵がCoin以外の何かを拾っていた場合true(宝箱を出すようにする）
             }
-            if (itemf) this.set_object_ex(40, this.x, this.y, 0, "enemy_trbox");
-            //(宝箱は敵扱いなのでドロップしたアイテムは出現した箱に即時回収)
+            //if (itemf) this.set_object_ex(40, this.x, this.y, 0, "enemy_trbox");宝箱あると自動回収の邪魔なので出さなくする
+            //(宝箱は敵扱いなのでドロップしたアイテムは出現した箱に即時回収)（なぜかされない）
             this.add_score(this.score);
             break;
         case 4: //アイテム(敵がアイテムを取得する場合の事は考えていない。/<=拾うようにした）

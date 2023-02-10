@@ -3,15 +3,11 @@
 //============================================
 
 var w = [
-//WebGameCoreSystemMinifyFile
-//"controller/coremin.js",
-
 //WebGameCoreSystem Files
     //SystemControl
     "controller/GameAssetManager.js",
     "controller/GameTaskControl.js",
     "controller/GameCore.js",
-
     //deviceControls
     "controller/inputKeyboard.js",
     "controller/inputMouse.js",
@@ -20,10 +16,8 @@ var w = [
     "controller/offScreen.js",
     "controller/spriteControl.js",
     "controller/spriteFontControl.js",
-
     //class
     "controller/GameTaskClass.js",
-
 //画面表示や入力関係処理部
  "dev/deviceControl.js",
  "dev/screen.js",
@@ -57,8 +51,6 @@ var w = [
  "proc/class/gObjClass.js",
  "proc/control/mapSceCntl.js",
  "proc/control/sceneControl.js",
-
- //"proc/class/ocl_scmove.js",
 //処理部（それぞれの場面）
  "proc/scene/gameScene.js",
  "proc/scene/sceneTitle.js",

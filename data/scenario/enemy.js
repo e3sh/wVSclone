@@ -680,7 +680,7 @@ function sce_enemy_trbox() {
         o.frame++;
 
         // o.sc_moveを使えないので、（押しても動かさないため）直接記述
-
+        /*
         if (this.status == 2) {//状態が衝突の場合
             this.change_sce(7);
             //this.sound.effect(8); //爆発音
@@ -700,12 +700,13 @@ function sce_enemy_trbox() {
         }
 
         if (this.status == 0) f = 1; //未使用ステータスの場合は削除
-
+        
         // 移動処理はなし、押されても動かない。
 
         this.damageflag = false;
-
-        return f;
+        */
+        //return f;
+        return o.sc_move();//SC_moveしないとItem拾わないので。これでも拾わず？
     }
 }
 //TimeOverEnemy
@@ -849,10 +850,14 @@ function sce_enemy_inv_gr(scrn, o){
             //scrn.putchr8(o.weapontype, w.x+10, w.y+10);
         //} else {
         if (o.pick.length > 1){
-            w.x = tx - o.Cos(o.vector) * o.center_x;
-            w.y = ty - o.Sin(o.vector) * o.center_y;
+            var ic = 0; for (var i of o.pick) {if (i != 35 ) ic++;}
 
-            scrn.put("TrBox", w.x, w.y, 0, 0, 255, 0.75);
+            if (ic > 0){
+                w.x = tx - o.Cos(o.vector) * o.center_x;
+                w.y = ty - o.Sin(o.vector) * o.center_y;
+
+                scrn.put("TrBox", w.x, w.y, 0, 0, 255, 0.75);
+            }
             //scrn.putchr8(o.pick.length, w.x, w.y);
         }
         //}

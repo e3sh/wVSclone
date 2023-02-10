@@ -14,7 +14,7 @@ function sce_en_bullet_homing(flag) {
         //o.mp = 45;
         //o.cancelcol = flag;
         o.cancelcol = false;
-        //o.display_size = 2.0;
+        o.display_size = 1.5;
     }
 
     this.move = function (scrn, o) {
@@ -25,7 +25,7 @@ function sce_en_bullet_homing(flag) {
 
                 //if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
 
-                o.vset(2);
+                o.vset(4);
                 break;
             case 15:
                 //o.get_target( 98 );
