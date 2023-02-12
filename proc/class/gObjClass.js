@@ -92,474 +92,360 @@ function gObjectClass() {
 }
 
 //メソッドのprototype宣言部　===================================
-gObjectClass.prototype.test = function () { return 0; }
+gObjectClass.prototype = {
 
-gObjectClass.prototype.reset = function () {
+    test : function () { return 0; },
+    reset : function () {
+        this.status = 0; //StatusValue.NoUse;
+        this.type = 5;   //TypeValue.Etc;
+        this.visible = false;
+        this.mp_cnt_frm = 0;
+        this.mp_cnt_anm = 0;
 
-    this.status = 0; //StatusValue.NoUse;
-    this.type = 5;   //TypeValue.Etc;
-    this.visible = false;
-    this.mp_cnt_frm = 0;
-    this.mp_cnt_anm = 0;
+        this.scenario = [];
 
-    this.scenario = [];
+        this.normal_draw_enable = true;
+        this.custom_draw_enable = false;
 
-    this.normal_draw_enable = true;
-    this.custom_draw_enable = false;
+        this.damegeflag = false;
+    },
 
-    this.damegeflag = false;
-}
+    //移動物処理用の関数のデフォルト
+    init : function(scrn, o) { o.vset(5); },
+    draw : function (scrn, o) { scrn.print(o.mp + "", o.x, o.y); }, 
+    move : function(scrn, o) {
+        // 移動処理
+        o.x += o.vx; o.y += o.vy;
 
-//移動物処理用の関数のデフォルト
-gObjectClass.prototype.init = function(scrn, o) {　o.vset(5);　}
-gObjectClass.prototype.draw = function (scrn, o) { scrn.print(o.mp + "", o.x, o.y); } 
-gObjectClass.prototype.move = function(scrn, o) {
+        var f = 0;
+        if (o.x < 0 || o.x > scrn.cw) { f = 1; }
+        if (o.y < 0 || o.y > scrn.ch) { f = 1; }
 
-    // 移動処理
-    o.x += o.vx;
-    o.y += o.vy;
+        if (f != 0) return -1;
+        
+        return 0
+    },
 
-    var f = 0;
-    if (o.x < 0 || o.x > scrn.cw) { f = 1; }
-    if (o.y < 0 || o.y > scrn.ch) { f = 1; }
+    //class内部コマンド群
+    vset : function (num) {
 
-    if (f != 0) {
-        return -1;
-    }
-    return 0
-}
+        this.vx = Math.cos((Math.PI / 180.0) * (this.vector - 90.0)) * num;
+        this.vy = Math.sin((Math.PI / 180.0) * (this.vector - 90.0)) * num;
 
-//class内部コマンド群
-gObjectClass.prototype.vset = function (num) {
+        //30->60fpsに変更したときにシナリオ修正するのが面倒だった名残
+        //this.vx /= 1.5;
+        //this.vy /= 1.5;
+    },
 
-    this.vx = Math.cos((Math.PI / 180.0) * (this.vector - 90.0)) * num;
-    this.vy = Math.sin((Math.PI / 180.0) * (this.vector - 90.0)) * num;
+    //外部メッセージ送信コマンドsubroutine
+    set_object : function (src, dst) { //src:ch dst:dummy
+        var msg = {}; msg.cmd = "set_object";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
 
-    //30->60fpsに変更したときにシナリオ修正するのが面倒だった名残
-    //this.vx /= 1.5;
-    //this.vy /= 1.5;
-}
-
-//外部メッセージ送信コマンドsubroutine
-gObjectClass.prototype.set_object = function (src, dst) {
-    //src:ch dst:dummy
-    var msg = {};
-
-    msg.cmd = "set_object";
-    msg.src = src;
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-
-gObjectClass.prototype.set_object_ex = function (src, tx, ty, tv, tsce, id) {
+    set_object_ex : function (src, tx, ty, tv, tsce, id) {
     //src:ch tx,ty,tv,tsce =x,y,vector,scenario_no
-
-    var msg = {};
-
-    var dst = {};
-    dst.x = tx;
-    dst.y = ty;
-    dst.vector = tv;
-    dst.sce = tsce;
-    dst.id = id;
-
-    msg.cmd = "set_object_ex";
-    msg.src = src;
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-
-gObjectClass.prototype.get_target = function (src, dst) {
-    //src:ch type dst:dummy
-    var msg = {};
-
-    msg.cmd = "get_target";
-    msg.src = src;
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-
-gObjectClass.prototype.change_sce = function (src, dst) {
-    //src:scenario_no dst:dummy
-
-    var msg = {};
-
-    msg.cmd = "change_sce";
-    msg.src = src;
-    msg.dst = dst;
-
-    this.frame = 0;
-    this.normal_draw_enable = true;
-    this.custom_draw_enable = false;
-
-    this.message.push(msg);
-}
-
-gObjectClass.prototype.add_score = function (src, dst) {
-    //src:score dst:dummy
-
-    var msg = {};
-
-    msg.cmd = "add_score";
-    msg.src = src;
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-
-gObjectClass.prototype.get_item = function (src, dst) {
-    //src:score dst:dummy
-
-    var msg = {};
-
-    msg.cmd = "get_item";
-    msg.src = src;
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-
-//ここらへんからは外に出してしまってもいいかも
-//bomb系コマンド群（全体に影響を与える）
-gObjectClass.prototype.bomb = function (src, dst) {
-    //src,dst:dummy
-
-    var msg = {};
-
-    msg.cmd = "bomb";
-    msg.src = src;
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-
-gObjectClass.prototype.bomb2 = function (src, dst) {
-    //src,dst:dummy
-
-    var msg = {};
-
-    msg.cmd = "bomb2";
-    msg.src = src;
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-
-gObjectClass.prototype.bomb3 = function (src, dst) {
-    //src,dst:dummy
-
-    var msg = {};
-
-    msg.cmd = "bomb3";
-    msg.src = src;
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-
-gObjectClass.prototype.bomb4 = function (src, dst) {
-    //src,dst:dummy
-
-    var msg = {};
-
-    msg.cmd = "bomb4";
-    msg.src = src;
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-
-gObjectClass.prototype.collect = function (src, dst) {
-    //src,dst:dummy
-
-    var msg = {};
-
-    msg.cmd = "collect";
-    msg.src = src;
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-
-gObjectClass.prototype.collect2 = function (src, dst) {
-    //src,dst:dummy　add_2023/1/12　
-
-    var msg = {};
-
-    msg.cmd = "collect2";
-    msg.src = src;
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-
-gObjectClass.prototype.collect3 = function (src, dst) {
-    //src,dst:dummy　add_2023/1/12　
-
-    var msg = {};
-
-    msg.cmd = "collect3";
-    msg.src = src;
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-
-
-//System系コマンド（ゲームの推移に対しての指示）
-gObjectClass.prototype.SIGNAL = function (src, dst) {
-    //src,dst:dummy
-
-    var msg = {};
-
-    msg.cmd = "SIGNAL";
-    msg.src = src; // SIGNAL_no:処理は受け入れ側で考える。
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-//itemCombo処理用（やっつけ）
-gObjectClass.prototype.reset_combo = function (src, dst) {
-    //src,dst:dummy
-
-    var msg = {};
-
-    msg.cmd = "reset_combo";
-    msg.src = src; //Combo_id 
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-//itemのchrでフィールドに存在するか調べる。（KeyInformationCursor実装用）
-//SIGNALだとGameSceneに指示なのでコマンド追加。2023/01/29
-gObjectClass.prototype.search_target_item = function (src, dst) {
-    //src:chr番号,dst:dummy
-
-    var msg = {};
-
-    msg.cmd = "search_target_item";
-    msg.src = src; 
-    msg.dst = dst;
-
-    this.message.push(msg);
-}
-
-//自分から目標( tx, ty )の
-//	方向角度を調べる(上が角度0の0-359)
-gObjectClass.prototype.target_r = function (tx, ty) {
-
-    var x = this.x;
-    var y = this.y;
-
-    var r;
-
-    var wx = tx - x;
-    var wy = ty - y;
-
-    if (wx == 0) {
-        if (wy >= 0) r = 180; else r = 0;
-    } else {
-        r = Math.atan(wy / wx) * (180.0 / Math.PI) //toDegree
-
-        if ((wx >= 0) && (wy >= 0)) r = 90 + r;
-        if ((wx >= 0) && (wy < 0)) r = 90 + r;
-        if ((wx < 0) && (wy < 0)) r = 270 + r;
-        if ((wx < 0) && (wy >= 0)) r = 270 + r;
-    }
-
-    return r;
-}
-//自分からtargetに方向転換する処理
-//戻り値がtargetの方向。
-gObjectClass.prototype.target_v = function () {
-
-    if (!Boolean(this.target)) return this.vector;
-
-    return this.target_r(this.target.x, this.target.y);
-}
-//自分からtargetに方向転換する処理
-//	ホーミング処理用
-gObjectClass.prototype.target_rotate_r = function (add) {
-
-    if (!Boolean(this.target)) return;
-
-    var r = this.target_r(this.target.x, this.target.y);
-    var d = r; 			//目標角
-    if (d > 179) d = -360 + d;
-
-    w = this.vector; //現在の角度
-    if (w > 179) w = -360 + w;
-
-    r = d - w;
-    if (Math.abs(r) > 100) {
-        w = (this.vector + 180) % 360;
+        var msg = {};
+
+        var dst = {};
+        dst.x = tx;
+        dst.y = ty;
+        dst.vector = tv;
+        dst.sce = tsce;
+        dst.id = id;
+
+        msg.cmd = "set_object_ex";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+
+    get_target : function (src, dst) { //src:ch type dst:dummy
+        var msg = {}; msg.cmd = "get_target";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+
+    change_sce : function (src, dst) { //src:scenario_no dst:dummy
+        var msg = {}; msg.cmd = "change_sce";
+
+        this.frame = 0;
+        this.normal_draw_enable = true;
+        this.custom_draw_enable = false;
+
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+
+    add_score : function (src, dst) { //src:score dst:dummy
+        var msg = {}; msg.cmd = "add_score";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+
+    get_item : function (src, dst) { //src:score dst:dummy
+        var msg = {}; msg.cmd = "get_item";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+
+    //ここらへんからは外に出してしまってもいいかも
+    //bomb系コマンド群（全体に影響を与える）
+    bomb : function (src, dst) { //src,dst:dummy
+        var msg = {}; msg.cmd = "bomb"; 
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+
+    bomb2 : function (src, dst) { //src,dst:dummy
+        var msg = {}; msg.cmd = "bomb2";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+
+    bomb3 : function (src, dst) { //src,dst:dummy
+        var msg = {}; msg.cmd = "bomb3";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+
+    bomb4 : function (src, dst) { //src,dst:dummy
+        var msg = {}; msg.cmd = "bomb4";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+
+    collect : function (src, dst) { //src,dst:dummy
+        var msg = {}; msg.cmd = "collect";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+
+    collect2 : function (src, dst) { //src,dst:dummy　add_2023/1/12　
+        var msg = {}; msg.cmd = "collect2";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+
+    collect3 : function (src, dst) { //src,dst:dummy　add_2023/1/12　
+        var msg = {}; msg.cmd = "collect3";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+
+    //System系コマンド（ゲームの推移に対しての指示）
+    SIGNAL : function (src, dst) { //src:SIGNAL_no:処理は受け入れ側で考える,dst:dummy
+        var msg = {}; msg.cmd = "SIGNAL";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+    //itemCombo処理用
+    reset_combo : function (src, dst) { //src:Combo_id,dst:dummy
+        var msg = {}; msg.cmd = "reset_combo";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+    //itemのchrでフィールドに存在するか調べる。（KeyInformationCursor実装用）
+    //SIGNALだとGameSceneに指示なのでコマンド追加。2023/01/29
+    search_target_item : function (src, dst) { //src:chr番号,dst:dummy
+        var msg = {}; msg.cmd = "search_target_item";
+        msg.src = src; msg.dst = dst; this.message.push(msg);
+    },
+
+    //自分から目標( tx, ty )の
+    //	方向角度を調べる(上が角度0の0-359)
+    target_r : function (tx, ty) {
+        var x = this.x;
+        var y = this.y;
+
+        var r;
+
+        var wx = tx - x;
+        var wy = ty - y;
+
+        if (wx == 0) {
+            if (wy >= 0) r = 180; else r = 0;
+        } else {
+            r = Math.atan(wy / wx) * (180.0 / Math.PI) //toDegree
+
+            if ((wx >= 0) && (wy >= 0)) r = 90 + r;
+            if ((wx >= 0) && (wy < 0)) r = 90 + r;
+            if ((wx < 0) && (wy < 0)) r = 270 + r;
+            if ((wx < 0) && (wy >= 0)) r = 270 + r;
+        }
+
+        return r;
+    },
+    //自分からtargetに方向転換する処理
+    //戻り値がtargetの方向。
+    target_v : function () {
+        return (!Boolean(this.target)) ? this.vector : this.target_r(this.target.x, this.target.y);
+    },
+    //自分からtargetに方向転換する処理
+    //	ホーミング処理用
+    target_rotate_r : function (add) {
+        if (!Boolean(this.target)) return;
+
+        var r = this.target_r(this.target.x, this.target.y);
+        var d = r; 			//目標角
+        if (d > 179) d = -360 + d;
+
+        w = this.vector; //現在の角度
         if (w > 179) w = -360 + w;
-        r = (d - w) * -1;
-    }
 
-    if (Math.abs(r) < add) add = r; //目標角が指定値より小さい場合は小さいままで
-
-    if (r != 0) this.vector = this.vector + ((r / Math.abs(r)) * add);
-    if (this.vector < 0) this.vector = 360 + this.vector;
-    if (this.vector > 359) this.vector = this.vector - 360;
-}
-//距離を求める。
-gObjectClass.prototype.target_d = function (tx, ty) {
-    var x = this.x;
-    var y = this.y;
-
-    return Math.sqrt((Math.abs(tx - x) * Math.abs(tx - x)) + (Math.abs(ty - y) * Math.abs(ty - y)));
-}
-
-// sin 0-360 ↑方向が0の数値をいれて処理する
-gObjectClass.prototype.Sin = function (vec) { return Math.sin((vec - 90) * (Math.PI / 180.0)); }
-
-// cos 0-360 ↑方向が0の数値をいれて処理する
-gObjectClass.prototype.Cos = function (vec) { return Math.cos((vec - 90) * (Math.PI / 180.0)); }
-
-gObjectClass.prototype.sc_move = function()
-{
-    var f = 0;
-    if (this.status == 2) {//状態が衝突の場合
-        switch (this.type) {//自身のタイプが...
-        case 1: //自弾
-        case 3: //敵弾
-            this.sound.effect(12); //hit音
-            this.change_sce("effect_vanish"); 
-            this.damageflag = false;
-            //↑ここで弾を消しているので削除すると弾が消えなくなる。2023/01/20消してしまってbugったので記録。
-            break;
-        case 2: //敵
-            this.display_size *= 2; //爆発を大きくする
-            this.change_sce(7);
-            this.sound.effect(8); //爆発音
-            for (var i = 0, loopend = Math.floor(Math.random() * 3) + 1; i < loopend; i++) {//Coin
-                this.set_object_ex(35, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
-            }
-            //敵が拾ったアイテムを落とす。
-            var itemf = false; 
-            for (var i = 0, loopend = this.pick.length; i < loopend; i++) {
-                var num = this.pick[i];
-                this.set_object_ex(num, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
-                if (num != 35) itemf = true;//敵がCoin以外の何かを拾っていた場合true(宝箱を出すようにする）
-            }
-            //if (itemf) this.set_object_ex(40, this.x, this.y, 0, "enemy_trbox");宝箱あると自動回収の邪魔なので出さなくする
-            //(宝箱は敵扱いなのでドロップしたアイテムは出現した箱に即時回収)（なぜかされない）
-            this.add_score(this.score);
-            break;
-        case 4: //アイテム(敵がアイテムを取得する場合の事は考えていない。/<=拾うようにした）
-            if (Boolean(this.crash)) {
-                if (this.crash.pick_enable) {//
-                    this.change_sce(6); //拾われたので消す
-                    if (this.crash.type == 2) {//相手が敵の場合
-                        this.crash.pick.push(this.chr);
-                    } else {//自分の場合
-                        if ((this.chr != 21) && (this.chr != 22)) {//1up or Key
-                            this.sound.effect(9); //cursor音
-                        }
-                        this.get_item(this.chr);
-                    }
-                }
-            }
-            break;
-        default:
-            break;
+        r = d - w;
+        if (Math.abs(r) > 100) {
+            w = (this.vector + 180) % 360;
+            if (w > 179) w = -360 + w;
+            r = (d - w) * -1;
         }
-    }
 
-    if (this.damageflag){
-        this.damage.count = 15;
-        var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
-        if (onst) {
-            this.set_object_ex(6, this.x, this.y, this.vector, "effect_hit");
-            //this.sound.effect(12); //hit音
-        }
-    }
-    var wvec = this.vector;
-    var wvx = this.vx; var wvy = this.vy;
+        if (Math.abs(r) < add) add = r; //目標角が指定値より小さい場合は小さいままで
 
-    if (this.damage.count > 0) {
-        this.damage.count--;
-        this.vector = (this.damage.vector + 180) % 360;
-        this.vset(this.damage.dist / 10);
-    }
+        if (r != 0) this.vector = this.vector + ((r / Math.abs(r)) * add);
+        if (this.vector < 0) this.vector = 360 + this.vector;
+        if (this.vector > 359) this.vector = this.vector - 360;
+    },
+    //距離を求める。
+    target_d : function (tx, ty) {
+        var x = this.x;
+        var y = this.y;
 
-    if (this.status == 0) f = 1; //未使用ステータスの場合は削除
+        return Math.sqrt((Math.abs(tx - x) * Math.abs(tx - x)) + (Math.abs(ty - y) * Math.abs(ty - y)));
+    },
 
-    // 移動処理
-    if (this.mapCollision != true) {
-        this.colcnt = 0;
+    // sin 0-360 ↑方向が0の数値をいれて処理する
+    Sin : function (vec) { return Math.sin((vec - 90) * (Math.PI / 180.0)); },
 
-        this.old_x = this.x;
-        this.old_y = this.y;
+    // cos 0-360 ↑方向が0の数値をいれて処理する
+    Cos : function (vec) { return Math.cos((vec - 90) * (Math.PI / 180.0)); },
 
-        this.x += this.vx;
-        this.y += this.vy;
-
-        this.vector = wvec;
-        this.vx = wvx;
-        this.vy = wvy;
-    } else {
-        if (this.colcnt == 0) {
-            this.x = this.old_x;
-            this.y = this.old_y;
-
+    sc_move : function()
+    {
+        var f = 0;
+        if (this.status == 2) {//状態が衝突の場合
             switch (this.type) {//自身のタイプが...
             case 1: //自弾
             case 3: //敵弾
-                f = 1;
+                this.sound.effect(12); //hit音
+                this.change_sce("effect_vanish"); 
+                this.damageflag = false;
+                //↑ここで弾を消しているので削除すると弾が消えなくなる。2023/01/20消してしまってbugったので記録。
+                break;
+            case 2: //敵
+                this.display_size *= 2; //爆発を大きくする
+                this.change_sce(7);
+                this.sound.effect(8); //爆発音
+                for (var i = 0, loopend = Math.floor(Math.random() * 3) + 1; i < loopend; i++) {//Coin
+                    this.set_object_ex(35, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
+                }
+                //敵が拾ったアイテムを落とす。
+                var itemf = false; 
+                for (var i = 0, loopend = this.pick.length; i < loopend; i++) {
+                    var num = this.pick[i];
+                    this.set_object_ex(num, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
+                    if (num != 35) itemf = true;//敵がCoin以外の何かを拾っていた場合true(宝箱を出すようにする）
+                }
+                //if (itemf) this.set_object_ex(40, this.x, this.y, 0, "enemy_trbox");宝箱あると自動回収の邪魔なので出さなくする
+                //(宝箱は敵扱いなのでドロップしたアイテムは出現した箱に即時回収)（なぜかされない）
+                this.add_score(this.score);
+                break;
+            case 4: //アイテム(敵がアイテムを取得する場合の事は考えていない。/<=拾うようにした）
+                if (Boolean(this.crash)) {
+                    if (this.crash.pick_enable) {//
+                        this.change_sce(6); //拾われたので消す
+                        if (this.crash.type == 2) {//相手が敵の場合
+                            this.crash.pick.push(this.chr);
+                        } else {//自分の場合
+                            if ((this.chr != 21) && (this.chr != 22)) {//1up or Key
+                                this.sound.effect(9); //cursor音
+                            }
+                            this.get_item(this.chr);
+                        }
+                    }
+                }
                 break;
             default:
-                if (this.mapColX) {
-                    this.vx *= -1;
-                    this.vector = 360 - this.vector;
-                    if (this.vector < 0) this.vector = 180 + (180 + this.vector);
-                }
-                if (this.mapColY) {
-                    this.vy *= -1;
-                    this.vector = 180 + this.vector;
-                    if (this.vector > 360) this.vector = 360 + 180 - this.vector;
-                    this.vector = this.vector % 360;
-                }
-                if ((!this.mapColX) && (!this.mapColY)) {
-                    this.vx *= -1;
-                    this.vy *= -1;
-                    this.vector = (this.vector + 180) % 360;
-                }
                 break;
             }
         }
-        this.colcnt++;
-            
-        if (this.colcnt > 30) {
-            this.vector = this.target_r(this.startx, this.starty);
-            this.vset(1);
 
-            this.x += this.vx ;// * (this.colcount - 30);
-            this.y += this.vy; //* (this.colcount - 30);
+        if (this.damageflag){
+            this.damage.count = 15;
+            var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
+            if (onst) {
+                this.set_object_ex(6, this.x, this.y, this.vector, "effect_hit");
+                //this.sound.effect(12); //hit音
+            }
         }
-    }
-    if (this.x < 0 || this.x > this.gt.ww) { f = 2; }
-    if (this.y < 0 || this.y > this.gt.wh) { f = 2; }
+        var wvec = this.vector;
+        var wvx = this.vx; var wvy = this.vy;
 
-    if (f != 0) {
-        if (f == 2) this.reset_combo(this.type);
-        return -1; //0以外を返すと削除される。
-    };
-    /*    
-    if (this.colcnt > 60) {
-        if (Boolean(this.crash)) {
-               //この場合は物に当たっているはず(味方同士とか）
-            this.crash.mapCollision = false;
+        if (this.damage.count > 0) {
+            this.damage.count--;
+            this.vector = (this.damage.vector + 180) % 360;
+            this.vset(this.damage.dist / 10);
+        }
+
+        if (this.status == 0) f = 1; //未使用ステータスの場合は削除
+
+        // 移動処理
+        if (this.mapCollision != true) {
+            this.colcnt = 0;
+
+            this.old_x = this.x;
+            this.old_y = this.y;
+
+            this.x += this.vx;
+            this.y += this.vy;
+
+            this.vector = wvec;
+            this.vx = wvx;
+            this.vy = wvy;
         } else {
-            this.colcnt =  Math.floor(Math.random() * 60)
-        }
-    }
-    */
-    this.damageflag = false;
+            if (this.colcnt == 0) {
+                this.x = this.old_x;
+                this.y = this.old_y;
 
-    return 0;
+                switch (this.type) {//自身のタイプが...
+                case 1: //自弾
+                case 3: //敵弾
+                    f = 1;
+                    break;
+                default:
+                    if (this.mapColX) {
+                        this.vx *= -1;
+                        this.vector = 360 - this.vector;
+                        if (this.vector < 0) this.vector = 180 + (180 + this.vector);
+                    }
+                    if (this.mapColY) {
+                        this.vy *= -1;
+                        this.vector = 180 + this.vector;
+                        if (this.vector > 360) this.vector = 360 + 180 - this.vector;
+                        this.vector = this.vector % 360;
+                    }
+                    if ((!this.mapColX) && (!this.mapColY)) {
+                        this.vx *= -1;
+                        this.vy *= -1;
+                        this.vector = (this.vector + 180) % 360;
+                    }
+                    break;
+                }
+            }
+            this.colcnt++;
+            
+            if (this.colcnt > 30) {
+                this.vector = this.target_r(this.startx, this.starty);
+                this.vset(1);
+
+                this.x += this.vx ;// * (this.colcount - 30);
+                this.y += this.vy; //* (this.colcount - 30);
+            }
+        }
+        if (this.x < 0 || this.x > this.gt.ww) { f = 2; }
+        if (this.y < 0 || this.y > this.gt.wh) { f = 2; }
+
+        if (f != 0) {
+            if (f == 2) this.reset_combo(this.type);
+            return -1; //0以外を返すと削除される。
+        };
+        /*    
+        if (this.colcnt > 60) {
+            if (Boolean(this.crash)) {
+                   //この場合は物に当たっているはず(味方同士とか）
+                this.crash.mapCollision = false;
+            } else {
+                this.colcnt =  Math.floor(Math.random() * 60)
+            }
+        }
+        */
+        this.damageflag = false;
+
+        return 0;
+    }
 }

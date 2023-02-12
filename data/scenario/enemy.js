@@ -811,6 +811,8 @@ function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリスト
 function sce_enemy_inv_gr(scrn, o){
     var spname = [];
 
+    if (o.hp < o.maxhp) lbar_draw();
+
     if (!o.pickgetf) return;　//アイテム持っていない場合、処理せず。
     if (o.weapongetf && o.lockon_flag) return; //武器使用時表示しない。
   
@@ -862,6 +864,36 @@ function sce_enemy_inv_gr(scrn, o){
         }
         //}
         //scrn.put(ptn, w.x, w.y, wvh, wr, o.alpha, o.display_size);
+    }
+
+    function lbar_draw(){
+    
+        var w = o.gt.worldtoView(o.x, o.y);
+
+        lbar = {};
+
+        lbar.hp = o.hp;
+        lbar.mhp = o.maxhp;
+
+        lbar.x = w.x;
+        lbar.y = w.y;
+
+        //scrn.putchr8(o.hp + "/" +o.maxhp,w.x,w.y);
+
+        lbar.draw = function(device){
+            device.beginPath();
+	        device.fillStyle = "limegreen";
+	        device.lineWidth = 1;
+	        device.fillRect(this.x -16, this.y +16+3, (this.hp/this.mhp)*32, 2);
+	        device.stroke();
+
+	        device.beginPath();
+	        device.strokeStyle = "white"; 
+	        device.lineWidth = 1;
+	        device.rect(this.x -17, this.y+16+2, 34, 4);
+	        device.stroke();
+        }
+        scrn.putFunc(lbar);
     }
 }
 

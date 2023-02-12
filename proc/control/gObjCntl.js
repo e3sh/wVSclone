@@ -434,9 +434,9 @@
                         //delete mapchip[m];
                         //}
 
-                        if (w.type == 12) {
+                        if (w.type == 12) {//背景種類　扉　
 
-                            if (o.type == 98) {
+                            if (o.type == 98) {//　obj.type　が　自機
                                 o.doorflag = true;
                             }
                             o.mapCollision = bupCol;// || o.mapCollision;
