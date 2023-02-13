@@ -64,6 +64,7 @@ function sce_boss_1(){
         o.chr = 1;//鍵を出さないようにボスをはずす
 
         o.display_size = 0.001;
+        o.weight = 2.0;
 
         o.hit_x *= 2.0;
         o.hit_y *= 2.0;
@@ -137,6 +138,7 @@ function sce_boss_2(){
         o.w_cnt = 0;
 
         o.display_size = 0.001;
+        o.weight = 2.0;
 
         o.hit_x *= 2.0;
         o.hit_y *= 2.0;

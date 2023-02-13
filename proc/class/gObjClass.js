@@ -30,6 +30,8 @@ function gObjectClass() {
     this.shot = 0; 	//ショットフラグ
     this.alpha = 255; // ALPHA値(透明度)0:透明～255:不透明
     this.display_size = 1.0; //表示拡大率
+    
+    this.weight = 1.0; 
 
     this.message = []; //メッセージスタック
 
@@ -321,18 +323,28 @@ gObjectClass.prototype = {
                 this.display_size *= 2; //爆発を大きくする
                 this.change_sce(7);
                 this.sound.effect(8); //爆発音
+                
+                //this.pick[35] = Math.floor(Math.random() * 3) + 1;
                 for (var i = 0, loopend = Math.floor(Math.random() * 3) + 1; i < loopend; i++) {//Coin
-                    this.set_object_ex(35, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
+                    //this.set_object_ex(35, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
+                    this.pick.push(35);//Coin
                 }
                 //敵が拾ったアイテムを落とす。
-                var itemf = false; 
-                for (var i = 0, loopend = this.pick.length; i < loopend; i++) {
-                    var num = this.pick[i];
-                    this.set_object_ex(num, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
-                    if (num != 35) itemf = true;//敵がCoin以外の何かを拾っていた場合true(宝箱を出すようにする）
+                var itemf = false;
+                var num = 0; 
+                //for (var i = 0, loopend = this.pick.length; i < loopend; i++) {
+                for (var i of this.pick) if ( i != 35 ) num = num + i;
+                    //this.set_object_ex(num, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
+                if (num > 0) itemf = true;//敵がCoin以外の何かを拾っていた場合true(宝箱を出すようにする）
+                
+                if (itemf) {
+                    this.set_object_ex(40, this.x, this.y, 0, "enemy_trbox");//宝箱
+                }else{
+                    //for (var i = 0; i < this.pick[35]; i++) {//Coin
+                    for (var i in this.pick) {
+                        this.set_object_ex(35, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
+                    }
                 }
-                //if (itemf) this.set_object_ex(40, this.x, this.y, 0, "enemy_trbox");宝箱あると自動回収の邪魔なので出さなくする
-                //(宝箱は敵扱いなのでドロップしたアイテムは出現した箱に即時回収)（なぜかされない）
                 this.add_score(this.score);
                 break;
             case 4: //アイテム(敵がアイテムを取得する場合の事は考えていない。/<=拾うようにした）
@@ -363,13 +375,14 @@ gObjectClass.prototype = {
                 //this.sound.effect(12); //hit音
             }
         }
+        //ここから移動処理
         var wvec = this.vector;
         var wvx = this.vx; var wvy = this.vy;
 
         if (this.damage.count > 0) {
             this.damage.count--;
             this.vector = (this.damage.vector + 180) % 360;
-            this.vset(this.damage.dist / 10);
+            this.vset(this.damage.dist / (10 * this.weight));
         }
 
         if (this.status == 0) f = 1; //未使用ステータスの場合は削除
@@ -430,6 +443,7 @@ gObjectClass.prototype = {
         if (this.x < 0 || this.x > this.gt.ww) { f = 2; }
         if (this.y < 0 || this.y > this.gt.wh) { f = 2; }
 
+        
         if (f != 0) {
             if (f == 2) this.reset_combo(this.type);
             return -1; //0以外を返すと削除される。

@@ -32,6 +32,10 @@ class taskMainLoop extends GameTask {
         //this.state.Config.debug = this.elm_dbg.checked;
         //this.state.Config.lamp_use = this.elm_lamp.checked; 
         //this.state.Config.map_use = this.elm_map.checked;
+
+        //pause task
+        this.visible = false;
+        this.enable = false;;
     }
 
     step = function (g) {

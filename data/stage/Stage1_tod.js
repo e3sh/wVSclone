@@ -272,7 +272,7 @@ function Stage1_tod( seed, keyuse ) {
                     smap[nm].x * SW + SZ,
                     smap[nm].y * SW + SZ,
                     Math.floor(rnd.next() * 4) * 90, //Math.floor(Math.random() * 360),
-                    "ememy_move_std",
+                    "enemy_move_std",
                     //"common_vset2",
                     1
                     ];
@@ -290,7 +290,7 @@ function Stage1_tod( seed, keyuse ) {
                     smap[nm].x * SW + SZ,
                     smap[nm].y * SW + SZ,
                     Math.floor(rnd.next() * 4) * 90, //Math.floor(Math.random() * 360),
-                    "ememy_moveshot_1",
+                    "enemy_moveshot_1",
             //"common_vset2",
                     1
                     ];
@@ -308,7 +308,7 @@ function Stage1_tod( seed, keyuse ) {
                     smap[nm].x * SW + SZ,
                     smap[nm].y * SW + SZ,
                     Math.floor(rnd.next() * 4) * 90, //Math.floor(Math.random() * 360),
-                    "sce_ememy_randomshot",
+                    "sce_enemy_randomshot",
             //"common_vset2",
                     1
                     ];

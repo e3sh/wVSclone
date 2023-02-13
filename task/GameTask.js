@@ -128,21 +128,41 @@ class GameTask_Load extends GameTask {
     }
 
     step(g) {
+        var kstate = g.keyboard.check();
+    
+        if (Boolean(kstate[32])) {
+            if (kstate[32]) {//spacebar↓
+                var maintask = g.task.read("main");
+
+                maintask.visible = true;
+                maintask.enable = true;
+                this.visible = false;
+                this.visible = false;
+                g.task.del("load"); 
+            }
+        }
+    
     }
 
     draw(g){
         var st = g.asset.check();
 
-        var f = g.asset.image["FontGraph"].ready;
+        //var f = g.asset.image["FontGraph"].ready;
+
+        var pfunc = g.asset.image["FontGraph"].ready ? this.fontsc.putchr :this.scrn.print ;  
+        /*
+        if (f){
+            this.fontsc.putchr(i + " " + st[i], 0, i*16 +16);
+        }else{
+            this.scrn.print(i + " " + st[i], 0, i*16 +16);
+        }
+        */
 
         for (var i in st){
-
-            if (f){
-                this.fontsc.putchr(i + " " + st[i], 0, i*16 +16);
-            }else{
-                this.scrn.print(i + " " + st[i], 0, i*16 +16);
-            }
+            pfunc(i + " " + st[i], 0, i*16 +16);
         }
+        pfunc("push space key", 0, st.length*16 +32);
+
         /*
         var st = g.asset.namelist();
         for (var i in st){

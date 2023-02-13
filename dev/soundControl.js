@@ -5,16 +5,18 @@
 //**************************************************************
 
 function soundControl() {
+    //alert("old rev sound control include.");
 
     //dummy
     var dev_ready = false;
 
-    var mute;
+    var mute = true;//false;
 
     this.mute = mute;
 
     var ext = ".mp3";
-    if ((new Audio()).canPlayType("audio/ogg")=="maybe"){ext=".ogg";}
+    if ((new Audio()).canPlayType("audio/ogg")=="probably"){ext=".ogg";}
+    //if ((new Audio()).canPlayType("audio/mp3")=="probably"){ext=".mp3";}
     
 
     var sd = [
@@ -31,7 +33,7 @@ function soundControl() {
 "10use",
 "11hit",
 "12damage",
-"13bomb",
+"13bomb"
 ];
 
     var snd = [];
@@ -68,6 +70,7 @@ function soundControl() {
         snd[i].addEventListener("loadeddata", function (e) {
 
             this.stat = true;
+
         });
 /*
         snd[i].addEventListener("load", function (e) {
@@ -98,11 +101,12 @@ function soundControl() {
         for (var i in snd) {
 
             if (snd[i].stat) c++;
+            //snd[i].volume = 0.1;
         }
 
         dev_ready = (c >= snd.length);
 
-        return (dev_ready) ? "Ready" : c;
+        return (dev_ready) ? "Ready" :  ext + ":"  + c;
     }
 
     var plnum = 0;
@@ -217,7 +221,7 @@ function soundControl() {
     }
 
     this.volume = function (vol) {
-
+        //Volume 0.0- max1.0
         if (!dev_ready) return;
 
         if (mute) vol = 0.0;

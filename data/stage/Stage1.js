@@ -48,11 +48,11 @@ function Stage1(stageno) {
         var ms =
         //  開始フレーム,座標,,角度,シナリオ,キャラ
 	[
-	[7199, 240, 240, 180, "ememy_timeover", 33],
-	[7199, 240, 2000, 180, "ememy_timeover", 33],
-	[7199, 1500, 1500, 180, "ememy_timeover", 33],
-    [7199, 2000, 240, 180, "ememy_timeover", 33],
-    [7199, 2000, 2000, 180, "ememy_timeover", 33],
+	[7199, 240, 240, 180, "enemy_timeover", 33],
+	[7199, 240, 2000, 180, "enemy_timeover", 33],
+	[7199, 1500, 1500, 180, "enemy_timeover", 33],
+    [7199, 2000, 240, 180, "enemy_timeover", 33],
+    [7199, 2000, 2000, 180, "enemy_timeover", 33],
 	[600000, -1, -1, 0, 0, 0]];
         //
         // フレームカウントでソートされていること。
@@ -314,7 +314,7 @@ function Stage1(stageno) {
             ["common_vset0", 18, 1], //spare
             ["common_vset0", 19, 1], //boom
             ["common_vset0", 50, 1], //bow
-            ["ememy_generator", 1, 3],//generator
+            ["enemy_generator", 1, 3],//generator
             ["boss_0", 34, Math.floor(stageno / 5) - 1], //bx
             ["boss_0", 14, (stageno % 15 != 0) ? 1 : 0], //b0
             ["boss_1", 14, (stageno % 15 == 0) ? 1 : 0] //b2
@@ -345,15 +345,16 @@ function Stage1(stageno) {
             ["common_vset0", 18, 1], //spare
             ["common_vset0", 19, 1], //boom
             ["common_vset0", 50, 1], //bow
-            ["ememy_move_std2", 1, e_mstd],
-            ["ememy_generator", 1, 5],
-            ["ememy_moveshot_1", 1, e_mv],
-            ["sce_ememy_randomshot", 1, e_rsh],
-            ["ememy_turn_r", 1, e_tr ],
-            ["ememy_move_n_l", 1, e_mbl]
+            ["enemy_move_std2", 1, e_mstd],
+            ["enemy_generator", 1, 5],
+            ["enemy_mimic", 40, Math.floor(stageno / 5)],
+            ["enemy_moveshot_1", 1, e_mv],
+            ["sce_enemy_randomshot", 1, e_rsh],
+            ["enemy_turn_r", 1, e_tr ],
+            ["enemy_move_n_l", 1, e_mbl]
             ];
 
-            //["ememy_timeover", 33, 0]//l
+            //["enemy_timeover", 33, 0]//l
         }
 
         //var stmap = [[]];

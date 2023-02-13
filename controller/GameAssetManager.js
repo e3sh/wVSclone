@@ -63,6 +63,7 @@ function GameAssetManager(){
 
     //========== Audio Asset 
     var snd_ = [];
+    //案：sound.Classでラップしてアセットを直接操作するようにする。playとかも内包させる。2022/02/13memo
     /*
     var s_uri = [];
     var s_pos = [];

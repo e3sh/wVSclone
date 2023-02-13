@@ -3,7 +3,7 @@
 //　各オブジェクトの行動を指定するリスト。
 
 //敵の動作シナリオ（ボスは別ファイル）
-function sce_ememy_move_n(num1, num2) {
+function sce_enemy_move_n(num1, num2) {
     //　出現後、まっすぐ進んだ後向き変更してしばらく後にさらに向き変更する
     //　途中でいろいろ弾打ったりするパターン　　
     //-----------------------------------------------------------------------
@@ -66,12 +66,47 @@ function sce_ememy_move_n(num1, num2) {
         }
         o.frame++;
         //o.frame++; //frame rate *2
+        if (o.jump == 1 ) {
+            o.shifty = o.shifty + o.jpvec;
+            o.jpvec = o.jpvec + 0.4;
+            o.prioritySurface = true;
+            if (o.shifty > 0){
+                o.jump = 0;
+                o.shifty = 0;
+                o.prioritySurface = false;
+                o.colcheck = true;
+
+                o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+                o.vset(1);
+
+                o.wmapc = false;
+            }            
+            return o.sc_move();
+        }
+
+
+        if (o.mapCollision) {
+            //o.colcnt++;
+            if (o.colcnt > 1) {//連続衝突するとジャンプして回避してみる
+                o.wmapc = true;
+
+                o.jump = 1;
+                o.jpvec = -6.0;
+                o.colcheck = false;
+
+                o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+                o.vset(1);
+                //o.wmapc = true;
+            } else { 
+                o.colcheck = true;
+            }
+        }
 
         return o.sc_move();
     }
 }
 
-function sce_ememy_turn( num ){
+function sce_enemy_turn( num ){
     //　回りながら移動する敵の動き、途中弾撃つ
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
@@ -118,11 +153,45 @@ function sce_ememy_turn( num ){
         }
         o.frame++;
 
+        if (o.jump == 1 ) {
+            o.shifty = o.shifty + o.jpvec;
+            o.jpvec = o.jpvec + 0.4;
+            o.prioritySurface = true;
+            if (o.shifty > 0){
+                o.jump = 0;
+                o.shifty = 0;
+                o.prioritySurface = false;
+                o.colcheck = true;
+
+                o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+                o.vset(4);
+
+                o.wmapc = false;
+            }            
+            return o.sc_move();
+        }
+
+        if (o.mapCollision) {
+            //o.colcnt++;
+            if (o.colcnt > 1) {//連続衝突するとジャンプして回避してみる
+                o.wmapc = true;
+
+                o.jump = 1;
+                o.jpvec = -6.0;
+                o.colcheck = false;
+
+                o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+                o.vset(4);
+                //o.wmapc = true;
+            } else { 
+                o.colcheck = true;
+            }
+        }
         return o.sc_move();
     }
 }
 
-function sce_ememy_change_s() {
+function sce_enemy_change_s() {
     //　まっすぐ下に降りて来ながらExevent1番実行した後、0.5秒後シナリオを9に変更
     //　ほぼ動作テスト用
     //-----------------------------------------------------------------------
@@ -144,7 +213,7 @@ function sce_ememy_change_s() {
     }
 }
 
-function sce_ememy_moveshot() {
+function sce_enemy_moveshot() {
 
     //移動しながら定期的に弾をばら撒いていく（その１）
     //-----------------------------------------------------------------------
@@ -181,11 +250,47 @@ function sce_ememy_moveshot() {
         }
         o.frame++;
 
+        if (o.jump == 1 ) {
+            o.shifty = o.shifty + o.jpvec;
+            o.jpvec = o.jpvec + 0.4;
+            o.prioritySurface = true;
+            if (o.shifty > 0){
+                o.jump = 0;
+                o.shifty = 0;
+                o.prioritySurface = false;
+                o.colcheck = true;
+
+                o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+                o.vset(4);
+
+                o.wmapc = false;
+            }            
+            return o.sc_move();
+        }
+
+
+        if (o.mapCollision) {
+            //o.colcnt++;
+            if (o.colcnt > 1) {//連続衝突するとジャンプして回避してみる
+                o.wmapc = true;
+
+                o.jump = 1;
+                o.jpvec = -6.0;
+                o.colcheck = false;
+
+                o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+                o.vset(4);
+                //o.wmapc = true;
+            } else { 
+                o.colcheck = true;
+            }
+        }
+
         return o.sc_move();
     }
 }
 
-function sce_ememy_randomshot() {
+function sce_enemy_randomshot() {
     // ランダム弾用母機
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
@@ -193,6 +298,7 @@ function sce_ememy_randomshot() {
         o.w_cnt = 0;
 
         o.display_size = 1.5;
+        o.weight = 2.0;
 
         o.hit_x *= 1.5;
         o.hit_y *= 1.5;
@@ -253,8 +359,8 @@ function sce_ememy_randomshot() {
                 o.prioritySurface = false;
                 o.colcheck = true;
 
-                o.vset(2);
                 o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+                o.vset(2);
 
                 o.wmapc = false;
             }            
@@ -282,7 +388,7 @@ function sce_ememy_randomshot() {
     }
 }
 
-function sce_ememy_move_std(){
+function sce_enemy_move_std(){
     //　出現後、まっすぐ進んだ後ぶつかったら向き変更
     //-----------------------------------------------------------------------
 
@@ -307,8 +413,8 @@ function sce_ememy_move_std(){
                 o.prioritySurface = false;
                 o.colcheck = true;
 
-                o.vset(2);
                 o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+                o.vset(2);
 
                 o.wmapc = false;
             }            
@@ -358,7 +464,7 @@ function sce_ememy_move_std(){
     }
 }
 
-function sce_ememy_move_std2() {
+function sce_enemy_move_std2() {
     //　自機を追跡してくるパターン。
     //　60F毎に向き変更。iteminv_view 2023/1/14
     //-----------------------------------------------------------------------
@@ -580,7 +686,7 @@ function sce_enemy_weapon_check( item ){//アイテムリストが武器かど�
     return rc;
 }
 
-function sce_ememy_move_gen_grow(){
+function sce_enemy_move_gen_grow(){
     //　ジェネレータから発生して動き出すまでの演出パターン。
     //　add 2023/1/27
     //-----------------------------------------------------------------------
@@ -601,14 +707,14 @@ function sce_ememy_move_gen_grow(){
         
         if (o.frame > 20) {
             o.colcheck = true;
-            o.change_sce("ememy_move_std2"); //出現完了でシナリオを通常に変更
+            o.change_sce("enemy_move_std2"); //出現完了でシナリオを通常に変更
         }
 
         return o.sc_move();
     }
 }
 
-function sce_ememy_generator() {
+function sce_enemy_generator() {
     //　敵機を吐き出してくるジェネレータ。
     //-----------------------------------------------------------------------
 
@@ -642,15 +748,15 @@ function sce_ememy_generator() {
         if (o.frame > 180) {
             o.display_size = 1.0;
             if (o.gencnt >= 5){ //5匹産んだら移動開始
-                o.change_sce("ememy_move_std2");
+                o.change_sce("enemy_move_std2");
             }
 
             if ((o.lockon_flag) && (o.gencnt < 5)) {
                 var v = o.target_v();
 
                 o.set_object_ex(1, o.x + o.Cos(v) * 20, o.y + o.Sin(v) * 20, v, 
-                //"ememy_move_std2");
-                "ememy_move_gen_grow");
+                //"enemy_move_std2");
+                "enemy_move_gen_grow");
                 o.gencnt++;
             }
             o.frame = 0;
@@ -672,6 +778,11 @@ function sce_enemy_trbox() {
 
         o.colcheck = true;
         o.attack = 0;//宝箱から攻撃くらったら困るので0
+
+        o.pickgetf = false;
+        o.pickviewitem = 0;
+
+        o.pick = o.parent.pick;
     }
 
     this.move = function (scrn, o) {
@@ -680,13 +791,15 @@ function sce_enemy_trbox() {
         o.frame++;
 
         // o.sc_moveを使えないので、（押しても動かさないため）直接記述
-        /*
+        
         if (this.status == 2) {//状態が衝突の場合
             this.change_sce(7);
             //this.sound.effect(8); //爆発音
 
             //入ってるアイテムを出す。
             for (var i = 0; i < this.pick.length; i++) {
+                //this.set_object_ex(1, this.x, this.y, Math.floor(Math.random() * 360), 39, "p:" + this.pick[i]);
+
                 this.set_object_ex(this.pick[i], this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
             }
             this.add_score(this.score);
@@ -704,13 +817,73 @@ function sce_enemy_trbox() {
         // 移動処理はなし、押されても動かない。
 
         this.damageflag = false;
-        */
-        //return f;
-        return o.sc_move();//SC_moveしないとItem拾わないので。これでも拾わず？
+        
+        return f;
+        //return o.sc_move();//Item拾うのはItem側処理
     }
 }
+
+//Mimic
+function sce_enemy_trbox_mimic() {
+    //　宝箱用/動かない/当たり判定の都合上、敵にする。(別タイプを設定したら不要）
+    //-----------------------------------------------------------------------
+    this.init = function (scrn, o) {
+        //今の問題点（敵タイプなので誘爆で壊れてしまう）
+
+        o.vset(0);
+
+        o.colcheck = true;
+        //o.attack = 0;//宝箱から攻撃くらったら困るので0
+
+        o.pickgetf = false;
+        o.pickviewitem = 0;
+
+        o.pick_enable = false;//物拾わないようにする。
+    }
+
+    this.move = function (scrn, o) {
+        var f = 0;
+
+        o.frame++;
+
+        o.display_size = 1.0 + ((10-(o.frame%20))/200);
+        // o.sc_moveを使えないので、（押しても動かさないため）直接記述
+        
+        if (this.status == 2) {//状態が衝突の場合
+            this.change_sce(7);
+            //this.sound.effect(8); //爆発音
+
+            //敵を出す処理
+            var num = Math.floor(Math.random() * 4) + 3;//3～6
+            for (var i = 0; i < num; i++) {
+                var v = (360/num) * i;
+                o.set_object_ex(1, o.x + o.Cos(v) * 16, o.y + o.Sin(v) * 16, v, 
+                //    "enemy_move_gen_grow");    
+                    "enemy_move_std2");    
+
+            }
+        }
+
+        if (this.damageflag) {
+            var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
+            if (onst) {
+                //this.sound.effect(12); //hit音
+            }
+        }
+
+        if (this.status == 0) f = 1; //未使用ステータスの場合は削除
+        
+        // 移動処理はなし、押されても動かない。
+
+        this.damageflag = false;
+        
+        return f;
+        //return o.sc_move();//SC_moveしないとItem拾わないので。これでも拾わず？
+    }
+}
+
 //TimeOverEnemy
-function sce_ememy_timeover() {
+function sce_enemy_timeover() {
     //　自機を目標にしてのホーミング移動(時間切れ）
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {

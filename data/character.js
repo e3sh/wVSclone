@@ -13,12 +13,12 @@
 //　座標から中心位置への距離x,y
 //　中心からの当たり判定の範囲x,y
 //　[status　状態(0:未使用/廃棄済 1:通常 2:衝突 3:X軸枠外 4:Y軸枠外 5:廃棄処理中）
-//　scenario0　出現時使用するシナリオ
-//　scenario1　予備シナリオ
-//　scenario2　衝突
-//　scenario3　X軸枠外
-//　scenario4　Y軸枠外
-//　scenario5　終了処理
+//　scenario0　出現時使用するシナリオ　/　使用はこれのみ。
+//　scenario1　予備シナリオ　/　未使用　Javascript版では処理方法が変更されている為
+//　scenario2　衝突	　　/　未使用　Javascript版では処理方法が変更されている為
+//　scenario3　X軸枠外　/　未使用　Javascript版では処理方法が変更されている為
+//　scenario4　Y軸枠外　/　未使用　Javascript版では処理方法が変更されている為
+//　scenario5　終了処理　/　未使用　Javascript版では処理方法が変更されている為
 //　id 　 オブジェクトに個別IDを使用する場合に指定する。(アイテムの種類/ID等)2023/1/17時点で未使用
 //　score　倒したときのスコア
 //　フレームカウントは約60で1秒進む予定
@@ -121,7 +121,7 @@ function character(){
 	[35, 32, 1, ITEM, 8, 8, 16, 16, 30, 30, 5, 5, 5, 5, 0, 10],
 
 	//宝箱
-	[40, 39, 1, ENEMY, 16, 16, 16, 16, 30, 30, 5, 5, 5, 5, 0, 100],
+	[40, 39, 1, ENEMY, 16, 16, 32, 32, 30, 30, 5, 5, 5, 5, 0, 100],
 
 	//Use Number 0-12,14-27,30,32-50,100,103
 	//46-50 
@@ -158,7 +158,7 @@ function character(){
     		ptn.center_y = w[5];
     		ptn.size_x = w[6];
     		ptn.size_y = w[7];
-    		ptn.senario = [ w[8], w[9], w[10], w[11], w[12], w[13] ];
+    		ptn.senario = [ w[8], w[9], w[10], w[11], w[12], w[13] ];//senario[0]以外は運用していない2023/02/12
     		ptn.id = w[14];
     		ptn.score = w[15];
     		chr_ptn[ w[0] ] = ptn; 

@@ -50,7 +50,7 @@ function sceneTitle(state) {
 	    menu.push(m);
 	}	
 
-    var cur_cnt;
+    var cnt;
 
     var tsel = new Number(0.0);
     //処理部
@@ -96,10 +96,11 @@ function sceneTitle(state) {
         wtxt.push("-----------------&");
 
         if (state.Config.use_audio) {
-            //wtxt.push("audio on");
+            wtxt.push("audio on:" + dev.sound.loadCheck());
         } else {
-            wtxt.push("audio off");
+            wtxt.push("audio off:" + dev.sound.loadCheck());
         }
+
         work2.put("Mayura1", 320 - 50 +8 , 208);
         work2.put("Unyuu1", 320 - 50 +8, 240);
 
@@ -117,7 +118,7 @@ function sceneTitle(state) {
         work2.putchr("Enemy", 320, 240 - 8);
         work2.putchr("Ball/Item", 320, 272 - 8);
         work2.putchr("Key", 320, 304 - 8);
-        work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
+        //work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
 
         for (var s in wtxt) {
             work2.putchr(wtxt[s], 0, 132 + 16 * s);        
@@ -139,6 +140,8 @@ function sceneTitle(state) {
         keywait = 30;
 
         menusel = 0;
+
+        cnt = 0;
 
         //dev.sound.change(0);
         //reset処理を記述予定
@@ -261,13 +264,19 @@ function sceneTitle(state) {
     }
 
     function scene_draw() {
+        var bvf = false; //blinkViewFlag 
+        cnt++;
 
+        if (cnt > 15){
+            bvf = true;
+            cnt = (cnt > 90)? 0 : cnt;
+        }
         for (var i in menu) {
 
             if (menu[i].sel) {
 
                 var o = {}
-                o.x = menu[i].x;
+                o.x = menu[i].x -6;
                 o.y = menu[i].y;
                 o.w = menu[i].w;
                 o.h = menu[i].h;
@@ -283,8 +292,9 @@ function sceneTitle(state) {
             } else {
                 work.putchr(menu[i].title, menu[i].x - 4, menu[i].y -1);    
             }
-
         }
+
+        if (bvf) work.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
         //表示
     }
 }

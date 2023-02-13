@@ -41,26 +41,26 @@ function scenario() {
 
     //　敵移動　球打ったり　｜／｜移動したり　　
     //-----------------------------------------------------------------------
-    w = new sce_ememy_move_n( 90, -90 );
+    w = new sce_enemy_move_n( 90, -90 );
 
     sc_init[2] = w.init;
     sc_move[2] = w.move;
 
     //alias
-    sc_init["ememy_move_n_r"] = w.init;
-    sc_move["ememy_move_n_r"] = w.move;
+    sc_init["enemy_move_n_r"] = w.init;
+    sc_move["enemy_move_n_r"] = w.move;
 
     //　敵移動　球打ったり　｜＼｜移動したり
     //-----------------------------------------------------------------------
-    w = new sce_ememy_move_n(90, -90);
+    w = new sce_enemy_move_n(90, -90);
 
     sc_init[3] = w.init;
     sc_move[3] = w.move;
 
     //alias
-    sc_init["ememy_move_n_l"] = w.init;
-    sc_move["ememy_move_n_l"] = w.move;
-    sc_draw["ememy_move_n_l"] = w.draw; //add 2023/01/28
+    sc_init["enemy_move_n_l"] = w.init;
+    sc_move["enemy_move_n_l"] = w.move;
+    sc_draw["enemy_move_n_l"] = w.draw; //add 2023/01/28
 
     // START SET　移動開始で速さ2のベクトルを与える
     //-----------------------------------------------------------------------
@@ -124,37 +124,37 @@ function scenario() {
 
     //　右に回りながら移動する敵の動き、途中弾撃つ
     //-----------------------------------------------------------------------
-    w = new sce_ememy_turn(-30);
+    w = new sce_enemy_turn(-30);
 
     sc_init[9] = w.init;
     sc_move[9] = w.move;
 
     //alias
-    sc_init["ememy_turn_r"] = w.init;
-    sc_move["ememy_turn_r"] = w.move;
-    sc_draw["ememy_turn_r"] = w.draw; //add 2023/01/28
+    sc_init["enemy_turn_r"] = w.init;
+    sc_move["enemy_turn_r"] = w.move;
+    sc_draw["enemy_turn_r"] = w.draw; //add 2023/01/28
 
     //　左に回りながら移動する敵の動き、途中弾撃つ
     //-----------------------------------------------------------------------
-    w = new sce_ememy_turn(30);
+    w = new sce_enemy_turn(30);
 
     sc_init[10] = w.init;
     sc_move[10] = w.move;
 
     //alias
-    sc_init["ememy_turn_l"] = w.init;
-    sc_move["ememy_turn_l"] = w.move;
+    sc_init["enemy_turn_l"] = w.init;
+    sc_move["enemy_turn_l"] = w.move;
 
     //　まっすぐ下に降りて来ながらExevent1番実行した後、0.5秒後シナリオを9に変更
     //-----------------------------------------------------------------------
-    w = new sce_ememy_change_s();
+    w = new sce_enemy_change_s();
 
     sc_init[11] = w.init;
     sc_move[11] = w.move;
 
     //alias
-    sc_init["ememy_change_s"] = w.init;
-    sc_move["ememy_change_s"] = w.move;
+    sc_init["enemy_change_s"] = w.init;
+    sc_move["enemy_change_s"] = w.move;
 
     // START SET　高速弾（加速２をセット）
     //-----------------------------------------------------------------------
@@ -191,15 +191,15 @@ function scenario() {
 
     //移動しながら定期的に弾をばら撒いていく（その１）
     //-----------------------------------------------------------------------
-    w = new sce_ememy_moveshot();
+    w = new sce_enemy_moveshot();
 
     sc_init[15] = w.init;
     sc_move[15] = w.move;
 
     //alias
-    sc_init["ememy_moveshot_1"] = w.init;
-    sc_move["ememy_moveshot_1"] = w.move;
-    sc_draw["ememy_moveshot_1"] = w.draw; //add 2023/01/28
+    sc_init["enemy_moveshot_1"] = w.init;
+    sc_move["enemy_moveshot_1"] = w.move;
+    sc_draw["enemy_moveshot_1"] = w.draw; //add 2023/01/28
 
     //　味方（支援機）の動作(rotation)
     //-----------------------------------------------------------------------
@@ -236,15 +236,15 @@ function scenario() {
 
     // ランダム弾用母機
     //-----------------------------------------------------------------------
-    w = new sce_ememy_randomshot() 
+    w = new sce_enemy_randomshot() 
 
     sc_init[19] = w.init;
     sc_move[19] = w.move;
 
     //alias
-    sc_init["sce_ememy_randomshot"] = w.init;
-    sc_move["sce_ememy_randomshot"] = w.move;
-    sc_draw["sce_ememy_randomshot"] = w.draw; //add 2023/01/28
+    sc_init["sce_enemy_randomshot"] = w.init;
+    sc_move["sce_enemy_randomshot"] = w.move;
+    sc_draw["sce_enemy_randomshot"] = w.draw; //add 2023/01/28
 
     // 自機ホーミング弾
     //-----------------------------------------------------------------------
@@ -697,42 +697,49 @@ function scenario() {
 
     //敵の動き。
     //--------------------------------
-    w = new sce_ememy_move_std();
+    w = new sce_enemy_move_std();
 
-    sc_init["ememy_move_std"] = w.init;
-    sc_move["ememy_move_std"] = w.move;
+    sc_init["enemy_move_std"] = w.init;
+    sc_move["enemy_move_std"] = w.move;
 
     //--------------------------------
-    w = new sce_ememy_move_std2();
+    w = new sce_enemy_move_std2();
 
-    sc_init["ememy_move_std2"] = w.init;
-    sc_move["ememy_move_std2"] = w.move;
-    sc_draw["ememy_move_std2"] = w.draw;//add.2023/1/14
+    sc_init["enemy_move_std2"] = w.init;
+    sc_move["enemy_move_std2"] = w.move;
+    sc_draw["enemy_move_std2"] = w.draw;//add.2023/1/14
 
     //--------------------------------
     
-    w = new sce_ememy_move_gen_grow();//add.2023/1/27
+    w = new sce_enemy_move_gen_grow();//add.2023/1/27
 
-    sc_init["ememy_move_gen_grow"] = w.init;
-    sc_move["ememy_move_gen_grow"] = w.move;
+    sc_init["enemy_move_gen_grow"] = w.init;
+    sc_move["enemy_move_gen_grow"] = w.move;
 
     //--------------------------------
 
-    w = new sce_ememy_generator();
+    w = new sce_enemy_generator();
 
-    sc_init["ememy_generator"] = w.init;
-    sc_move["ememy_generator"] = w.move;
+    sc_init["enemy_generator"] = w.init;
+    sc_move["enemy_generator"] = w.move;
 
     //--------------------------------
     w = new sce_enemy_trbox();
 
     sc_init["enemy_trbox"] = w.init;
     sc_move["enemy_trbox"] = w.move;
-    //-----------------------------------------------------------------------
-    w = new sce_ememy_timeover()
+ 
+    //--------------------------------
+     w = new sce_enemy_trbox_mimic();
 
-    sc_init["ememy_timeover"] = w.init;
-    sc_move["ememy_timeover"] = w.move;
+    sc_init["enemy_mimic"] = w.init;
+    sc_move["enemy_mimic"] = w.move;
+ 
+    //-----------------------------------------------------------------------
+    w = new sce_enemy_timeover()
+
+    sc_init["enemy_timeover"] = w.init;
+    sc_move["enemy_timeover"] = w.move;
 
     // Dd追加分
     //-----------------------------------------------------------------------
