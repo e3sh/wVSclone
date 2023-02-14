@@ -9,7 +9,7 @@
 
     var dev = state.System.dev;
 
-    delobj = 0;
+    delobj = 0;//使ってない
 
     this.score = 0;
 
@@ -31,7 +31,7 @@
 
     this.combomax = []; //comboが続いた内の最大値
 
-    this.total = []; //種類別の倒した総数(主に敵）　倒した総数/出現した数で撃墜率などを算出で使用予定
+    this.total = []; //種類別の倒した総数(主に敵）　倒した総数/出現した数で撃墜率などを算出で使用予定 combo関係の名残
 
     this.itemstack = [];
 

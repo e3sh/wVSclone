@@ -10,7 +10,7 @@ function soundControl() {
     //dummy
     var dev_ready = false;
 
-    var mute = true;//false;
+    var mute = false;
 
     this.mute = mute;
 

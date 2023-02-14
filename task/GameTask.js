@@ -104,7 +104,7 @@ class GameTask_Debug extends GameTask {
             sl.push("intv.ave:(" + r.interval.ave + "ms) load.ave:(" + r.workload.ave + "ms)");
             sl.push("workload:"+ Math.trunc((r.workload.ave / r.interval.ave)*100) + "%");
 
-            g.font["8x8white"].useScreen(3);
+            g.font["8x8white"].useScreen(4);
             for(var i=0; i < sl.length; i++){
                 g.font["8x8white"].putchr(sl[i], 0, 400+ i*8);
             }

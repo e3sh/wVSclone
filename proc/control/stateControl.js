@@ -22,6 +22,9 @@ function stateControl( g ){
 	//進行状態やプレイヤーステータス等(アイテムはここ）
 	this.Game = new stateGame( g );
 
+	//2023/02/14:GameSceneから↓へ変更　この時点ではinitもresetもしていない。
+	this.obCtrl = new gObjectControl(this.System.dev.graphics[1], this);
+	this.mapsc = new mapSceControl();
 }
 /*
 var stateControl = {

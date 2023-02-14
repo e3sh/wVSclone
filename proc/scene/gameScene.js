@@ -25,8 +25,8 @@ function gameScene(state){
 	this.reset_enable = true;
 	this.score = 0;
 
-	var obCtrl;// = new gObjectControl(dev.graphics1, dev);
-	var mapsc;//  = new mapSceControl();
+	var obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
+	var mapsc  = state.mapsc; //= new mapSceControl();
 
 	var escore;
 
@@ -66,7 +66,7 @@ function gameScene(state){
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.3)";
 	    device.fillRect(dev.layout.map_x, dev.layout.map_y, 150, 150);
-	    /*
+1	    /*
 		device.beginPath();
 	    device.strokeStyle = "rgba(0,0,255,0.5)";
 	    device.rect(dev.layout.map_x, dev.layout.map_y, 150, 150);
@@ -125,8 +125,8 @@ function gameScene(state){
 
 	function game_init(){
 
-		obCtrl = new gObjectControl(work, state);
-		mapsc = new mapSceControl();
+		//obCtrl = new gObjectControl(work, state);//stateへ統合
+		//mapsc = new mapSceControl();//stateへ統合(別Sceneでmap確認できるようにmapviewscene)
 
 		mapsc.init();
 

@@ -15,6 +15,8 @@ function scenePause(state) {
 
     this.reset_enable = true;
 
+    var menuvf = false;
+    var keywait = 10;
     //var keylock;
     //var keywait = 0;
 
@@ -44,6 +46,7 @@ function scenePause(state) {
         work.putchr("Save and Quit.", 320 - 50, 280); 
 
         work.draw();
+        work.reset();
 
         state.Game.cold = true;
 
@@ -54,6 +57,9 @@ function scenePause(state) {
     function scene_step() {
 
         //var kstate = keys.check();
+
+        keywait--;
+        if (keywait > 0) return 0;
 
         var kstate = dev.key_state.check();
 
@@ -72,6 +78,13 @@ function scenePause(state) {
 	            delete(kstate[81]);// = false;//押しっぱなし検出する為、予防
 	        }
 	    }
+
+        var numkey = false;
+        for (var i in kstate){ //Fullkey[0]-[9]
+            if (Boolean(kstate[i]) && (i >= 48) && (i <= 57)){
+                numkey = true;
+            }
+        }
 
 	    if (qkey) {
             /*
@@ -110,6 +123,62 @@ function scenePause(state) {
             return 1;//GameScene
         }
 
+        if (numkey) {
+            var inp = -1;
+            for (var i in kstate){
+                if (Boolean(kstate[i])){
+                    inp = i-48;
+                    break;
+                }
+            }
+
+            switch (inp){
+                case 1:
+                    state.Config.debug = (!state.Config.debug);
+                    break;
+                case 2:
+                    state.Config.lamp_use = (!state.Config.lamp_use);
+                    break;
+                case 3:
+                    state.Config.map_use = (!state.Config.map_use);
+                    break;
+                case 4:
+                    state.System.dev.sound.mute = (!state.System.dev.sound.mute);
+                    break;
+                case 5:
+                    state.Config.bulletmode = (!state.Config.bulletmode);
+                    break;
+                case 0:
+                    menuvf = (!menuvf);
+                    break;
+                default:
+                    break;
+            }
+            work.reset();
+            work.fill(0, 300, 640, 8 * 11);
+            if (menuvf){
+                var arr = [];
+                work.putchr8("Input ["+ inp +"]", 16, 300);
+
+                arr.push("1: Debug Display:" + (state.Config.debug?"ON":"OFF"));
+                arr.push("2: Lamp(on FloorChange):" + (state.Config.lamp_use?"ON":"OFF"));
+                arr.push("3: Map (on FloorChange):" + (state.Config.map_use?"ON":"OFF"));
+                arr.push("4: Mute (NotSupport)   :" + (state.System.dev.sound.mute?"ON":"OFF"));
+                arr.push("5: BulletMode(offRange):" + (state.Config.bulletmode?"ON":"OFF"));
+                arr.push("6: -     :");
+                arr.push("7: Import/Export :NotSupport");
+                arr.push("8: Status Display:NotSupport");
+                arr.push("9: -     :");
+                arr.push("0: Menu Display:" + (menuvf?"ON":"OFF"));
+
+                for (var i in arr){
+                    work.putchr8(arr[i], 0, 308 + i * 8);
+                }
+            }
+            work.draw();
+            keywait = 10;
+        }
+
         return 0;
         //進行
     }
@@ -129,5 +198,6 @@ function scenePause(state) {
         	}
 		}
         */
+        work.reset();
     }
 }
