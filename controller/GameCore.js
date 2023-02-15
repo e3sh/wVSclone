@@ -48,6 +48,7 @@ function GameCore( sysParam ) {
 	//device setup
 	var keyboard_ = new inputKeyboard();
 	var mouse_ = new inputMouse();
+	var joystick_ = new inputGamepad();
 
 	var screen_ = [];
 
@@ -135,6 +136,10 @@ function GameCore( sysParam ) {
 
 	this.keyboard = keyboard_;
 	this.mouse = mouse_;
+
+	this.gamepad = joystick_;
+	this.joystick = joystick_;
+
 	this.dsp = dsp_;
 	this.screen = screen_;
 

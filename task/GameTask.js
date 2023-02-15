@@ -119,20 +119,24 @@ class GameTask_Load extends GameTask {
     }
         scrn;
         fontsc;
+        str;
 
     init(g){
         this.scrn = g.screen[4];
         g.font["8x8white"].useScreen(4);
         this.fontsc =  g.font["8x8white"];
-
     }
 
     step(g) {
         var kstate = g.keyboard.check();
     
-        if (Boolean(kstate[32])) {
-            if (kstate[32]) {//spacebar↓
+        if (typeof g.state.Config.debug !== 'undefined') g.state.Config.debug = true;
+
+        if (Boolean(kstate[32])||g.gamepad.btn_start) {
+            if (kstate[32]||g.gamepad.btn_start) {//spacebar↓
                 var maintask = g.task.read("main");
+
+                g.state.Config.debug = false;
 
                 maintask.visible = true;
                 maintask.enable = true;
@@ -141,7 +145,14 @@ class GameTask_Load extends GameTask {
                 g.task.del("load"); 
             }
         }
-    
+
+        if (g.gamepad.check()){
+            this.str = g.gamepad.infodraw();
+        }else{
+            this.str = [];
+            this.str.push("[Gamepad]");
+            this.str.push("Not Ready.");
+        }
     }
 
     draw(g){
@@ -161,7 +172,7 @@ class GameTask_Load extends GameTask {
         for (var i in st){
             pfunc(i + " " + st[i], 0, i*16 +16);
         }
-        pfunc("push space key", 0, st.length*16 +32);
+        pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
 
         /*
         var st = g.asset.namelist();
@@ -171,8 +182,9 @@ class GameTask_Load extends GameTask {
             
         }
         */
-
-
+        for (var i in this.str){
+            pfunc(this.str[i], 320, i*8 + 8);
+        }
     }
 
 }

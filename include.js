@@ -11,6 +11,7 @@ var w = [
     //deviceControls
     "controller/inputKeyboard.js",
     "controller/inputMouse.js",
+    "controller/inputGamepad.js",
     "controller/DisplayControl.js",
     //"controller/soundControl.js",
     "controller/offScreen.js",
