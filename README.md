@@ -23,17 +23,16 @@ https://e3sh.github.io/wVSclone/main.html
 
 ## WEAPONS:
 (手動攻撃)
-- 杖(WAND)：玉消費して遠隔攻撃
+- 杖(WAND)：玉消費して遠隔攻撃　
 (自動攻撃)
-- 剣(SWORD):移動方向前面90度近接攻撃
-- 槍(SPEAR):移動方向直線の近接攻撃
-- 斧(AXE):自分の全周回転近接攻撃
-- 弓(BOW/ARROW):移動方向前面3方向の遠隔攻撃(敵使用時は1方向遠隔攻撃)
-- ブーメラン:移動方法への遠隔攻撃
+- 剣(SWORD):移動方向前面90度近接攻撃　
+- 槍(SPEAR):移動方向直線の近接攻撃　
+- 斧(AXE):自分の全周回転近接攻撃　
+- 弓(BOW/ARROW):移動方向前面3方向の遠隔攻撃(敵使用時は1方向遠隔攻撃)　
+- ブーメラン:移動方法への遠隔攻撃　
 
-・連続して同じ種類の武器を入手すると強化(攻撃間隔の短縮)(Maxは+3)
+・連続して同じ種類の武器を入手すると強化(攻撃間隔の短縮)(Maxは+3)　
 　(WANDの場合は、玉を7個追加）
-
 ## DEBUG mode:
 タイトル画面のConfigと一時停止(Pause)画面で設定可能
 
@@ -46,13 +45,13 @@ https://e3sh.github.io/wVSclone/main.html
 
 ### 一時停止(Pause)画面:
 フルキーボード側の数字キーでオフオンの切り替え
-
-1 : Debug Display        デバッグステータス表示    
-2 : Lamp(on FloorChange) ランプ所持(面切り替え後に有効) 
-3 : Map (on FloorChange) 地図所持(面切り替え後に有効) 
-4 : Mute (NotSupport)    効果音・BGMのMUTE（今のところ効果なし) 
-5 : BulletMode(offRange) 画面外からの弾を消す 
-0 : Menu Display         本メニューの表示オフオン 
- 
+　
+1 : Debug Display        デバッグステータス表示　    
+2 : Lamp(on FloorChange) ランプ所持(面切り替え後に有効) 　
+3 : Map (on FloorChange) 地図所持(面切り替え後に有効)　 
+4 : Mute (NotSupport)    効果音・BGMのMUTE（今のところ効果なし) 　
+5 : BulletMode(offRange) 画面外からの弾を消す　 
+0 : Menu Display         本メニューの表示オフオン 　
+　 
 動作確認ブラウザ: 
 Edge/Chrome
