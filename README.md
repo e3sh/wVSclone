@@ -25,6 +25,7 @@ https://e3sh.github.io/wVSclone/main.html
 (手動攻撃)
 - 杖(WAND)：玉消費して遠隔攻撃
 　
+ 
 (自動攻撃)
 - 剣(SWORD):移動方向前面90度近接攻撃　
 - 槍(SPEAR):移動方向直線の近接攻撃　
@@ -54,5 +55,6 @@ https://e3sh.github.io/wVSclone/main.html
 - 5 : BulletMode(offRange) 画面外からの弾を消す　 
 - 0 : Menu Display         本メニューの表示オフオン 　
 　 
+  
 動作確認ブラウザ: 
 Edge/Chrome
