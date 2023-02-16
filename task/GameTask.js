@@ -82,7 +82,7 @@ class GameTask_Debug extends GameTask {
         + "load.ave:(" + r.workload.ave + "ms)</br>workload:"
         + Math.trunc((r.workload.ave / r.interval.ave)*100) + "%</br>";
 
-        document.getElementById("console").innerHTML = st;
+        //document.getElementById("console").innerHTML = st;
 
         if (g.state.Config.debug){
             var sl = [];

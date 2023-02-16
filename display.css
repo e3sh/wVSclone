@@ -3,7 +3,7 @@
 * {
 	margin:0; padding:0; 	/*全要素のマージン・パディングをリセット*/
 } 
-
+/*
 div {
 	visibility: visible ;
 	border-radius: 10px;
@@ -50,7 +50,7 @@ div#console
 	color : #FFFFFF ;
 	visibility : hidden;
 }
-
+*/
 canvas
 {
 	top :0px ;
@@ -64,6 +64,7 @@ canvas
 		width : 320px;
 		height :240px;
 	}
+	/*
 	div#undermenu 
 	{
 		width : 316px;
@@ -75,7 +76,7 @@ canvas
 		height :160px;
 		top :80px ;
 	}
-
+	*/
 }
 @media (min-width : 600px){
 	canvas
@@ -83,7 +84,7 @@ canvas
 		width : 640px;
 		height :480px;
 	}
-
+	/*
 	div#undermenu 
 	{
 		width : 636px;
@@ -96,7 +97,7 @@ canvas
 		height :160px;
 		top :320px ;
 	}
-
+	*/
 }
 @media (min-width : 1025px){
 	canvas
@@ -104,7 +105,7 @@ canvas
 		width : 1024px;
 		height :768px;
 	}
-
+	/*
 	div#undermenu 
 	{
 		width : 1020px;
@@ -117,6 +118,7 @@ canvas
 		height :160px;
 		top :600px ;
 	}
+	*/
 }
 
 
