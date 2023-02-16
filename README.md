@@ -3,7 +3,7 @@ repositorie JavascriptActionGameのバージョンアップ版
 
 https://e3sh.github.io/wVSclone/main.html
 
-##操作方法：
+## 操作方法：
 -    移動(Move):　方向キー(ArrowKey)
 -    攻撃(Action):　[Z] or [Space]
 -    アイテム使用(Use):　[X] or [Ctrl]
@@ -13,7 +13,7 @@ https://e3sh.github.io/wVSclone/main.html
     攻撃(Action)操作: 
     玉を消費（WAND:攻撃 / 他武器:画面内アイテム回収。
 
-##ITEMS:
+## ITEMS:
 -( ):玉　：(薄黄色)　WAND:消耗して攻撃 / 他武器:消耗して画面内アイテム回収
 -(L):緑玉:体力回復+3/上限値上昇+1(Life)
 -(S):青玉:一定時間バリアを貼る(Shield)
@@ -22,7 +22,7 @@ https://e3sh.github.io/wVSclone/main.html
 -地図：マップ表示(Map)
 -鍵:持った状態で扉に入ると次の面へ(Key)
 
-##WEAPONS:
+## WEAPONS:
 -杖(WAND)：玉消費して遠隔攻撃
 -剣(SWORD):移動方向前面90度近接攻撃
 -槍(SPEAR):移動方向直線の近接攻撃
@@ -34,17 +34,17 @@ https://e3sh.github.io/wVSclone/main.html
 　(WANDの場合は、玉を7個追加）
 
 ----
-##DEBUG mode:
+## DEBUG mode:
 タイトル画面のConfigと一時停止(Pause)画面で設定可能
 
-###タイトル画面のConfig:
+### タイトル画面のConfig:
 -DebugStatus :ONでデバッグステータス表示
   各offscreenバッファーの制御状態とfps/loadの表示/当たり判定範囲などを表示
 -BulletErace :ONで画面外からの弾を消す
   発生した弾が表示画面内でない場合は即座に消滅するようになる。
 
 
-###一時停止(Pause)画面:
+### 一時停止(Pause)画面:
 フルキーボード側の数字キーでオフオンの切り替え
 1: Debug Display        デバッグステータス表示    
 2: Lamp(on FloorChange) ランプ所持(面切り替え後に有効)
