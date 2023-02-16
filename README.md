@@ -23,7 +23,8 @@ https://e3sh.github.io/wVSclone/main.html
 
 ## WEAPONS:
 (手動攻撃)
-- 杖(WAND)：玉消費して遠隔攻撃　
+- 杖(WAND)：玉消費して遠隔攻撃
+　
 (自動攻撃)
 - 剣(SWORD):移動方向前面90度近接攻撃　
 - 槍(SPEAR):移動方向直線の近接攻撃　
@@ -46,12 +47,12 @@ https://e3sh.github.io/wVSclone/main.html
 ### 一時停止(Pause)画面:
 フルキーボード側の数字キーでオフオンの切り替え
 　
-1 : Debug Display        デバッグステータス表示　    
-2 : Lamp(on FloorChange) ランプ所持(面切り替え後に有効) 　
-3 : Map (on FloorChange) 地図所持(面切り替え後に有効)　 
-4 : Mute (NotSupport)    効果音・BGMのMUTE（今のところ効果なし) 　
-5 : BulletMode(offRange) 画面外からの弾を消す　 
-0 : Menu Display         本メニューの表示オフオン 　
+- 1 : Debug Display        デバッグステータス表示　    
+- 2 : Lamp(on FloorChange) ランプ所持(面切り替え後に有効) 　
+- 3 : Map (on FloorChange) 地図所持(面切り替え後に有効)　 
+- 4 : Mute (NotSupport)    効果音・BGMのMUTE（今のところ効果なし) 　
+- 5 : BulletMode(offRange) 画面外からの弾を消す　 
+- 0 : Menu Display         本メニューの表示オフオン 　
 　 
 動作確認ブラウザ: 
 Edge/Chrome
