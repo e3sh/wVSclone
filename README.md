@@ -10,7 +10,7 @@ https://e3sh.github.io/wVSclone/main.html
 - ジャンプ(Jump):　[C] 
 - 一時停止(Pause):　[ESC]  
 
-・攻撃(Action)操作:玉を消費（WAND:攻撃 / 他武器:画面内アイテム回収。
+・攻撃(Action)操作:玉を消費（WAND:攻撃 / 他武器:画面内アイテム回収)
 
 ## ITEMS:
 - ( ):玉　：(薄黄色)　WAND:消耗して攻撃 / 他武器:消耗して画面内アイテム回収
@@ -22,7 +22,9 @@ https://e3sh.github.io/wVSclone/main.html
 - 鍵:持った状態で扉に入ると次の面へ(Key)
 
 ## WEAPONS:
+(手動攻撃)
 - 杖(WAND)：玉消費して遠隔攻撃
+(自動攻撃)
 - 剣(SWORD):移動方向前面90度近接攻撃
 - 槍(SPEAR):移動方向直線の近接攻撃
 - 斧(AXE):自分の全周回転近接攻撃
@@ -46,11 +48,11 @@ https://e3sh.github.io/wVSclone/main.html
 フルキーボード側の数字キーでオフオンの切り替え
 
 1 : Debug Display        デバッグステータス表示    
-2 : Lamp(on FloorChange) ランプ所持(面切り替え後に有効)
-3 : Map (on FloorChange) 地図所持(面切り替え後に有効)
-4 : Mute (NotSupport)    効果音・BGMのMUTE（今のところ効果なし)
-5 : BulletMode(offRange) 画面外からの弾を消す
-0 : Menu Display         本メニューの表示オフオン
-
-動作確認ブラウザ:
+2 : Lamp(on FloorChange) ランプ所持(面切り替え後に有効) 
+3 : Map (on FloorChange) 地図所持(面切り替え後に有効) 
+4 : Mute (NotSupport)    効果音・BGMのMUTE（今のところ効果なし) 
+5 : BulletMode(offRange) 画面外からの弾を消す 
+0 : Menu Display         本メニューの表示オフオン 
+ 
+動作確認ブラウザ: 
 Edge/Chrome
