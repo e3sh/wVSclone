@@ -10,7 +10,7 @@ https://e3sh.github.io/wVSclone/main.html
 - ジャンプ(Jump):　[C] 
 - 一時停止(Pause):　[ESC]  
 
-・攻撃(Action)操作:玉を消費（WAND:攻撃 / 他武器:画面内アイテム回収)
+・ 攻撃(Action)操作:玉を消費（WAND:攻撃 / 他武器:画面内アイテム回収)
 
 ## ITEMS:
 - ( ):玉　：(薄黄色)　WAND:消耗して攻撃 / 他武器:消耗して画面内アイテム回収
@@ -33,7 +33,8 @@ https://e3sh.github.io/wVSclone/main.html
 - 弓(BOW/ARROW):移動方向前面3方向の遠隔攻撃(敵使用時は1方向遠隔攻撃)　
 - ブーメラン:移動方法への遠隔攻撃　
 
-・連続して同じ種類の武器を入手すると強化(攻撃間隔の短縮)(Maxは+3)　
+・ 連続して同じ種類の武器を入手すると強化(攻撃間隔の短縮)(Maxは+3)　
+
 　(WANDの場合は、玉を7個追加）
 ## DEBUG mode:
 タイトル画面のConfigと一時停止(Pause)画面で設定可能
@@ -51,10 +52,9 @@ https://e3sh.github.io/wVSclone/main.html
 - 1 : Debug Display        デバッグステータス表示　    
 - 2 : Lamp(on FloorChange) ランプ所持(面切り替え後に有効) 　
 - 3 : Map (on FloorChange) 地図所持(面切り替え後に有効)　 
-- 4 : Mute (NotSupport)    効果音・BGMのMUTE（今のところ効果なし) 　
+- 4 : Mute (NotSupport)    効果音・BGMのMUTE（今のところ、うまく動かないので効果なし) 　
 - 5 : BulletMode(offRange) 画面外からの弾を消す　 
 - 0 : Menu Display         本メニューの表示オフオン 　
-　 
   
-動作確認ブラウザ: 
+## 動作確認ブラウザ: 
 Edge/Chrome
