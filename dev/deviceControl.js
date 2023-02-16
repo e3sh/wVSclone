@@ -57,4 +57,37 @@ function deviceControl( g ){
 	//this.images = new loadingImages();
 	this.images = img;
     */
+    this.userinput = new mixuserinput(g);
+
+    function mixuserinput(g){
+
+        var key = g.keyboard;
+        var gpd = g.gamepad;
+
+        //mix input Keyboard and Gamepad 
+        this.r = -1; //進行方法のr
+        this.a = false;
+        this.b = false;
+        this.c = false;
+        this.d = false;
+        this.e = false;
+
+        this.check = function(){
+
+            //各プロパティの更新
+            //a_button  Attack z,space  btn_a
+            //b         Jump   c,       btn_b
+            //c         Bomb   x,ctrl   btn_x   
+            //d         Q               btn_y
+            //e         Esc             btn_start
+            var state = key.state();
+
+            if (gpd.check()){
+
+            }
+
+            return true;
+        }
+
+    }
 }

@@ -3,6 +3,12 @@ repositorie JavascriptActionGameのバージョンアップ版
 
 https://e3sh.github.io/wVSclone/main.html
 
+## 開発状況
+- [ ] _(2023/02/16)Gamepad対応で調整中(Gamepadの入力は取れるようになったので、これから各操作に割り当て処理追加)。音回りはまだ動作が怪しい。
+- [ ] Todo 思い付きで実装していく。Stageの種類やタイプを増やす。面セレクト画面とか。横画面アクションとか。
+- memo: PS5コントローラはBluetouthでNotePCやiOS機器と接続できるので動作確認で使用できる。(試したがボタンアサインはLogicoolやXboxコントローラと同じ位置の模様)
+- memo: Switchのコントローラはmappingtypeがどうなっているかを気が向いたら確認する。(繋いでみる。)
+
 ## 操作方法：
 - 移動(Move):　方向キー(ArrowKey)
 - 攻撃(Action):　[Z] or [Space]
@@ -20,6 +26,7 @@ https://e3sh.github.io/wVSclone/main.html
 - ランプ：敵、アイテム、鍵の位置を地図に表示(Lamp)
 - 地図：マップ表示(Map)
 - 鍵:持った状態で扉に入ると次の面へ(Key)
+- Coin: 得点（SHOPとかSKILLとか実装すると意味を持たせられるかも）
 
 ## WEAPONS:
 (手動攻撃)
@@ -36,6 +43,15 @@ https://e3sh.github.io/wVSclone/main.html
 ・ 連続して同じ種類の武器を入手すると強化(攻撃間隔の短縮)(Maxは+3)　
 
 　(WANDの場合は、玉を7個追加）
+
+## 敵/ENEMYS:
+- 一部の敵は武器を拾うと使用する。
+- 一部の敵は弾を打つ。
+- ほとんどの敵はアイテムを拾う。(拾っている場合は宝箱を出す。)
+- 5の倍数面では最初から敵が鍵を持っている。(BOSS)
+- 青い色の敵は敵の巣(Generator)で一定数敵を排出する。
+- 最初からフィールドにある宝箱は敵入り(Mimic)(見たら判るようにはしている)
+
 ## DEBUG mode:
 タイトル画面のConfigと一時停止(Pause)画面で設定可能
 
