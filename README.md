@@ -4,15 +4,16 @@ repositorie JavascriptActionGameのバージョンアップ版
 https://e3sh.github.io/wVSclone/main.html
 
 ## 開発状況
-- [x] _(2023/02/17)Gamepad対応(Gamepadの入力をキーボード入力に割り当て追加)。[ipad(Safari)でもゲームコントローラで操作可能となったが音は出ず]
+- (2023/02/17)Gamepad対応(Gamepadの入力をキーボード入力に割り当て追加)。
+- iPad(Safari)でもゲームコントローラで操作可能となったが音は出ず。
 - memo: PS5コントローラはBluetouthでNotePCやiOS機器と接続できるので動作確認で使用できる。(ボタンアサインはLogicoolやXboxコントローラと同じ位置の模様)
 
 ## 操作方法： キーボード操作　/　ゲームパッド操作
-- 移動(Move):　方向キー(ArrowKey)  / 十字キー
-- 攻撃(Action):　[Z] or [Space]   / (A)｜(×) 　
-- アイテム使用(Use):　[X] or [Ctrl]/ (B)｜(○)
-- ジャンプ(Jump):　[C]    / (X)｜(□)
-- 一時停止(Pause):　[ESC] / (START)｜(三)  
+- 移動(Move):　方向キー(ArrowKey)　/ 十字キー
+- 攻撃(Action):　　　[Z] or [Space]　/ (A)｜(×) 　
+- アイテム使用(Use):　[X] or [Ctrl]　 / (B)｜(○)
+- ジャンプ(Jump):　　　[C]　　　　 / (X)｜(□)
+- 一時停止(Pause):　　　[ESC]　　　/ (START)｜(三)  
 
 ・ 攻撃(Action)操作:玉を消費（WAND:攻撃 / 他武器:画面内アイテム回収)
 
@@ -39,8 +40,7 @@ https://e3sh.github.io/wVSclone/main.html
 - ブーメラン:移動方向への遠隔攻撃　
 
 ・ 連続して同じ種類の武器を入手すると強化(攻撃間隔の短縮)(Maxは+3)　
-
-　(WANDの場合は、玉を7個追加）
+・ (WANDの場合は、玉を7個追加）
 
 ## 敵/ENEMYS:
 - 一部の敵は武器を拾うと使用する。
