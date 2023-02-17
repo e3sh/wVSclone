@@ -4,17 +4,15 @@ repositorie JavascriptActionGameのバージョンアップ版
 https://e3sh.github.io/wVSclone/main.html
 
 ## 開発状況
-- [ ] _(2023/02/16)Gamepad対応で調整中(Gamepadの入力は取れるようになったので、これから各操作に割り当て処理追加)。音回りはまだ動作が怪しい。
-- [ ] Todo 思い付きで実装していく。Stageの種類やタイプを増やす。面セレクト画面とか。横画面アクションとか。
-- memo: PS5コントローラはBluetouthでNotePCやiOS機器と接続できるので動作確認で使用できる。(試したがボタンアサインはLogicoolやXboxコントローラと同じ位置の模様)
-- memo: Switchのコントローラはmappingtypeがどうなっているかを気が向いたら確認する。(繋いでみる。)
+- [x] _(2023/02/17)Gamepad対応(Gamepadの入力をキーボード入力に割り当て追加)。[ipad(Safari)でもゲームコントローラで操作可能となったが音は出ず]
+- memo: PS5コントローラはBluetouthでNotePCやiOS機器と接続できるので動作確認で使用できる。(ボタンアサインはLogicoolやXboxコントローラと同じ位置の模様)
 
-## 操作方法：
-- 移動(Move):　方向キー(ArrowKey)
-- 攻撃(Action):　[Z] or [Space]
-- アイテム使用(Use):　[X] or [Ctrl]
-- ジャンプ(Jump):　[C] 
-- 一時停止(Pause):　[ESC]  
+## 操作方法： キーボード操作　/　ゲームパッド操作
+- 移動(Move):　方向キー(ArrowKey)  / 十字キー
+- 攻撃(Action):　[Z] or [Space]   / (A)｜(×) 　
+- アイテム使用(Use):　[X] or [Ctrl]/ (B)｜(○)
+- ジャンプ(Jump):　[C]    / (X)｜(□)
+- 一時停止(Pause):　[ESC] / (START)｜(三)  
 
 ・ 攻撃(Action)操作:玉を消費（WAND:攻撃 / 他武器:画面内アイテム回収)
 
