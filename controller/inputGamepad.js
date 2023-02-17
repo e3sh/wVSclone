@@ -49,6 +49,8 @@ function inputGamepad(){
         return readystate;  
     }
 
+    //↓これは基本外部から使用しない↓
+    //差し替えでGamepadのハード別対応させることが出来る。
     this.update = function( gamepad ){
         //paramater:
         //id: "Logicool Dual Action (STANDARD GAMEPAD Vendor: 046d Product: c216)"

@@ -109,7 +109,7 @@ function inputKeyboard(){
     //入力状態確認用
     this.state = function () {
 
-        return keymapt;
+        return keymap;
     }
 
     // check;example

@@ -41,7 +41,9 @@ function deviceControl( g ){
     this.mouse_state = g.mouse;
     var keys = g.keyboard;
 
-    this.key_state = keys;  //keys;
+    //this.key_state = keys;  //keys;
+
+    this.gpad_state = g.gamepad;
 
 	this.sound = new soundControl();
 
@@ -57,7 +59,8 @@ function deviceControl( g ){
 	//this.images = new loadingImages();
 	this.images = img;
     */
-    this.userinput = new mixuserinput(g);
+    var userinput = new mixuserinput(g);
+    this.key_state = userinput;
 
     function mixuserinput(g){
 
@@ -73,20 +76,44 @@ function deviceControl( g ){
         this.e = false;
 
         this.check = function(){
-
+ 
             //各プロパティの更新
             //a_button  Attack z,space  btn_a
             //b         Jump   c,       btn_b
             //c         Bomb   x,ctrl   btn_x   
             //d         Q               btn_y
             //e         Esc             btn_start
-            var state = key.state();
+            var state = [];
 
             if (gpd.check()){
+                this.r = gpd.r; //進行方法のr
+                this.a = gpd.btn_a;
+                this.b = gpd.btn_b;
+                this.c = gpd.btn_c;
+                this.d = gpd.btn_d;
+                this.e = gpd.btn_start;
 
+                //if (gpd.upkey) state[38] = true;
+                //if (gpd.downkey) state[40] = true;
+                //if (gpd.leftkey) state[37] = true;
+                //if (gpd.rightkey) state[39] = true;
+                state[38] = gpd.upkey;// || Boolean(state[38]) ;
+                state[40] = gpd.downkey;//|| Boolean(state[40]) ;
+                state[37] = gpd.leftkey;// || Boolean(state[37]) ;;
+                state[39] = gpd.rightkey;// || Boolean(state[39]) ;
+
+                state[90] = gpd.btn_a;// || Boolean(state[90]) ;
+                state[67] = gpd.btn_b;// || Boolean(state[67]) ;
+                state[88] = gpd.btn_x;// || Boolean(state[88]) ;
+                state[81] = gpd.btn_y;// || Boolean(state[81]) ;
+                state[27] = gpd.btn_start;// || Boolean(state[27]) ;
             }
-
-            return true;
+            var wstate = key.check();
+            for (var i in wstate){
+                state[i] = state[i] || wstate[i];
+            }
+            
+            return state;
         }
 
     }
