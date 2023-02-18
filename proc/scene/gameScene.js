@@ -188,7 +188,7 @@ function gameScene(state){
 	        scroll_y = 0;
 	        scrollsw = 0;
 
-	        dev.sound.change(0);
+	        dev.sound.change(0); //start music
 	        dev.sound.play();
 	    }
 
@@ -211,6 +211,9 @@ function gameScene(state){
 
 	        scroll_y = 0;
 	        scrollsw = 0;
+
+			dev.sound.change(1); //normal bgm
+	        dev.sound.play();
 	    }
 
 	    //tex_bg = dev.images[mapsc.bgImage()];
@@ -248,17 +251,17 @@ function gameScene(state){
 
 	    if (!dev.sound.running()) {
 	        if (mapsc.flame < 7200) {
-	            dev.sound.change(1);
+	            dev.sound.change(1);// normal bgm
 
 	        } else {
-	            dev.sound.change(3);
+	            dev.sound.change(3);// timeover sound
 
 	        }
 	        dev.sound.play();
 	    }
 
 		if (mapsc.flame == 7100) {
-	        dev.sound.change(2);
+	        dev.sound.change(2); //Warning sound
 	        dev.sound.play();
 
 	        //dev.sound.next(3);
@@ -314,7 +317,7 @@ function gameScene(state){
 
 	                scenechange = true;
 
-	                dev.sound.change(4);
+	                dev.sound.change(4);//Stageclear
 	                dev.sound.play();
 
 	                return 5; //result
@@ -334,6 +337,9 @@ function gameScene(state){
 	                obCtrl.restart();
 
 	                mapsc.counterReset();
+
+					dev.sound.change(0); //normal bgm
+					dev.sound.play();
 
 	                sndcf = false;
 	            } else {
@@ -356,7 +362,7 @@ function gameScene(state){
                         localStorage.setItem("highscore", new String(state.Result.highscore));
                     }
 
-                    dev.sound.change(6);
+                    dev.sound.change(6); //gameover sound
                     dev.sound.play();
 
 	                return 3; //gover
