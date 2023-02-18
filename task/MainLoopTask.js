@@ -22,6 +22,8 @@ class taskMainLoop extends GameTask {
         this.scene = new sceneControl(this.state);
 
         g.state = this.state;
+
+        //this.state.System.dev.start();
     }
    
     pre = function (g) {

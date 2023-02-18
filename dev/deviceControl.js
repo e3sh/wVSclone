@@ -62,6 +62,18 @@ function deviceControl( g ){
     var userinput = new mixuserinput(g);
     this.key_state = userinput;
 
+
+    //this.keyptn = [];
+    
+    //this.start = function(){
+    //    var w =["keycode_attack", "keycode_bomb", "keycode_jump", "keycode_quit", "keycode_pause",
+    //    "btn_num_attack", "btn_num_bomb", "btn_num_jump", "btn_num_quit", "btn_num_pause"];
+
+    //    for (var i = 0; i <10; i++){
+    //        this.keyptn[w[i]] = g.state.Config.keyAn[i];  
+    //    }    
+    //}
+
     function mixuserinput(g){
 
         var key = g.keyboard;
@@ -76,6 +88,8 @@ function deviceControl( g ){
         this.e = false;
 
         this.check = function(){
+
+            var k = g.state.Config.keyAn
  
             //各プロパティの更新
             //a_button  Attack z,space  btn_a
@@ -89,8 +103,8 @@ function deviceControl( g ){
                 this.r = gpd.r; //進行方法のr
                 this.a = gpd.btn_a;
                 this.b = gpd.btn_b;
-                this.c = gpd.btn_c;
-                this.d = gpd.btn_d;
+                this.c = gpd.btn_x;
+                this.d = gpd.btn_y;
                 this.e = gpd.btn_start;
 
                 //if (gpd.upkey) state[38] = true;
@@ -102,11 +116,17 @@ function deviceControl( g ){
                 state[37] = gpd.leftkey;// || Boolean(state[37]) ;;
                 state[39] = gpd.rightkey;// || Boolean(state[39]) ;
 
-                state[90] = gpd.btn_a;// || Boolean(state[90]) ;
-                state[67] = gpd.btn_b;// || Boolean(state[67]) ;
-                state[88] = gpd.btn_x;// || Boolean(state[88]) ;
-                state[81] = gpd.btn_y;// || Boolean(state[81]) ;
-                state[27] = gpd.btn_start;// || Boolean(state[27]) ;
+                //state[90] = gpd.btn_a;// || Boolean(state[90]) ;
+               // state[67] = gpd.btn_b;// || Boolean(state[67]) ;
+                //state[88] = gpd.btn_x;// || Boolean(state[88]) ;
+                //state[81] = gpd.btn_y;// || Boolean(state[81]) ;
+                //state[27] = gpd.btn_start;// || Boolean(state[27]) ;
+
+                state[90] = gpd.btn_x;// || Boolean(state[90]) ;Z ATTACK
+                state[67] = gpd.btn_a;// || Boolean(state[67]) ;C JUMP 
+                state[88] = gpd.btn_b;// || Boolean(state[88]) ;X BOMB
+                state[81] = gpd.btn_y;// || Boolean(state[81]) ;Q QUIT
+                state[27] = gpd.btn_start;// || Boolean(state[27]) ;ESC 
             }
             var wstate = key.check();
             for (var i in wstate){

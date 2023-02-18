@@ -10,9 +10,9 @@ https://e3sh.github.io/wVSclone/main.html
 
 ## 操作方法： キーボード操作　/　ゲームパッド操作
 - 移動(Move):　方向キー(ArrowKey)　/ 十字キー
-- 攻撃(Action):　　　[Z] or [Space]　/ (A)｜(×) 　
-- アイテム使用(Use):　[X] or [Ctrl]　 / (B)｜(○)
-- ジャンプ(Jump):　　　[C]　　　　 / (X)｜(□)
+- 攻撃(Action):　　　[Z] or [Space]　/ (X)｜(□)
+- アイテム使用(Use):　[X] or [Ctrl]  / (B)｜(○)
+- ジャンプ(Jump):　　　[C]　　　　    / (A)｜(×)
 - 一時停止(Pause):　　　[ESC]　　　/ (START)｜(三)  
 
 ・ 攻撃(Action)操作:玉を消費（WAND:攻撃 / 他武器:画面内アイテム回収)

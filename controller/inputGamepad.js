@@ -33,6 +33,9 @@ function inputGamepad(){
 
     var readystate = false;
 
+    this.button;
+    this.axes;
+
     this.check = function(){
         readystate = false;
         
@@ -45,7 +48,7 @@ function inputGamepad(){
         readystate = true;
 
         this.update(gamepad);
-        
+
         return readystate;  
     }
 
@@ -64,6 +67,8 @@ function inputGamepad(){
         var button	 = gamepad.buttons;
         var axes	 = gamepad.axes;
 
+        this.button = button;
+        this.axes = axes; 
 
         this.upkey		 = button[ p[12] ].pressed;
         this.downkey	 = button[ p[13] ].pressed;

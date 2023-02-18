@@ -13,6 +13,8 @@ function stateConfig(){
     this.debug;
     this.bulletmode;
 
+    this.keyAn = [];
+
     configReset();//値の初期化
 
     //ローカルストレージからのロード
@@ -38,6 +40,12 @@ function stateConfig(){
                 this[t[6]] = parseInt(localStorage.getItem(t[6]));
             }
 
+            if (Boolean(localStorage.getItem('keyassign'))) {
+                f = true;
+                let json = localStorage.getItem('keyassign');
+                this.keyAn = JSON.parse(json);
+            }
+
             ret_code = f ? 0 : 1; //alert(f ? "load" : "nondata");
         } else {
             ret_code = 2; //alert("non localstorage");
@@ -60,6 +68,9 @@ function stateConfig(){
             localStorage.setItem("debug", (this.debug) ? "on" : "off");
             localStorage.setItem("bulletmode", (this.bulletmode) ? "on" : "off");
             localStorage.setItem("startstage", new String(this.startstage));
+
+            let json = JSON.stringify(this.keyAn, undefined, 1);
+            localStorage.setItem('keyassign', json);
 
         } else {
             ret_code = 2; //ローカルストレージが使用できない?
@@ -84,6 +95,9 @@ function stateConfig(){
 
         this.debug = false; //trueでdebugステータス表示。
         this.bulletmode = false; //trueで画面外から弾が飛んでこなくなる。
-        
+
+        //[0-4:Keycode attack bomb, jump, quit, esc] z:90, x:88, c:67, q:81, esc:27
+        //[5-9:btn_num attack bomb, jump, quit, esc] a: 0, x: 2, b: 1, y: 3, start: 9
+        this.keyAn = [ 90, 88, 67, 81, 27, 0, 2, 1, 3, 9]; // 未使用。機能未実装
     }
 }
