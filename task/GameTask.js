@@ -86,27 +86,32 @@ class GameTask_Debug extends GameTask {
 
         if (g.state.Config.debug){
             var sl = [];
-
-            sl.push("bench:sc_buffer(max)/intv/bgcolor)");  
-            st = "";
-            for (var i=0 ; i < SC_NUM ;i++){
-            st += "sc[" + i + "]" 
-            + g.screen[i].count() + "/" 
-            + g.screen[i].getInterval() + "/" 
-            + g.screen[i].getBackgroundcolor()
-            + ",";
-            }
-            sl.push(st);
-
             var r = g.fpsload.result();
-
             sl.push("fps:" + r.fps);
-            sl.push("intv.ave:(" + r.interval.ave + "ms) load.ave:(" + r.workload.ave + "ms)");
+            sl.push("intv.ave:" + r.interval.ave + "ms"); 
+            sl.push("load.ave:" + r.workload.ave + "ms");
             sl.push("workload:"+ Math.trunc((r.workload.ave / r.interval.ave)*100) + "%");
 
             g.font["8x8white"].useScreen(4);
             for(var i=0; i < sl.length; i++){
                 g.font["8x8white"].putchr(sl[i], 0, 400+ i*8);
+            }
+
+            var sl = [];
+            sl.push("bench:intv:bgcolor/sc_buffer(max/count)");  
+
+            st = "";
+            for (var i=0 ; i < SC_NUM ;i++){
+            st = "sc[" + i + "]" 
+            + g.screen[i].getInterval() + ":" 
+            + g.screen[i].getBackgroundcolor()  + "/"
+            + g.screen[i].max() + "/" 
+            + g.screen[i].count(); 
+            sl.push(st);
+            }
+
+            for(var i=0; i < sl.length; i++){
+                g.font["8x8white"].putchr(sl[i], 160, 400+ i*8);
             }
         }
     }
@@ -170,7 +175,8 @@ class GameTask_Load extends GameTask {
         */
 
         for (var i in st){
-            pfunc(i + " " + st[i], 0, i*16 +16);
+            //pfunc(i + " " + st[i], 0, i*16 +16);
+            pfunc(st[i], 0, i*16 +16);
         }
         pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
 

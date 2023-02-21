@@ -13,14 +13,26 @@ function main_r() {
 	var game = new GameCore( sysParam );
 
     //Game Asset Setup
-
 	game.asset.imageLoad( "FontGraph","pict/aschr.png" );
 	game.asset.imageLoad( "SPGraph"	,"pict/cha.png" );
 	game.asset.imageLoad( "bg1"		,"pict/bg1.png" );
 	game.asset.imageLoad( "bg2"		,"pict/bg2.png" );
 	game.asset.imageLoad( "bg3"		,"pict/bg3.png" );
 
-	//var ad = game.asset.soundLoad("jump", "sound/jump");
+	game.asset.soundLoad( "00round_start",	"sound/00round_start");  
+	game.asset.soundLoad( "01main",			"sound/01main" 		);
+	game.asset.soundLoad( "02warnning",		"sound/02warnning"	);
+	game.asset.soundLoad( "03hurry_up",		"sound/03hurry_up"	);
+	game.asset.soundLoad( "04round_clear",	"sound/04round_clear");
+	game.asset.soundLoad( "05miss",			"sound/05miss"		);
+	game.asset.soundLoad( "06gameover",		"sound/06gameover"	);
+	game.asset.soundLoad( "07swing",		"sound/07swing"		);
+	game.asset.soundLoad( "08bow",			"sound/08bow"		);
+	game.asset.soundLoad( "09select",		"sound/09select"	);
+	game.asset.soundLoad( "10use",			"sound/10use"		);
+	game.asset.soundLoad( "11hit",			"sound/11hit"		);
+	game.asset.soundLoad( "12damage",		"sound/12damage"	);
+	game.asset.soundLoad( "13bomb",			"sound/13bomb"		);
 
     //Game Device Setup
 	game.setSpFont({ name: "stfont",	 id: "FontGraph", pattern: FontPtnCutArray(  0,   0,12,16) });

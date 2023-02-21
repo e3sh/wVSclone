@@ -178,6 +178,14 @@ function DisplayControl(canvas_id, c_w, c_h) {
 
         return buffer_.count();
     }
+    //----------------------------------------------------------
+    //
+    //----------------------------------------------------------
+    this.max = function () {
+
+        return buffer_.max();
+    }
+
 }
 
 

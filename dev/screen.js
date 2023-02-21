@@ -148,7 +148,7 @@ function Screen(g,num) {//g.screen（DisplayControll）[num]
     this.reset = scrn.reset;
     this.draw = scrn.draw;
     this.count = scrn.count;
-   
+    this.max = scrn.max;
 }
 
 
