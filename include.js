@@ -13,7 +13,7 @@ var w = [
     "controller/inputMouse.js",
     "controller/inputGamepad.js",
     "controller/DisplayControl.js",
-    //"controller/soundControl.js",
+    "controller/soundControl.js",
     "controller/offScreen.js",
     "controller/spriteControl.js",
     "controller/spriteFontControl.js",

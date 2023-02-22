@@ -4,7 +4,7 @@
 //
 //**************************************************************
 
-function soundControl() {
+function soundCntl( asset ) {
     //alert("old rev sound control include.");
 
     //dummy
@@ -20,28 +20,29 @@ function soundControl() {
     
 
     var sd = [
-"00round_start",
-"01main",
-"02warnning",
-"03hurry_up",
-"04round_clear",
-"05miss",
-"06gameover",
-"07swing",
-"08bow",
-"09select",
-"10use",
-"11hit",
-"12damage",
-"13bomb"
-];
+        "00round_start",
+        "01main",
+        "02warnning",
+        "03hurry_up",
+        "04round_clear",
+        "05miss",
+        "06gameover",
+        "07swing",
+        "08bow",
+        "09select",
+        "10use",
+        "11hit",
+        "12damage",
+        "13bomb"
+    ];
 
     var snd = [];
     var s_pos = [];
     var s_stat = [];
 
     for (var i in sd) {
-        snd[i] = new Audio("sound/" + sd[i] + ext);
+        //snd[i] = new Audio("sound/" + sd[i] + ext);
+        snd[i]  = asset[sd[i]].sound;//asset割り当て
 
         snd[i].pos = 0;
 

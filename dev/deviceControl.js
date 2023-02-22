@@ -45,7 +45,7 @@ function deviceControl( g ){
 
     this.gpad_state = g.gamepad;
 
-	this.sound = new soundControl();
+	this.sound = new soundCntl(g.asset.sound);
 
     this.game = g;
     /*
