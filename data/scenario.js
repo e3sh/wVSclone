@@ -703,8 +703,9 @@ function scenario() {
     sc_move["enemy_move_std"] = w.move;
 
     //--------------------------------
-    w = new sce_enemy_move_std2();
-
+    //w = new sce_enemy_move_std2(1, 1240);//240
+    w = new sce_enemy_move_std2(20, 240);//240
+    //turn_interval,target_distance
     sc_init["enemy_move_std2"] = w.init;
     sc_move["enemy_move_std2"] = w.move;
     sc_draw["enemy_move_std2"] = w.draw;//add.2023/1/14
@@ -718,8 +719,9 @@ function scenario() {
 
     //--------------------------------
 
-    w = new sce_enemy_generator();
-
+    //w = new sce_enemy_generator(0, 50, "enemy_move_std2", 1280 );
+    w = new sce_enemy_generator(120, 5, "enemy_move_std2", 300 );
+    //interval, grow_num, scenario, target_distance
     sc_init["enemy_generator"] = w.init;
     sc_move["enemy_generator"] = w.move;
 
@@ -744,6 +746,21 @@ function scenario() {
     // Dd追加分
     //-----------------------------------------------------------------------
 
+    // Vs追加分
+    //-----------------------------------------------------------------------
+    
+    var w = new sce_enemy_move_std2(1, 1240);//240
+    //turn_interval,target_distance
+    sc_init["enemy_move_vst"] = w.init;
+    sc_move["enemy_move_vst"] = w.move;
+    sc_draw["enemy_move_vst"] = w.draw;//add.2023/1/14
+
+    //--------------------------------
+    var w = new sce_enemy_generator(0, 50, "enemy_move_vst", 1280 );
+    //interval, grow_num, scenario, target_distance
+    sc_init["enemy_generator_vst"] = w.init;
+    sc_move["enemy_generator_vst"] = w.move;
+    
     //支援機動作　まっすぐのパターン
     //-----------------------------------------------------------------------
     w = new sce_friend_straight();

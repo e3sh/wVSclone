@@ -125,11 +125,13 @@ class GameTask_Load extends GameTask {
         scrn;
         fontsc;
         str;
+        cnt;
 
     init(g){
         this.scrn = g.screen[4];
         g.font["8x8white"].useScreen(4);
         this.fontsc =  g.font["8x8white"];
+        this.cnt = 0;
     }
 
     step(g) {
@@ -178,9 +180,12 @@ class GameTask_Load extends GameTask {
             //pfunc(i + " " + st[i], 0, i*16 +16);
             pfunc(st[i], 0, i*16 +16);
         }
-        pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
 
-        /*
+        this.cnt = (this.cnt++ > 90)? 0: this.cnt; 
+        if ( this.cnt < 60){
+            pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
+        }
+                /*
         var st = g.asset.namelist();
         for (var i in st){
             g.screen[4].print(i + " " + st[i] + (g.asset.image[st[i]].ready?"o":"x"), 0, i*16 +116);   

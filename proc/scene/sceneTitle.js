@@ -267,7 +267,7 @@ function sceneTitle(state) {
         var bvf = false; //blinkViewFlag 
         cnt++;
 
-        if (cnt > 15){
+        if (cnt > 30){
             bvf = true;
             cnt = (cnt > 90)? 0 : cnt;
         }

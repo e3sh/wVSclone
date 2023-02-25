@@ -38,8 +38,10 @@ function mapSceControl(){
 
 	function newdata(num, kyuse) {
 	//    stage_data = new Stage1_tod(num, kyuse);
-	    if (num <= 30 ){
-            stage_data = new Stage1(num, kyuse);
+        if (num <= 0){
+            stage_data = new Stage1_test(num);//TEST STAGE
+        }else if (num <= 30 ){
+            stage_data = new Stage1(num);
         }else{
     	    stage_data = new Stage1_tod(num, kyuse);//TEST STAGE
         }

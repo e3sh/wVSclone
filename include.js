@@ -22,7 +22,7 @@ var w = [
 //画面表示や入力関係処理部
  "dev/deviceControl.js",
  "dev/screen.js",
- "dev/soundControl.js",
+ "dev/soundCntl.js",
  "dev/geometoryTr.js",
  "dev/Layout.js",
 //データ部(キャラクタやスプライトパターン制御用の設定）
@@ -34,6 +34,7 @@ var w = [
  "data/stage/Dangeon.js",
  "data/stage/Stage1_tod.js",
  "data/stage/Dangeon_tod.js",
+ "data/stage/Stage1_test.js",
 //データ部(キャラクタの動きなどの設定）
  "data/scenario.js",
  "data/scenario/player.js",

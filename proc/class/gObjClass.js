@@ -401,7 +401,7 @@ gObjectClass.prototype = {
             this.vx = wvx;
             this.vy = wvy;
         } else {
-            if (this.colcnt == 0) {
+            if (this.colcnt <= 0) {
                 this.x = this.old_x;
                 this.y = this.old_y;
 
@@ -432,7 +432,7 @@ gObjectClass.prototype = {
             }
             this.colcnt++;
             
-            if (this.colcnt > 30) {
+            if (this.colcnt > 10) {//30
                 this.vector = this.target_r(this.startx, this.starty);
                 this.vset(1);
 

@@ -464,10 +464,12 @@ function sce_enemy_move_std(){
     }
 }
 
-function sce_enemy_move_std2() {
+function sce_enemy_move_std2( intrvl, sdst ) {
     //　自機を追跡してくるパターン。
     //　60F毎に向き変更。iteminv_view 2023/1/14
     //-----------------------------------------------------------------------
+    const INTERVAL = intrvl; //向き変更のインターバルf
+    const SEARCHDIST = sdst;   //240;//target距離..
 
     this.init = function (scrn, o) {
         o.vset(2);
@@ -531,7 +533,7 @@ function sce_enemy_move_std2() {
 
         if (Boolean(o.target)) {//target(自機が存在している場合)一定距離だとロックオン
         //    if (o.target_d(o.target.x, o.target.y) < 300) { o.lockon_flag = true; }  
-            o.lockon_flag = (o.target_d(o.target.x, o.target.y) < 240)? true :false ; 
+            o.lockon_flag = (o.target_d(o.target.x, o.target.y) < SEARCHDIST )? true :false ; 
         }
 
         if (!o.wmapc) {
@@ -623,10 +625,10 @@ function sce_enemy_move_std2() {
             }
         }
         
-        if (o.frame > 20) {
-            //ロックオン中は20f毎に向き調整
+        if (o.frame > INTERVAL) {
+            //ロックオン中はINTERVAL毎に向き調整
             if (o.lockon_flag) {
-                o.target_rotate_r(120);//45);
+                o.target_rotate_r(12);//45);
             }
             o.vset(speed);
 
@@ -688,7 +690,7 @@ function sce_enemy_weapon_check( item ){//アイテムリストが武器かど�
 
 function sce_enemy_move_gen_grow(){
     //　ジェネレータから発生して動き出すまでの演出パターン。
-    //　add 2023/1/27
+    //　add 2023/1/27　//2023/02/24使用中止
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
         o.vset(2);
@@ -714,9 +716,13 @@ function sce_enemy_move_gen_grow(){
     }
 }
 
-function sce_enemy_generator() {
+function sce_enemy_generator(gr_intv, gr_num, gr_sce, gr_sdst) {
     //　敵機を吐き出してくるジェネレータ。
     //-----------------------------------------------------------------------
+    const GROW_INTBL = gr_intv;   //120; //発生間隔-60flame
+    const GROW_NUM = gr_num;  //5; //発生回数
+    const GROW_TYPESCE = gr_sce;  //"enemy_move_std2";
+    const GROW_SEARCHDIST = gr_sdst;   //300;//target距離..
 
     this.init = function (scrn, o) {
         o.vset(0);
@@ -734,29 +740,30 @@ function sce_enemy_generator() {
         o.frame++;
 
         if (Boolean(o.target)) {
-            if (o.target_d(o.target.x, o.target.y) < 300) { o.lockon_flag = true; }
+            if (o.target_d(o.target.x, o.target.y) < GROW_SEARCHDIST) {
+                 o.lockon_flag = true; 
+            }
         }
 
-        if (o.frame > 120 && o.frame%3==0) {
-            //発生予兆
-            //o.x = o.old_x + (1 - o.frame%3)*4;
-            //o.display_size = 1.0 + (1 - o.frame%6)*0.05;
-            o.display_size = 1.0 + ((o.frame-120)/200);
+       if (o.frame > GROW_INTBL && o.frame%3==0) {
+            o.display_size = 1.0 + ((o.frame-GROW_INTBL)/200);
 
-            if (o.frame > 160) o.display_size = 1.05 + (1 - o.frame%6)*0.05;
+            if (o.frame > (GROW_INTBL + 40)) o.display_size = 1.05 + (1 - o.frame%6)*0.05;
         }
-        if (o.frame > 180) {
+
+        if (o.frame > (GROW_INTBL + 60)) {
             o.display_size = 1.0;
-            if (o.gencnt >= 5){ //5匹産んだら移動開始
-                o.change_sce("enemy_move_std2");
+            if (o.gencnt >= GROW_NUM){ //GROW_NUM匹産んだら移動開始
+                o.change_sce(GROW_TYPESCE);
             }
 
-            if ((o.lockon_flag) && (o.gencnt < 5)) {
+            if ((o.lockon_flag) && (o.gencnt < GROW_NUM)) {
                 var v = o.target_v();
 
-                o.set_object_ex(1, o.x + o.Cos(v) * 20, o.y + o.Sin(v) * 20, v, 
-                //"enemy_move_std2");
-                "enemy_move_gen_grow");
+                o.set_object_ex(1, o.x, o.y, v, 
+                    GROW_TYPESCE);
+                //o.set_object_ex(1, o.x + o.Cos(v) * 20, o.y + o.Sin(v) * 20, v, 
+                //"enemy_move_gen_grow");//2023/02/24使用中止
                 o.gencnt++;
             }
             o.frame = 0;
