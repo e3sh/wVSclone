@@ -552,13 +552,45 @@ function sce_player() {
     function damage_gr1(scrn, o) {
         //自機のダメージゲージ表示
         var barriref = false;
-        var cl = {};
         //Shield
         //var tw = o.gt.worldtoView(o.x, o.y);
         //scrn.putchr8("@"+o.mvkeytrig, tw.x, tw.y);
 
+        //Aura Display
+        if (o.gameState.player.level > 0){
+            var pw = {};
+
+            var w = o.gt.worldtoView(o.x, o.y);
+
+            pw.x = w.x -16;
+            pw.y = w.y +16;
+
+            pw.r = o.frame % 6;
+
+            var num = o.gameState.player.level * 96
+            pw.c = "rgb(" + num + "," + num + "," + 128 + ")"; 
+            pw.draw = function (device) {
+
+            device.beginPath();
+	        device.strokeStyle = this.c; 
+            //device.fillStyle = "white";
+	        device.lineWidth = 1;
+
+            for (var i=0; i < 1 + this.r; i++){
+                device.lineWidth = 1;
+                device.rect(this.x, this.y - i * 3 - 1, 32, 1);
+                device.stroke();
+            }
+            //device.fillRect(this.x- this.r , this.y, 1, 32);
+	        //device.stroke();
+            }
+            scrn.putFunc(pw);
+        }
+
+        //Shield Display
         if (o.frame <= 300) {
 
+            var cl = {};
             var w = o.gt.worldtoView(o.x, o.y);
 
             cl.x = w.x + o.shiftx;

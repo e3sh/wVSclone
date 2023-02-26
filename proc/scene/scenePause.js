@@ -148,6 +148,9 @@ function scenePause(state) {
                 case 5:
                     state.Config.bulletmode = (!state.Config.bulletmode);
                     break;
+                case 6:
+                    state.Game.player.level = (state.Game.player.level++ >= 3) ? 0: state.Game.player.level;
+                    break;
                 case 0:
                     menuvf = (!menuvf);
                     break;
@@ -165,7 +168,7 @@ function scenePause(state) {
                 arr.push("3: Map (on FloorChange):" + (state.Config.map_use?"ON":"OFF"));
                 arr.push("4: Mute (NotSupport)   :" + (state.System.dev.sound.mute?"ON":"OFF"));
                 arr.push("5: BulletMode(offRange):" + (state.Config.bulletmode?"ON":"OFF"));
-                arr.push("6: -     :");
+                arr.push("6: Weapon Level(Powup) :+" + state.Game.player.level);
                 arr.push("7: Import/Export :NotSupport");
                 arr.push("8: Status Display:NotSupport");
                 arr.push("9: -     :");

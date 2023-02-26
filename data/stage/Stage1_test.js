@@ -63,8 +63,8 @@ function Stage1_test(stageno) {
         
         var w = [];
 
-        for (var i = 1; i <= 30 - 1; i++) {
-            for (var j = 1; j <= 30 - 1; j++) {
+        for (var i = 1; i <= 30 ;i++) {
+            for (var j = 1; j <= 30 ;j++) {
 
                 w = [0,
                     i * BLOCK_W,
@@ -166,7 +166,7 @@ function Stage1_test(stageno) {
         //  開始フレーム,座標,,角度,シナリオ,キャラ
 
         var r = shuffled[0];
-        ms.push([false, rlist[r].x * BLOCK_W + 10, rlist[r].y * BLOCK_H + 10, 0, "player", 0]);
+        ms.push([false, 15 * BLOCK_W + 10, 15 * BLOCK_H + 10, 0, "player", 0]);
 
         var rcnt = 1;
 
