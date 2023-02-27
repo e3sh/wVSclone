@@ -12,6 +12,7 @@ function sceneControl(state) {
     sceneList[4] = new sceneConfig(state); //state.Config.load()はここ//configをlocalstorageから復帰
     sceneList[5] = new sceneResult(state); 
     sceneList[6] = new scenePause(state); 
+    sceneList[7] = new sceneStatusDisp(state);
 
     var wipeEffectCount; 
 

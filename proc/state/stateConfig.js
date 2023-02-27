@@ -89,7 +89,7 @@ function stateConfig(){
         this.map_use = false;
         this.itemreset = true;
         this.shotfree = false;
-        this.startstage = 1;
+        this.startstage = 0;
 
         this.use_audio = true;
 

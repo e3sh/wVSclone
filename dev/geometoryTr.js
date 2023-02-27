@@ -51,11 +51,14 @@ this.worldtoView = function (x, y) {
 //ワールド座標におけるビューポートの位置(初期値など）設定
 this.viewpos = function (x, y) {
     //左端の座標を指定とする。
-
     if (x < 0) x = 0;
     if (y < 0) y = 0;
-    if (x > ww - vw) x = ww - vw;
-    if (y > wh - vh) y = wh - vh;
+    //if (x < 0) x = ww + x;//0;
+    //if (y < 0) y = wh + y;//0;
+    if (x > (ww - vw)) x = ww - vw;//ww - vw;
+    if (y > (wh - vh)) y = wh - vh;//wh - vh;
+    //if (x > ww) x = x - ww;//ww - vw;
+    //if (y > wh) y = y - wh;//wh - vh;
 
     //    this.world_x = x;
     //    this.world_y = y;
@@ -152,6 +155,31 @@ this.in_stage_range = function (x, y, w, h) {
     return f;
 
 }
+
+//座標位置がワールド内にあるかどうかの確認と変換
+this.in_world = function(x,y){
+
+    return ((x < 0) || (x > ww) || (y < 0) || (y > wh)) ? false: true;
+}
+
+this.worldtoWorld_x = function(x){
+
+    if (x < 0) x = ww + x;;
+    if (x > ww) x = x - ww;
+
+    return x;
+}
+
+this.worldtoWorld_y = function(y){
+;
+    if (y < 0) y = wh + y;;
+    if (y > wh) y = y - wh;
+
+    return y;
+}
+
+
+
 //this//.setWorldsize = function(){}
 
 //this.setStagesize = function(){}

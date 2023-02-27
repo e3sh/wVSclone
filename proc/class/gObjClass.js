@@ -440,8 +440,8 @@ gObjectClass.prototype = {
                 this.y += this.vy; //* (this.colcount - 30);
             }
         }
-        if (this.x < 0 || this.x > this.gt.ww) { f = 2; }
-        if (this.y < 0 || this.y > this.gt.wh) { f = 2; }
+        //if (this.x < 0 || this.x > this.gt.ww) { f = 2; }
+        //if (this.y < 0 || this.y > this.gt.wh) { f = 2; }
 
         
         if (f != 0) {

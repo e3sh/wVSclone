@@ -1,11 +1,15 @@
 # wVSclone
 repositorie JavascriptActionGameのバージョンアップ版
+- VampireSurviveorsみたいな感じで動かせたり出来るように色々機能追加とかしたいと調整中
+- （機能追加して纏まったら別repositorieの奴に整理/反映する。）
+- （車輪の再発明ですが、作ってみないと理解できないので作ってみている感じ。）
 
 https://e3sh.github.io/wVSclone/main.html
 
 ## 開発状況
+- (2023/02/27)平面フィールド(Stage.0)画面外処理関係処理不具合調整中
 - (2023/02/17)Gamepad対応(Gamepadの入力をキーボード入力に割り当て追加)。
-- iPad(Safari)でもゲームコントローラで操作可能となったが音は出ず。
+- iPad(Safari)でもゲームコントローラで操作可能となった/音は出ず。
 - memo: PS5コントローラはBluetouthでNotePCやiOS機器と接続できるので動作確認で使用できる。(ボタンアサインはLogicoolやXboxコントローラと同じ位置の模様)
 
 ## 操作方法： キーボード操作　/　ゲームパッド操作

@@ -72,7 +72,6 @@
     csmap[4] = [1, 0, 1, 0, 0, 0]; //アイテム
     csmap[5] = [0, 0, 0, 0, 0, 0]; //その他
 
-
     var restartFlag = true;
 
     //再読み込み無しの再起動
@@ -135,9 +134,7 @@
             var o = obj[i];
 
             //o.colitem && o.colitem.remove();
-
             //o.alive--;
-
             //var onst = o.gt.in_stage_range(o.x - (o.hit_x / 2), o.y - (o.hit_y / 2), o.hit_x, o.hit_y);
             var onst = o.gt.in_view_range(o.x - (o.hit_x / 2), o.y - (o.hit_y / 2), o.hit_x, o.hit_y);
 
@@ -145,9 +142,9 @@
                 if ((o.type == 1) || (o.type == 3)) {
                     if (state.Config.bulletmode) o.status = 0; //画面外から弾が飛んでこないようにする処理(飛んできたら難しすぎたので）
                     //.bulletmode：trueで表示画面外の弾は消滅。
+                    if (!o.gt.in_world(o.x, o.y))o.status = 0; //画面外に出ている弾を消す。
                 }
             }
-
             //var instage = o.gt.in_stage(o.x , o.y);
 
             //var wgs = dev.gs.nowstagepos();
@@ -172,6 +169,8 @@
             //o.mouse_state = mstate;
             o.key_state = kstate;
 
+            //var w = o.gt.worldtoWorld(o.x, o.y);
+            //o.x = w.x;  o.y = w.y;
             if (o.move(scrn, o, mapsc) != 0) {//戻り値0がNormalEnd‗/Normal以外はコリジョンリストに載せない。
                 o.colitem && o.colitem.remove();
                 o.colitem = null;
@@ -181,6 +180,12 @@
             } else {
                 if (o.type != 5) { //その他は当たり判定リストに載せない
                     if (!o.firstRunning || ((o.x != o.old_x) || (o.y != o.old_y))) { //移動している場合
+                        if (!o.gt.in_world(o.x, o.y)){
+                            if ((o.type != 1) && (o.type != 3)){//弾の場合は反対側に座標変換しない。
+                                o.x = o.gt.worldtoWorld_x(o.x);
+                                o.y = o.gt.worldtoWorld_y(o.y);
+                            }
+                        }
                         o.colitem && o.colitem.remove();
                         if (!o.colitem) {
                             o.colitem = cdt.createObjectForTree();
@@ -596,7 +601,6 @@
         return this.combo[num];
     }
 
-
     //外部からリスタート指示の為のコマンド  
     this.restart = function () {
 
@@ -606,7 +610,6 @@
         this.interrapt = before_int;
         this.SIGNAL = before_SIG;
     }
-
 
 
     var command = [];
@@ -658,7 +661,6 @@
 
         o.init(scrn, o);
     }
-
 
     command["add_score"] = function (o, src, dst) {
 
@@ -1139,4 +1141,35 @@
         );
         //scrn.putchr("mp:"+ o.mp, w.x, w.y);
     }
+ 
+    this.list = function(){
+        var st = [];
+
+        // type ,x ,y ,status, mp
+        for (var i in obj) {
+            var o = obj[i];
+
+            var inv = o.gt.in_view(o.x, o.y)?"v":"-"; 
+            //var inw = o.gt.in_world(o.x, o.y)?"wo":"w-";
+            //var s = "" + o.type + "," + Math.trunc(o.x) + "," + Math.trunc(o.y) + ","  + o.status + "," + o.mp;
+            //type, inview, hp, status,mp,chr
+            var s = "" + o.type + "," + inv + "," + o.hp + ","  + o.status + "," + o.mp + "," +o.chr;
+
+            st.push(s);
+        }        
+        return st;
+    }
+
+    this.lookObj = function(num){
+
+        var st = [];
+        let o = Object.entries(obj[num]);
+        
+        o.forEach(function(element){
+          st.push(element);
+        });
+        return st;
+    }
+
 }
+

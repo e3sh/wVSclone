@@ -455,9 +455,10 @@ function sce_player() {
         if (o.mapCollision != true) {
             o.old_x = o.x;
             o.old_y = o.y;
+            o.x += o.vx;  o.y += o.vy;
 
-            o.x += o.vx;
-            o.y += o.vy;
+            //var w = o.gt.worldtoWorld(o.x, o.y);
+            //o.x = w.x;  o.y = w.y;
 
         } else {
             o.x = o.old_x;
@@ -469,6 +470,7 @@ function sce_player() {
         var vxf = 0;
         var vyf = 0;
 
+        
         if ((w.x < 240) && (o.vx < 0)) {
             vxf = 1;
         }
@@ -484,7 +486,20 @@ function sce_player() {
         if ((w.y > o.gt.viewheight - 240) && (o.vy > 0)) {
             vyf = 1;
         }
-        o.gt.viewpos(o.gt.world_x + o.vx * vxf, o.gt.world_y + o.vy * vyf);
+        /*
+        if (w.x < 240) vxf = 1;
+        if (w.x > o.gt.viewwidth - 240) vxf = 1;
+        if (w.y < 240) vyf = 1;
+        if (w.y > o.gt.viewheight - 240)vyf = 1;
+        */
+        var sx = o.gt.world_x + o.vx * vxf;
+        var sy = o.gt.world_y + o.vy * vyf;
+
+        if (!o.gt.in_view(o.x, o.y)){
+            if (o.x != o.old_x) sx = o.x;
+            if (o.y != o.old_y) sy = o.y;
+        }
+        o.gt.viewpos(sx, sy);
 
         o.vector = wvec;
         o.vx = wvx;
@@ -537,9 +552,7 @@ function sce_player() {
             o.sound.change(5);
             o.sound.play(5);
 
-            o.bomb4(33); //timeoverキャラのステータスを0にする。
-
-            
+            o.bomb4(33); //timeoverキャラのステータスを0にする。         
         }
 
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除

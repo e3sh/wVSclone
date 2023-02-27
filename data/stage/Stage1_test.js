@@ -16,7 +16,7 @@ function Stage1_test(stageno) {
     this.bgPtn = mapBgPattern;
 
     var cmap = [];
-    this.colmap = cmap;
+    //this.colmap = cmap;
 
     function mapScenro() {
 
@@ -58,7 +58,7 @@ function Stage1_test(stageno) {
 
     function mapBgLayout() {
 
-        for (var j = 0; j < 90; j++){ cmap[j] = []; for (var i = 0; i < 90; i++){cmap[j][i] = null; }}
+        //for (var j = 0; j < 90; j++){ cmap[j] = []; for (var i = 0; i < 90; i++){cmap[j][i] = null; }}
         var mc = [];
         
         var w = [];
@@ -76,11 +76,18 @@ function Stage1_test(stageno) {
                     true
                 ];
                 mc.push(w);
-                cmap[i][j] = null;
+                //cmap[i][j] = null;
             }
         }
-        /*
-        for (var i = 0; i <= Math.floor(rnd.next() * 90) + 100; i++) {
+        //枠
+        for (var i = 0; i <= 30 ;i++) {
+            mc.push([12,  i * BLOCK_W,  0 * BLOCK_H, 32, 32, false, 0, true ]);
+            mc.push([12,  i * BLOCK_W, 31 * BLOCK_H, 32, 32, false, 0, true ]);
+            mc.push([12,  0 * BLOCK_W,  i * BLOCK_H, 32, 32, false, 0, true ]);
+            mc.push([12, 31 * BLOCK_W,  i * BLOCK_H, 32, 32, false, 0, true ]);
+        }
+        
+        for (var i = 0; i <= Math.floor(rnd.next() * 50) + 50; i++) {
             var wx = Math.floor(rnd.next() * 30);
             var wy = Math.floor(rnd.next() * 30);
 
@@ -94,9 +101,9 @@ function Stage1_test(stageno) {
                 true
                 ];
             mc.push(w);
-            cmap[wx + 1][wy + 1] = true;
+            //cmap[wx + 1][wy + 1] = true;
         }              
-        */
+        
         wx = Math.floor(rnd.next() * 84) + 3;
         wy = Math.floor(rnd.next() * 84) + 3;
         w = [13,

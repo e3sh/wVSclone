@@ -1,6 +1,6 @@
 //Scene
 //
-function scenePause(state) {
+function sceneStatusDisp(state) {
 
     var dev = state.System.dev;
     //宣言部
@@ -17,16 +17,55 @@ function scenePause(state) {
 
     var menuvf = false;
     var keywait = 10;
-    //var keylock;
-    //var keywait = 0;
 
-    var ret_code = 0;
+
+    function list_draw(page){
+        var st = state.obCtrl.list(); 
+
+        var maxpage = Math.floor(st.length/200) + 1;
+        //var s = "Tp,objX,objY,s,Mp / Num:" + st.length;
+
+        if (page > maxpage) page = maxpage;        
+        var s = "No:Type,view,hp,status,Mp,chr / Num:" + st.length + " PAGE:[" + page + "]/" + maxpage;
+        //type, inview, inworld, status,mp,chr
+        var c = 0;
+
+        work.reset();
+        work.clear();
+
+        work.putchr8(s, 0,0 );
+        for (var i in st){
+
+            if (i >= (page-1)*200){
+                work.putchr8("" + i + ":" + st[i%200],Math.floor(c/50)*160,(c%50)*8+8 );
+                c++;
+                if (c>200) break;
+            }
+        }
+        work.draw();
+    }
+    
+    function obj_draw(num){
+
+        var c=0;
+
+        work.reset();
+        work.clear();
+
+        var s = "== ObjectNo.[" + num +"] =="; 
+        work.putchr8(s, 0,0 );
+
+        var st = state.obCtrl.lookObj(num);
+        for (var i in st){
+                work.putchr8(String(st[i]).substring(0, 40),Math.floor(c/50)*320,(c%50)*8+8 );
+                c++;
+                if (c>100) break;
+        }
+        work.draw();
+    }
 
     //処理部
     function scene_init() {
-
-        tsel = 0.0;
-
         //初期化処理
     }
 
@@ -39,24 +78,29 @@ function scenePause(state) {
 
         ret_code = 0;
 
-        work.putchr(" == PAUSE ==", 320 - 50, 200);
-        work.putchr("Push <Z>key or [Space] ", 320 - 100, 220);
-        work.putchr(" Return game.", 320 - 50, 240);
-        work.putchr("Push <Q>key /", 320 - 100, 260);
-        work.putchr("Save and Quit.", 320 - 50, 280); 
+        list_draw(1);
+        /*
+        var st = state.obCtrl.list(); 
+
+        var s = "Tp,objX,objY,s,Mp / Num:" + st.length;
+        var c = 0;
+
+        work.reset();
+        work.clear();
+
+        work.putchr8(s, 0,0 );
+        for (var i in st){
+            work.putchr8("" + i + ":" + st[i],Math.floor(c/50)*160,(c%50)*8+8 );
+            c++;
+            if (c>200) break;
+        }
 
         work.draw();
-        work.reset();
-
-        state.Game.cold = true;
-
-        //keylock = true;
-        //keywait = 30;
+        //work.reset();
+        */
     }
 
     function scene_step() {
-
-        //var kstate = keys.check();
 
         keywait--;
         if (keywait > 0) return 0;
@@ -87,30 +131,10 @@ function scenePause(state) {
         }
 
 	    if (qkey) {
-            /*
-	        state.Game.item = obCtrl.item;
-	        state.Game.itemstack = obCtrl.itemstack;
-	        state.Game.player.zanki = 2 - dead_cnt;
-            */
-
-	        if (state.Game.save() == 0) {
-	            //alert("ゲーム中断セーブ実施しました。\nタイトルに戻ります。");
-                dev.sound.volume(1.0);
-                dev.sound.change(9);
-                dev.sound.play();
-                        
-                return 2;//Title
-            } else {
-                alert("ローカルストレージが使えません。\n中断セーブ出来なかったので、\nゲーム継続します。");
-
-                zkey = true;
-            }
+            //return 2;//Title
         }
 
         if (zkey) {
-            //obCtrl.interrapt = false;
-            //obCtrl.SIGNAL = 0;
-
             dev.sound.volume(1.0);
             work.fill(320 - 100, 200, 12 * 24, 20 * 5);
             work.draw();
@@ -120,7 +144,7 @@ function scenePause(state) {
             dev.graphics[2].setInterval(1);//FG
             work.setInterval(6);//UI
 
-            return 1;//GameScene
+            return 6;//scenePause
         }
 
         if (numkey) {
@@ -130,9 +154,22 @@ function scenePause(state) {
                     inp = i-48;
                     break;
                 }
+            } 
+            if (inp == 0) {obj_draw(0)
+            } else {  
+                list_draw(inp);
+            }
+        }
+        /*
+        if (numkey) {
+            var inp = -1;
+            for (var i in kstate){
+                if (Boolean(kstate[i])){
+                    inp = i-48;
+                    break;
+                }
             }
 
-            ret_code = 0;
             switch (inp){
                 case 1:
                     state.Config.debug = (!state.Config.debug);
@@ -151,9 +188,6 @@ function scenePause(state) {
                     break;
                 case 6:
                     state.Game.player.level = (state.Game.player.level++ >= 3) ? 0: state.Game.player.level;
-                    break;
-                case 8:
-                    ret_code = 7; //sceneStatusDisp
                     break;
                 case 0:
                     menuvf = (!menuvf);
@@ -174,7 +208,7 @@ function scenePause(state) {
                 arr.push("5: BulletMode(offRange):" + (state.Config.bulletmode?"ON":"OFF"));
                 arr.push("6: Weapon Level(Powup) :+" + state.Game.player.level);
                 arr.push("7: Import/Export :NotSupport");
-                arr.push("8: Status Display:ObjList");
+                arr.push("8: Status Display:NotSupport");
                 arr.push("9: -     :");
                 arr.push("0: Menu Display:" + (menuvf?"ON":"OFF"));
 
@@ -185,26 +219,13 @@ function scenePause(state) {
             work.draw();
             keywait = 10;
         }
+        */
 
-        return ret_code;
+        return 0;
         //進行
     }
 
     function scene_draw() {
-        //表示
-        /*
-        if (obCtrl.interrapt){
-			if (obCtrl.SIGNAL == 1) {
-            	work3.putchr(" == PAUSE ==", 320 - 50, 200);
-            	work3.putchr("Push <Z>key or [Space] ", 320 - 100, 220);
-            	work3.putchr(" Return game.", 320 - 50, 240);
-            	work3.putchr("Push <Q>key /", 320 - 100, 260);
-            	work3.putchr("Save and Quit.", 320 - 50, 280); 
-        	} else {
-            	work3.fill(320 - 100, 200, 12 * 24, 20 * 5);
-        	}
-		}
-        */
-        work.reset();
+        //work.reset();
     }
 }

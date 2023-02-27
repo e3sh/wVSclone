@@ -6,7 +6,7 @@
 function offScreen(){
 
     //描画オブジェクトバッファ(性能により調整）
-    var BUFFER_SIZE = 1500;
+    var BUFFER_SIZE = 4000;
 
     //bufferCreate
     var buf_count = 0;
