@@ -885,7 +885,8 @@
                                 device.stroke();
                             }
                             if (o.type != 5) wscreen.putFunc(cl);
-                            wscreen.putchr8(o.hp, w.x, w.y);
+                            //wscreen.putchr8(o.hp, w.x, w.y);
+                            wscreen.putchr8c(i, w.x, w.y, 0);
                         } 
                     }
                 }
@@ -1145,17 +1146,23 @@
     this.list = function(){
         var st = [];
 
+        for (var j=0; j < obj.length; j++){
+            var n = "   "+String(j);
+            st[j] =  n.substring(n.length-3) +".No.Object";
+        }
+
         // type ,x ,y ,status, mp
         for (var i in obj) {
             var o = obj[i];
-
             var inv = o.gt.in_view(o.x, o.y)?"v":"-"; 
             //var inw = o.gt.in_world(o.x, o.y)?"wo":"w-";
             //var s = "" + o.type + "," + Math.trunc(o.x) + "," + Math.trunc(o.y) + ","  + o.status + "," + o.mp;
             //type, inview, hp, status,mp,chr
-            var s = "" + o.type + "," + inv + "," + o.hp + ","  + o.status + "," + o.mp + "," +o.chr;
-
-            st.push(s);
+            var n = "   "+String(i);
+            var s = n.substring(n.length-3) + ":" + o.type + "," + inv + "," + o.hp + ","  + o.status + "," + o.mp + "," +o.chr;
+            
+            st[i] = s;
+            //st.push(s);
         }        
         return st;
     }
@@ -1163,12 +1170,67 @@
     this.lookObj = function(num){
 
         var st = [];
-        let o = Object.entries(obj[num]);
-        
-        o.forEach(function(element){
-          st.push(element);
-        });
+
+        if (obj[num] instanceof Object){
+
+            let o = Object.entries(obj[num]);
+
+            o.forEach(function(element){
+              st.push(element);
+            });
+            st.push("");
+            st.push("Object.entrirs end.");
+        } else{
+            st.push("No.Object");
+        }
+        st.push("");
+        st.push("Return [1-9] Key.");
+
         return st;
+    }
+
+    this.lookpick = function(scrn, num, x, y){
+
+        var result = false;
+
+        if (obj[num] instanceof Object){
+            var spname = [];
+            spname[15] = "Wand";
+            spname[16] = "Knife";
+            spname[17] = "Axe";
+            spname[18] = "Spear";
+            spname[19] = "Boom";
+            spname[20] = "Ball1";
+            spname[21] = "miniMay";
+            spname[22] = "sKey";
+            spname[23] = "BallB1";
+            spname[24] = "BallS1";
+            spname[25] = "BallL1";
+            spname[26] = "Lamp";
+            spname[27] = "Map";
+            spname[35] = "Coin1";
+            spname[50] = "Bow";            
+
+            let o = obj[num];
+
+            if (o.type == 2){
+                if (o.pick.length > 0){
+                    for (var i of o.pick){
+                        scrn.put(spname[i], x, y);
+                        x = x + 16;
+                    }
+                    result = true;
+                } 
+            }
+
+            if (o.type == 4){
+                scrn.put(spname[o.chr], x, y);
+
+                result = true;
+            }
+        }
+
+        return result;
     }
 
 }

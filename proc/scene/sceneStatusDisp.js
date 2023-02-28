@@ -18,15 +18,26 @@ function sceneStatusDisp(state) {
     var menuvf = false;
     var keywait = 10;
 
-
+    var sel = 0;
+    var inp = 1;
+    var maxpage = 1;
+    
     function list_draw(page){
+        if (page < 1) page = 1;
+
         var st = state.obCtrl.list(); 
 
-        var maxpage = Math.floor(st.length/200) + 1;
+        maxpage = Math.floor(st.length/200) + 1;
         //var s = "Tp,objX,objY,s,Mp / Num:" + st.length;
 
-        if (page > maxpage) page = maxpage;        
-        var s = "No:Type,view,hp,status,Mp,chr / Num:" + st.length + " PAGE:[" + page + "]/" + maxpage;
+        if (page > maxpage) page = maxpage;
+
+        sel = ((page-1)*200) + (sel%200);        
+        if (sel > st.length) sel = st.length - 1;
+
+        var s = "No:Type,view,hp,status,Mp,chr / Num:" + st.length
+             + " PAGE:[" + page + "]/" + maxpage
+             + ":SELECT:[" + sel + "]";
         //type, inview, inworld, status,mp,chr
         var c = 0;
 
@@ -37,7 +48,39 @@ function sceneStatusDisp(state) {
         for (var i in st){
 
             if (i >= (page-1)*200){
-                work.putchr8("" + i + ":" + st[i%200],Math.floor(c/50)*160,(c%50)*8+8 );
+                var s = st[(page-1)*200 + i%200];
+                var x = Math.floor(c/50)*160;
+                var y = (c%50)*8+8;
+                //work.putchr8(s ,x ,y );
+
+                if (i != sel){
+                    work.putchr8(s ,x ,y );
+                }else{
+                    //work.putchr("["+st[(page-1)*200 + i%200]+"]",Math.floor(c/50)*160,(c%50)*8+8);
+                    //work.putchr8c(s,x ,y ,2 );
+
+                    bar = {}
+
+                    bar.x = x;
+                    bar.y = y;
+                    bar.l = s.length;
+            
+                    bar.draw = function(device){
+                        device.beginPath();
+                        device.fillStyle = "navy";
+                        device.lineWidth = 1;
+                        device.fillRect(this.x, this.y, this.l*8, 8);
+                        device.stroke();
+            
+                        device.beginPath();
+                        device.strokeStyle = "white"; 
+                        device.lineWidth = 1;
+                        device.rect(this.x, this.y, this.l*8, 8);
+                        device.stroke();
+                    }
+                    work.putFunc(bar);
+                    work.putchr8c(s,x ,y ,2 );
+                }
                 c++;
                 if (c>200) break;
             }
@@ -57,16 +100,22 @@ function sceneStatusDisp(state) {
 
         var st = state.obCtrl.lookObj(num);
         for (var i in st){
-                work.putchr8(String(st[i]).substring(0, 40),Math.floor(c/50)*320,(c%50)*8+8 );
+                work.putchr8(String(st[i]).substring(0, 39),Math.floor(c/50)*320,(c%50)*8+8 );
                 c++;
                 if (c>100) break;
         }
+
+        if (state.obCtrl.lookpick(work, num, Math.floor(c/50)*320+8, ((c+2)%50)*8+16)){
+            work.putchr8("pickitem/thisitem",Math.floor(c/50)*320+8, ((c+1)%50)*8+8 );
+        };
+
         work.draw();
     }
 
     //処理部
     function scene_init() {
         //初期化処理
+        sel = 0;
     }
 
     function scene_reset() {
@@ -79,25 +128,6 @@ function sceneStatusDisp(state) {
         ret_code = 0;
 
         list_draw(1);
-        /*
-        var st = state.obCtrl.list(); 
-
-        var s = "Tp,objX,objY,s,Mp / Num:" + st.length;
-        var c = 0;
-
-        work.reset();
-        work.clear();
-
-        work.putchr8(s, 0,0 );
-        for (var i in st){
-            work.putchr8("" + i + ":" + st[i],Math.floor(c/50)*160,(c%50)*8+8 );
-            c++;
-            if (c>200) break;
-        }
-
-        work.draw();
-        //work.reset();
-        */
     }
 
     function scene_step() {
@@ -105,9 +135,10 @@ function sceneStatusDisp(state) {
         keywait--;
         if (keywait > 0) return 0;
 
+        // input key section
         var kstate = dev.key_state.check();
 
-        var zkey = false;
+        var zkey = false; //exit button
         if (Boolean(kstate[90])) {//[z]
             if (kstate[90]) zkey = true;
         }
@@ -115,112 +146,79 @@ function sceneStatusDisp(state) {
 	        if (kstate[32]) zkey = true;
         }
 
-        var qkey = false;
-	    if (Boolean(kstate[81])) {
-	        if (kstate[81]) {//[q]
-	            qkey = true;
-	            delete(kstate[81]);// = false;//押しっぱなし検出する為、予防
-	        }
-	    }
-
-        var numkey = false;
-        for (var i in kstate){ //Fullkey[0]-[9]
-            if (Boolean(kstate[i]) && (i >= 48) && (i <= 57)){
-                numkey = true;
+        var ckey = false; //dispalyclear
+        if (Boolean(kstate[67])) {
+            if (kstate[67]) {//ckey↓
+                ckey = true;
             }
         }
 
-	    if (qkey) {
-            //return 2;//Title
+        var numkey = false; //menu select num
+        var arrowkey = false; //list select 
+        for (var i in kstate){
+            if (Boolean(kstate[i])){
+                numkey = ((i >= 48) && (i <= 57))? true: false; //Fullkey[0]-[9]
+                arrowkey = ((i >= 37) && (i <= 40))? true: false; //Arrowkey
+            }
         }
 
+        if (zkey || ckey || numkey || arrowkey) keywait = 8;
+
+        // select key function section
         if (zkey) {
-            dev.sound.volume(1.0);
-            work.fill(320 - 100, 200, 12 * 24, 20 * 5);
+            work.reset();
+            work.clear();
             work.draw();
 
-            dev.graphics[0].setInterval(1);//BG　WORK2
-            dev.graphics[1].setInterval(1);//SPRITE
-            dev.graphics[2].setInterval(1);//FG
-            work.setInterval(6);//UI
+            //dev.graphics[0].setInterval(1);//BG　WORK2
+            //dev.graphics[1].setInterval(1);//SPRITE
+            //dev.graphics[2].setInterval(1);//FG
+            //work.setInterval(6);//UI
 
-            return 6;//scenePause
+            return 6;//return scenePause
+        }
+
+        if (ckey) {
+            for (var i=0; i<3; i++){
+                dev.graphics[i].reset();
+                dev.graphics[i].clear();
+                dev.graphics[i].draw();
+            }
+            list_draw(inp);
         }
 
         if (numkey) {
-            var inp = -1;
+            inp = -1;
             for (var i in kstate){
                 if (Boolean(kstate[i])){
                     inp = i-48;
                     break;
                 }
             } 
-            if (inp == 0) {obj_draw(0)
+            if (inp == 0) {obj_draw(sel)
             } else {  
                 list_draw(inp);
             }
         }
-        /*
-        if (numkey) {
-            var inp = -1;
+
+        if (arrowkey) {
+            var s = sel;
             for (var i in kstate){
                 if (Boolean(kstate[i])){
-                    inp = i-48;
-                    break;
+                    s = s + ((i == 37)? -50 :0)//leftkey 
+                    + ((i == 38)? -1 :0) //upkey
+                    + ((i == 39)? +50 :0) //rightkey
+                    + ((i == 40)? +1 :0);//downkey
                 }
             }
+            if (s < 0) s = 0;
+            //if (s > maxpage) s = maxpage;
 
-            switch (inp){
-                case 1:
-                    state.Config.debug = (!state.Config.debug);
-                    break;
-                case 2:
-                    state.Config.lamp_use = (!state.Config.lamp_use);
-                    break;
-                case 3:
-                    state.Config.map_use = (!state.Config.map_use);
-                    break;
-                case 4:
-                    state.System.dev.sound.mute = (!state.System.dev.sound.mute);
-                    break;
-                case 5:
-                    state.Config.bulletmode = (!state.Config.bulletmode);
-                    break;
-                case 6:
-                    state.Game.player.level = (state.Game.player.level++ >= 3) ? 0: state.Game.player.level;
-                    break;
-                case 0:
-                    menuvf = (!menuvf);
-                    break;
-                default:
-                    break;
-            }
-            work.reset();
-            work.fill(0, 300, 640, 8 * 11);
-            if (menuvf){
-                var arr = [];
-                work.putchr8("Input ["+ inp +"]", 16, 300);
+            sel = s;
+            //obj_draw(sel);
+            list_draw(inp);
 
-                arr.push("1: Debug Display:" + (state.Config.debug?"ON":"OFF"));
-                arr.push("2: Lamp(on FloorChange):" + (state.Config.lamp_use?"ON":"OFF"));
-                arr.push("3: Map (on FloorChange):" + (state.Config.map_use?"ON":"OFF"));
-                arr.push("4: Mute (NotSupport)   :" + (state.System.dev.sound.mute?"ON":"OFF"));
-                arr.push("5: BulletMode(offRange):" + (state.Config.bulletmode?"ON":"OFF"));
-                arr.push("6: Weapon Level(Powup) :+" + state.Game.player.level);
-                arr.push("7: Import/Export :NotSupport");
-                arr.push("8: Status Display:NotSupport");
-                arr.push("9: -     :");
-                arr.push("0: Menu Display:" + (menuvf?"ON":"OFF"));
-
-                for (var i in arr){
-                    work.putchr8(arr[i], 0, 308 + i * 8);
-                }
-            }
-            work.draw();
-            keywait = 10;
         }
-        */
-
         return 0;
         //進行
     }

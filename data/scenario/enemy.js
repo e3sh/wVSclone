@@ -996,7 +996,6 @@ function sce_enemy_inv_gr(scrn, o){
     if (!o.pickgetf) return;　//アイテム持っていない場合、処理せず。
     if (o.weapongetf && o.lockon_flag) return; //武器使用時表示しない。
   
-
     spname[15] = "Wand";
     spname[16] = "Knife";
     spname[17] = "Axe";
@@ -1010,8 +1009,8 @@ function sce_enemy_inv_gr(scrn, o){
     spname[25] = "BallL1";
     spname[26] = "Lamp";
     spname[27] = "Map";
+    spname[35] = "Coin1";
     spname[50] = "Bow";
-    
 
     var w = o.gt.worldtoView(o.x, o.y);
 
