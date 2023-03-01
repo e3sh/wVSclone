@@ -7,6 +7,7 @@ repositorie JavascriptActionGameのバージョンアップ版
 https://e3sh.github.io/wVSclone/main.html
 
 ## 開発状況
+- (2023/03/01)DEBUG用画面追加/画面外処理調整中
 - (2023/02/27)平面フィールド(Stage.0)画面外処理関係処理不具合調整中
 - (2023/02/17)Gamepad対応(Gamepadの入力をキーボード入力に割り当て追加)。
 - iPad(Safari)でもゲームコントローラで操作可能となった/音は出ず。
@@ -70,9 +71,24 @@ https://e3sh.github.io/wVSclone/main.html
 - 1 : Debug Display        デバッグステータス表示　    
 - 2 : Lamp(on FloorChange) ランプ所持(面切り替え後に有効) 　
 - 3 : Map (on FloorChange) 地図所持(面切り替え後に有効)　 
-- 4 : Mute (NotSupport)    効果音・BGMのMUTE（今のところ、うまく動かないので効果なし) 　
+- 4 : Mute (NotSupport)    効果音・BGMのMUTE（今のところ、うまく動かないので効果なし) 
 - 5 : BulletMode(offRange) 画面外からの弾を消す　 
+- 6 : Weapon Level         パワーアップ状態の増減
+- 8 : Obj Status　Disp     状態確認画面に推移する。　 
+
 - 0 : Menu Display         本メニューの表示オフオン 　
-  
+
+
+### 状態確認(StatusDisplay)画面:
+DEBUGで内部状態確認用画面(各キャラクターの動作状態確認)
+
+操作
+- フルキーボード[1]～[9] Page選択
+- フルキーボード[0]      番号選択で詳細画面に推移 　
+- [C]  背景表示消去(画面クリア)　　　　
+- [V]  各キャラクターのINVENTRY状態表示(自機を除く)　　　　　
+- [Z][SPACE]　前の画面に戻る(Pause画面に戻る)
+
+
 ## 動作確認ブラウザ: 
 Edge/Chrome

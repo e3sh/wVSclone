@@ -105,10 +105,81 @@ function sceneStatusDisp(state) {
                 if (c>100) break;
         }
 
+        state.obCtrl.lookObjv(work, num, 240, 80);
+
         if (state.obCtrl.lookpick(work, num, Math.floor(c/50)*320+8, ((c+2)%50)*8+16)){
             work.putchr8("pickitem/thisitem",Math.floor(c/50)*320+8, ((c+1)%50)*8+8 );
         };
 
+        work.draw();
+    }
+
+    function inv_draw(page){
+        if (page < 1) page = 1;
+
+        var st = state.obCtrl.list(); 
+
+        maxpage = Math.floor(st.length/200) + 1;
+        //var s = "Tp,objX,objY,s,Mp / Num:" + st.length;
+
+        if (page > maxpage) page = maxpage;
+
+        sel = ((page-1)*200) + (sel%200);        
+        if (sel > st.length) sel = st.length - 1;
+
+        var s = "No:Type,view,hp,status,Mp,chr / Num:" + st.length
+             + " PAGE:[" + page + "]/" + maxpage
+             + ":SELECT:[" + sel + "]";
+        //type, inview, inworld, status,mp,chr
+        var c = 0;
+
+        work.reset();
+        work.clear();
+
+        work.putchr8(s, 0,0 );
+        for (var i in st){
+
+            if (i >= (page-1)*200){
+                var s = st[(page-1)*200 + i%200];
+                var x = Math.floor(c/50)*160;
+                var y = (c%50)*8+8;
+                //work.putchr8(s ,x ,y );
+                work.putchr8(s.substring(0, 6),x ,y );
+                if (!state.obCtrl.lookpick(work, i, x + 48+8, y)){
+                    //work.putchr8("non item.", x + 48+8, y);
+                }
+                /*
+                else{
+                    //work.putchr("["+st[(page-1)*200 + i%200]+"]",Math.floor(c/50)*160,(c%50)*8+8);
+                    //work.putchr8c(s,x ,y ,2 );
+                    
+                    bar = {}
+
+                    bar.x = x;
+                    bar.y = y;
+                    bar.l = s.length;
+            
+                    bar.draw = function(device){
+                        device.beginPath();
+                        device.fillStyle = "navy";
+                        device.lineWidth = 1;
+                        device.fillRect(this.x, this.y, this.l*8, 8);
+                        device.stroke();
+            
+                        device.beginPath();
+                        device.strokeStyle = "white"; 
+                        device.lineWidth = 1;
+                        device.rect(this.x, this.y, this.l*8, 8);
+                        device.stroke();
+                    }
+                    work.putFunc(bar);
+                //   work.putchr8c(s.substring(0, 6),x ,y ,2 );
+                //}
+                */
+                c++;
+                if (c>200) break;
+            }
+        }
         work.draw();
     }
 
@@ -153,6 +224,13 @@ function sceneStatusDisp(state) {
             }
         }
 
+        var vkey = false; //inventry_view
+        if (Boolean(kstate[86])) {
+            if (kstate[86]) {//vkey↓
+                vkey = true;
+            }
+        }
+
         var numkey = false; //menu select num
         var arrowkey = false; //list select 
         for (var i in kstate){
@@ -162,7 +240,7 @@ function sceneStatusDisp(state) {
             }
         }
 
-        if (zkey || ckey || numkey || arrowkey) keywait = 8;
+        if (zkey || ckey || vkey || numkey || arrowkey) keywait = 8;
 
         // select key function section
         if (zkey) {
@@ -185,6 +263,10 @@ function sceneStatusDisp(state) {
                 dev.graphics[i].draw();
             }
             list_draw(inp);
+        }
+
+        if (vkey) {
+            inv_draw(inp);
         }
 
         if (numkey) {

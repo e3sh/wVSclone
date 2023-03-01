@@ -1,202 +1,217 @@
 ﻿//=============================================================
 // GeometoryTrancerateクラス
-// 画面表示とゲームワールドの座標変換用(簡易だから別にするまでもないか？
+// 画面表示とゲームワールドの座標変換用
 //=============================================================
 function geometoryTrance() {
 
-this.worldwidth = 3000;//とりあえず
-this.worldheight = 3000;
+    this.worldwidth = 3000;//とりあえず
+    this.worldheight = 3000;
 
-this.stagewidth = 700;
-this.stageheight = 530;
+    this.stagewidth = 700;
+    this.stageheight = 540;
 
-this.viewwidth = 640;
-this.viewheight = 480;
+    this.viewwidth = 640;
+    this.viewheight = 480;
 
-this.world_x = 0;
-this.world_y = 0;
+    this.world_x = 0;
+    this.world_y = 0;
 
-var ww = this.worldwidth;
-var wh = this.worldheight;
+    var ww = this.worldwidth;
+    var wh = this.worldheight;
 
-var sw = this.stagewidth;
-var sh = this.stageheight;
+    var sw = this.stagewidth;
+    var sh = this.stageheight;
 
-var vw = this.viewwidth;
-var vh = this.viewheight;
+    var vw = this.viewwidth;
+    var vh = this.viewheight;
 
-var workWorldX = this.world_x;
-var workWorldY = this.world_y;
+    var workWorldX = this.world_x;
+    var workWorldY = this.world_y;
 
-//用途はほぼマウス位置からの座標変換で移動とかのフォロー用
-this.viewtoWorld = function (x, y) {
+    function rangeCheck(s, r){ // s r range{x; y; w; h} return bool
+        return ((Math.abs((s.x + s.w / 2) - (r.x + r.w / 2)) < (s.w + r.w) / 2) &&
+         (Math.abs((s.y + s.h / 2) - (r.y + r.h / 2)) < (s.h + r.h) / 2));
+    }
 
-    var w = {}
+    function pointCheck(p, r){// p point{x; y} r range{x; y; w; h} return bool
+        return ((r.x <= p.x) && ((r.x  + r.w) >= p.x) && (r.y <= p.y) && ((r.y + r.h) >= p.y))
+    }
+    
+    //用途はほぼマウス位置からの座標変換で移動とかのフォロー用
+    this.viewtoWorld = function (x, y) {
 
-    w.x = this.world_x + x;
-    w.y = this.world_y + y;
+        var w = {}
 
-    return w;
-}
-//ゲームオブジェクトは基本的にこちらで変換してから表示
-this.worldtoView = function (x, y) {
+        w.x = this.world_x + x;
+        w.y = this.world_y + y;
 
-    var w = {}
+        return w;
+    }
+    //ゲームオブジェクトは基本的にこちらで変換してから表示
+    this.worldtoView = function (x, y) {
 
-    w.x = Math.trunc(x - this.world_x);
-    w.y = Math.trunc(y - this.world_y);
+        var w = {}
 
-    return w;
-}
-//ワールド座標におけるビューポートの位置(初期値など）設定
-this.viewpos = function (x, y) {
-    //左端の座標を指定とする。
-    if (x < 0) x = 0;
-    if (y < 0) y = 0;
-    //if (x < 0) x = ww + x;//0;
-    //if (y < 0) y = wh + y;//0;
-    if (x > (ww - vw)) x = ww - vw;//ww - vw;
-    if (y > (wh - vh)) y = wh - vh;//wh - vh;
-    //if (x > ww) x = x - ww;//ww - vw;
-    //if (y > wh) y = y - wh;//wh - vh;
+        w.x = Math.trunc(x - this.world_x);
+        w.y = Math.trunc(y - this.world_y);
 
-    //    this.world_x = x;
-    //    this.world_y = y;
+        return w;
+    }
+    //ワールド座標におけるビューポートの位置(初期値など）設定
+    this.viewpos = function (x, y) {
+        //左端の座標を指定とする。
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+        //if (x < 0) x = ww + x;//0;
+        //if (y < 0) y = wh + y;//0;
+        if (x > (ww - vw)) x = ww - vw;//ww - vw;
+        if (y > (wh - vh)) y = wh - vh;//wh - vh;
+        //if (x > ww) x = x - ww;//ww - vw;
+        //if (y > wh) y = y - wh;//wh - vh;
 
-    workWorldX = Math.trunc(x);
-    workWorldY = Math.trunc(y);
-}
+        //    this.world_x = x;
+        //    this.world_y = y;
 
-//viewposの設定を確定する（直接プロパティを触った場合は知らん）
-this.commit = function () {
+        workWorldX = Math.trunc(x);
+        workWorldY = Math.trunc(y);
+    }
 
-    this.world_x = workWorldX;
-    this.world_y = workWorldY;
-}
+    //viewposの設定を確定する（直接プロパティを触った場合は知らん）
+    this.commit = function () {
 
-//Stageの座標を返す
-this.nowstagepos = function () {
+        this.world_x = workWorldX;
+        this.world_y = workWorldY;
+    }
 
-    var w = {}
+    //Stageの座標を返す
+    this.nowstagepos = function () {
 
-    //stagelefttop
-    w.ltx = this.world_x + (vw / 2) - (sw / 2);
-    w.lty = this.world_y + (vh / 2) - (sh / 2);
+        var w = {}
 
-    //stagerighttop
-    w.rtx = this.world_x + (vw / 2) + (sw / 2);
-    w.rty = this.world_y + (vh / 2) - (sh / 2);
+        //stagelefttop
+        w.ltx = this.world_x + (vw / 2) - (sw / 2);
+        w.lty = this.world_y + (vh / 2) - (sh / 2);
 
-    //stageleftbottm
-    w.lbx = this.world_x + (vw / 2) - (sw / 2);
-    w.lby = this.world_y + (vh / 2) + (sh / 2);
+        //stagerighttop
+        w.rtx = this.world_x + (vw / 2) + (sw / 2);
+        w.rty = this.world_y + (vh / 2) - (sh / 2);
 
-    //stagerightbottom
-    w.rbx = this.world_x + (vw / 2) + (sw / 2);
-    w.rby = this.world_y + (vh / 2) + (sh / 2);
+        //stageleftbottm
+        w.lbx = this.world_x + (vw / 2) - (sw / 2);
+        w.lby = this.world_y + (vh / 2) + (sh / 2);
 
-    //stagelefttop(alias)
-    w.x = w.ltx;
-    w.y = w.lty;
+        //stagerightbottom
+        w.rbx = this.world_x + (vw / 2) + (sw / 2);
+        w.rby = this.world_y + (vh / 2) + (sh / 2);
 
-    w.w = sw;
-    w.h = sh;
+        //stagelefttop(alias)
+        w.x = w.ltx;
+        w.y = w.lty;
 
-    return w;
-}
+        w.w = sw;
+        w.h = sh;
 
-//入力した座標がStage内の場合True
-this.in_stage = function (x, y) {
+        return w;
+    }
 
-    var f = false;
+    //入力した座標がStage内の場合True
+    this.in_stage = function (x, y) {
+        var p = {}; p.x = x; p.y = y;
+        var r = {};
+        r.x = this.world_x + (vw / 2) - (sw / 2);
+        r.y = this.world_y + (vh / 2) - (sh / 2);
+        r.w = sw; r.h = sh;
 
-    if ((this.world_x + (vw / 2) - (sw / 2) <= x) && (this.world_x + (vw / 2) + (sw / 2) >= x)
-    && (this.world_y + (vh / 2) - (sh / 2) <= y) && (this.world_y + (vh / 2) + (sh / 2) >= y))
+        return pointCheck(p, r);
+
+        /*
+        var f = false;
+
+        if ((this.world_x + (vw / 2) - (sw / 2) <= x) && (this.world_x + (vw / 2) + (sw / 2) >= x)
+        && (this.world_y + (vh / 2) - (sh / 2) <= y) && (this.world_y + (vh / 2) + (sh / 2) >= y))
         f = true;
 
-    return f;
+        return f;
+        */
+    }
+    //入力した座標がView内の場合True
+    this.in_view = function (x, y) {
+        var p = {}; p.x = x; p.y = y;
+        var r = {}; r.x = this.world_x; r.y = this.world_y; r.w = vw; r.h = sh;
+        return pointCheck(p, r);
 
-}
-//入力した座標がView内の場合True
-this.in_view = function (x, y) {
+        /*
+        var f = false;
 
-    var f = false;
-
-    if ((this.world_x <= x) && (this.world_x + vw >= x) && (this.world_y <= y) && (this.world_y + vh >= y))
+        if ((this.world_x <= x) && (this.world_x + vw >= x) && (this.world_y <= y) && (this.world_y + vh >= y))
         f = true;
 
-    return f;
-}
+        return f;
+        */
+    }
 
-//入力した範囲はViewに含まれる場合True
-this.in_view_range = function (x, y, w, h) {
+    //入力した範囲はViewに含まれる場合True
+    this.in_view_range = function (x, y, w, h) {
+        var s = {}; s.x = x; s.y = y; s.w = w; s.h = h;
+        var r = {}; r.x = this.world_x; r.y = this.world_y; r.w = vw; r.h = vh;
+        return rangeCheck(s, r);
+        /*
+        var f = false;
 
-    var f = false;
-
-    if ((Math.abs((this.world_x + vw / 2) - (x + w / 2)) < (vw + w) / 2) &&
-     (Math.abs((this.world_y + vh / 2) - (y + h / 2)) < (vh + h) / 2))
+        if ((Math.abs((this.world_x + vw / 2) - (x + w / 2)) < (vw + w) / 2) &&
+         (Math.abs((this.world_y + vh / 2) - (y + h / 2)) < (vh + h) / 2))
         f = true;
 
-//    f = true;
+        //f = true;
+        return f;
+        */
+    }
 
-    return f;
+    //入力した範囲はStageに含まれる場合True
+    this.in_stage_range = function (x, y, w, h) {
+        var s = {}; s.x = x; s.y = y; s.w = w; s.h = h;
+        var r = {}; r.x = this.world_x; r.y = this.world_y; r.w = sw; r.h = sh;
+        return rangeCheck(s, r);
+        /*
+        var f = false;
 
-}
-
-//入力した範囲はStageに含まれる場合True
-this.in_stage_range = function (x, y, w, h) {
-
-    var f = false;
-
-    if ((Math.abs((this.world_x + sw / 2) - (x + w / 2)) < (sw + w) / 2) &&
-     (Math.abs((this.world_y + sh / 2) - (y + h / 2)) < (sh + h) / 2))
+        if ((Math.abs((this.world_x + sw / 2) - (x + w / 2)) < (sw + w) / 2) &&
+         (Math.abs((this.world_y + sh / 2) - (y + h / 2)) < (sh + h) / 2))
         f = true;
 
-    return f;
+        return f;
+        */
+    }
 
-}
+    //座標位置がワールド内にあるかどうかの確認と変換
+    this.in_world = function(x,y){
 
-//座標位置がワールド内にあるかどうかの確認と変換
-this.in_world = function(x,y){
+        return !((x < 0) || (x > ww) || (y < 0) || (y > wh));
+    }
 
-    return ((x < 0) || (x > ww) || (y < 0) || (y > wh)) ? false: true;
-}
+    this.worldtoWorld_x = function(x){
 
-this.worldtoWorld_x = function(x){
+        if (x < 0) x = ww + x;;
+        if (x > ww) x = x - ww;
 
-    if (x < 0) x = ww + x;;
-    if (x > ww) x = x - ww;
+        return x;
+    }
 
-    return x;
-}
+    this.worldtoWorld_y = function(y){
 
-this.worldtoWorld_y = function(y){
-;
-    if (y < 0) y = wh + y;;
-    if (y > wh) y = y - wh;
+        if (y < 0) y = wh + y;;
+        if (y > wh) y = y - wh;
 
-    return y;
-}
+        return y;
+    }
+    //this//.setWorldsize = function(){}
 
+    //this.setStagesize = function(){}
 
-
-//this//.setWorldsize = function(){}
-
-//this.setStagesize = function(){}
-
-//this.setViewsize = function(){}
-
-
+    //this.setViewsize = function(){}
 
     //-------------------------------------------------------------
     //-------------------------------------------------------------
-
-
-
-
-
-
-
 }
 
 

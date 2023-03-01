@@ -144,7 +144,7 @@ function scenePause(state) {
                     state.Config.map_use = (!state.Config.map_use);
                     break;
                 case 4:
-                    state.System.dev.sound.mute = (!state.System.dev.sound.mute);
+                    //state.System.dev.sound.mute = (!state.System.dev.sound.mute);
                     break;
                 case 5:
                     state.Config.bulletmode = (!state.Config.bulletmode);
@@ -167,16 +167,16 @@ function scenePause(state) {
                 var arr = [];
                 work.putchr8("Input ["+ inp +"]", 16, 300);
 
-                arr.push("1: Debug Display:" + (state.Config.debug?"ON":"OFF"));
-                arr.push("2: Lamp(on FloorChange):" + (state.Config.lamp_use?"ON":"OFF"));
-                arr.push("3: Map (on FloorChange):" + (state.Config.map_use?"ON":"OFF"));
-                arr.push("4: Mute (NotSupport)   :" + (state.System.dev.sound.mute?"ON":"OFF"));
-                arr.push("5: BulletMode(offRange):" + (state.Config.bulletmode?"ON":"OFF"));
-                arr.push("6: Weapon Level(Powup) :+" + state.Game.player.level);
-                arr.push("7: Import/Export :NotSupport");
-                arr.push("8: Status Display:ObjList");
-                arr.push("9: -     :");
-                arr.push("0: Menu Display:" + (menuvf?"ON":"OFF"));
+                arr.push("1: Debug Display  :" + (state.Config.debug?"ON":"OFF"));
+                arr.push("2: Lamp(nextStage):" + (state.Config.lamp_use?"ON":"OFF"));
+                arr.push("3: Map (nextStage):" + (state.Config.map_use?"ON":"OFF"));
+                arr.push("4: -");//Mute (NotSupport)   :" + (state.System.dev.sound.mute?"ON":"OFF"));
+                arr.push("5: Bullet(inRange):" + (state.Config.bulletmode?"ON":"OFF"));
+                arr.push("6: Weapon Level   :+" + state.Game.player.level);
+                arr.push("7: -");//Import/Export :NotSupport");
+                arr.push("8: Obj Status Disp:->");
+                arr.push("9: -");
+                arr.push("0: Menu Display   :" + (menuvf?"ON":"OFF"));
 
                 for (var i in arr){
                     work.putchr8(arr[i], 0, 308 + i * 8);

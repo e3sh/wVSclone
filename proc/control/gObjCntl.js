@@ -845,9 +845,6 @@
         state.Game.key_y = wy;
     }
 
-
-
-
     // draw ======================================
     // オブジェクトの描画
 
@@ -1108,7 +1105,24 @@
 
     function cntl_draw(scrn, o) {
         //表示
+        if (Boolean(motion_ptn[o.mp].wait)) {
+            o.mp_cnt_frm++;
+            if (o.mp_cnt_frm > motion_ptn[o.mp].wait / 2) {
+                o.mp_cnt_anm++;
+                o.mp_cnt_frm = 0;
+                if (o.mp_cnt_anm >= motion_ptn[o.mp].pattern.length) o.mp_cnt_anm = 0;
+            }
+        }
 
+        var w = o.gt.worldtoView(o.x, o.y);
+
+        mtnptn_put(scrn, 
+            w.x + o.shiftx,
+            w.y + o.shifty, 
+            o.mp, o.mp_cnt_anm, 
+            o.vector, o.alpha, o.display_size);
+    
+        /*
         if (Boolean(motion_ptn[o.mp].wait)) {
             o.mp_cnt_frm++;
             if (o.mp_cnt_frm > motion_ptn[o.mp].wait / 2) {
@@ -1140,9 +1154,37 @@
             w.y + o.shifty, 
             wvh, wr, o.alpha, o.display_size
         );
+        */
         //scrn.putchr("mp:"+ o.mp, w.x, w.y);
     }
  
+    function mtnptn_put(scrn, x, y, mp, mpcnt, r, alpha, size){
+        //mtnptn_put(scrn, x, y, mp,[mpcnt],[r],[alpha],[size])
+        if (!Boolean(mpcnt)) mpcnt = 0;
+        if (!Boolean(r)) r = 0;
+        if (!Boolean(alpha)) alpha = 0;
+        if (!Boolean(size)) size = 0;
+        
+        try {
+            var ptn = motion_ptn[mp].pattern[mpcnt][0];
+        }
+        catch (e) {
+            mpcnt = 0;
+            ptn = motion_ptn[mp].pattern[mpcnt][0];
+        }
+
+        var wvh = motion_ptn[mp].pattern[mpcnt][1];
+        var wr = motion_ptn[mp].pattern[mpcnt][2];
+
+        if ((wvh == -1) && (wr == -1)) {
+            wvh = 0;
+            wr = r;
+        };
+
+        scrn.put(ptn, x, y, wvh, wr, alpha, size);
+        //scrn.putchr("mp:"+ o.mp, w.x, w.y);
+    }
+
     this.list = function(){
         var st = [];
 
@@ -1179,7 +1221,7 @@
               st.push(element);
             });
             st.push("");
-            st.push("Object.entrirs end.");
+            st.push("Object.entries end.");
         } else{
             st.push("No.Object");
         }
@@ -1189,11 +1231,36 @@
         return st;
     }
 
+    this.lookObjv = function(scrn, num, x, y){
+
+        var result = false;
+
+        if (obj[num] instanceof Object){
+
+            let o = obj[num];
+
+            if (o.visible){
+                mtnptn_put(scrn, 
+                    x, y, o.mp,
+                    o.mp_cnt_anm, 
+                    o.vector, 
+                    o.alpha,
+                    o.display_size
+                );
+            
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
     this.lookpick = function(scrn, num, x, y){
 
         var result = false;
 
         if (obj[num] instanceof Object){
+            /*
             var spname = [];
             spname[15] = "Wand";
             spname[16] = "Knife";
@@ -1210,13 +1277,14 @@
             spname[27] = "Map";
             spname[35] = "Coin1";
             spname[50] = "Bow";            
-
+            */
             let o = obj[num];
 
             if (o.type == 2){
                 if (o.pick.length > 0){
                     for (var i of o.pick){
-                        scrn.put(spname[i], x, y);
+                        //scrn.put(spname[i], x, y);
+                        mtnptn_put(scrn, x, y, ch_ptn[i].mp);
                         x = x + 16;
                     }
                     result = true;
@@ -1224,7 +1292,9 @@
             }
 
             if (o.type == 4){
-                scrn.put(spname[o.chr], x, y);
+                mtnptn_put(scrn, x, y, o.mp);//, mpcnt, r, alpha, size){
+
+                //scrn.put(spname[o.chr], x, y);
 
                 result = true;
             }
