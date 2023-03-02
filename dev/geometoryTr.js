@@ -30,7 +30,7 @@ function geometoryTrance() {
 
     function rangeCheck(s, r){ // s r range{x; y; w; h} return bool
         return ((Math.abs((s.x + s.w / 2) - (r.x + r.w / 2)) < (s.w + r.w) / 2) &&
-         (Math.abs((s.y + s.h / 2) - (r.y + r.h / 2)) < (s.h + r.h) / 2));
+            (Math.abs((s.y + s.h / 2) - (r.y + r.h / 2)) < (s.h + r.h) / 2));
     }
 
     function pointCheck(p, r){// p point{x; y} r range{x; y; w; h} return bool
@@ -39,35 +39,66 @@ function geometoryTrance() {
     
     //用途はほぼマウス位置からの座標変換で移動とかのフォロー用
     this.viewtoWorld = function (x, y) {
-
         var w = {}
-
         w.x = this.world_x + x;
         w.y = this.world_y + y;
 
         return w;
     }
+
     //ゲームオブジェクトは基本的にこちらで変換してから表示
     this.worldtoView = function (x, y) {
-
         var w = {}
+        if (this.world_x > ww - vw){
+            if (x < vw){
+                w.x = ww - this.world_x + x;
+            }else{
+                w.x = Math.trunc(x - this.world_x);
+            }
+        }else{
+            w.x = Math.trunc(x - this.world_x);        
+        }
 
-        w.x = Math.trunc(x - this.world_x);
-        w.y = Math.trunc(y - this.world_y);
+        if (this.world_y > wh - vh){
+            if (y < vh){
+                w.y = wh - this.world_y + y;
+            }else{
+                w.y = Math.trunc(y - this.world_y);
+            }
+        }else{
+            w.y = Math.trunc(y - this.world_y);
+        }
+
+        /*
+        w.x = Math.trunc(
+            (x - this.world_x 
+            + (this.world_x > ww - vw)? ww: 0)%vw
+        //    + (x - this.world_x > ww - vw) ? ww: 0
+        );
+        w.y = Math.trunc(
+            (y - this.world_y 
+            + (this.world_y > wh - vh)? wh: 0)%vh
+        //    + (x - this.world_x > ww - vw) ? ww: 0
+        );
+        */
+        //        w.x = w.x/2 + 320;
+        //        w.y = w.y/2 + 240;
+
 
         return w;
     }
+
     //ワールド座標におけるビューポートの位置(初期値など）設定
     this.viewpos = function (x, y) {
         //左端の座標を指定とする。
-        if (x < 0) x = 0;
-        if (y < 0) y = 0;
-        //if (x < 0) x = ww + x;//0;
-        //if (y < 0) y = wh + y;//0;
-        if (x > (ww - vw)) x = ww - vw;//ww - vw;
-        if (y > (wh - vh)) y = wh - vh;//wh - vh;
-        //if (x > ww) x = x - ww;//ww - vw;
-        //if (y > wh) y = y - wh;//wh - vh;
+        //if (x < 0) x = 0;
+        //if (y < 0) y = 0;
+        if (x < 0) x = ww + x;//0;
+        if (y < 0) y = wh + y;//0;
+        //if (x > (ww - vw)) x = ww - vw;//ww - vw;
+        //if (y > (wh - vh)) y = wh - vh;//wh - vh;
+        if (x > ww) x = x - ww;//ww - vw;
+        if (y > wh) y = y - wh;//wh - vh;
 
         //    this.world_x = x;
         //    this.world_y = y;
@@ -116,13 +147,13 @@ function geometoryTrance() {
 
     //入力した座標がStage内の場合True
     this.in_stage = function (x, y) {
-        var p = {}; p.x = x; p.y = y;
+        var p = {}; p.x = x; p.y = y;; p.w = 1; p.h = 1;
         var r = {};
         r.x = this.world_x + (vw / 2) - (sw / 2);
         r.y = this.world_y + (vh / 2) - (sh / 2);
         r.w = sw; r.h = sh;
 
-        return pointCheck(p, r);
+        return in_range(p, r);
 
         /*
         var f = false;
@@ -136,9 +167,9 @@ function geometoryTrance() {
     }
     //入力した座標がView内の場合True
     this.in_view = function (x, y) {
-        var p = {}; p.x = x; p.y = y;
+        var p = {}; p.x = x; p.y = y; p.w = 1; p.h = 1;
         var r = {}; r.x = this.world_x; r.y = this.world_y; r.w = vw; r.h = sh;
-        return pointCheck(p, r);
+        return in_range(p, r);
 
         /*
         var f = false;
@@ -154,7 +185,7 @@ function geometoryTrance() {
     this.in_view_range = function (x, y, w, h) {
         var s = {}; s.x = x; s.y = y; s.w = w; s.h = h;
         var r = {}; r.x = this.world_x; r.y = this.world_y; r.w = vw; r.h = vh;
-        return rangeCheck(s, r);
+        return in_range(s, r);
         /*
         var f = false;
 
@@ -171,7 +202,7 @@ function geometoryTrance() {
     this.in_stage_range = function (x, y, w, h) {
         var s = {}; s.x = x; s.y = y; s.w = w; s.h = h;
         var r = {}; r.x = this.world_x; r.y = this.world_y; r.w = sw; r.h = sh;
-        return rangeCheck(s, r);
+        return in_range(s, r);
         /*
         var f = false;
 
@@ -181,6 +212,21 @@ function geometoryTrance() {
 
         return f;
         */
+    }
+
+    function in_range(s, r){//loopscrollcheck
+        var result = false;
+        var x = s.x;
+        var y = s.y;
+
+        for (var i=0; i<=1 ;i++){
+            for (var j=0; j<=1; j++){
+                s.x = x + ww*i;
+                s.y = y + wh*j;
+                result = (result || rangeCheck(s, r));
+            }
+        }
+        return result;
     }
 
     //座標位置がワールド内にあるかどうかの確認と変換

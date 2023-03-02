@@ -63,8 +63,8 @@ function Stage1_test(stageno) {
         
         var w = [];
 
-        for (var i = 1; i <= 30 ;i++) {
-            for (var j = 1; j <= 30 ;j++) {
+        for (var i = 0; i <= 30 ;i++) {
+            for (var j = 0; j <= 30 ;j++) {
 
                 w = [0,
                     i * BLOCK_W,

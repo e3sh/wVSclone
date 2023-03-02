@@ -812,12 +812,12 @@ function sce_enemy_trbox() {
             this.add_score(this.score);
         }
 
-        if (this.damageflag) {
-            var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
-            if (onst) {
+        //if (this.damageflag) {
+        //    var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
+        //    if (onst) {
                 //this.sound.effect(12); //hit音
-            }
-        }
+        //    }
+        //}
 
         if (this.status == 0) f = 1; //未使用ステータスの場合は削除
         
@@ -871,12 +871,12 @@ function sce_enemy_trbox_mimic() {
             }
         }
 
-        if (this.damageflag) {
-            var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
-            if (onst) {
+        //if (this.damageflag) {
+        //    var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
+        //    if (onst) {
                 //this.sound.effect(12); //hit音
-            }
-        }
+        //    }
+        //}
 
         if (this.status == 0) f = 1; //未使用ステータスの場合は削除
         

@@ -495,10 +495,12 @@ function sce_player() {
         var sx = o.gt.world_x + o.vx * vxf;
         var sy = o.gt.world_y + o.vy * vyf;
 
+
         if (!o.gt.in_view(o.x, o.y)){
-            if (o.x != o.old_x) sx = o.x;
-            if (o.y != o.old_y) sy = o.y;
+           if (o.x != o.old_x) sx = o.x - o.gt.viewwidth/2;
+           if (o.y != o.old_y) sy = o.y - o.gt.viewheight/2;
         }
+
         o.gt.viewpos(sx, sy);
 
         o.vector = wvec;

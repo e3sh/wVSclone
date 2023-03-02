@@ -2,7 +2,7 @@
 function main_r() {
 
     var sysParam = [
-	//    { canvasId: "Layer0", resolution: { w: 1920, h: 1280 } },
+	//  { canvasId: "Layer0", resolution: { w: 1920, h: 1280 } },
 		{ canvasId: "Layer0", resolution: { w: 640, h: 480 } },//BGSurface
 		{ canvasId: "Layer1", resolution: { w: 640, h: 480 } },//SPSurface
         { canvasId: "Layer2", resolution: { w: 640, h: 480 } },//FGSurface
