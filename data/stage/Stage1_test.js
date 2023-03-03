@@ -81,19 +81,27 @@ function Stage1_test(stageno) {
         }
         //枠
         for (var i = 0; i <= 30 ;i++) {
-            mc.push([12,  i * BLOCK_W,  0 * BLOCK_H, 32, 32, false, 0, true ]);
-            mc.push([12,  i * BLOCK_W, 31 * BLOCK_H, 32, 32, false, 0, true ]);
-            mc.push([12,  0 * BLOCK_W,  i * BLOCK_H, 32, 32, false, 0, true ]);
-            mc.push([12, 31 * BLOCK_W,  i * BLOCK_H, 32, 32, false, 0, true ]);
+            (i%2 == 0)?
+                mc.push([11,  i * BLOCK_W     ,  0 * BLOCK_H, 32, 32, true , 1, true ])://Wall
+                mc.push([12,  i * BLOCK_W     ,  0 * BLOCK_H, 32, 32, false, 0, true ]);//Floor
+            mc.push([12,  i * BLOCK_W + 32,  0 * BLOCK_H, 32, 32, false, 0, true ]);
+            mc.push([12,  i * BLOCK_W + 64,  0 * BLOCK_H, 32, 32, false, 0, true ]);
+            //mc.push([12,  i * BLOCK_W, 31 * BLOCK_H, 32, 32, false, 0, true ]);
+            (i%2 == 1)?
+                mc.push([11,  0 * BLOCK_W,  i * BLOCK_H     , 32, 32, true , 1, true ]):
+                mc.push([12,  0 * BLOCK_W,  i * BLOCK_H     , 32, 32, false, 0, true ]);
+            mc.push([12,  0 * BLOCK_W,  i * BLOCK_H + 32, 32, 32, false, 0, true ]);
+            mc.push([12,  0 * BLOCK_W,  i * BLOCK_H + 64, 32, 32, false, 0, true ]);
+            //mc.push([12, 31 * BLOCK_W,  i * BLOCK_H, 32, 32, false, 0, true ]);
         }
         
-        for (var i = 0; i <= Math.floor(rnd.next() * 50) + 50; i++) {
-            var wx = Math.floor(rnd.next() * 30);
-            var wy = Math.floor(rnd.next() * 30);
+        for (var i = 0; i <= 50; i++) {
+            var wx = Math.floor(rnd.next() * 30) +1;
+            var wy = Math.floor(rnd.next() * 30) +1;
 
             w = [11,
-                wx * 96 + 32,
-                wy * 96 + 32,
+                wx * 96,
+                wy * 96,
                 32,
                 32,
                 true,

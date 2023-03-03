@@ -1,22 +1,25 @@
 ﻿// sceneControl
 function sceneControl(state) {
 //sceneが増えてきてmainがすっきりとしなくなったので分離の為作成。2011/05/04
+    var fcnt = 0;
 
     var scrn = state.System.dev.graphics[4];//Wipescreen
 
+    var titleSce = [];
+
     var sceneList = [];
 
-    sceneList[1] = new gameScene(state); //state.Result.load()はここ//hiscoreをlocalstorageから復帰
-    sceneList[2] = new sceneTitle(state);
-    sceneList[3] = new sceneGover(state);
-    sceneList[4] = new sceneConfig(state); //state.Config.load()はここ//configをlocalstorageから復帰
-    sceneList[5] = new sceneResult(state); 
-    sceneList[6] = new scenePause(state); 
-    sceneList[7] = new sceneStatusDisp(state);
+    sceneList[1] = new gameScene(state);       titleSce[1] = "Main";//state.Result.load()はここ//hiscoreをlocalstorageから復帰
+    sceneList[2] = new sceneTitle(state);      titleSce[2] = "Title";
+    sceneList[3] = new sceneGover(state);      titleSce[3] = "Gover";
+    sceneList[4] = new sceneConfig(state);     titleSce[4] = "Config";//state.Config.load()はここ//configをlocalstorageから復帰
+    sceneList[5] = new sceneResult(state);     titleSce[5] = "Result";
+    sceneList[6] = new scenePause(state);      titleSce[6] = "Pause";
+    sceneList[7] = new sceneStatusDisp(state); titleSce[7] = "Status";
 
     var wipeEffectCount; 
 
-    var clRect = function(x,y,w,h){this.draw = function(device){ device.clearRect(x,y,w,h);}}
+    //var clRect = function(x,y,w,h){this.draw = function(device){ device.clearRect(x,y,w,h);}}
 
     for (var i in sceneList) {
         sceneList[i].init();
@@ -31,10 +34,12 @@ function sceneControl(state) {
     function reset(){
         for (var i in sceneList){
             sceneList[i].reset_enable = true; 
-        }        
+        } 
+        fcnt = 0;       
     }
 
     this.step = function() {
+        fcnt ++;
 
         if (rc != 0) {
             //Sceneの切り替えが発生している。
@@ -74,6 +79,28 @@ function sceneControl(state) {
         }
 
         sceneList[runscene].draw();
+                
+        if (state.Config.debug) {
+            if (fcnt%90 > 30){
+                var st = titleSce[runscene];
+
+                bar = {}
+
+                bar.x = 640-st.length*8;
+                bar.y = 0;
+                bar.l = st.length*8;
+        
+                bar.draw = function(device){
+                    device.beginPath();
+                    device.fillStyle = "black";
+                    device.lineWidth = 1;
+                    device.fillRect(this.x, this.y, this.l*8, 8);
+                    device.stroke();
+                }
+                scrn.putFunc(bar);
+                scrn.putchr8(st, 640-st.length*8, 0);
+            }                
+        }
 
         //if (wipeEffectCount > 0){
 

@@ -4,8 +4,8 @@
 //=============================================================
 function geometoryTrance() {
 
-    this.worldwidth = 3000;//とりあえず
-    this.worldheight = 3000;
+    this.worldwidth = 2976;//とりあえずblock96*31
+    this.worldheight = 2976;
 
     this.stagewidth = 700;
     this.stageheight = 540;
@@ -68,40 +68,15 @@ function geometoryTrance() {
         }else{
             w.y = Math.trunc(y - this.world_y);
         }
-
-        /*
-        w.x = Math.trunc(
-            (x - this.world_x 
-            + (this.world_x > ww - vw)? ww: 0)%vw
-        //    + (x - this.world_x > ww - vw) ? ww: 0
-        );
-        w.y = Math.trunc(
-            (y - this.world_y 
-            + (this.world_y > wh - vh)? wh: 0)%vh
-        //    + (x - this.world_x > ww - vw) ? ww: 0
-        );
-        */
-        //        w.x = w.x/2 + 320;
-        //        w.y = w.y/2 + 240;
-
-
         return w;
     }
 
     //ワールド座標におけるビューポートの位置(初期値など）設定
     this.viewpos = function (x, y) {
-        //左端の座標を指定とする。
-        //if (x < 0) x = 0;
-        //if (y < 0) y = 0;
-        if (x < 0) x = ww + x;//0;
-        if (y < 0) y = wh + y;//0;
-        //if (x > (ww - vw)) x = ww - vw;//ww - vw;
-        //if (y > (wh - vh)) y = wh - vh;//wh - vh;
+        if (x < 0) x = ww + x;
+        if (y < 0) y = wh + y;
         if (x > ww) x = x - ww;//ww - vw;
         if (y > wh) y = y - wh;//wh - vh;
-
-        //    this.world_x = x;
-        //    this.world_y = y;
 
         workWorldX = Math.trunc(x);
         workWorldY = Math.trunc(y);
@@ -154,31 +129,13 @@ function geometoryTrance() {
         r.w = sw; r.h = sh;
 
         return in_range(p, r);
-
-        /*
-        var f = false;
-
-        if ((this.world_x + (vw / 2) - (sw / 2) <= x) && (this.world_x + (vw / 2) + (sw / 2) >= x)
-        && (this.world_y + (vh / 2) - (sh / 2) <= y) && (this.world_y + (vh / 2) + (sh / 2) >= y))
-        f = true;
-
-        return f;
-        */
     }
+
     //入力した座標がView内の場合True
     this.in_view = function (x, y) {
         var p = {}; p.x = x; p.y = y; p.w = 1; p.h = 1;
         var r = {}; r.x = this.world_x; r.y = this.world_y; r.w = vw; r.h = sh;
         return in_range(p, r);
-
-        /*
-        var f = false;
-
-        if ((this.world_x <= x) && (this.world_x + vw >= x) && (this.world_y <= y) && (this.world_y + vh >= y))
-        f = true;
-
-        return f;
-        */
     }
 
     //入力した範囲はViewに含まれる場合True
@@ -186,16 +143,6 @@ function geometoryTrance() {
         var s = {}; s.x = x; s.y = y; s.w = w; s.h = h;
         var r = {}; r.x = this.world_x; r.y = this.world_y; r.w = vw; r.h = vh;
         return in_range(s, r);
-        /*
-        var f = false;
-
-        if ((Math.abs((this.world_x + vw / 2) - (x + w / 2)) < (vw + w) / 2) &&
-         (Math.abs((this.world_y + vh / 2) - (y + h / 2)) < (vh + h) / 2))
-        f = true;
-
-        //f = true;
-        return f;
-        */
     }
 
     //入力した範囲はStageに含まれる場合True
@@ -203,15 +150,6 @@ function geometoryTrance() {
         var s = {}; s.x = x; s.y = y; s.w = w; s.h = h;
         var r = {}; r.x = this.world_x; r.y = this.world_y; r.w = sw; r.h = sh;
         return in_range(s, r);
-        /*
-        var f = false;
-
-        if ((Math.abs((this.world_x + sw / 2) - (x + w / 2)) < (sw + w) / 2) &&
-         (Math.abs((this.world_y + sh / 2) - (y + h / 2)) < (sh + h) / 2))
-        f = true;
-
-        return f;
-        */
     }
 
     function in_range(s, r){//loopscrollcheck
