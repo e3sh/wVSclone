@@ -167,7 +167,7 @@
             }
             */
             //o.mouse_state = mstate;
-            o.key_state = kstate;
+            if (o.type == 98) o.key_state = kstate;
 
             //var w = o.gt.worldtoWorld(o.x, o.y);
             //o.x = w.x;  o.y = w.y;
@@ -1010,16 +1010,18 @@
 
         o.parent = parent;
 
-        o.scrn = scrn;
-        o.graphicsLayer = dev.graphics;
-        o.mouse_state = dev.mouse_state.check_last();
+        //o.scrn = scrn;
+        //o.graphicsLayer = dev.graphics;
+        //o.mouse_state = dev.mouse_state.check_last();
         o.gt = dev.gs;
-        o.sound = dev.sound;
-
         o.gameState = state.Game;
-        o.item = this.item;
-        o.itemstack = this.itemstack;
-        o.config = state.Config;
+        o.sound = dev.sound;
+        
+        if (ch_ptn[ch].type == 0 || ch_ptn[ch].type == 98){
+            o.item = this.item;
+            o.itemstack = this.itemstack;
+            o.config = state.Config;
+        }
 
         o.pick = [];
         o.pick_enable = true; //falseだとアイテムを拾わない。
@@ -1085,7 +1087,7 @@
             this.obCount[o.type] = 1;
         }
 
-        if ((o.type == 1)&&(o.type == 3)) o.alive = 90;
+        //if ((o.type == 1)&&(o.type == 3)) o.alive = 90;
     };
 
     this.num = function () {
@@ -1218,7 +1220,15 @@
             let o = Object.entries(obj[num]);
 
             o.forEach(function(element){
-              st.push(element);
+                var w = String(element).split(",");
+                //var w = element.split(",");
+                //st.push(element);
+                var s = w[0];
+                if (s.length < 13){
+                    s = s + " ".repeat(13);
+                    s = s.substring(0, 13);
+                }
+                st.push("."+ s + ":" + w[1]);
             });
             st.push("");
             st.push("Object.entries end.");
@@ -1247,7 +1257,6 @@
                     o.alpha,
                     o.display_size
                 );
-            
                 result = true;
             }
         }

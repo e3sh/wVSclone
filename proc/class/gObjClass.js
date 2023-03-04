@@ -55,7 +55,7 @@ function gObjectClass() {
     this.mapColX = false;
     this.mapColY = false;
 
-    this.alive = 600;
+    //this.alive = 600;//使ってないので外しておく。
 
     this.custom_draw = null;
 
@@ -70,19 +70,24 @@ function gObjectClass() {
     this.shifty = 0; //
 
     //this.jump; this.jumpcount; //これはplayerでしか使用しないから個別でよい
-    this.jump = 0; //敵でも使うのでここに追加
-    this.jpvec = -5.0;
+    //this.jump = 0; //敵でも使うのでここに追加
+    //this.jpvec = -5.0;
 
     //Typeによって当たり判定/ダメージ判定をするが、//
     //状況により個別に判定状態を切り替えられるようにフラグ管理も追加。2023/02/03
-    this.colcheck = true; //false true:当たり判定する。//対objということで地形はtypeで判定
-    this.dmgcheck = true; //false trueの場合　o.hp-o.attackする。アイテムの場合はセット時にattack0,かな
+    //this.colcheck = true; //false true:当たり判定する。//対objということで地形はtypeで判定
+    //this.dmgcheck = true; //false trueの場合　o.hp-o.attackする。アイテムの場合はセット時にattack0,かな
 
     this.setType = function(type){
         this.type = type;
         //type （98:自機、0:味方、1:自弾、2:敵機、3:敵弾、4:アイテム、5:只の絵）
         this.colcheck = !(type == 5);
         this.dmgcheck = !(type == 4 || type == 5);
+    
+        if (type == 98 || type == 0 || type == 2){
+            this.jump = 0; //敵でも使うのでここに追加
+            this.jpvec = -5.0;
+        }
     }
 
     //角度からラジアンに変換

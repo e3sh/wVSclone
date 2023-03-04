@@ -461,11 +461,9 @@ function gameScene(state){
 	                //dev.sound.effect(9); //cursor音
 	            }
 	        }
-
 	    }
         
-		//
-
+		/*
 	    var w = 0;
 	    var w2 = 1;
         for (i in obCtrl.combo){
@@ -483,70 +481,18 @@ function gameScene(state){
         if (item_combo != w2) {
             item_combo = w2;
         } 
-
-	    if (!obCtrl.interrapt) {
+		*/
+	    //if (!obCtrl.interrapt) {
 	        obCtrl.move(mapsc);
 	        mapsc.step(obCtrl);
-	    } else {
-	        if (obCtrl.SIGNAL != 1) {
-	            obCtrl.move(mapsc);
-	            mapsc.step(obCtrl);
-	        } else {
-				/*
-	            //var mstate = dev.mouse_state.check_last();
-	            var kstate = dev.key_state.check();
+	    //} else {
+	    //    if (obCtrl.SIGNAL != 1) {
+	    //        obCtrl.move(mapsc);
+	    //        mapsc.step(obCtrl);
+	    //    } else {
 
-	            var zkey = false;
-	            if (Boolean(kstate[90])) {
-	                if (kstate[90]) {//↓
-	                    zkey = true;
-	                }
-	            }
-	            if (Boolean(kstate[32])) {
-	                if (kstate[32]) {//↓
-	                    zkey = true;
-	                }
-	            }
-
-	            var qkey = false;
-	            if (Boolean(kstate[81])) {
-	                if (kstate[81]) {//↓
-	                    qkey = true;
-	                    delete(kstate[81]);// = false;//押しっぱなし検出する為、予防
-	                }
-	            }
-
-	            if (qkey) {
-	                state.Game.item = obCtrl.item;
-	                state.Game.itemstack = obCtrl.itemstack;
-	                state.Game.player.zanki = 2 - dead_cnt;
-
-	                if (state.Game.save() == 0) {
-	                    //alert("ゲーム中断セーブ実施しました。\nタイトルに戻ります。");
-
-	                    dev.sound.volume(1.0);
-	                    dev.sound.change(9);
-	                    dev.sound.play();
-
-                        
-	                    return 2;
-	                } else {
-	                    alert("ローカルストレージが使えません。\n中断セーブ出来なかったので、\nゲーム継続します。");
-
-	                    zkey = true;
-	                }
-	            }
-
-	            if (zkey) {
-	                obCtrl.interrapt = false;
-	                obCtrl.SIGNAL = 0;
-
-	                dev.sound.volume(1.0);
-	            }
-	            //if (mstate.button == 1) obCtrl.interrapt = false;
-				*/
-	        }
-	    }
+	    //    }
+	    //}
 		/*
 	    if (bg_scroll) scroll_y++;
 	    if (scroll_y > 480) {
