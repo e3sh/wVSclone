@@ -100,9 +100,13 @@ function sceneStatusDisp(state) {
 
         var st = state.obCtrl.lookObj(num);
         for (var i in st){
+            var s = String(st[i]);
+
+            if (!s.includes("object") && !s.includes("function")){
                 work.putchr8(String(st[i]).substring(0, 39),Math.floor(c/50)*320,(c%50)*8+8 );
                 c++;
-                if (c>100) break;
+            }
+            if (c>100) break;
         }
 
         state.obCtrl.lookObjv(work, num, 240, 80);
