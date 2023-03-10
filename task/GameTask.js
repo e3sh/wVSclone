@@ -90,7 +90,15 @@ class GameTask_Debug extends GameTask {
             sl.push("fps:" + r.fps);
             sl.push("intv.ave:" + r.interval.ave + "ms"); 
             sl.push("load.ave:" + r.workload.ave + "ms");
-            sl.push("workload:"+ Math.trunc((r.workload.ave / r.interval.ave)*100) + "%");
+            //sl.push("workload:"+ Math.trunc((r.workload.ave / r.interval.ave)*100) + "%");
+            //sl.push("workload:" + "]".repeat(Math.trunc((r.workload.ave / r.interval.ave)*8)));
+            //sl.push("");
+            sl.push("");
+            var ws = String(g.deltaTime()).substring(0, 9);
+            sl.push("deltaTime:"+ ws);//g.deltaTime());
+            //sl.push("blink:"+ g.blink());
+            //ws = String(60/(1000/g.deltaTime())).substring(0, 5);
+            //sl.push("vec/frm:" + ws);//60/(1000/g.deltaTime()));   
 
             g.font["8x8white"].useScreen(4);
             for(var i=0; i < sl.length; i++){
@@ -125,13 +133,13 @@ class GameTask_Load extends GameTask {
         scrn;
         fontsc;
         str;
-        cnt;
+        //cnt;
 
     init(g){
         this.scrn = g.screen[4];
         g.font["8x8white"].useScreen(4);
         this.fontsc =  g.font["8x8white"];
-        this.cnt = 0;
+        //this.cnt = 0;
     }
 
     step(g) {
@@ -181,8 +189,9 @@ class GameTask_Load extends GameTask {
             pfunc(st[i], 0, i*16 +16);
         }
 
-        this.cnt = (this.cnt++ > 90)? 0: this.cnt; 
-        if ( this.cnt < 60){
+        //this.cnt = (this.cnt++ > 90)? 0: this.cnt; 
+        //if ( this.cnt < 60){
+        if (g.blink()){    
             pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
         }
                 /*

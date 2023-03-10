@@ -86,13 +86,21 @@ function GameCore( sysParam ) {
 
 	var sysp_cnt = sysParam.length;
 
+	var blinkCounter = 0;
+	const BLINK_ITVL = 21500;
+	const BLINK_TIME = 500;
+
 	var tc = new bench();
 	var sintcnt = []; //screenIntervalCounter
 	for (var i = 0; i < sysp_cnt; i++) sintcnt[ i ] = 0;
 
-	function loop() {
+	function loop(t) {
 	    if (runStatus_) {
+			tc.setTime(t);
 			tc.start();
+
+			blinkCounter = blinkCounter  + t;
+			if (blinkCounter > BLINK_ITVL) blinkCounter = 0; 	
 
 			task_.step();
 
@@ -125,6 +133,7 @@ function GameCore( sysParam ) {
 			}
 			//run
 	        requestAnimationFrame(arguments.callee);
+			//setTimeout(arguments.callee, 10);
 		} else {
 	        //pause
 	    }
@@ -152,6 +161,9 @@ function GameCore( sysParam ) {
 
 	this.fpsload = tc;
 
+	this.deltaTime = tc.readTime;
+	this.blink = tc.blink; 
+
     // init
 	sprite_.useScreen(0);
     //
@@ -174,7 +186,7 @@ function GameCore( sysParam ) {
 	//
 	function bench() {
 
-		var oldtime; var newtime = Date.now();
+		var oldtime; var newtime;// = Date.now();
 		var cnt = 0; 
 	
 		var fps_log = []; var load_log = [];
@@ -184,6 +196,13 @@ function GameCore( sysParam ) {
 		var workload; var interval;
 	
 		var fps = 0;
+
+		var dt = 0;
+		var ot = 0;
+
+		var blinkCounter = 0;
+		const BLINK_ITVL = 1500;
+		const BLINK_TIME = 500;
 	
 		//var ypos = 412;
 	
@@ -264,6 +283,24 @@ function GameCore( sysParam ) {
 			r.workload = wl;
 
 			return r;
+		}
+
+		this.setTime = function(t){
+			ot = dt;
+			dt = t;
+			
+			blinkCounter = blinkCounter  + (dt - ot);
+			if (blinkCounter > BLINK_ITVL) blinkCounter = 0.0; 	
+
+		}
+
+		this.readTime = function(){
+			return dt - ot;
+		}
+
+		this.blink = function(){
+			//return blinkCounter + ":" + BLINK_ITVL + ":" + dt;//(parseInt(blinkCounter) < BLINK_TIME)?true:false;
+			return (blinkCounter < BLINK_TIME)? true: false;  
 		}
 
 	}

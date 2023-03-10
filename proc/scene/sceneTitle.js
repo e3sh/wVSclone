@@ -50,7 +50,7 @@ function sceneTitle(state) {
 	    menu.push(m);
 	}	
 
-    var cnt;
+    //var cnt;
 
     var tsel = new Number(0.0);
     //処理部
@@ -141,7 +141,7 @@ function sceneTitle(state) {
 
         menusel = 0;
 
-        cnt = 0;
+        //cnt = 0;
 
         //dev.sound.change(0);
         //reset処理を記述予定
@@ -264,13 +264,13 @@ function sceneTitle(state) {
     }
 
     function scene_draw() {
-        var bvf = false; //blinkViewFlag 
-        cnt++;
+        //var bvf = false; //blinkViewFlag 
+        //cnt++;
 
-        if (cnt > 30){
-            bvf = true;
-            cnt = (cnt > 90)? 0 : cnt;
-        }
+        //if (cnt > 30){
+        //    bvf = true;
+        //    cnt = (cnt > 90)? 0 : cnt;
+       // }
         for (var i in menu) {
 
             if (menu[i].sel) {
@@ -293,8 +293,10 @@ function sceneTitle(state) {
                 work.putchr(menu[i].title, menu[i].x - 4, menu[i].y -1);    
             }
         }
-
-        if (bvf) work.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
+        if (state.System.blink()){ 
+        //if (bvf) 
+            work.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
+        }
         //表示
     }
 }

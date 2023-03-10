@@ -3,6 +3,8 @@
 function stateSystem(g) {
 
     this.dev = new deviceControl(g);
+    this.deltaTime = g.deltaTime;
+    this.blink = g.blink;
 
     //this.obCtrlControl = new gObjectControl(work, state);
     //this.mapSceControl = new mapSceControl();

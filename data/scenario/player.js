@@ -334,7 +334,7 @@ function sce_player() {
                 */
                 o.jump = 1;
                 o.jpcount = 40;
-                o.jpvec = -6.0;
+                o.jpvec = -5.6 - 0.4 * o.vecfrm;;
                 o.colcheck = false;
 
                 o.triger = TRIG_WAIT;
@@ -354,7 +354,7 @@ function sce_player() {
             o.autoshot = 1;
             o.jpcount--;
             o.shifty = o.shifty + o.jpvec;
-            o.jpvec = o.jpvec + 0.4;
+            o.jpvec = o.jpvec + 0.4 * o.vecfrm;
             o.prioritySurface = true;
             if (o.shifty > 0){
                 o.jump = 0;
@@ -455,7 +455,8 @@ function sce_player() {
         if (o.mapCollision != true) {
             o.old_x = o.x;
             o.old_y = o.y;
-            o.x += o.vx;  o.y += o.vy;
+            //o.x += o.vx;  o.y += o.vy;
+            o.x += (o.vx * o.vecfrm);  o.y += (o.vy * o.vecfrm);
 
             //var w = o.gt.worldtoWorld(o.x, o.y);
             //o.x = w.x;  o.y = w.y;
@@ -492,8 +493,8 @@ function sce_player() {
         if (w.y < 240) vyf = 1;
         if (w.y > o.gt.viewheight - 240)vyf = 1;
         */
-        var sx = o.gt.world_x + o.vx * vxf;
-        var sy = o.gt.world_y + o.vy * vyf;
+        var sx = o.gt.world_x + o.vx * vxf * o.vecfrm;
+        var sy = o.gt.world_y + o.vy * vyf * o.vecfrm;
 
 
         if (!o.gt.in_view(o.x, o.y)){

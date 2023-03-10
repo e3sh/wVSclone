@@ -7,6 +7,8 @@ repositorie JavascriptActionGameのバージョンアップ版
 https://e3sh.github.io/wVSclone/main.html
 
 ## 開発状況
+- (2023/03/10)移動距離のみDeltaTimeでRequestAnimationFrameのリフレッシュレートによる変動を吸収させるように調整。
+  　（レート変動によるゲーム進行(Step)の変動(遅延や加速）は未調整。また高リフレッシュレートのディスプレイが手元に1無いので動作は30Hzと60Hzのみ確認）
 - (2023/03/01)DEBUG用画面追加/画面外処理調整中
 - (2023/02/27)平面フィールド(Stage.0)画面外処理関係処理不具合調整中
 - (2023/02/17)Gamepad対応(Gamepadの入力をキーボード入力に割り当て追加)。

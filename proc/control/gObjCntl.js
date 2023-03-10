@@ -133,6 +133,8 @@
             //for (var i = 0, loopend = obj.length; i < loopend; i++) {
             var o = obj[i];
 
+            o.vecfrm = 60/(1000/state.System.deltaTime());
+            //o.vecfrm = 1;
             //o.colitem && o.colitem.remove();
             //o.alive--;
             //var onst = o.gt.in_stage_range(o.x - (o.hit_x / 2), o.y - (o.hit_y / 2), o.hit_x, o.hit_y);

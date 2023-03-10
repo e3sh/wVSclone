@@ -1,7 +1,7 @@
 ﻿// sceneControl
 function sceneControl(state) {
 //sceneが増えてきてmainがすっきりとしなくなったので分離の為作成。2011/05/04
-    var fcnt = 0;
+    //var fcnt = 0;
 
     var scrn = state.System.dev.graphics[4];//Wipescreen
 
@@ -35,11 +35,11 @@ function sceneControl(state) {
         for (var i in sceneList){
             sceneList[i].reset_enable = true; 
         } 
-        fcnt = 0;       
+        //fcnt = 0;       
     }
 
     this.step = function() {
-        fcnt ++;
+        //fcnt ++;
 
         if (rc != 0) {
             //Sceneの切り替えが発生している。
@@ -81,7 +81,8 @@ function sceneControl(state) {
         sceneList[runscene].draw();
                 
         if (state.Config.debug) {
-            if (fcnt%90 > 30){
+            //if (fcnt%90 > 30){
+            if (state.System.blink()){    
                 var st = titleSce[runscene];
 
                 bar = {}

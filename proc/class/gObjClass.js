@@ -73,6 +73,8 @@ function gObjectClass() {
     //this.jump = 0; //敵でも使うのでここに追加
     //this.jpvec = -5.0;
 
+    this.vecfrm;//1秒で60stepを実行するとしたときを1としたときの、DeltaTimeとの割合(1stepの移動量vx,vyに掛ける)
+
     //Typeによって当たり判定/ダメージ判定をするが、//
     //状況により個別に判定状態を切り替えられるようにフラグ管理も追加。2023/02/03
     //this.colcheck = true; //false true:当たり判定する。//対objということで地形はtypeで判定
@@ -122,7 +124,8 @@ gObjectClass.prototype = {
     draw : function (scrn, o) { scrn.print(o.mp + "", o.x, o.y); }, 
     move : function(scrn, o) {
         // 移動処理
-        o.x += o.vx; o.y += o.vy;
+        //o.x += o.vx; o.y += o.vy;
+        o.x += (o.vx * o.vecfrm);  o.y += (o.vy * o.vecfrm);
 
         var f = 0;
         if (o.x < 0 || o.x > scrn.cw) { f = 1; }
@@ -399,8 +402,10 @@ gObjectClass.prototype = {
             this.old_x = this.x;
             this.old_y = this.y;
 
-            this.x += this.vx;
-            this.y += this.vy;
+            //this.x += this.vx;
+            //this.y += this.vy;
+            this.x += (this.vx * this.vecfrm);
+            this.y += (this.vy * this.vecfrm);
 
             this.vector = wvec;
             this.vx = wvx;

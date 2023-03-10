@@ -68,7 +68,7 @@ function sce_enemy_move_n(num1, num2) {
         //o.frame++; //frame rate *2
         if (o.jump == 1 ) {
             o.shifty = o.shifty + o.jpvec;
-            o.jpvec = o.jpvec + 0.4;
+            o.jpvec = o.jpvec + 0.4 * o.vecfrm;
             o.prioritySurface = true;
             if (o.shifty > 0){
                 o.jump = 0;
@@ -91,7 +91,7 @@ function sce_enemy_move_n(num1, num2) {
                 o.wmapc = true;
 
                 o.jump = 1;
-                o.jpvec = -6.0;
+                o.jpvec = -5.6 - 0.4 * o.vecfrm;;
                 o.colcheck = false;
 
                 o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
@@ -155,7 +155,7 @@ function sce_enemy_turn( num ){
 
         if (o.jump == 1 ) {
             o.shifty = o.shifty + o.jpvec;
-            o.jpvec = o.jpvec + 0.4;
+            o.jpvec = o.jpvec + 0.4 * o.vecfrm;
             o.prioritySurface = true;
             if (o.shifty > 0){
                 o.jump = 0;
@@ -177,7 +177,7 @@ function sce_enemy_turn( num ){
                 o.wmapc = true;
 
                 o.jump = 1;
-                o.jpvec = -6.0;
+                o.jpvec = -5.6 - 0.4 * o.vecfrm;;
                 o.colcheck = false;
 
                 o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
@@ -252,7 +252,7 @@ function sce_enemy_moveshot() {
 
         if (o.jump == 1 ) {
             o.shifty = o.shifty + o.jpvec;
-            o.jpvec = o.jpvec + 0.4;
+            o.jpvec = o.jpvec + 0.4 * o.vecfrm;
             o.prioritySurface = true;
             if (o.shifty > 0){
                 o.jump = 0;
@@ -275,7 +275,7 @@ function sce_enemy_moveshot() {
                 o.wmapc = true;
 
                 o.jump = 1;
-                o.jpvec = -6.0;
+                o.jpvec = -5.6 - 0.4 * o.vecfrm;;
                 o.colcheck = false;
 
                 o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
@@ -349,7 +349,7 @@ function sce_enemy_randomshot() {
 
         if (o.jump == 1 ) {
             o.shifty = o.shifty + o.jpvec;
-            o.jpvec = o.jpvec + 0.4;
+            o.jpvec = o.jpvec + 0.4 * o.vecfrm;
             o.prioritySurface = true;
 
             o.mapCollision = false;
@@ -374,7 +374,7 @@ function sce_enemy_randomshot() {
                 speed = 2;
 
                 o.jump = 1;
-                o.jpvec = -6.0;
+                o.jpvec = -5.6 - 0.4 * o.vecfrm;;
                 o.colcheck = false;
 
                 o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
@@ -403,7 +403,7 @@ function sce_enemy_move_std(){
 
         if (o.jump == 1 ) {
             o.shifty = o.shifty + o.jpvec;
-            o.jpvec = o.jpvec + 0.4;
+            o.jpvec = o.jpvec + 0.4 * o.vecfrm;
             o.prioritySurface = true;
 
             o.mapCollision = false;
@@ -443,7 +443,7 @@ function sce_enemy_move_std(){
                 speed = 2;
 
                 o.jump = 1;
-                o.jpvec = -6.0;
+                o.jpvec = -5.6 - 0.4 * o.vecfrm; 
                 o.colcheck = false;
 
                 o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
@@ -512,7 +512,7 @@ function sce_enemy_move_std2( intrvl, sdst ) {
 
         if (o.jump == 1 ) {
             o.shifty = o.shifty + o.jpvec;
-            o.jpvec = o.jpvec + 0.4;
+            o.jpvec = o.jpvec + 0.4 * o.vecfrm;
             o.prioritySurface = true;
             if (o.shifty > 0){
                 o.jump = 0;
@@ -578,7 +578,7 @@ function sce_enemy_move_std2( intrvl, sdst ) {
                 speed = o.maxspeed;
 
                 o.jump = 1;
-                o.jpvec = -6.0;
+                o.jpvec = -5.6 - 0.4 * o.vecfrm;;
                 o.colcheck = false;
 
                 o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
