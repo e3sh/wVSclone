@@ -55,7 +55,7 @@ function gObjectClass() {
     this.mapColX = false;
     this.mapColY = false;
 
-    //this.alive = 600;//使ってないので外しておく。
+    this.alive = 0;
 
     this.custom_draw = null;
 
@@ -74,6 +74,7 @@ function gObjectClass() {
     //this.jpvec = -5.0;
 
     this.vecfrm;//1秒で60stepを実行するとしたときを1としたときの、DeltaTimeとの割合(1stepの移動量vx,vyに掛ける)
+    this.barthTime;
 
     //Typeによって当たり判定/ダメージ判定をするが、//
     //状況により個別に判定状態を切り替えられるようにフラグ管理も追加。2023/02/03

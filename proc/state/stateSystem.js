@@ -4,6 +4,7 @@ function stateSystem(g) {
 
     this.dev = new deviceControl(g);
     this.deltaTime = g.deltaTime;
+    this.time = g.time;
     this.blink = g.blink;
 
     //this.obCtrlControl = new gObjectControl(work, state);

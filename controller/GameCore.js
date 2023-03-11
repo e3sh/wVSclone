@@ -86,9 +86,9 @@ function GameCore( sysParam ) {
 
 	var sysp_cnt = sysParam.length;
 
-	var blinkCounter = 0;
-	const BLINK_ITVL = 21500;
-	const BLINK_TIME = 500;
+	//var blinkCounter = 0;
+	//const BLINK_ITVL = 21500;
+	//const BLINK_TIME = 500;
 
 	var tc = new bench();
 	var sintcnt = []; //screenIntervalCounter
@@ -99,8 +99,8 @@ function GameCore( sysParam ) {
 			tc.setTime(t);
 			tc.start();
 
-			blinkCounter = blinkCounter  + t;
-			if (blinkCounter > BLINK_ITVL) blinkCounter = 0; 	
+			//blinkCounter = blinkCounter  + t;
+			//if (blinkCounter > BLINK_ITVL) blinkCounter = 0; 	
 
 			task_.step();
 
@@ -161,8 +161,10 @@ function GameCore( sysParam ) {
 
 	this.fpsload = tc;
 
-	this.deltaTime = tc.readTime;
-	this.blink = tc.blink; 
+	this.deltaTime = tc.readTime;//
+	this.time = tc.nowTime;//
+	
+	this.blink = tc.blink; //function return bool
 
     // init
 	sprite_.useScreen(0);
@@ -209,12 +211,12 @@ function GameCore( sysParam ) {
 		this.start = function () {
 	
 			oldtime = newtime;
-			newtime = Date.now();
+			newtime = performance.now();//Date.now();
 		}
 	
 		this.end = function () {
 	
-			workload = Date.now() - newtime;
+			workload = performance.now() - newtime;//Date.now() - newtime;
 			interval = newtime - oldtime;
 	
 			if (log_cnt > log_max) log_max = log_cnt;
@@ -231,7 +233,8 @@ function GameCore( sysParam ) {
 	
 			cnt++;
 	
-			fps = parseInt(1000 / (w / (log_max + 1)));
+			//fps = parseInt(1000 / (w / (log_max + 1)));
+			fps = 1000 / (w / (log_max + 1));
 		}
 	
 		this.result = function () {
@@ -260,9 +263,12 @@ function GameCore( sysParam ) {
 				wint += fps_log[i];
 			}
 	
-			int_ave = parseInt(wint / (log_max + 1));
-			load_ave = parseInt(wlod / (log_max + 1));
-		
+			//int_ave = parseInt(wint / (log_max + 1));
+			//load_ave = parseInt(wlod / (log_max + 1));
+
+			int_ave = wint / (log_max + 1);
+			load_ave = wlod / (log_max + 1);
+
 			var r = {};
 	
 			r.fps = fps;
@@ -295,7 +301,12 @@ function GameCore( sysParam ) {
 		}
 
 		this.readTime = function(){
-			return dt - ot;
+			return dt - ot; //deltaTimeを返す(ms) 実績　Chrome PC:float/iOS,iPadOS:Integer
+		}
+
+		this.nowTime = function()
+		{
+			return dt; //lifeTimeを返す(ms)
 		}
 
 		this.blink = function(){

@@ -134,6 +134,7 @@
             var o = obj[i];
 
             o.vecfrm = 60/(1000/state.System.deltaTime());
+            o.alive =  state.System.time() - o.barthTime;
             //o.vecfrm = 1;
             //o.colitem && o.colitem.remove();
             //o.alive--;
@@ -1089,6 +1090,7 @@
             this.obCount[o.type] = 1;
         }
 
+        o.barthTime = state.System.time();
         //if ((o.type == 1)&&(o.type == 3)) o.alive = 90;
     };
 
