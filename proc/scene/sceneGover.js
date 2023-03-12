@@ -216,7 +216,7 @@ function sceneGover(state) {
             work2.draw();
             work2.reset();
 
-            wipecnt += 3;
+            wipecnt += 3 * (60/(1000/state.System.deltaTime()));
 
             //if (work2.ch / 2 - wipecnt < 0) { return ret_code; }
             if (wipecnt > work2.ch/3) wipef = false;//return ret_code; }

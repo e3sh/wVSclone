@@ -68,7 +68,9 @@ function sceneControl(state) {
         }
         rc = sceneList[runscene].step();
 
-        wipeEffectCount = (wipeEffectCount > 0) ? wipeEffectCount-3 : 0;
+        wipeEffectCount = (wipeEffectCount > 0) ? 
+            wipeEffectCount-(3 * 60/(1000/state.System.deltaTime())) :
+            0;
     }
 
     this.draw = function(){

@@ -15,6 +15,8 @@ function mapSceControl(){
 	
 	var f_cnt = -5;
 //	var msc_cnt = 0;
+    var startTime;
+    var pauseTime;
 
 	this.enable = true; //外から操作用。trueで追加動作可。falseで不可(受入停止)
 	this.counter_runnning = true;//カウンターを進めるかどうか
@@ -91,11 +93,12 @@ function mapSceControl(){
         ini_sc = stage_inisc;
     }
 
-    this.reset = function () {
+    this.reset = function (t) {
 
         this.enable = true;
         this.counter_runnning = true;
 
+        startTime = t + 80;
         f_cnt = -5;
 
         this.start(false);
@@ -103,27 +106,35 @@ function mapSceControl(){
 
     }
 
-    this.counterReset = function () {
+    this.counterReset = function (t) {
 
+        startTime = t;
         f_cnt = 0;
 
+        for (var i = 0, loopend = map_sc.length; i < loopend; i++) {
+            var w = map_sc[i];
+
+            w.used = false;
+        }
     }
 
-    this.step = function (objc) {
+    this.step = function (objc, t) {
 
         if (!this.enable) return;
 
         if (this.counter_runnning) f_cnt++;
 
         //        if (f_cnt > 2000) this.counter_runnning = false;
+        f_cnt = Math.trunc(t - startTime);
 
-        f_cnt = (f_cnt > 7200) ? 7200 : f_cnt;
+        f_cnt = (f_cnt > 120000) ? 120000 : f_cnt; //time over 120s(120,000ms )
         for (var i = 0, loopend = map_sc.length; i < loopend; i++) {
             var w = map_sc[i];
 
-            if (w.count < f_cnt) continue;
+            //if (w.count < f_cnt) continue;
+            if (w.used) continue;
 
-            if (w.count == f_cnt) {
+            if (w.count <= f_cnt) {
 
                 if ((w.x < 0) && (w.y < 0)) {
                     f_cnt = 0;
@@ -131,7 +142,7 @@ function mapSceControl(){
                 }
 
                 this.add(w.x, w.y, w.r, w.ch, w.sc);
-
+                w.used = true;
             }
 
             if (w.count > f_cnt) break;
@@ -181,6 +192,14 @@ function mapSceControl(){
             }
         }
 
+    }
+
+    this.pauseOn = function(t){
+        pauseTime = t;
+    }
+
+    this.pauseOff = function(t){
+        startTime += (t - pauseTime); 
     }
 
 	function mapSceSubClass() {

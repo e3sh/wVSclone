@@ -57,6 +57,7 @@ function Stage1_tod( seed, keyuse ) {
             ptn.r = w[3];
             ptn.sc = w[4];
             ptn.ch = w[5];
+            ptn.used = false;
 
             map_sc.push(ptn);
         }

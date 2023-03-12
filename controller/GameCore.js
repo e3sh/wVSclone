@@ -96,6 +96,7 @@ function GameCore( sysParam ) {
 
 	function loop(t) {
 	    if (runStatus_) {
+			//t = performance.now(); //フレームレート変動テスト用
 			tc.setTime(t);
 			tc.start();
 
@@ -133,7 +134,7 @@ function GameCore( sysParam ) {
 			}
 			//run
 	        requestAnimationFrame(arguments.callee);
-			//setTimeout(arguments.callee, 10);
+			//setTimeout(arguments.callee, 1);//フレームレート変動テスト用
 		} else {
 	        //pause
 	    }

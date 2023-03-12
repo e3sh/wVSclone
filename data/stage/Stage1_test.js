@@ -23,11 +23,11 @@ function Stage1_test(stageno) {
         var ms =
         //  開始フレーム,座標,,角度,シナリオ,キャラ
     	[
-    	[7199, 240, 240, 180, "enemy_timeover", 33],
-	    [7199, 240, 2000, 180, "enemy_timeover", 33],
-	    [7199, 1500, 1500, 180, "enemy_timeover", 33],
-        [7199, 2000, 240, 180, "enemy_timeover", 33],
-        [7199, 2000, 2000, 180, "enemy_timeover", 33],
+    	[119999, 240, 240, 180, "enemy_timeover", 33],
+	    [119999, 240, 2000, 180, "enemy_timeover", 33],
+	    [119999, 1500, 1500, 180, "enemy_timeover", 33],
+        [119999, 2000, 240, 180, "enemy_timeover", 33],
+        [119999, 2000, 2000, 180, "enemy_timeover", 33],
 	    [600000, -1, -1, 0, 0, 0]];
         //
         // フレームカウントでソートされていること。
@@ -45,6 +45,7 @@ function Stage1_test(stageno) {
             ptn.r = w[3];
             ptn.sc = w[4];
             ptn.ch = w[5];
+            ptn.used = false;
 
             map_sc.push(ptn);
         }

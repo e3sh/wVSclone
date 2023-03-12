@@ -181,7 +181,7 @@ function gameScene(state){
 	        state.Game.player.barrier = false;//バリア中オンにする
 
 	        mapsc.change(state.Game.nowstage);
-	        mapsc.reset(); //初期マップ展開
+	        mapsc.reset(state.System.time()); //初期マップ展開
 
 	        bg_scroll = true;
 	        scroll_x = 0;
@@ -205,7 +205,7 @@ function gameScene(state){
 	        var wsc = obCtrl.score;
 	        obCtrl.reset(false); //continueflag無しでリセットするとスコアも消されてしまうため、事前に取っておく
 	        obCtrl.score = wsc;
-	        mapsc.reset(); //初期マップ展開 今回はこれでいいと思われる
+	        mapsc.reset(state.System.time()); //初期マップ展開 今回はこれでいいと思われる
 
 	        //mapsc.start(true); //マップ初期配置のものを展開する。
 
@@ -243,14 +243,16 @@ function gameScene(state){
 
 	function game_step() {
 		dev.gs.commit();
-		this.reset_enable = true; // reset無しで戻ってきたときにtrueに変更
-
+		if (!this.reset_enable){
+			this.reset_enable = true; // reset無しで戻ってきたときにtrueに変更
+			mapsc.pauseOff(state.System.time());
+		}
 		//StateGameに今の状態を反映
 		state.Game.lamp = lampf; 
 		state.Game.map =  !mapdisp; //現状の処理で使用時falseとなっているの為Not演算で反転
 
 	    if (!dev.sound.running()) {
-	        if (mapsc.flame < 7200) {
+	        if (mapsc.flame < 120000) {
 	            dev.sound.change(1);// normal bgm
 
 	        } else {
@@ -260,7 +262,7 @@ function gameScene(state){
 	        dev.sound.play();
 	    }
 
-		if (mapsc.flame == 7100) {
+		if ((mapsc.flame >= (120000 - 2000)) && sndcf) {
 	        dev.sound.change(2); //Warning sound
 	        dev.sound.play();
 
@@ -285,6 +287,8 @@ function gameScene(state){
 				obCtrl.SIGNAL = 0;
 
 				this.reset_enable = false;
+				mapsc.pauseOn(state.System.time());
+				
 				return 6;//pause
 	        }
 
@@ -296,7 +300,7 @@ function gameScene(state){
 
 	        if (obCtrl.SIGNAL == 835) {//リザルト画面要求(面クリアー処理予定
 
-	            obCtrl.score += Math.floor((7200 - mapsc.flame) / 6);
+	            obCtrl.score += Math.floor((120000 - mapsc.flame) / 100);
 
 	                state.Result.score = obCtrl.score;
 	                state.Game.item = obCtrl.item;
@@ -336,12 +340,12 @@ function gameScene(state){
 
 	                obCtrl.restart();
 
-	                mapsc.counterReset();
+	                mapsc.counterReset(state.System.time());
 
 					dev.sound.change(0); //normal bgm
 					dev.sound.play();
 
-	                sndcf = false;
+	                sndcf = true;
 	            } else {
 
 	                state.Result.score = obCtrl.score; ;
@@ -484,7 +488,7 @@ function gameScene(state){
 		*/
 	    //if (!obCtrl.interrapt) {
 	        obCtrl.move(mapsc);
-	        mapsc.step(obCtrl);
+	        mapsc.step(obCtrl, state.System.time());
 	    //} else {
 	    //    if (obCtrl.SIGNAL != 1) {
 	    //        obCtrl.move(mapsc);
@@ -809,7 +813,7 @@ function gameScene(state){
 				}
 	        work3.putchr("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y);
 
-	        work3.putchr("Time:" + Math.floor((7200 - mapsc.flame) / 6), dev.layout.time_x, dev.layout.time_y);
+	        work3.putchr("Time:" + Math.floor((120000 - mapsc.flame) / 100), dev.layout.time_x, dev.layout.time_y);
 
 	        //work3.putchr8("ITEM", dev.layout.hp_x , dev.layout.hp_y - 40);
 
