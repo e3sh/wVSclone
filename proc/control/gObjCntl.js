@@ -567,7 +567,7 @@
         }
 
         if (f == 0) {
-            restart_count++;
+            restart_count+= 60/(1000/state.System.deltaTime());//60fに対して現在のフレームレート補正値を加算
             //state.Game.player.hp = 0;
 
             if (restart_count > 180) {//3秒後

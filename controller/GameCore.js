@@ -134,7 +134,7 @@ function GameCore( sysParam ) {
 			}
 			//run
 	        requestAnimationFrame(arguments.callee);
-			//setTimeout(arguments.callee, 1);//フレームレート変動テスト用
+			//setTimeout(arguments.callee, 0);//フレームレート変動テスト用
 		} else {
 	        //pause
 	    }

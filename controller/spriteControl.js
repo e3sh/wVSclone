@@ -29,7 +29,7 @@ function GameSpriteControl(g) {
         this.y = 0;
         this.r = 0;
         this.z = 0;
-        this.priority = 0;
+        this.priority = 0;//機能未実装
         this.collisionEnable = true;
         this.collision = { w: 0, h: 0 };
         this.id;

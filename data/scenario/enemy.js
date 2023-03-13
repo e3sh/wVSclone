@@ -591,7 +591,7 @@ function sce_enemy_move_std2( intrvl, sdst ) {
             //o.colcnt = 0;
         }
 
-        o.autotrig--;
+        o.autotrig-= o.vecfrm;
         if (o.autotrig <= 0) {
             o.autoshot = 0;
             o.autotrig = 5;
@@ -737,7 +737,7 @@ function sce_enemy_generator(gr_intv, gr_num, gr_sce, gr_sdst) {
     }
 
     this.move = function (scrn, o) {
-        o.frame++;
+        o.frame+= o.vecfrm;
 
         if (Boolean(o.target)) {
             if (o.target_d(o.target.x, o.target.y) < GROW_SEARCHDIST) {
@@ -745,7 +745,7 @@ function sce_enemy_generator(gr_intv, gr_num, gr_sce, gr_sdst) {
             }
         }
 
-       if (o.frame > GROW_INTBL && o.frame%3==0) {
+       if (o.frame > GROW_INTBL && Math.trunc(o.frame)%3==0) {
             o.display_size = 1.0 + ((o.frame-GROW_INTBL)/200);
 
             if (o.frame > (GROW_INTBL + 40)) o.display_size = 1.05 + (1 - o.frame%6)*0.05;

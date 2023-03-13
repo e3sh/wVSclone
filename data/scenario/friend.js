@@ -246,7 +246,7 @@ function sce_friend_straight() {
             o.damageflag = false;
         }
 
-        o.shotcount++;
+        o.shotcount+= o.vecfrm;
         if (o.shotcount > 10) {
             o.vector = (o.parent.vector + 315) % 360;
             o.shotcount = 0;
@@ -316,7 +316,7 @@ function sce_friend_boom() {
             //f = 1; //敵にダメージで消滅
         }
 
-        o.shotcount++;
+        o.shotcount+= o.vecfrm;
         if (o.shotcount > 30) {
             //o.target_rotate_r(45);
             o.vector = o.target_v(o.parent.x, o.parent.y);
@@ -375,7 +375,7 @@ function sce_friend_rotate_full() {
             o.damageflag = false;
         }
 
-        o.rotatecount++;
+        o.rotatecount+= o.vecfrm;
         if (o.rotatecount > 20) {
             o.rotatecount = 0;
             o.status = 0;
@@ -434,7 +434,7 @@ function sce_friend_rotate() {
             o.damageflag = false;
         }
 
-        o.rotatecount++;
+        o.rotatecount+= o.vecfrm;;
         if (o.rotatecount > 10) {
             o.rotatecount = 0;
             o.status = 0;
@@ -479,7 +479,7 @@ function sce_friend_front() {
             o.damageflag = false;
         }
 
-        o.shotcount++;
+        o.shotcount+= o.vecfrm;
         if (o.shotcount > 20) {
             o.shotcount = 0;
             o.status = 0;

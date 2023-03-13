@@ -61,7 +61,7 @@ function sce_player() {
 
     this.move = function (scrn, o) {
 
-        o.frame++;
+        o.frame+= o.vecfrm;
 
         if (o.frame <= SHIELD_TIME) {
             o.hp = o.maxhp; //出現して5秒間は無敵(60fps)
@@ -70,7 +70,7 @@ function sce_player() {
             o.lighton = true;
             //    o.damageflag = false;
         }
-        if (o.frame == SHIELD_TIME) {
+        if ((o.frame > SHIELD_TIME) && o.gameState.player.barrier) {
             //無敵時間終わったら瞬間に元に戻す
             o.hp = o.before_hp;
             o.attack = 1;
@@ -132,7 +132,7 @@ function sce_player() {
             //動き始め(15f[0.25s]はゆっくりとなるように(手触り感調整)
             //o.mvkeytrig++;
             //if (v != o.vector) o.mvkeytrig = 12; //入力方向が変わったあとの加速まで 3fwait　0.05s
-            o.mvkeytrig = (o.mvkeytrig++ > 30)?30 : o.mvkeytrig; // keyoff後の加速維持動作入力猶予0.25s
+            o.mvkeytrig = (o.mvkeytrig + o.vecfrm > 30)?30 : o.mvkeytrig + o.vecfrm; // keyoff後の加速維持動作入力猶予0.25s
             //speed = (o.mvkeytrig/4 > o.maxspeed)? o.maxspeed: o.mvkeytrig/5;
             //speed = (o.mvkeytrig > 8)? o.maxspeed: o.maxspeed * (o.mvkeytrig/8);
             speed = (o.mvkeytrig > 15)? o.maxspeed: 1; //加速始動時　15fwait　0.25s
@@ -141,8 +141,8 @@ function sce_player() {
             //speed = o.maxspeed;
             if (o.jump == 0) o.vset(speed);
         }else{
-            o.mvkeytrig--;
-            o.mvkeytrig = (o.mvkeytrig-- < 0)?0 : o.mvkeytrig;
+            o.mvkeytrig-= o.vecfrm;
+            o.mvkeytrig = (o.mvkeytrig-o.vecfrm < 0)?0 : o.mvkeytrig;
         }
 
         if (o.vector > 180) { o.mp = 2; } else { o.mp = 1; }
@@ -203,19 +203,19 @@ function sce_player() {
             }
         }
 
-        o.triger--;
+        o.triger-= o.vecfrm;
         if ((o.triger <= 0) && (!zkey)) {
             o.shot = 0;
             o.triger = 5;
         }
 
-        o.trigerSub--;
+        o.trigerSub-= o.vecfrm;
         if ((o.trigerSub <= 0) && (!xkey)) {
             o.shotSub = 0;
             o.trigerSub = 5;
         }
 
-        o.autotrig--;
+        o.autotrig-= o.vecfrm;
         if (o.autotrig <= 0) {
             o.autoshot = 0;
             o.autotrig = 5;
