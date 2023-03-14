@@ -332,8 +332,8 @@ function sce_friend_boom() {
 
         o.vector = (o.shotcount * 5) % 360;
 
-        o.x += o.vx;
-        o.y += o.vy;
+        o.x += o.vx * o.vecfrm;;
+        o.y += o.vy * o.vecfrm;;
 
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 

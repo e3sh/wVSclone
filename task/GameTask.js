@@ -74,6 +74,7 @@ class GameTask_Debug extends GameTask {
 
         var r = g.fpsload.result();
 
+        /*
         st += "</br>fps:" + r.fps + "</br>"
         //+ "int.max" + r.interval.max + "</br>"
         //+ "int.min" + r.interval.min + "</br>"
@@ -82,30 +83,34 @@ class GameTask_Debug extends GameTask {
         //+ "wl .min" + r.workload.min + "</br>"
         + "load.ave:(" + r.workload.ave + "ms)</br>workload:"
         + Math.trunc((r.workload.ave / r.interval.ave)*100) + "%</br>";
-
+        */
         //document.getElementById("console").innerHTML = st;
 
         if (g.state.Config.debug){
             var sl = [];
             var r = g.fpsload.result();
             sl.push("fps:" +  Math.trunc(r.fps));
-            sl.push("intv.ave:" + String(r.interval.ave).substring(0,4) + "ms"); 
-            sl.push("load.ave:" + String(r.workload.ave).substring(0,4) + "ms");
+            sl.push("ave :load/intv/" );// + Math.trunc((r.workload.ave / r.interval.ave)*100) + "%"); 
+            sl.push("    :" + String(r.workload.ave).substring(0,4) +
+                "/" + String(r.interval.ave).substring(0,4) +  "ms");
+            //    "(" + Math.trunc((r.workload.ave / r.interval.ave)*100) + "%)"); 
+            //sl.push("intv.ave:" + String(r.interval.ave).substring(0,4) + "ms"); 
+            //sl.push("load.ave:" + String(r.workload.ave).substring(0,4) + "ms");
             //sl.push("workload:"+ Math.trunc((r.workload.ave / r.interval.ave)*100) + "%");
-            sl.push("");
-            sl.push("workload:"+ String((r.workload.ave / r.interval.ave)*100).substring(0,4) + "%");
+            //sl.push("");
+            sl.push("workload :"+ String((r.workload.ave / r.interval.ave)*100).substring(0,5) + "%");
             //sl.push("workload:" + "]".repeat(Math.trunc((r.workload.ave / r.interval.ave)*8)));
             //sl.push("");
-            sl.push("");
-            var ws = String(g.deltaTime()).substring(0, 9);
-            sl.push("deltaTime:"+ ws);//g.deltaTime());
+            //sl.push("");
+            var ws = String(g.deltaTime()).substring(0, 5);
+            sl.push("deltaTime:"+ ws + "ms");//g.deltaTime());
             //sl.push("blink:"+ g.blink());
             //ws = String(60/(1000/g.deltaTime())).substring(0, 5);
             //sl.push("vec/frm:" + ws);//60/(1000/g.deltaTime()));   
             ws = String(g.time()).substring(0, 10);
             sl.push("run(ms):" + ws);//60/(1000/g.deltaTime()));   
-            ws = String(performance.now()).substring(0, 10);
-            sl.push("p.now():" + ws);//60/(1000/g.deltaTime()));   
+            //ws = String(performance.now()).substring(0, 10);
+            //sl.push("p.now():" + ws);//60/(1000/g.deltaTime()));   
 
             g.font["8x8white"].useScreen(4);
             for(var i=0; i < sl.length; i++){

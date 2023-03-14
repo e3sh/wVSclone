@@ -183,11 +183,8 @@ function sce_effect_bombcircle(col) {
 
     this.move = function (scrn, o) {
 
-        if (o.frame > 10) o.status = 0; //時間が来たら消す。
-
-        o.circle_r += ((o.frame + 1) * 10);
-
-        o.frame++;
+        if (o.alive > 250) o.status = 0; //時間が来たら消す。0.25ms
+        o.circle_r += (((o.alive/10) + 1) * 4);
 
         return o.sc_move();
     }
@@ -201,6 +198,18 @@ function sce_effect_bombcircle(col) {
         cl.y = w.y;
         cl.r = o.circle_r;
         cl.draw = function (device) {
+            /*
+            col = device.createRadialGradient(
+                this.x + this.r/2, this.y - this.r/2, 3,
+                this.x, this.y, this.r
+            );
+
+            col.addColorStop(0.0,"#fff");
+            col.addColorStop(0.5,"#a00");
+            //col.addColorStop(0.9,"#800");
+            col.addColorStop(1.0,"#400");
+            */
+            //col = "darkred";
             device.beginPath();
 
             device.globalCompositeOperation = "lighter";
