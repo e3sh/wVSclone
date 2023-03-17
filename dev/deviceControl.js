@@ -78,6 +78,7 @@ function deviceControl( g ){
 
         var key = g.keyboard;
         var gpd = g.gamepad;
+        var vpd = g.touchpad;
 
         //mix input Keyboard and Gamepad 
         this.r = -1; //進行方法のr

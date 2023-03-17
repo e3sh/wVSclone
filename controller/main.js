@@ -48,6 +48,7 @@ function main_r() {
 	//game.task.add(new GameTask_FPScount("fps"));
 	//game.task.add(new GameTask_FlipDisp("fldisp"));
 	game.task.add(new GameTask_Debug("debug"));
+	game.task.add(new GameTask_Device("device"));
 	//	game.task.add(new GameTask_Test2("fps"));
     //
     //document.getElementById("console").innerHTML = game.asset.check();

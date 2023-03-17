@@ -254,3 +254,96 @@ class GameTask_Load extends GameTask {
         pfunc("State:" + st, 320, this.str.length*8 +48);
     }
 }
+
+class GameTask_Device extends GameTask {
+
+    constructor(id){
+        super(id);
+    }
+        scrn;
+        fontsc;
+        //str;
+        //cnt;
+
+    init(g){
+        this.scrn = g.screen[4];
+        g.font["8x8white"].useScreen(4);
+        this.fontsc =  g.font["8x8white"];
+        //this.cnt = 0;
+    }
+
+    step(g) {
+        var pstate = g.touchpad.check();
+        //if (typeof g.state.Config.debug !== 'undefined') g.state.Config.debug = true;
+    }
+
+    draw(g){
+        //var st = g.asset.check();
+
+        //var f = g.asset.image["FontGraph"].ready;
+
+        //var pfunc = g.asset.image["FontGraph"].ready ? this.fontsc.putchr :this.scrn.print ;  
+        /*
+        if (f){
+            this.fontsc.putchr(i + " " + st[i], 0, i*16 +16);
+        }else{
+            this.scrn.print(i + " " + st[i], 0, i*16 +16);
+        }
+        
+
+        for (var i in st){
+            //pfunc(i + " " + st[i], 0, i*16 +16);
+            pfunc(st[i], 0, i*16 +16);
+        }
+        */
+        //this.cnt = (this.cnt++ > 90)? 0: this.cnt; 
+        //if ( this.cnt < 60){
+        //if (g.blink()){
+            g.touchpad.draw(this.scrn);    
+            //pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
+        //}
+        /*
+        }else{
+            var o = {}
+            o.x = 0;
+            o.y = st.length*16 +32;
+            o.w = 31 * 8;
+            o.h = 24;
+            o.draw = function (device) {
+                device.beginPath();
+                device.fillStyle = "navy";
+                device.fillRect(this.x, this.y, this.w, this.h);
+            }
+            this.scrn.putFunc(o);
+            pfunc("Click Mouse Left Button.", 0, st.length*16 +32+8);
+        }
+                /*
+        var st = g.asset.namelist();
+        for (var i in st){
+            g.screen[4].print(i + " " + st[i] + (g.asset.image[st[i]].ready?"o":"x"), 0, i*16 +116);   
+            //img_[i].loadcheck()?"o":"x";
+            
+        }
+        
+        for (var i in this.str){
+            pfunc(this.str[i], 320, i*8 + 8);
+        }
+
+
+        //var ks = []; ks = g.keyboard.check();
+        var ks = g.keyboard.state();
+        var ms = g.mouse.check_last();
+        st = "";
+        for (var i in ks){
+            //if (ks[i]) st += "[" + String.fromCharCode(i) + ":" + i + "]"; 
+            if (ks[i]) st += "[" + i + "]"; 
+        }
+        pfunc("[Keyboard]", 320, this.str.length*8 +16);
+        if (st.length>0) pfunc("KeyCode:" + st, 320, this.str.length*8 +24);
+        
+        st = "x:" + ms.x + " y:" + ms.y + " button:" + ms.button + " wheel:" + ms.wheel;
+        pfunc("[Mouse]", 320, this.str.length*8 +40);
+        pfunc("State:" + st, 320, this.str.length*8 +48);
+        */
+    }
+}
