@@ -156,11 +156,17 @@ class GameTask_Load extends GameTask {
 
     step(g) {
         var kstate = g.keyboard.check();
-    
+        var mstate = g.mouse.check();
+
         if (typeof g.state.Config.debug !== 'undefined') g.state.Config.debug = true;
 
-        if (Boolean(kstate[32])||g.gamepad.btn_start) {
-            if (kstate[32]||g.gamepad.btn_start) {//spacebar↓
+        //var startflag = false; 
+        //if (mstate.button==0){
+        //    if (((mstate.x > 0)&&(mstate.x < 320))&&((mstate.y < 0)&&(mstate.y > 111))) startflag = true;
+        //}
+
+        if (Boolean(kstate[32])||g.gamepad.btn_start||mstate.button==0) {
+            if (kstate[32]||g.gamepad.btn_start||mstate.button==0) {//spacebar↓
                 var maintask = g.task.read("main");
 
                 g.state.Config.debug = false;
@@ -205,6 +211,19 @@ class GameTask_Load extends GameTask {
         //if ( this.cnt < 60){
         if (g.blink()){    
             pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
+        }else{
+            var o = {}
+            o.x = 0;
+            o.y = st.length*16 +32;
+            o.w = 31 * 8;
+            o.h = 24;
+            o.draw = function (device) {
+                device.beginPath();
+                device.fillStyle = "navy";
+                device.fillRect(this.x, this.y, this.w, this.h);
+            }
+            this.scrn.putFunc(o);
+            pfunc("Click Mouse Left Button.", 0, st.length*16 +32+8);
         }
                 /*
         var st = g.asset.namelist();
@@ -217,6 +236,21 @@ class GameTask_Load extends GameTask {
         for (var i in this.str){
             pfunc(this.str[i], 320, i*8 + 8);
         }
-    }
 
+
+        //var ks = []; ks = g.keyboard.check();
+        var ks = g.keyboard.state();
+        var ms = g.mouse.check_last();
+        st = "";
+        for (var i in ks){
+            //if (ks[i]) st += "[" + String.fromCharCode(i) + ":" + i + "]"; 
+            if (ks[i]) st += "[" + i + "]"; 
+        }
+        pfunc("[Keyboard]", 320, this.str.length*8 +16);
+        if (st.length>0) pfunc("KeyCode:" + st, 320, this.str.length*8 +24);
+        
+        st = "x:" + ms.x + " y:" + ms.y + " button:" + ms.button + " wheel:" + ms.wheel;
+        pfunc("[Mouse]", 320, this.str.length*8 +40);
+        pfunc("State:" + st, 320, this.str.length*8 +48);
+    }
 }
