@@ -49,7 +49,7 @@ function GameCore( sysParam ) {
 	var keyboard_ = new inputKeyboard();
 	var mouse_ = new inputMouse();
 	var joystick_ = new inputGamepad();
-	var touchpad_ = new inputTouchPad( sysParam[0].canvasId);//<=とりあえずにscreen[0]のキャンバス指定
+	var touchpad_ = new inputTouchPad( sysParam[sysParam.length-1].canvasId);//<=とりあえずにscreen[4-]のキャンバス指定
 
 	var screen_ = [];
 
