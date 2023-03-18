@@ -254,12 +254,19 @@ class GameTask_Load extends GameTask {
         pfunc("[Mouse]", 320, this.str.length*8 +40);
         pfunc("State:" + st, 320, this.str.length*8 +48);
 
-        st = "";
-        for (var i in ts.pos){
-            st += "[" + i + "]" + ts.pos[i].x + "," + ts.pos[i].y;
-        }
+        /*
+        ts.pos[0]={x: 999,y: 999};
+        ts.pos[1]={x: 999,y: 999};
+        ts.pos[2]={x: i,y: i};
+        */
+       
+        var vy = 0;
         pfunc("[TouchPad]" + navigator.maxTouchPoints, 320, this.str.length*8 +64);
-        pfunc("State:" + st, 320, this.str.length*8 +72);
+        for (var i in ts.pos){
+            pfunc("State:" + "[" + i + "]" + ts.pos[i].x + "," + ts.pos[i].y
+            , 320, this.str.length*8 +72 + vy);
+            vy+=8;
+        }
     }
 }
 
