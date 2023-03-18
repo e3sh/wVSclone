@@ -5,7 +5,7 @@ function inputTouchPad(canvas_id) {
     var pos = [];
 
     var cvs1 = document.getElementById(canvas_id);
-    var cvs = document;
+    //var cvs = document;
 
     this.o_Left = cvs1.offsetLeft;
     this.o_Top = cvs1.offsetTop;
@@ -13,6 +13,16 @@ function inputTouchPad(canvas_id) {
     var viewf = false;
 
     //iPodTouch用(マルチポイントタッチ)
+    document.addEventListener('touchstart', ViewTrue
+    , {passive: false });
+    document.addEventListener('touchmove', ViewTrue
+    , {passive: false });
+    document.addEventListener('touchend', ViewFalse
+    , {passive: false });
+    document.addEventListener('touchcancel', ViewFalse
+    , {passive: false });
+
+    /*
     cvs.ontouchmove = function (event) {
         event.preventDefault();
         touchposget(event);
@@ -26,10 +36,28 @@ function inputTouchPad(canvas_id) {
         viewf = true;
     }
 
-    cvs.ontouchend = function (event) {
+    cvs.ontuochend = function (event) {
         event.preventDefault();
         touchposget(event);
         
+        viewf = false;
+    }
+
+    cvs.ontouchcancel = function (event) {
+        event.preventDefault();
+        
+        viewf = false;
+    }
+    */
+    function ViewTrue(e){
+        e.preventDefault();
+        touchposget(e);
+        viewf = true;
+    }
+
+    function ViewFalse(e){
+        e.preventDefault();
+        touchposget(e);
         viewf = false;
     }
 
@@ -45,6 +73,9 @@ function inputTouchPad(canvas_id) {
 
                 pos[i].x = t.pageX;
                 pos[i].y = t.pageY;
+                pos[i].id = t.identifier;
+                //pos[i].count = 0;//work
+                
             }
         }
     }

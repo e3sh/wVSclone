@@ -263,7 +263,7 @@ class GameTask_Load extends GameTask {
         var vy = 0;
         pfunc("[TouchPad]" + navigator.maxTouchPoints, 320, this.str.length*8 +64);
         for (var i in ts.pos){
-            pfunc("State:" + "[" + i + "]" + ts.pos[i].x + "," + ts.pos[i].y
+            pfunc("State:" + "[" + i + "]" + ts.pos[i].x + "," + ts.pos[i].y + "," + ts.pos[i].id
             , 320, this.str.length*8 +72 + vy);
             vy+=8;
         }
