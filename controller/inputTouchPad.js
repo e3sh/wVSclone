@@ -24,7 +24,6 @@ function inputTouchPad(canvas_id) {
         touchposget(event);
 
         viewf = true;
-        now_button = 0;
     }
 
     cvs.ontouchend = function (event) {
@@ -32,7 +31,6 @@ function inputTouchPad(canvas_id) {
         touchposget(event);
         
         viewf = false;
-        now_button = -1
     }
 
     function touchposget(event) {
@@ -79,7 +77,7 @@ function inputTouchPad(canvas_id) {
                 var cl = {};
                 cl.x = pos[j].x;
                 cl.y = pos[j].y;
-                cl.r = 30;
+                cl.r = 16;
                 cl.draw = function(device){
                     var context = device;
 
