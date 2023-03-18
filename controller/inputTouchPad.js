@@ -74,7 +74,6 @@ function inputTouchPad(canvas_id) {
         var s = "p " + pos.length + "/";
 
         for (var j = 0; j <= pos.length -1 ; j++) {
-            if (st.button[j]) {
                 s = s + "b" + j + " ";
                 
                 var cl = {};
@@ -90,7 +89,7 @@ function inputTouchPad(canvas_id) {
                     context.fill();
                 }
                 context.putFunc(cl);
-            }
+            
         }
         //context.fillStyle = "green";
         context.print(s, 12, 16);
