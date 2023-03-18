@@ -241,6 +241,7 @@ class GameTask_Load extends GameTask {
         //var ks = []; ks = g.keyboard.check();
         var ks = g.keyboard.state();
         var ms = g.mouse.check_last();
+        var ts = g.touchpad.check();
         st = "";
         for (var i in ks){
             //if (ks[i]) st += "[" + String.fromCharCode(i) + ":" + i + "]"; 
@@ -252,6 +253,13 @@ class GameTask_Load extends GameTask {
         st = "x:" + ms.x + " y:" + ms.y + " button:" + ms.button + " wheel:" + ms.wheel;
         pfunc("[Mouse]", 320, this.str.length*8 +40);
         pfunc("State:" + st, 320, this.str.length*8 +48);
+
+        st = "";
+        for (var i in ts.pos){
+            st = "[" + i * "]" + ts.pos[i].x + "," + ts.pos[i].y;
+        }
+        pfunc("[TouchPad]", 320, this.str.length*8 +64);
+        pfunc("State:" + st, 320, this.str.length*8 +72);
     }
 }
 
