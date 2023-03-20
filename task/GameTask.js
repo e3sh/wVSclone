@@ -267,6 +267,10 @@ class GameTask_Load extends GameTask {
             , 320, this.str.length*8 +72 + vy);
             vy+=8;
         }
+
+        pfunc("[Fullscreen]" + (document.fullscreenEnabled?"Enable":"Disable"), 320, 480-16);
+        pfunc(document.fullscreenElement?"Active":"NonActive", 320, 480-8);
+
     }
 }
 
@@ -279,6 +283,14 @@ class GameTask_Device extends GameTask {
         fontsc;
         //str;
         //cnt;
+        toggleFullScreen = function() {
+            if (!document.fullscreenElement) {
+              document.documentElement.requestFullscreen();
+            } else if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+        keylock = 0;
 
     init(g){
         this.scrn = g.screen[4];
@@ -289,6 +301,18 @@ class GameTask_Device extends GameTask {
 
     step(g) {
         var pstate = g.touchpad.check();
+        var ks = g.keyboard.state();
+
+        if (Boolean(ks[70])) {//[f]key
+            if (ks[70]){
+                //if (g.time()>this.keylock+10000){}
+                //    this.toggleFullScreen();
+                //    this.keylock = g.time();
+                if (!document.fullscreenElement) 
+                    document.documentElement.requestFullscreen();
+            }
+        }
+
         //if (typeof g.state.Config.debug !== 'undefined') g.state.Config.debug = true;
     }
 
