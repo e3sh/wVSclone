@@ -43,6 +43,11 @@ function inputMouse(){
 
     this.check_last = function () {
 
+        state.x = x;
+        state.y = y;
+        state.button = button;
+        state.wheel = wheel;
+
         return state;
     }
 }

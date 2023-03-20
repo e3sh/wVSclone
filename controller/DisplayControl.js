@@ -20,6 +20,8 @@ function DisplayControl(canvas_id, c_w, c_h) {
     this.cw = canvas.width;
     this.ch = canvas.height;
 
+    this.dom = canvas;
+
     device.font = "16px 'Arial'";
 
     //加算合成を使用する。

@@ -1,10 +1,8 @@
 ﻿//**************************************************************
-// VirtualPadControl (iPhone対応用 2012/09/29‐
+// VirtualPadControl
 // タッチパットから方向とボタン入力コントロール
-// マルチポイントのタッチコントロール有効制御
 //**************************************************************
-
-function inputVirtualPad(canvas_id, inputpad) {
+function inputVirtualPad() {
 
     //vControllerの入力位置設定
 
@@ -15,9 +13,9 @@ function inputVirtualPad(canvas_id, inputpad) {
 
     var Pad_Loc = {};
 
-    Pad_Loc.X = 160
-    Pad_Loc.Y = 160
-    Pad_Loc.R = 150
+    Pad_Loc.X = 80
+    Pad_Loc.Y = 480-80
+    Pad_Loc.R = 75
 
     var Button_Loc = [];
 
@@ -25,9 +23,9 @@ function inputVirtualPad(canvas_id, inputpad) {
 
         Button_Loc[i] = {};
 
-        Button_Loc[i].X = 240 + 160 * (i + 1);
-        Button_Loc[i].Y = 160;
-        Button_Loc[i].R = 60;
+        Button_Loc[i].X = 640-200 + 80 * (i + 1);
+        Button_Loc[i].Y = 480-80;
+        Button_Loc[i].R = 30;
         Button_Loc[i].ON = false;
     }
 
@@ -36,9 +34,9 @@ function inputVirtualPad(canvas_id, inputpad) {
 
         Button_Loc[i + 2] = {};
 
-        Button_Loc[i + 2].X = 480;
-        Button_Loc[i + 2].Y = 60 + 200 * i;
-        Button_Loc[i + 2].R = 60;
+        Button_Loc[i + 2].X = 640-80;
+        Button_Loc[i + 2].Y = 360 + 80 * i;
+        Button_Loc[i + 2].R = 30;
         Button_Loc[i + 2].ON = false;
     }
 
@@ -52,99 +50,34 @@ function inputVirtualPad(canvas_id, inputpad) {
     var button = -1;
 
     var now_vdeg = 0;
-    var now_vbutton = {};
+    var now_vbutton = [];
     var now_vdistance = -1;
-
-    var cvs = document.getElementById(canvas_id);
-    //	var cvs = document;
-
-    this.o_Left = cvs.offsetLeft;
-    this.o_Top = cvs.offsetTop;
 
     var viewf = false;
 
-    //iPodTouch用(マルチポイントタッチ)
-    cvs.ontouchmove = function (event) {
-        event.preventDefault();
-
-        /*
-        if (event.touches.length > 0) {
-        for (var i = 0; i < event.touches.length; i++) {
-        var t = event.touches[i];
-
-        pos[i] = {};
-        // 移動した座標を取得
-        pos[i].x = t.pageX;
-        pos[i].y = t.pageY;
-        }
-        }
-        */
-        touchposget(event);
-        viewf = true;
-    }
-
-    cvs.ontouchstart = function (event) {
-        event.preventDefault();
-
-
-        /*
-        pos = [];
-
-        if (event.touches.length > 0) {
-        for (var i = 0; i < event.touches.length; i++) {
-        var t = event.touches[i];
-
-        pos[i] = {};
-
-        pos[i].x = t.pageX;
-        pos[i].y = t.pageY;
-        }
-        }
-        */
-        touchposget(event);
-
-        viewf = true;
-        now_button = 0;
-    }
-
-    cvs.ontouchend = function (event) {
-        event.preventDefault();
-
-        //if (event.touches.length == 0) {
-        //    pos = [];
-        //}
-
-        touchposget(event);
-        
-        viewf = false;
-        now_button = -1
-    }
-
-    function touchposget(event) {
-
-        pos = [];
-
-        if (event.touches.length > 0) {
-            for (var i = 0; i < event.touches.length; i++) {
-                var t = event.touches[i];
-
-                pos[i] = {};
-
-                pos[i].x = t.pageX;
-                pos[i].y = t.pageY;
-            }
-        }
-    }
-
-    this.check = function () {
+    this.check = function (mouse, touchpad) {
+        //input mouse_state, touchpad_state
         //return deg = 0 -359 ,button[0-n] = false or true;
-        //       distance 
-        now_vdeg = 0;
-        now_vbutton = {};
+        //       distance
+        var ts = touchpad.check_last();
+        var ms = mouse.check_last();
 
-        for (var j = 0; j <= bn; j++) {
-            now_vbutton[j] = false;
+        pos = ts.pos;
+        if (pos.length <= 0){
+            if (ms.button != -1){
+                pos[0] = {};
+                pos[0].x = ms.x;
+                pos[0].y = ms.y;
+                viewf = true;
+            }
+        }else{
+            viewf = true;
         }
+
+        now_vdeg = 0;
+        now_vbutton = [];
+
+        for (var j = 0; j <= bn; j++) now_vbutton[j] = false;
 
         now_vdistance = -1;
 
@@ -292,7 +225,6 @@ function inputVirtualPad(canvas_id, inputpad) {
         //context.fillStyle = "green";
         context.print(s, 12, 16);
         // 移動した座標を取得
-        
     }
     //自分( x,y )から目標( tx, ty )の
     //	方向角度を調べる(上が角度0の0-359)
@@ -318,7 +250,7 @@ function inputVirtualPad(canvas_id, inputpad) {
 
     //角度からラジアンに変換
     //
-    function ToRadian(d) {
+    ToRadian = (d) => {
         return (d * (Math.PI / 180.0));
     }
 

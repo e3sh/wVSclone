@@ -291,12 +291,14 @@ class GameTask_Device extends GameTask {
             }
         }
         keylock = 0;
+        vp;
 
     init(g){
         this.scrn = g.screen[4];
         g.font["8x8white"].useScreen(4);
         this.fontsc =  g.font["8x8white"];
         //this.cnt = 0;
+        this.vp = new inputVirtualPad();
     }
 
     step(g) {
@@ -308,10 +310,16 @@ class GameTask_Device extends GameTask {
                 //if (g.time()>this.keylock+10000){}
                 //    this.toggleFullScreen();
                 //    this.keylock = g.time();
-                if (!document.fullscreenElement) 
+                if (!document.fullscreenElement){ 
+            //
                     document.documentElement.requestFullscreen();
+                    //for (var i in g.screen)
+                    //g.screen[i].dom.requestFullscreen();
+               }
             }
         }
+
+        this.vp.check(g.mouse, g.touchpad);
 
         //if (typeof g.state.Config.debug !== 'undefined') g.state.Config.debug = true;
     }
@@ -340,6 +348,7 @@ class GameTask_Device extends GameTask {
         //if (g.blink()){
             g.touchpad.draw(this.scrn);    
             //pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
+            this.vp.draw(this.scrn);
         //}
         /*
         }else{
