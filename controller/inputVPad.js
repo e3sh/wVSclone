@@ -2,7 +2,7 @@
 // VirtualPadControl
 // タッチパットから方向とボタン入力コントロール
 //**************************************************************
-function inputVirtualPad() {
+function inputVirtualPad(mouse, touchpad) {
 
     //vControllerの入力位置設定
 
@@ -43,11 +43,11 @@ function inputVirtualPad() {
 
     var pos = [];
 
-    var pos_x = [];
-    var pos_y = [];
+    //var pos_x = [];
+    //var pos_y = [];
 
-    var now_button;
-    var button = -1;
+    //var now_button;
+    //var button = -1;
 
     var now_vdeg = 0;
     var now_vbutton = [];
@@ -55,7 +55,7 @@ function inputVirtualPad() {
 
     var viewf = false;
 
-    this.check = function (mouse, touchpad) {
+    this.check = function () {
         //input mouse_state, touchpad_state
         //return deg = 0 -359 ,button[0-n] = false or true;
         //       distance
@@ -139,8 +139,8 @@ function inputVirtualPad() {
 
         var bn = Button_Loc.length - 1;
 
-        var cx = 320;
-        var cy = 320;
+        //var cx = 320;
+        //var cy = 320;
 
         //context.fillStyle = "black";
         //context.fill(0, 0, cx, cy, "black");
@@ -183,21 +183,29 @@ function inputVirtualPad() {
 
         if (st.distance > 0) {
 
-            s = s + "d " + st.deg + " ";
+            s = s + "d " + st.deg + ":" + st.distance;
 
             var cl = {};
             cl.x = Pad_Loc.X;
             cl.y = Pad_Loc.Y;
             cl.vx = Math.cos(ToRadian(st.deg - 90)) * Pad_Loc.R//st.distance;
             cl.vy = Math.sin(ToRadian(st.deg - 90)) * Pad_Loc.R//st.distance;
+            cl.sr = ((st.deg+225)%360/180)* Math.PI;
+
             cl.draw = function(device){ 
                 var context = device;
-
+                /*
                 context.beginPath();
+                context.strokeStyle = "black";
+                context.lineWidth = 2;
                 context.moveTo(this.x, this.y);
                 context.lineTo(this.x + this.vx, this.y +this.vy);
-                context.strokeStyle = "black";
-                context.lineWidth = 5;
+                context.stroke();
+                */
+                context.beginPath();
+                context.strokeStyle = "orange";
+                context.lineWidth = 60;
+                context.arc(this.x, this.y, 40, this.sr, this.sr+(1/2) * Math.PI, false);
                 context.stroke();
             }
             context.putFunc(cl);
@@ -225,7 +233,7 @@ function inputVirtualPad() {
             }
         }
         //context.fillStyle = "green";
-        context.print(s, 12, 16);
+        context.print(s, 12, 32);
         // 移動した座標を取得
     }
     //自分( x,y )から目標( tx, ty )の

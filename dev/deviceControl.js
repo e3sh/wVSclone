@@ -78,7 +78,8 @@ function deviceControl( g ){
 
         var key = g.keyboard;
         var gpd = g.gamepad;
-        var vpd = g.touchpad;
+        var tpd = g.touchpad;
+        var vpd = g.vgamepad;
 
         //mix input Keyboard and Gamepad 
         this.r = -1; //進行方法のr
@@ -90,7 +91,7 @@ function deviceControl( g ){
 
         this.check = function(){
 
-            var k = g.state.Config.keyAn
+            var k = g.state.Config.keyAn //使えてない
  
             //各プロパティの更新
             //a_button  Attack z,space  btn_a
@@ -129,6 +130,31 @@ function deviceControl( g ){
                 state[81] = gpd.btn_y;// || Boolean(state[81]) ;Q QUIT
                 state[27] = gpd.btn_start;// || Boolean(state[27]) ;ESC 
             }
+
+            var vstate = vpd.check(); 
+            if (vstate.distance > 0){
+                //touchpad操作されているので方向処理
+                //0  330-360,0-30 u 38 30-60 300 330
+                //45 30-60 ul 38 37
+                //90 60-120 l 37 30-60 120-150
+                //135 120-150 dl 37 40
+                //180 150-210 d 40 120-150 210-240
+                //225 210-240 dr 39 40 
+                //270 240-300 r 39 210-240 300-330
+                //315 300-330 ur 38 39
+                var d = vstate.deg;
+                if ((d >=300) || (d <  60)) state[38] = true;//u
+                if ((d >= 30) && (d < 150)) state[39] = true;//r
+                if ((d >=120) && (d < 240)) state[40] = true;//d
+                if ((d >=210) && (d < 330)) state[37] = true;//l
+           }
+            //vkey のbuttonNoは、←0　↑2　→1　↓3となっている為、
+            //Z:0　C:3　X:1　ESC:2　とする。
+            if (vstate.button[0]) state[90] = vstate.button[0];
+            if (vstate.button[1]) state[88] = vstate.button[1];
+            //if (vstate.button[2]) state[27] = vstate.button[2];//pause?
+            if (vstate.button[3]) state[67] = vstate.button[3];
+
             var wstate = key.check();
             for (var i in wstate){
                 state[i] = state[i] || wstate[i];

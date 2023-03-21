@@ -50,6 +50,7 @@ function GameCore( sysParam ) {
 	var mouse_ = new inputMouse();
 	var joystick_ = new inputGamepad();
 	var touchpad_ = new inputTouchPad( sysParam[sysParam.length-1].canvasId);//<=とりあえずにscreen[4-]のキャンバス指定
+	var vGpad_ = new inputVirtualPad(mouse_, touchpad_);
 
 	var screen_ = [];
 
@@ -152,6 +153,8 @@ function GameCore( sysParam ) {
 	this.joystick = joystick_;
 
 	this.touchpad = touchpad_;
+
+	this.vgamepad = vGpad_;
 
 	this.dsp = dsp_;
 	this.screen = screen_;

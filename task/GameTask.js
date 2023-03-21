@@ -291,14 +291,14 @@ class GameTask_Device extends GameTask {
             }
         }
         keylock = 0;
-        vp;
+        //vp;
 
     init(g){
         this.scrn = g.screen[4];
         g.font["8x8white"].useScreen(4);
         this.fontsc =  g.font["8x8white"];
         //this.cnt = 0;
-        this.vp = new inputVirtualPad();
+        //this.vp = new inputVirtualPad();
     }
 
     step(g) {
@@ -319,7 +319,7 @@ class GameTask_Device extends GameTask {
             }
         }
 
-        this.vp.check(g.mouse, g.touchpad);
+        g.vgamepad.check(g.mouse, g.touchpad);
 
         //if (typeof g.state.Config.debug !== 'undefined') g.state.Config.debug = true;
     }
@@ -346,9 +346,11 @@ class GameTask_Device extends GameTask {
         //this.cnt = (this.cnt++ > 90)? 0: this.cnt; 
         //if ( this.cnt < 60){
         //if (g.blink()){
-            g.touchpad.draw(this.scrn);    
+            //g.touchpad.draw(this.scrn);    
             //pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
-            this.vp.draw(this.scrn);
+            g.vgamepad.draw(this.scrn);
+
+            g.touchpad.draw(this.scrn); 
             g.mouse.draw(this.scrn);
         //}
         /*
