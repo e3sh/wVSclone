@@ -114,8 +114,11 @@ function inputTouchPad(canvas_id) {
 
                     context.beginPath();
                     context.arc(this.x, this.y, this.r, 0, 2 * Math.PI, true);
-                    context.fillStyle = "orange";
-                    context.fill();
+                    //context.fillStyle = "orange";
+                    //context.fill();
+                    context.strokeStyle = "white";
+                    context.lineWidth = 2;
+                    context.stroke();
                 }
                 context.putFunc(cl);
             

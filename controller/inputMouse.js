@@ -50,4 +50,24 @@ function inputMouse(){
 
         return state;
     }
+
+    this.draw = function(ctx){
+
+        var st = this.check_last(); 
+
+        var cl = {};
+        cl.x = st.x;
+        cl.y = st.y;
+        cl.draw = function(device){ 
+            var context = device;
+
+            context.beginPath();
+            context.moveTo(this.x, this.y);
+            context.lineTo(this.x+10, this.y+10);
+            context.strokeStyle = "white";//"black";
+            context.lineWidth = 3;
+            context.stroke();
+        }
+        ctx.putFunc(cl);
+    }
 }

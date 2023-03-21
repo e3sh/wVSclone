@@ -62,15 +62,17 @@ function inputVirtualPad() {
         var ts = touchpad.check_last();
         var ms = mouse.check_last();
 
-        pos = ts.pos;
-        if (pos.length <= 0){
+        pos = [];
+        if (ts.pos.length <= 0){
             if (ms.button != -1){
-                pos[0] = {};
-                pos[0].x = ms.x;
-                pos[0].y = ms.y;
+                pos.push( {x : ms.x,  y: ms.y });
+                //pos[0].x = ms.x;
+                //pos[0].y = ms.y;
                 viewf = true;
-            }
+            }else
+                viewf = false;
         }else{
+            pos = ts.pos;
             viewf = true;
         }
 
@@ -186,15 +188,15 @@ function inputVirtualPad() {
             var cl = {};
             cl.x = Pad_Loc.X;
             cl.y = Pad_Loc.Y;
-            cl.vx = Math.cos(ToRadian(st.deg - 90)) * st.distance;
-            cl.vy = Math.sin(ToRadian(st.deg - 90)) * st.distance;
+            cl.vx = Math.cos(ToRadian(st.deg - 90)) * Pad_Loc.R//st.distance;
+            cl.vy = Math.sin(ToRadian(st.deg - 90)) * Pad_Loc.R//st.distance;
             cl.draw = function(device){ 
                 var context = device;
 
                 context.beginPath();
                 context.moveTo(this.x, this.y);
                 context.lineTo(this.x + this.vx, this.y +this.vy);
-                context.strokeStyle = "gray";//"black";
+                context.strokeStyle = "black";
                 context.lineWidth = 5;
                 context.stroke();
             }

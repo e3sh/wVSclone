@@ -302,7 +302,7 @@ class GameTask_Device extends GameTask {
     }
 
     step(g) {
-        var pstate = g.touchpad.check();
+        //var pstate = g.touchpad.check();
         var ks = g.keyboard.state();
 
         if (Boolean(ks[70])) {//[f]key
@@ -349,6 +349,7 @@ class GameTask_Device extends GameTask {
             g.touchpad.draw(this.scrn);    
             //pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
             this.vp.draw(this.scrn);
+            g.mouse.draw(this.scrn);
         //}
         /*
         }else{
