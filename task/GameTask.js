@@ -157,26 +157,30 @@ class GameTask_Load extends GameTask {
     step(g) {
         var kstate = g.keyboard.check();
         var mstate = g.mouse.check();
+        var tstate = g.touchpad.check();
 
         if (typeof g.state.Config.debug !== 'undefined') g.state.Config.debug = true;
 
-        //var startflag = false; 
-        //if (mstate.button==0){
-        //    if (((mstate.x > 0)&&(mstate.x < 320))&&((mstate.y < 0)&&(mstate.y > 111))) startflag = true;
-        //}
-
+        var startflag = false; 
         if (Boolean(kstate[32])||g.gamepad.btn_start||mstate.button==0) {
             if (kstate[32]||g.gamepad.btn_start||mstate.button==0) {//spacebar↓
-                var maintask = g.task.read("main");
-
-                g.state.Config.debug = false;
-
-                maintask.visible = true;
-                maintask.enable = true;
-                this.visible = false;
-                this.visible = false;
-                g.task.del("load"); 
+                startflag = true;
             }
+        }
+        if (tstate.pos.length > 2){
+            startflag = true;
+        }
+
+        if (startflag) {
+            var maintask = g.task.read("main");
+
+            g.state.Config.debug = false;
+
+            maintask.visible = true;
+            maintask.enable = true;
+            this.visible = false;
+            this.visible = false;
+            g.task.del("load"); 
         }
 
         if (g.gamepad.check()){
