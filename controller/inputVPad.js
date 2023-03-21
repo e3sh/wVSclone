@@ -25,7 +25,7 @@ function inputVirtualPad(mouse, touchpad) {
 
         Button_Loc[i].X = 640-200 + 80 * (i + 1);
         Button_Loc[i].Y = 480-80;
-        Button_Loc[i].R = 30;
+        Button_Loc[i].R = 28;
         Button_Loc[i].ON = false;
     }
 
@@ -36,7 +36,7 @@ function inputVirtualPad(mouse, touchpad) {
 
         Button_Loc[i + 2].X = 640-80;
         Button_Loc[i + 2].Y = 360 + 80 * i;
-        Button_Loc[i + 2].R = 30;
+        Button_Loc[i + 2].R = 28;
         Button_Loc[i + 2].ON = false;
     }
 
@@ -158,6 +158,7 @@ function inputVirtualPad(mouse, touchpad) {
             context.beginPath();
             context.arc(this.x, this.y, this.r, 0, 2 * Math.PI, true);
             context.fillStyle = "gray";//"black";
+            context.globalAlpha = 0.5;
             context.fill();
             //context.beginPath();
             //context.arc(this.x, this.y, this.r - 5, 0, 2 * Math.PI, true);
@@ -169,6 +170,7 @@ function inputVirtualPad(mouse, touchpad) {
                 context.beginPath();
                 context.arc(this.bt[i].X, this.bt[i].Y, this.bt[i].R, 0, 2 * Math.PI, true);
                 context.fillStyle = "gray";//"black";
+                //context.globalAlpha = 0.5;
                 context.fill();
                 //context.beginPath();
                 //context.arc(this.bt[i].X, this.bt[i].Y, this.bt[i].R - 5, 0, 2 * Math.PI, true);
@@ -228,12 +230,14 @@ function inputVirtualPad(mouse, touchpad) {
                     context.arc(this.bt.X, this.bt.Y, this.bt.R - 5, 0, 2 * Math.PI, true);
                     context.fillStyle = "orange";
                     context.fill();
+
+                    context.globalAlpha = 1.0;
                 }
                 context.putFunc(cl);
             }
         }
         //context.fillStyle = "green";
-        context.print(s, 12, 32);
+        //context.print(s, 12, 32);
         // 移動した座標を取得
     }
     //自分( x,y )から目標( tx, ty )の

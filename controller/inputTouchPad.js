@@ -124,7 +124,7 @@ function inputTouchPad(canvas_id) {
             
         }
         //context.fillStyle = "green";
-        context.print(s, 12, 16);
+        //context.print(s, 12, 16);
         // 移動した座標を取得
     }
 }
