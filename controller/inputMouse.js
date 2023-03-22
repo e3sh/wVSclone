@@ -64,6 +64,7 @@ function inputMouse(){
             context.beginPath();
             context.moveTo(this.x, this.y);
             context.lineTo(this.x+10, this.y+10);
+            context.globalAlpha = 1.0;
             context.strokeStyle = "white";//"black";
             context.lineWidth = 3;
             context.stroke();

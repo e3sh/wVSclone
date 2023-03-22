@@ -192,8 +192,9 @@ function inputVirtualPad(mouse, touchpad) {
             cl.y = Pad_Loc.Y;
             cl.vx = Math.cos(ToRadian(st.deg - 90)) * Pad_Loc.R//st.distance;
             cl.vy = Math.sin(ToRadian(st.deg - 90)) * Pad_Loc.R//st.distance;
-            cl.sr = ((st.deg+225)%360/180)* Math.PI;
 
+            cl.sr = ((st.deg+225)%360/180)* Math.PI;
+            //cl.sr = (((Math.floor(st.deg/45)*45)+225)%360/180)* Math.PI;
             cl.draw = function(device){ 
                 var context = device;
                 /*
@@ -230,8 +231,6 @@ function inputVirtualPad(mouse, touchpad) {
                     context.arc(this.bt.X, this.bt.Y, this.bt.R - 5, 0, 2 * Math.PI, true);
                     context.fillStyle = "orange";
                     context.fill();
-
-                    context.globalAlpha = 1.0;
                 }
                 context.putFunc(cl);
             }

@@ -68,6 +68,10 @@ function geometoryTrance() {
         }else{
             w.y = Math.trunc(y - this.world_y);
         }
+        /* view shift
+        w.x += 192;
+        w.y += 144;
+        */
         return w;
     }
 
