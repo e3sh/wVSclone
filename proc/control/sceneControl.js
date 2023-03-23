@@ -101,7 +101,7 @@ function sceneControl(state) {
                     device.stroke();
                 }
                 scrn.putFunc(bar);
-                scrn.putchr8(st, 640-st.length*8, 0);
+                scrn.putchr8(st, scrn.cw-st.length*8, 0);
             }                
         }
 

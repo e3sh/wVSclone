@@ -2,10 +2,10 @@
 function main_r() {
 
 	//resolution
-	//const VIEW_WIDTH  = 1024;
-	//const VIEW_HEIGHT = 786;
-	const VIEW_WIDTH  = 640;
-	const VIEW_HEIGHT = 480;
+	const VIEW_WIDTH  = 1024;
+	const VIEW_HEIGHT = 640;
+	//const VIEW_WIDTH  = 640;
+	//const VIEW_HEIGHT = 480;
 
     var sysParam = [
 	//  { canvasId: "Layer0", resolution: { w: 1920, h: 1280 } },

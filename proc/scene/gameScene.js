@@ -79,7 +79,7 @@ function gameScene(state){
 	ButtomlineBackgroundDraw.draw = function (device) {
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.5)";
-	    device.fillRect(0, 480 - 36, 640 - 13 * 13, 36);
+	    device.fillRect(dev.layout.clip_x, dev.layout.clip_y, 640 - 13 * 13, 36);
 	}
     //hpbar
 	var HpbarDraw = { hp: 0, mhp: 0, br: true }
@@ -550,8 +550,9 @@ function gameScene(state){
 	                            if (wfg) {
 									var shiftx = 0;
 									var shifty = -24;
-									shiftx = Math.trunc((w.x - dev.gs.viewwidth/2) /24);
-									shifty = Math.trunc((w.y - dev.gs.viewheight/2) /24);
+
+									shiftx = Math.trunc((w.x - w.sx - dev.gs.viewwidth/2) /24);
+									shifty = Math.trunc((w.y - w.sy - dev.gs.viewheight/2) /24);
 									/*
 									forgroundBG.putPattern(
 										tex_bg, bgData[mc.no], 
@@ -655,8 +656,27 @@ function gameScene(state){
 	            }
                 */
 	            forgroundBG.putFunc(ButtomlineBackgroundDraw);
-        }
-		
+
+				//if (state.Config.debug){
+				if (true){
+					var cl = {}
+					cl.x = 192;
+					cl.y = 120;
+					cl.w = dev.gs.viewwidth;
+					cl.h = dev.gs.viewheight;
+
+					cl.draw = function (device) {
+						device.beginPath();
+
+						device.strokeStyle = "white";
+						device.lineWidth = 3;
+						device.rect(this.x, this.y, this.w, this.h);
+						device.stroke();
+					}
+
+					forgroundBG.putFunc(cl);
+				}
+		}		
 		function BGShadowDraw() {
 			for (var i in mapChip) {
 				var mc = mapChip[i];
@@ -670,8 +690,8 @@ function gameScene(state){
 
 							var shiftx = 0;
 							var shifty = -24;
-							shiftx = Math.trunc((w.x - dev.gs.viewwidth/2) /24) + 4;
-							shifty = Math.trunc((w.y - dev.gs.viewheight/2) /24) + 4;
+							shiftx = Math.trunc((w.x - w.sx - dev.gs.viewwidth/2) /24) + 4;
+							shifty = Math.trunc((w.y - w.sy - dev.gs.viewheight/2) /24) + 4;
 
 							var cl = {}
 							cl.x = w.x - shiftx;
@@ -740,8 +760,8 @@ function gameScene(state){
 	        }
 
 			//Lamp/map
-			if(!mapdisp){ work3.put("Map",36,12) }//dev.layout.zanki_x + 360, dev.layout.zanki_y-16);}
-			if(lampf) { work3.put("Lamp",12,12) }//dev.layout.zanki_x + 336, dev.layout.zanki_y-16);}
+			if(!mapdisp){ work3.put("Map",dev.layout.map_x + 36, dev.layout.map_y + 12) }//dev.layout.zanki_x + 360, dev.layout.zanki_y-16);}
+			if(lampf) { work3.put("Lamp",dev.layout.map_x + 12, dev.layout.map_y + 12) }//dev.layout.zanki_x + 336, dev.layout.zanki_y-16);}
 
 			//document.getElementById("manual_1").innerHTML += ".";
 

@@ -865,7 +865,7 @@
             if (o.visible && (o.prioritySurface == mode)) {
                 
                 if (o.normal_draw_enable) {
-                    if (dev.gs.in_view(o.x, o.y)){
+                    if (dev.gs.in_stage(o.x, o.y)){
                         o.draw(wscreen, o);
     
                         if (state.Config.debug) {
@@ -893,9 +893,10 @@
 
                 if (o.custom_draw_enable) {
                     if (Boolean(o.custom_draw)) {
-                        o.custom_draw(wscreen, o);
+                        if (dev.gs.in_stage(o.x, o.y)){
+                            o.custom_draw(wscreen, o);
+                        }
                     }
-
                 }
             }
         }

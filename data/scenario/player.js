@@ -471,20 +471,25 @@ function sce_player() {
         var vxf = 0;
         var vyf = 0;
 
-        
-        if ((w.x < 240) && (o.vx < 0)) {
+        // view shift
+        //var vsx = 0; //w(640)
+        //var vsy = 0; //h(480)
+        //var vsx = 192; //(1024-640)/2
+        //var vsy = 120; //( 640-400)/2
+
+        if ((w.x < 240 + w.sx) && (o.vx < 0)) {
             vxf = 1;
         }
 
-        if ((w.x > o.gt.viewwidth - 240) && (o.vx > 0)) {
+        if ((w.x > o.gt.viewwidth - 240 + w.sx) && (o.vx > 0)) {
             vxf = 1;
         }
 
-        if ((w.y < 240) && (o.vy < 0)) {
+        if ((w.y < 200 + w.sy) && (o.vy < 0)) {
             vyf = 1;
         }
 
-        if ((w.y > o.gt.viewheight - 240) && (o.vy > 0)) {
+        if ((w.y > o.gt.viewheight - 200 + w.sy) && (o.vy > 0)) {
             vyf = 1;
         }
         /*
