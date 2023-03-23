@@ -7,14 +7,17 @@ function main_r() {
 	//const VIEW_WIDTH  = 640;
 	//const VIEW_HEIGHT = 480;
 
-    var sysParam = [
+    var sysParam = {
+		canvasId: "Layer0",
+		screen: [
 	//  { canvasId: "Layer0", resolution: { w: 1920, h: 1280 } },
-		{ canvasId: "Layer0", resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT } },//BGSurface
-		{ canvasId: "Layer1", resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT } },//SPSurface
-        { canvasId: "Layer2", resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT } },//FGSurface
-        { canvasId: "Layer3", resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT } },//UISurface
-        { canvasId: "Layer4", resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT } } //Effect
-	]
+		{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT } },//BGSurface
+		{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT } },//SPSurface
+        { resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT } },//FGSurface
+        { resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT } },//UISurface
+        { resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT } } //Effect
+		]
+	}
 
 	var game = new GameCore( sysParam );
 

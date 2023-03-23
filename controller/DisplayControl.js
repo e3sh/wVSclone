@@ -1,26 +1,27 @@
 ﻿// DisplayControlクラス
 //
 
-function DisplayControl(canvas_id, c_w, c_h) {
+function DisplayControl(ctx, c_w, c_h) {
     //キャンバスID、キャンバス幅、高さ指定。画面表示サイズはCSSのSTYLEで
     //指定してあるのでここでは、操作する解像度を指定する。
 
-    var buffer_ = new offScreen();
+    //var buffer_ = new offScreen();
     //var buffer_ = new offScreenTypeB(c_w, c_h);
+    var buffer_ = new offScreenTypeC(c_w, c_h);
 
     this.buffer = buffer_;
 
-    var canvas = document.getElementById(canvas_id);
+    //var canvas = document.getElementById(canvas_id);
 
-    canvas.width = c_w;
-    canvas.height = c_h;
+    //canvas.width = c_w;
+    //canvas.height = c_h;
 
-    var device = canvas.getContext("2d");
+    var device = ctx ;//canvas.getContext("2d");
 
-    this.cw = canvas.width;
-    this.ch = canvas.height;
+    this.cw = c_w//canvas.width;
+    this.ch = c_h//canvas.height;
 
-    this.dom = canvas;
+    //this.dom = canvas;
 
     device.font = "16px 'Arial'";
 
@@ -140,11 +141,11 @@ function DisplayControl(canvas_id, c_w, c_h) {
 
         if (enable_flip_flag){
 
-            buffer_.allClear(0, 0, canvas.width, canvas.height);
+            buffer_.allClear(0, 0, c_w, c_h);
 
             if (c_str === void 0){ c_str = bgcolor; }
             if (Boolean(c_str)) {
-                buffer_.fillRect(0, 0, canvas.width, canvas.height, c_str);
+                buffer_.fillRect(0, 0, c_w, c_h, c_str);
             }
         }   
     }

@@ -316,9 +316,9 @@ class GameTask_Device extends GameTask {
                 //    this.keylock = g.time();
                 if (!document.fullscreenElement){ 
             //
-                    document.documentElement.requestFullscreen();
+                    //document.documentElement.requestFullscreen();
                     //for (var i in g.screen)
-                    //g.screen[i].dom.requestFullscreen();
+                    g.systemCanvas.requestFullscreen();
                }
             }
         }
