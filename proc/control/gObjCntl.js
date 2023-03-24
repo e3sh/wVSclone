@@ -942,7 +942,7 @@
                     if (o.normal_draw_enable) {
                         device.beginPath();
                         device.strokeStyle = this.col[o.type];
-                        device.lineWidth = 2;
+                        device.lineWidth = 1;
                         device.rect(
                             dev.layout.map_x + o.x / 20, 
                             dev.layout.map_y + o.y / 20,

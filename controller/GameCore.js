@@ -64,7 +64,10 @@ function GameCore( sysParam ) {
 
 	for (var i in sysParam.screen) {
 	    var wsysp = sysParam.screen[i];
-	    screen_[i] = new DisplayControl(ctx, wsysp.resolution.w, wsysp.resolution.h);
+	    screen_[i] = new DisplayControl(ctx, 
+			wsysp.resolution.w, wsysp.resolution.h,
+			wsysp.resolution.x, wsysp.resolution.y,
+			);
 	}
 	if (sysParam.length > 0) { var dsp_ = screen_[0]; }
 
@@ -116,7 +119,8 @@ function GameCore( sysParam ) {
 			task_.step();
 
 			//document.getElementById("manual_1").innerHTML = "";
-			
+			//ctx.clearRect(0,0,1024,800);
+
 			for (var i = 0; i < sysp_cnt; i++){
 				if (screen_[i].getInterval() - sintcnt[i] == 1){
 					screen_[i].reset();
@@ -128,10 +132,11 @@ function GameCore( sysParam ) {
 			
 			//task_.step();
 	        task_.draw();
-
+			
+			//screen_[4].draw();
 			for (var i = 0; i < sysp_cnt; i++){
 				//if (screen_[i].getInterval() - sintcnt[i] == 1){
-					//if (screen_[i].view()) screen_[i].draw();
+				//if (screen_[i].view()) screen_[i].draw();
 				screen_[i].draw();
 				//これで全画面がCanvasに反映される。
 				//}

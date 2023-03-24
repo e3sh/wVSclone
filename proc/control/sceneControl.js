@@ -78,6 +78,9 @@ function sceneControl(state) {
         if (wipeEffectCount > 0){
 
             EffectWipeFrame(scrn.cw/2-wipeEffectCount);
+        } else {
+            //scrn.fill(0, 0, scrn.cw, scrn.ch, "black");
+            //scrn.fill(192, 120, 640, 400);
         }
 
         sceneList[runscene].draw();
@@ -89,7 +92,7 @@ function sceneControl(state) {
 
                 bar = {}
 
-                bar.x = 640-st.length*8;
+                bar.x = scrn.cw-st.length*8;
                 bar.y = 0;
                 bar.l = st.length*8;
         
@@ -98,7 +101,7 @@ function sceneControl(state) {
                     device.fillStyle = "black";
                     device.lineWidth = 1;
                     device.fillRect(this.x, this.y, this.l*8, 8);
-                    device.stroke();
+                    //device.stroke();
                 }
                 scrn.putFunc(bar);
                 scrn.putchr8(st, scrn.cw-st.length*8, 0);
@@ -122,11 +125,37 @@ function sceneControl(state) {
         var cw = scrn.cw;
         var ch = scrn.ch;
 
+        /*
         scrn.fill(0, 0, cw, ch/2 - size, "black");
         scrn.fill(0, ch/2 + size, cw, ch/2 - size, "black");
 
         scrn.fill(0, 0, cw/2 - size, ch, "black");
         scrn.fill(cw/2 + size, 0, cw/2-size,ch, "black");
+        */
+
+        var c = "black";//rgba(0,0,0,"+ ((cw-size*2) /cw) +")";
+
+        scrn.fill(0, 0, cw, ch, c);
+        scrn.fill(cw/2 - size, ch/2 - size, size*2, size*2);
+
+        /*
+        var fl = {}
+        fl.x = cw/2 - size;
+        fl.y = ch/2 - size;
+        fl.s = size *2;
+        fl.draw = function(context){
+            // 重なり部分をクリアする設定
+            context.globalCompositeOperation = "destination-out";
+            context.fillStyle = "rgba(255, 0, 0, 1)";
+            //context.fillRect(this.x,this.y,this.s,this.s);
+            context.arc(this.x, this.y, this.size/2, 0, Math.PI * 2, false);
+            context.fill();
+            // 半透明色での塗りつぶし
+            context.globalCompositeOperation = "source-over";
+            //context.clearRect(this.x,this.y,this.s,this.s);
+        }
+        scrn.putFunc(fl);
+        */
     }
 }
 

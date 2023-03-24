@@ -27,7 +27,7 @@ function deviceControl( g ){
     //dsp[0].setInterval(3);
     //dsp[1].setInterval(3);
     //dsp[2].setInterval(3);
-    dsp[3].setInterval(6); //6flame毎に書き換え/表示
+    //dsp[3].setInterval(6); //6flame毎に書き換え/表示
     
 
     this.graphics = dsp;

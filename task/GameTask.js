@@ -74,18 +74,6 @@ class GameTask_Debug extends GameTask {
 
         var r = g.fpsload.result();
 
-        /*
-        st += "</br>fps:" + r.fps + "</br>"
-        //+ "int.max" + r.interval.max + "</br>"
-        //+ "int.min" + r.interval.min + "</br>"
-        + "intv.ave:(" + r.interval.ave + "ms) "
-        //+ "wl .max" + r.workload.max + "</br>"
-        //+ "wl .min" + r.workload.min + "</br>"
-        + "load.ave:(" + r.workload.ave + "ms)</br>workload:"
-        + Math.trunc((r.workload.ave / r.interval.ave)*100) + "%</br>";
-        */
-        //document.getElementById("console").innerHTML = st;
-
         if (g.state.Config.debug){
             var sl = [];
             var r = g.fpsload.result();
@@ -195,24 +183,13 @@ class GameTask_Load extends GameTask {
     draw(g){
         var st = g.asset.check();
 
-        //var f = g.asset.image["FontGraph"].ready;
-
         var pfunc = g.asset.image["FontGraph"].ready ? this.fontsc.putchr :this.scrn.print ;  
-        /*
-        if (f){
-            this.fontsc.putchr(i + " " + st[i], 0, i*16 +16);
-        }else{
-            this.scrn.print(i + " " + st[i], 0, i*16 +16);
-        }
-        */
 
         for (var i in st){
             //pfunc(i + " " + st[i], 0, i*16 +16);
             pfunc(st[i], 0, i*16 +16);
         }
 
-        //this.cnt = (this.cnt++ > 90)? 0: this.cnt; 
-        //if ( this.cnt < 60){
         if (g.blink()){    
             pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
         }else{
@@ -229,23 +206,15 @@ class GameTask_Load extends GameTask {
             this.scrn.putFunc(o);
             pfunc("Click Mouse Left Button.", 0, st.length*16 +32+8);
         }
-                /*
-        var st = g.asset.namelist();
-        for (var i in st){
-            g.screen[4].print(i + " " + st[i] + (g.asset.image[st[i]].ready?"o":"x"), 0, i*16 +116);   
-            //img_[i].loadcheck()?"o":"x";
-            
-        }
-        */
+
         for (var i in this.str){
             pfunc(this.str[i], 320, i*8 + 8);
         }
 
-
-        //var ks = []; ks = g.keyboard.check();
         var ks = g.keyboard.state();
         var ms = g.mouse.check_last();
         var ts = g.touchpad.check();
+
         st = "";
         for (var i in ks){
             //if (ks[i]) st += "[" + String.fromCharCode(i) + ":" + i + "]"; 
@@ -258,12 +227,6 @@ class GameTask_Load extends GameTask {
         pfunc("[Mouse]", 320, this.str.length*8 +40);
         pfunc("State:" + st, 320, this.str.length*8 +48);
 
-        /*
-        ts.pos[0]={x: 999,y: 999};
-        ts.pos[1]={x: 999,y: 999};
-        ts.pos[2]={x: i,y: i};
-        */
-       
         var vy = 0;
         pfunc("[TouchPad]" + navigator.maxTouchPoints, 320, this.str.length*8 +64);
         for (var i in ts.pos){
@@ -329,76 +292,8 @@ class GameTask_Device extends GameTask {
     }
 
     draw(g){
-        //var st = g.asset.check();
-
-        //var f = g.asset.image["FontGraph"].ready;
-
-        //var pfunc = g.asset.image["FontGraph"].ready ? this.fontsc.putchr :this.scrn.print ;  
-        /*
-        if (f){
-            this.fontsc.putchr(i + " " + st[i], 0, i*16 +16);
-        }else{
-            this.scrn.print(i + " " + st[i], 0, i*16 +16);
-        }
-        
-
-        for (var i in st){
-            //pfunc(i + " " + st[i], 0, i*16 +16);
-            pfunc(st[i], 0, i*16 +16);
-        }
-        */
-        //this.cnt = (this.cnt++ > 90)? 0: this.cnt; 
-        //if ( this.cnt < 60){
-        //if (g.blink()){
-            //g.touchpad.draw(this.scrn);    
-            //pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
-            g.vgamepad.draw(this.scrn);
-
-            g.touchpad.draw(this.scrn); 
-            g.mouse.draw(this.scrn);
-        //}
-        /*
-        }else{
-            var o = {}
-            o.x = 0;
-            o.y = st.length*16 +32;
-            o.w = 31 * 8;
-            o.h = 24;
-            o.draw = function (device) {
-                device.beginPath();
-                device.fillStyle = "navy";
-                device.fillRect(this.x, this.y, this.w, this.h);
-            }
-            this.scrn.putFunc(o);
-            pfunc("Click Mouse Left Button.", 0, st.length*16 +32+8);
-        }
-                /*
-        var st = g.asset.namelist();
-        for (var i in st){
-            g.screen[4].print(i + " " + st[i] + (g.asset.image[st[i]].ready?"o":"x"), 0, i*16 +116);   
-            //img_[i].loadcheck()?"o":"x";
-            
-        }
-        
-        for (var i in this.str){
-            pfunc(this.str[i], 320, i*8 + 8);
-        }
-
-
-        //var ks = []; ks = g.keyboard.check();
-        var ks = g.keyboard.state();
-        var ms = g.mouse.check_last();
-        st = "";
-        for (var i in ks){
-            //if (ks[i]) st += "[" + String.fromCharCode(i) + ":" + i + "]"; 
-            if (ks[i]) st += "[" + i + "]"; 
-        }
-        pfunc("[Keyboard]", 320, this.str.length*8 +16);
-        if (st.length>0) pfunc("KeyCode:" + st, 320, this.str.length*8 +24);
-        
-        st = "x:" + ms.x + " y:" + ms.y + " button:" + ms.button + " wheel:" + ms.wheel;
-        pfunc("[Mouse]", 320, this.str.length*8 +40);
-        pfunc("State:" + st, 320, this.str.length*8 +48);
-        */
+        g.vgamepad.draw(this.scrn);
+        g.touchpad.draw(this.scrn); 
+        g.mouse.draw(this.scrn);
     }
 }

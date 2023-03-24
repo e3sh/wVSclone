@@ -7,8 +7,8 @@ function gameLayout() {
     const GS_SIZE_X = 640;//GameScreenSize
     const GS_SIZE_Y = 400;//GameScreenSize
 
-    const DSP_SP_X = 192;
-    const DSP_SP_Y = 120;
+    const DSP_SP_X = 0;//192;
+    const DSP_SP_Y = 0;//120;
 
     this.score_x = DSP_SP_X + GS_SIZE_X - 180;
     this.score_y = DSP_SP_Y +16;

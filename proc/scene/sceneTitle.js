@@ -66,7 +66,7 @@ function sceneTitle(state) {
         dev.graphics[0].setInterval(0);//BG　WORK2
 		dev.graphics[1].setInterval(0);//SPRITE
 		dev.graphics[2].setInterval(0);//FG
-		dev.graphics[3].setInterval(6);//UI //
+		dev.graphics[3].setInterval(1);//UI //
         //DeviceControlで[0]のBackgroundColor”Black”と設定している。
         //今後は各Sceneで設定したほうが良い。
         //TitleにはすべてのSceneから戻ってくる可能性があるので画面状態が分からない。手動にした画面を一度クリア。

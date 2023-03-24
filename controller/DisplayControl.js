@@ -1,13 +1,13 @@
 ﻿// DisplayControlクラス
 //
 
-function DisplayControl(ctx, c_w, c_h) {
+function DisplayControl(ctx, c_w, c_h, ix, iy) {
     //キャンバスID、キャンバス幅、高さ指定。画面表示サイズはCSSのSTYLEで
     //指定してあるのでここでは、操作する解像度を指定する。
 
-    //var buffer_ = new offScreen();
-    //var buffer_ = new offScreenTypeB(c_w, c_h);
-    var buffer_ = new offScreenTypeC(c_w, c_h);
+    //var buffer_ = new offScreen();//複数のCanvasをLayerと使用する版(1枚Canvas使用にしたのでこちらにする場合は処理で調整が必要)
+    //var buffer_ = new offScreenTypeB(c_w, c_h);//過去の遺物:↓が上位互換なのでこちらに移行
+    var buffer_ = new offScreenTypeC(c_w, c_h, ix, iy); //offScreenCanvas版(2023/03)
 
     this.buffer = buffer_;
 

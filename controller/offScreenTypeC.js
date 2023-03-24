@@ -10,9 +10,12 @@
 //全画面表示したいので表示はキャンバスを重ねないようにする
 //(mainのCanvasに全部表示させる）
 
-function offScreenTypeC( w, h ){//typeOffscreenCanvas版
+function offScreenTypeC( w, h, ix, iy ){//typeOffscreenCanvas版
     //w : width, h:height
     const element = new OffscreenCanvas( w, h );
+
+    const offset_x = ix;
+    const offset_y = iy;
 /*
 const offscreenCanvas = new OffscreenCanvas(200, 200);
 const offscreenContext = offscreenCanvas.getContext('2d');
@@ -31,6 +34,24 @@ context.drawImage(offscreenCanvas, 0, 0);
 
     const device = element.getContext("2d");
 
+    var enable_draw_flag = true;
+    var enable_reset_flag = true;
+
+    this.view = function ( flg ){ //flg : bool
+        if (flg === null) {
+            return enable_draw_flag;
+        }else{
+            enable_draw_flag = flg;
+        }
+    }
+
+    this.flip = function( flg ){
+        if (flg === null) {
+            return enable_reset_flag;
+        }else{
+            enable_reset_flag = flg;
+        }
+    }
     //this.flip = function ( outdev ) {
 
     //    outdev.putImageData(device.getImageData(0, 0, element.width, element.height), 0, 0);
@@ -171,10 +192,10 @@ context.drawImage(offscreenCanvas, 0, 0);
     //----------------------------------------------------------
     //描画
     //----------------------------------------------------------
-    this.draw = function ( outdev, x=0, y=0 ) {
+    this.draw = function ( outdev ) {
 
         //outdev.clearRect(x, y, w, h);
-        outdev.drawImage(element, x, y);
+        outdev.drawImage(element, offset_x, offset_y);
 
         //this.flip(outdev);
     }

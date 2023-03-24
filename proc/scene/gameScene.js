@@ -10,10 +10,10 @@ function gameScene(state){
     //宣言部
     var dev = state.System.dev;
 
-	var work = dev.graphics[1];//1
-    var work2 = dev.graphics[0];//0
-    var work3 = dev.graphics[3];//3
-    var forgroundBG = dev.graphics[2];//2
+	var work = dev.graphics[1];//1 SP
+    var work2 = dev.graphics[0];//0 BG
+    var work3 = dev.graphics[3];//3 UI
+    var forgroundBG = dev.graphics[2];//2 FG
 
 	work2.backgroundcolor = "black";
 
@@ -66,6 +66,7 @@ function gameScene(state){
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.3)";
 	    device.fillRect(dev.layout.map_x, dev.layout.map_y, 150, 150);
+		//device.globalAlpha = 1.0;
 1	    /*
 		device.beginPath();
 	    device.strokeStyle = "rgba(0,0,255,0.5)";
@@ -80,21 +81,22 @@ function gameScene(state){
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.5)";
 	    device.fillRect(dev.layout.clip_x, dev.layout.clip_y, 640 - 13 * 13, 36);
+		//device.globalAlpha = 1.0;
 	}
     //hpbar
 	var HpbarDraw = { hp: 0, mhp: 0, br: true }
 	HpbarDraw.draw = function (device) {
 	    device.beginPath();
 	    device.fillStyle = (this.br) ? "skyblue" : "limegreen";
-	    device.lineWidth = 1;
-	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, (this.hp/this.mhp)*100, 14);
-	    device.stroke();
-
+	    //device.lineWidth = 1;
+	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, (this.hp/this.mhp)*100, 14-1);
+	    //device.stroke();
 	    device.beginPath();
-	    device.strokeStyle = "white"; 
-	    device.lineWidth = 1;
+	    device.strokeStyle = "white";
+	    device.lineWidth = 2;
 	    device.rect(dev.layout.hp_x, dev.layout.hp_y, 102, 15);
 	    device.stroke();
+		
 	}
 	//縮小マップ表示
 	var SubmapDraw = { mcp : mapChip, draw :
@@ -638,7 +640,7 @@ function gameScene(state){
 	            }
                 */
                 if (!mapdisp || lampf) {
-					forgroundBG.putFunc(SubmapframeDraw);
+					work3.putFunc(SubmapframeDraw);//forgroundBG.putFunc(SubmapframeDraw);
 					if (!mapdisp) work3.putFunc(SubmapDraw);//mapdispはfalseで表示(今となってはなぜかわからん/そのうち修正)
 					obCtrl.drawPoint(work3, lampf);
 				}
@@ -655,7 +657,7 @@ function gameScene(state){
 	                device.fillRect(0, 480 - 36, 640 - 13* 13, 36);
 	            }
                 */
-	            forgroundBG.putFunc(ButtomlineBackgroundDraw);
+	            work3.putFunc(ButtomlineBackgroundDraw);
 
 				//if (state.Config.debug){
 				if (true){
