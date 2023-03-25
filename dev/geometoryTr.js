@@ -69,11 +69,14 @@ function geometoryTrance() {
             w.y = Math.trunc(y - this.world_y);
         }
         // view shift
-        w.x += 192; //(1024-640)/2
-        w.y += 120; //( 640-480)/2
-        
-        w.sx = 192; 
-        w.sy = 120;
+        //w.sx = 192; 
+        //w.sy = 120;
+
+        w.sx = 0; 
+        w.sy = 0;
+
+        w.x += w.sx; //(1024-640)/2
+        w.y += w.sy; //( 640-400)/2
 
         return w;
     }

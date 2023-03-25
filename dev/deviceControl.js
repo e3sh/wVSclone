@@ -22,7 +22,10 @@ function deviceControl( g ){
 
     dsp[0].setBackgroundcolor("black");
 
-    //dsp[0].flip(false);
+    //dsp[1].flip(false);
+    //dsp[2].flip(false);
+    //dsp[3].flip(false);
+    //dsp[4].flip(false);
     //dsp[3].view(false);
     //dsp[0].setInterval(3);
     //dsp[1].setInterval(3);

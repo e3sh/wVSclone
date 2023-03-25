@@ -2,10 +2,10 @@
 function main_r() {
 
 	//resolution
-	const VIEW_WIDTH  = 1024;
-	const VIEW_HEIGHT = 640;
-	//const VIEW_WIDTH  = 640;
-	//const VIEW_HEIGHT = 480;
+	//const VIEW_WIDTH  = 1024;
+	//const VIEW_HEIGHT = 640;
+	const VIEW_WIDTH  = 640;
+	const VIEW_HEIGHT = 400;//16:10
 
     var sysParam = {
 		canvasId: "Layer0",
@@ -14,8 +14,10 @@ function main_r() {
 		{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } },//BGSurface / systemCanvas Resolution
 		{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } },//SPSurface
         { resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } },//FGSurface
-        { resolution: { w: 640,        h: 400    , x:192, y:120 } },//UISurface
+        { resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } },//UISurface
         { resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } } //Effect
+    //    { resolution: { w: 640, h: 400, x:192, y:120 } },//UISurface
+    //    { resolution: { w: 640, h: 400, x:192, y:120 } } //Effect
 		]
 	}
 

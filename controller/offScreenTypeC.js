@@ -38,19 +38,17 @@ context.drawImage(offscreenCanvas, 0, 0);
     var enable_reset_flag = true;
 
     this.view = function ( flg ){ //flg : bool
-        if (flg === null) {
-            return enable_draw_flag;
-        }else{
+        if (typeof flg == "boolean") {
             enable_draw_flag = flg;
         }
+        return enable_draw_flag;
     }
 
     this.flip = function( flg ){
-        if (flg === null) {
-            return enable_reset_flag;
-        }else{
+        if (typeof flg == "boolean") {
             enable_reset_flag = flg;
         }
+        return enable_draw_flag;
     }
     //this.flip = function ( outdev ) {
 
@@ -194,9 +192,10 @@ context.drawImage(offscreenCanvas, 0, 0);
     //----------------------------------------------------------
     this.draw = function ( outdev ) {
 
+        if (enable_draw_flag){
         //outdev.clearRect(x, y, w, h);
-        outdev.drawImage(element, offset_x, offset_y);
-
+            outdev.drawImage(element, offset_x, offset_y);
+        }
         //this.flip(outdev);
     }
 

@@ -31,19 +31,17 @@ function offScreen(){
     var enable_reset_flag = true;
         
     this.view = function ( flg ){ //flg : bool
-        if (flg === null) {
-            return enable_draw_flag;
-        }else{
+        if (typeof flg == "boolean") {
             enable_draw_flag = flg;
         }
+        return enable_draw_flag;
     }
 
     this.flip = function( flg ){
-        if (flg === null) {
-            return enable_reset_flag;
-        }else{
+        if (typeof flg == "boolean") {
             enable_reset_flag = flg;
         }
+        return enable_draw_flag;
     }
 
     //-------------------------------------------------------------

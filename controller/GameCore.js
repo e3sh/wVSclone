@@ -136,7 +136,7 @@ function GameCore( sysParam ) {
 			//screen_[4].draw();
 			for (var i = 0; i < sysp_cnt; i++){
 				//if (screen_[i].getInterval() - sintcnt[i] == 1){
-				//if (screen_[i].view()) screen_[i].draw();
+				//if (screen_[i].view()) screen_[i].draw(); //<=これはoffscreen側で処理
 				screen_[i].draw();
 				//これで全画面がCanvasに反映される。
 				//}

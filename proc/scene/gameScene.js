@@ -658,9 +658,9 @@ function gameScene(state){
 	            }
                 */
 	            work3.putFunc(ButtomlineBackgroundDraw);
-
-				//if (state.Config.debug){
-				if (true){
+				/*
+				if (state.Config.debug){
+				//if (true){
 					var cl = {}
 					cl.x = 192;
 					cl.y = 120;
@@ -678,6 +678,7 @@ function gameScene(state){
 
 					forgroundBG.putFunc(cl);
 				}
+				*/
 		}		
 		function BGShadowDraw() {
 			for (var i in mapChip) {

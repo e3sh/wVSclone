@@ -28,13 +28,9 @@ function DisplayControl(ctx, c_w, c_h, ix, iy) {
     //加算合成を使用する。
     this.lighter_enable = true;//現在無効
 
-    var enable_flip_flag = true
-
     this.view = buffer_.view;
-    this.flip = function( flg ){
-        enable_flip_flag = flg;
-        buffer_.flip(flg);
-    }
+    this.flip = buffer_.view;
+
     var intv = 1;
     var bgcolor = "";
  
@@ -139,7 +135,7 @@ function DisplayControl(ctx, c_w, c_h, ix, iy) {
     //---------------------------------------------------------
     this.clear = function (c_str) {
 
-        if (enable_flip_flag){
+        if (this.flip()){
 
             buffer_.allClear(0, 0, c_w, c_h);
 

@@ -102,24 +102,26 @@ class GameTask_Debug extends GameTask {
 
             g.font["8x8white"].useScreen(4);
             for(var i=0; i < sl.length; i++){
-                g.font["8x8white"].putchr(sl[i], 0, 400+ i*8);
+                g.font["8x8white"].putchr(sl[i], 320, 320+ i*8);
             }
 
             var sl = [];
-            sl.push("bench:intv:bgcolor/sc_buffer(max/count)");  
+            //sl.push("bench:intv:bgcolor/sc_buffer(max/count)");  
+            sl.push("sc(intv)bgcolor");  
 
             st = "";
             for (var i=0 ; i < SC_NUM ;i++){
-            st = "sc[" + i + "]" 
-            + g.screen[i].getInterval() + ":" 
-            + g.screen[i].getBackgroundcolor()  + "/"
-            + g.screen[i].max() + "/" 
-            + g.screen[i].count(); 
+            //st = "sc[" + i + "]" 
+            st = " " + i + "(" 
+            + g.screen[i].getInterval() + ")" 
+            + g.screen[i].getBackgroundcolor();//  + "/"
+           // + g.screen[i].max() + "/" 
+            //+ g.screen[i].count(); 
             sl.push(st);
             }
 
             for(var i=0; i < sl.length; i++){
-                g.font["8x8white"].putchr(sl[i], 160, 400+ i*8);
+                g.font["8x8white"].putchr(sl[i], 480, 320+ i*8);
             }
         }
     }
