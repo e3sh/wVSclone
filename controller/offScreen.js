@@ -31,17 +31,19 @@ function offScreen(){
     var enable_reset_flag = true;
         
     this.view = function ( flg ){ //flg : bool
-        if (typeof flg == "boolean") {
+        if (flg === null) {
+            return enable_draw_flag;
+        }else{
             enable_draw_flag = flg;
         }
-        return enable_draw_flag;
     }
 
     this.flip = function( flg ){
-        if (typeof flg == "boolean") {
+        if (flg === null) {
+            return enable_reset_flag;
+        }else{
             enable_reset_flag = flg;
         }
-        return enable_draw_flag;
     }
 
     //-------------------------------------------------------------
@@ -371,15 +373,12 @@ function offScreen(){
     }
     ScreenSubClass.prototype.func[ALLCLEAR] = function (device) {
         //use sx, sy, sw, sh
-        
-        /*
         device.save();
 
         device.setTransform(1, 0, 0, 1, 0, 0);
         device.clearRect(this.sx, this.sy, this.sw, this.sh);
 
         device.restore();
-        */
     }
     ScreenSubClass.prototype.func[FILLRECT] = function (device) {
         //use sx, sy, sw, sh, color
