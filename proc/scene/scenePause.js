@@ -39,11 +39,14 @@ function scenePause(state) {
 
         ret_code = 0;
 
-        work.putchr(" == PAUSE ==", 320 - 50, 200);
-        work.putchr("Push <Z>key or [Space] ", 320 - 100, 220);
-        work.putchr(" Return game.", 320 - 50, 240);
-        work.putchr("Push <Q>key /", 320 - 100, 260);
-        work.putchr("Save and Quit.", 320 - 50, 280); 
+        const DSP_X = 320;
+        const DSP_Y = 160;
+
+        work.putchr(" == PAUSE ==", DSP_X - 50, DSP_Y);
+        work.putchr("Push <Z>key or [Space] ", DSP_X - 100, DSP_Y + 20);
+        work.putchr(" Return game.", DSP_X - 50, DSP_Y + 40);
+        work.putchr("Push <Q>key /", DSP_X - 100, DSP_Y + 60);
+        work.putchr("Save and Quit.", DSP_X - 50, DSP_Y + 80); 
 
         work.draw();
         work.reset();
@@ -118,7 +121,7 @@ function scenePause(state) {
             dev.graphics[0].setInterval(1);//BG　WORK2
             dev.graphics[1].setInterval(1);//SPRITE
             dev.graphics[2].setInterval(1);//FG
-            work.setInterval(6);//UI
+            work.setInterval(1);//UI
 
             return 1;//GameScene
         }
@@ -162,10 +165,10 @@ function scenePause(state) {
                     break;
             }
             work.reset();
-            work.fill(0, 300, 640, 8 * 11);
+            work.fill(0, 240, 640, 8 * 11);
             if (menuvf){
                 var arr = [];
-                work.putchr8("Input ["+ inp +"]", 16, 300);
+                work.putchr8("Input ["+ inp +"]", 16, 240);
 
                 arr.push("1: Debug Display  :" + (state.Config.debug?"ON":"OFF"));
                 arr.push("2: Lamp(nextStage):" + (state.Config.lamp_use?"ON":"OFF"));
@@ -179,7 +182,7 @@ function scenePause(state) {
                 arr.push("0: Menu Display   :" + (menuvf?"ON":"OFF"));
 
                 for (var i in arr){
-                    work.putchr8(arr[i], 0, 308 + i * 8);
+                    work.putchr8(arr[i], 0, 248 + i * 8);
                 }
             }
             work.draw();

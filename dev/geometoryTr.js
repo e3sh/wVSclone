@@ -8,10 +8,10 @@ function geometoryTrance() {
     this.worldheight = 2976;
 
     this.stagewidth = 700;
-    this.stageheight = 540;
+    this.stageheight = 460;
 
     this.viewwidth = 640;
-    this.viewheight = 480;
+    this.viewheight = 400;
 
     this.world_x = 0;
     this.world_y = 0;
@@ -68,10 +68,16 @@ function geometoryTrance() {
         }else{
             w.y = Math.trunc(y - this.world_y);
         }
-        /* view shift
-        w.x += 192;
-        w.y += 144;
-        */
+        // view shift
+        //w.sx = 192; 
+        //w.sy = 120;
+
+        w.sx = 0; 
+        w.sy = 0;
+
+        w.x += w.sx; //(1024-640)/2
+        w.y += w.sy; //( 640-400)/2
+
         return w;
     }
 

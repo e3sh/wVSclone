@@ -6,6 +6,9 @@ function inputVirtualPad(mouse, touchpad) {
 
     //vControllerの入力位置設定
 
+    const ResoX = 640;
+    const ResoY = 400;
+
     var vCntlPos = {};
 
     vCntlPos.X = 0;
@@ -14,7 +17,7 @@ function inputVirtualPad(mouse, touchpad) {
     var Pad_Loc = {};
 
     Pad_Loc.X = 80
-    Pad_Loc.Y = 480-80
+    Pad_Loc.Y = ResoY-80
     Pad_Loc.R = 75
 
     var Button_Loc = [];
@@ -23,8 +26,8 @@ function inputVirtualPad(mouse, touchpad) {
 
         Button_Loc[i] = {};
 
-        Button_Loc[i].X = 640-200 + 80 * (i + 1);
-        Button_Loc[i].Y = 480-80;
+        Button_Loc[i].X = ResoX-200 + 80 * (i + 1);
+        Button_Loc[i].Y = ResoY-80;
         Button_Loc[i].R = 28;
         Button_Loc[i].ON = false;
     }
@@ -34,8 +37,8 @@ function inputVirtualPad(mouse, touchpad) {
 
         Button_Loc[i + 2] = {};
 
-        Button_Loc[i + 2].X = 640-80;
-        Button_Loc[i + 2].Y = 360 + 80 * i;
+        Button_Loc[i + 2].X = ResoX-80;
+        Button_Loc[i + 2].Y = (ResoY-120) + 80 * i;
         Button_Loc[i + 2].R = 28;
         Button_Loc[i + 2].ON = false;
     }

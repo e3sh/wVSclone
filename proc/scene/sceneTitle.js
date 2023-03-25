@@ -38,7 +38,7 @@ function sceneTitle(state) {
 	    m = {};
 	    m.title = mttl[ i ];
 	    m.x = 320 - 50;
-	    m.y = 320 + i*20 + 32;
+	    m.y = 260 + i*20 + 32;
 	    m.w = 120;
 	    m.h = 16;
 		m.jp = mjmp[ i ];
@@ -66,7 +66,7 @@ function sceneTitle(state) {
         dev.graphics[0].setInterval(0);//BG　WORK2
 		dev.graphics[1].setInterval(0);//SPRITE
 		dev.graphics[2].setInterval(0);//FG
-		dev.graphics[3].setInterval(6);//UI //
+		dev.graphics[3].setInterval(1);//UI //
         //DeviceControlで[0]のBackgroundColor”Black”と設定している。
         //今後は各Sceneで設定したほうが良い。
         //TitleにはすべてのSceneから戻ってくる可能性があるので画面状態が分からない。手動にした画面を一度クリア。
@@ -101,27 +101,29 @@ function sceneTitle(state) {
             wtxt.push("audio off:" + dev.sound.loadCheck());
         }
 
-        work2.put("Mayura1", 320 - 50 +8 , 208);
-        work2.put("Unyuu1", 320 - 50 +8, 240);
+        const DSP_X = 320;
+        const DSP_Y = 144;
 
-        work2.put("Ball1", 320 - 100 + 0 -16, 272);
-        work2.put("BallB1", 320 - 100 + 16 - 16, 272);
-        work2.put("BallS1", 320 - 100 + 32 - 16, 272);
-        work2.put("BallL1", 320 - 100 + 48 - 16, 272);
-        work2.put("Lamp", 320 - 100 + 72 - 16, 272);
-        work2.put("Map", 320 - 100 + 96 - 16, 272);
+        work2.put("Mayura1", DSP_X - 50 +8 , DSP_Y +8);
+        work2.put("Unyuu1", DSP_X - 50 +8,  DSP_Y  +40);
 
+        work2.put("Ball1" , DSP_X - 100 + 0 -16, DSP_Y +72);
+        work2.put("BallB1", DSP_X - 100 + 16 - 16, DSP_Y +72);
+        work2.put("BallS1", DSP_X - 100 + 32 - 16, DSP_Y +72);
+        work2.put("BallL1", DSP_X - 100 + 48 - 16, DSP_Y +72);
+        work2.put("Lamp"  , DSP_X - 100 + 72 - 16, DSP_Y +72);
+        work2.put("Map"   , DSP_X - 100 + 96 - 16, DSP_Y +72);
         //work2.put("TrBox", 320 - 50 + 0 - 8, 304);
-        work2.put("Key", 320 - 50 + 16 - 8, 304);
+        work2.put("Key"   , DSP_X - 50 + 16 - 8, DSP_Y +102);
 
-        work2.putchr("Player", 320, 208 - 8);
-        work2.putchr("Enemy", 320, 240 - 8);
-        work2.putchr("Ball/Item", 320, 272 - 8);
-        work2.putchr("Key", 320, 304 - 8);
+        work2.putchr("Player"   , DSP_X, DSP_Y  +  8 -8);
+        work2.putchr("Enemy"    , DSP_X, DSP_Y  + 40 -8);
+        work2.putchr("Ball/Item", DSP_X, DSP_Y  + 72 -8);
+        work2.putchr("Key"      , DSP_X, DSP_Y  +104 -8);
         //work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
 
         for (var s in wtxt) {
-            work2.putchr(wtxt[s], 0, 132 + 16 * s);        
+            work2.putchr(wtxt[s], 0, DSP_Y  - 80 + 16 * s);        
         }
 
         work2.draw();
@@ -295,7 +297,7 @@ function sceneTitle(state) {
         }
         if (state.System.blink()){ 
         //if (bvf) 
-            work.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
+            work.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 270);
         }
         //表示
     }

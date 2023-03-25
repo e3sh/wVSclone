@@ -49,14 +49,25 @@ function GameCore( sysParam ) {
 	var keyboard_ = new inputKeyboard();
 	var mouse_ = new inputMouse();
 	var joystick_ = new inputGamepad();
-	var touchpad_ = new inputTouchPad( sysParam[sysParam.length-1].canvasId);//<=とりあえずにscreen[4-]のキャンバス指定
+	var touchpad_ = new inputTouchPad( sysParam.canvasId );//<=とりあえずにscreen[4-]のキャンバス指定
 	var vGpad_ = new inputVirtualPad(mouse_, touchpad_);
 
 	var screen_ = [];
 
-	for (var i in sysParam) {
-	    var wsysp = sysParam[i];
-	    screen_[i] = new DisplayControl(wsysp.canvasId, wsysp.resolution.w, wsysp.resolution.h);
+	var canvas = document.getElementById(sysParam.canvasId);
+    canvas.width = sysParam.screen[0].resolution.w;
+    canvas.height = sysParam.screen[0].resolution.h;
+
+	this.systemCanvas = canvas;
+
+	var ctx = canvas.getContext("2d");
+
+	for (var i in sysParam.screen) {
+	    var wsysp = sysParam.screen[i];
+	    screen_[i] = new DisplayControl(ctx, 
+			wsysp.resolution.w, wsysp.resolution.h,
+			wsysp.resolution.x, wsysp.resolution.y,
+			);
 	}
 	if (sysParam.length > 0) { var dsp_ = screen_[0]; }
 
@@ -86,7 +97,7 @@ function GameCore( sysParam ) {
 	//document.getElementById("console").innerHTML = "START GAME CORE";
 	// mainloop
 
-	var sysp_cnt = sysParam.length;
+	var sysp_cnt = sysParam.screen.length;
 
 	//var blinkCounter = 0;
 	//const BLINK_ITVL = 21500;
@@ -108,6 +119,8 @@ function GameCore( sysParam ) {
 			task_.step();
 
 			//document.getElementById("manual_1").innerHTML = "";
+			//ctx.clearRect(0,0,1024,800);
+
 			for (var i = 0; i < sysp_cnt; i++){
 				if (screen_[i].getInterval() - sintcnt[i] == 1){
 					screen_[i].reset();
@@ -116,15 +129,17 @@ function GameCore( sysParam ) {
 	        		//これで表示Bufferがクリアされ、先頭に全画面消去が登録される。
 				}
 			}
+			
 			//task_.step();
 	        task_.draw();
-
+			
+			//screen_[4].draw();
 			for (var i = 0; i < sysp_cnt; i++){
-				if (screen_[i].getInterval() - sintcnt[i] == 1){
-					//if (screen_[i].view()) screen_[i].draw();
+				//if (screen_[i].getInterval() - sintcnt[i] == 1){
+				//if (screen_[i].view()) screen_[i].draw(); //<=これはoffscreen側で処理
 				screen_[i].draw();
 				//これで全画面がCanvasに反映される。
-				}
+				//}
 			}
 			sprite_.allDrawSprite();//スプライトをBufferに反映する。
 

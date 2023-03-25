@@ -17,6 +17,7 @@ var w = [
     "controller/DisplayControl.js",
     "controller/soundControl.js",
     "controller/offScreen.js",
+    "controller/offScreenTypeC.js",
     "controller/spriteControl.js",
     "controller/spriteFontControl.js",
     //class
