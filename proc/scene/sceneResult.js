@@ -35,7 +35,7 @@ function sceneResult(state) {
     var m = {};
     m.title = "[   ok.  ]";
     m.x = 320-80;
-    m.y = 280;
+    m.y = 320;
     m.w = 120;
     m.h = 16;
     m.sel = false;
@@ -212,7 +212,7 @@ function sceneResult(state) {
         }
 
         for (var s in wtxt) {
-            work.putchr(wtxt[s], 320-150, 120 + 16 * s );// + (150 - counter) );
+            work.putchr(wtxt[s], 320-150, 160 + 16 * s );// + (150 - counter) );
             //			work.putchr8(wtxt[s],0,0 + 8*s);
             //		        work.print(wtxt[s],0,0 + 16*s +200);	
         }

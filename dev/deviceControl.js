@@ -22,15 +22,12 @@ function deviceControl( g ){
 
     dsp[0].setBackgroundcolor("black");
 
-    //dsp[1].flip(false);
-    //dsp[2].flip(false);
-    //dsp[3].flip(false);
-    //dsp[4].flip(false);
+    //dsp[0].flip(false);
     //dsp[3].view(false);
     //dsp[0].setInterval(3);
     //dsp[1].setInterval(3);
     //dsp[2].setInterval(3);
-    //dsp[3].setInterval(6); //6flame毎に書き換え/表示
+    dsp[3].setInterval(6); //6flame毎に書き換え/表示
     
 
     this.graphics = dsp;
