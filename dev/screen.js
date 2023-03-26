@@ -146,6 +146,7 @@ function Screen(g,num) {//g.screen（DisplayControll）[num]
     this.clear = scrn.clear;
     this.fill = scrn.fill;
     this.reset = scrn.reset;
+    this.reflash = scrn.reflash;
     this.draw = scrn.draw;
     this.count = scrn.count;
     this.max = scrn.max;

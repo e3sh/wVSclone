@@ -1,5 +1,5 @@
 ﻿// main
-function main_r() {
+function main_r(sw) {
 
 	//resolution
 	//const VIEW_WIDTH  = 1024;
@@ -9,6 +9,7 @@ function main_r() {
 
     var sysParam = {
 		canvasId: "Layer0",
+		offscreen : sw, //offscreenCanvas Use Select "use" or etc / default use
 		screen: [
 	//  { canvasId: "Layer0", resolution: { w: 1920, h: 1280 } },
 		{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } },//BGSurface / systemCanvas Resolution

@@ -741,7 +741,7 @@ function gameScene(state){
 
 	        var wtxt = [];
 
-	        work3.fill(dev.layout.hiscore_x + 12 * 6, dev.layout.hiscore_y, 12 * 7, 32); // , "darkblue");
+	        //work3.fill(dev.layout.hiscore_x + 12 * 6, dev.layout.hiscore_y, 12 * 7, 32); // , "darkblue");
 
 	        wt = ehighscore.read(state.Result.highscore);
 	        //work3.putchr("Hi-Sc:" + wt, dev.layout.hiscore_x, dev.layout.hiscore_y);

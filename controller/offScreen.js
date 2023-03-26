@@ -1,5 +1,4 @@
-﻿
-// offScreenクラス
+﻿// offScreenクラス
 // (offscreen buffer)
 //
 
@@ -254,9 +253,18 @@ function offScreen(){
 
         if (ef_item.length > BUFFER_SIZE) ef_item.length = 0; 
 
+        ef_item = [];
+        buf_count = 0;
+        //
+    }
+
+    //----------------------------------------------------------
+    //(flameloopで実行用）描画バッファ配列のリセット
+    //----------------------------------------------------------
+    this.reflash = function () {
+
         if (enable_reset_flag){
-            ef_item = [];
-            buf_count = 0;
+            this.reset();
         }
         //
     }

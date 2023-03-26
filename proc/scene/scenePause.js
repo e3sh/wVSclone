@@ -49,7 +49,8 @@ function scenePause(state) {
         work.putchr("Save and Quit.", DSP_X - 50, DSP_Y + 80); 
 
         work.draw();
-        work.reset();
+        //work.reset();
+        menuvf = false;
 
         state.Game.cold = true;
 
@@ -164,8 +165,10 @@ function scenePause(state) {
                 default:
                     break;
             }
+
             work.reset();
-            work.fill(0, 240, 640, 8 * 11);
+            work.fill(0, 240, 8 * 22, 8 * 11, "navy");
+
             if (menuvf){
                 var arr = [];
                 work.putchr8("Input ["+ inp +"]", 16, 240);
@@ -208,6 +211,6 @@ function scenePause(state) {
         	}
 		}
         */
-        work.reset();
+        //work.reset();
     }
 }

@@ -125,18 +125,16 @@ function sceneControl(state) {
         var cw = scrn.cw;
         var ch = scrn.ch;
 
-        /*
-        scrn.fill(0, 0, cw, ch/2 - size, "black");
-        scrn.fill(0, ch/2 + size, cw, ch/2 - size, "black");
-
-        scrn.fill(0, 0, cw/2 - size, ch, "black");
-        scrn.fill(cw/2 + size, 0, cw/2-size,ch, "black");
-        */
-
         var c = "black";//rgba(0,0,0,"+ ((cw-size*2) /cw) +")";
 
-        scrn.fill(0, 0, cw, ch, c);
-        scrn.fill(cw/2 - size, ch/2 - size, size*2, size*2);
+        scrn.fill(0, 0, cw, ch/2 - size, c);
+        scrn.fill(0, ch/2 + size, cw, ch/2 - size, c);
+
+        scrn.fill(0, 0, cw/2 - size, ch, c);
+        scrn.fill(cw/2 + size, 0, cw/2-size,ch, c);
+
+        //scrn.fill(0, 0, cw, ch, c);
+        //scrn.fill(cw/2 - size, ch/2 - size, size*2, size*2);
 
         /*
         var fl = {}

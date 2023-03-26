@@ -67,6 +67,7 @@ function GameCore( sysParam ) {
 	    screen_[i] = new DisplayControl(ctx, 
 			wsysp.resolution.w, wsysp.resolution.h,
 			wsysp.resolution.x, wsysp.resolution.y,
+			sysParam.offscreen
 			);
 	}
 	if (sysParam.length > 0) { var dsp_ = screen_[0]; }
@@ -123,7 +124,7 @@ function GameCore( sysParam ) {
 
 			for (var i = 0; i < sysp_cnt; i++){
 				if (screen_[i].getInterval() - sintcnt[i] == 1){
-					screen_[i].reset();
+					screen_[i].reflash();
 					//debug:document.getElementById("manual_1").innerHTML +=( i + ":" + screen_[i].getBackgroundcolor());
 					screen_[i].clear();
 	        		//これで表示Bufferがクリアされ、先頭に全画面消去が登録される。
