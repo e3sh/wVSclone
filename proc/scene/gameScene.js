@@ -10,10 +10,10 @@ function gameScene(state){
     //宣言部
     var dev = state.System.dev;
 
-	var work = dev.graphics[1];//1 SP
-    var work2 = dev.graphics[0];//0 BG
-    var work3 = dev.graphics[3];//3 UI
-    var forgroundBG = dev.graphics[2];//2 FG
+	var work = dev.graphics[1];//1
+    var work2 = dev.graphics[0];//0
+    var work3 = dev.graphics[3];//3
+    var forgroundBG = dev.graphics[2];//2
 
 	work2.backgroundcolor = "black";
 
@@ -66,7 +66,6 @@ function gameScene(state){
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.3)";
 	    device.fillRect(dev.layout.map_x, dev.layout.map_y, 150, 150);
-		//device.globalAlpha = 1.0;
 1	    /*
 		device.beginPath();
 	    device.strokeStyle = "rgba(0,0,255,0.5)";
@@ -80,23 +79,22 @@ function gameScene(state){
 	ButtomlineBackgroundDraw.draw = function (device) {
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.5)";
-	    device.fillRect(dev.layout.clip_x, dev.layout.clip_y, 640 - 13 * 13, 36);
-		//device.globalAlpha = 1.0;
+	    device.fillRect(0, 480 - 36, 640 - 13 * 13, 36);
 	}
     //hpbar
 	var HpbarDraw = { hp: 0, mhp: 0, br: true }
 	HpbarDraw.draw = function (device) {
 	    device.beginPath();
 	    device.fillStyle = (this.br) ? "skyblue" : "limegreen";
-	    //device.lineWidth = 1;
-	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, (this.hp/this.mhp)*100, 14-1);
-	    //device.stroke();
+	    device.lineWidth = 1;
+	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, (this.hp/this.mhp)*100, 14);
+	    device.stroke();
+
 	    device.beginPath();
-	    device.strokeStyle = "white";
-	    device.lineWidth = 2;
+	    device.strokeStyle = "white"; 
+	    device.lineWidth = 1;
 	    device.rect(dev.layout.hp_x, dev.layout.hp_y, 102, 15);
 	    device.stroke();
-		
 	}
 	//縮小マップ表示
 	var SubmapDraw = { mcp : mapChip, draw :
@@ -552,9 +550,8 @@ function gameScene(state){
 	                            if (wfg) {
 									var shiftx = 0;
 									var shifty = -24;
-
-									shiftx = Math.trunc((w.x - w.sx - dev.gs.viewwidth/2) /24);
-									shifty = Math.trunc((w.y - w.sy - dev.gs.viewheight/2) /24);
+									shiftx = Math.trunc((w.x - dev.gs.viewwidth/2) /24);
+									shifty = Math.trunc((w.y - dev.gs.viewheight/2) /24);
 									/*
 									forgroundBG.putPattern(
 										tex_bg, bgData[mc.no], 
@@ -640,7 +637,7 @@ function gameScene(state){
 	            }
                 */
                 if (!mapdisp || lampf) {
-					work3.putFunc(SubmapframeDraw);//forgroundBG.putFunc(SubmapframeDraw);
+					forgroundBG.putFunc(SubmapframeDraw);
 					if (!mapdisp) work3.putFunc(SubmapDraw);//mapdispはfalseで表示(今となってはなぜかわからん/そのうち修正)
 					obCtrl.drawPoint(work3, lampf);
 				}
@@ -657,29 +654,9 @@ function gameScene(state){
 	                device.fillRect(0, 480 - 36, 640 - 13* 13, 36);
 	            }
                 */
-	            work3.putFunc(ButtomlineBackgroundDraw);
-				/*
-				if (state.Config.debug){
-				//if (true){
-					var cl = {}
-					cl.x = 192;
-					cl.y = 120;
-					cl.w = dev.gs.viewwidth;
-					cl.h = dev.gs.viewheight;
-
-					cl.draw = function (device) {
-						device.beginPath();
-
-						device.strokeStyle = "white";
-						device.lineWidth = 3;
-						device.rect(this.x, this.y, this.w, this.h);
-						device.stroke();
-					}
-
-					forgroundBG.putFunc(cl);
-				}
-				*/
-		}		
+	            forgroundBG.putFunc(ButtomlineBackgroundDraw);
+        }
+		
 		function BGShadowDraw() {
 			for (var i in mapChip) {
 				var mc = mapChip[i];
@@ -693,8 +670,8 @@ function gameScene(state){
 
 							var shiftx = 0;
 							var shifty = -24;
-							shiftx = Math.trunc((w.x - w.sx - dev.gs.viewwidth/2) /24) + 4;
-							shifty = Math.trunc((w.y - w.sy - dev.gs.viewheight/2) /24) + 4;
+							shiftx = Math.trunc((w.x - dev.gs.viewwidth/2) /24) + 4;
+							shifty = Math.trunc((w.y - dev.gs.viewheight/2) /24) + 4;
 
 							var cl = {}
 							cl.x = w.x - shiftx;
@@ -763,8 +740,8 @@ function gameScene(state){
 	        }
 
 			//Lamp/map
-			if(!mapdisp){ work3.put("Map",dev.layout.map_x + 36, dev.layout.map_y + 12) }//dev.layout.zanki_x + 360, dev.layout.zanki_y-16);}
-			if(lampf) { work3.put("Lamp",dev.layout.map_x + 12, dev.layout.map_y + 12) }//dev.layout.zanki_x + 336, dev.layout.zanki_y-16);}
+			if(!mapdisp){ work3.put("Map",36,12) }//dev.layout.zanki_x + 360, dev.layout.zanki_y-16);}
+			if(lampf) { work3.put("Lamp",12,12) }//dev.layout.zanki_x + 336, dev.layout.zanki_y-16);}
 
 			//document.getElementById("manual_1").innerHTML += ".";
 

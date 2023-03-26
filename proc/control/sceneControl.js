@@ -78,9 +78,6 @@ function sceneControl(state) {
         if (wipeEffectCount > 0){
 
             EffectWipeFrame(scrn.cw/2-wipeEffectCount);
-        } else {
-            //scrn.fill(0, 0, scrn.cw, scrn.ch, "black");
-            //scrn.fill(192, 120, 640, 400);
         }
 
         sceneList[runscene].draw();
@@ -92,7 +89,7 @@ function sceneControl(state) {
 
                 bar = {}
 
-                bar.x = scrn.cw-st.length*8;
+                bar.x = 640-st.length*8;
                 bar.y = 0;
                 bar.l = st.length*8;
         
@@ -101,10 +98,10 @@ function sceneControl(state) {
                     device.fillStyle = "black";
                     device.lineWidth = 1;
                     device.fillRect(this.x, this.y, this.l*8, 8);
-                    //device.stroke();
+                    device.stroke();
                 }
                 scrn.putFunc(bar);
-                scrn.putchr8(st, scrn.cw-st.length*8, 0);
+                scrn.putchr8(st, 640-st.length*8, 0);
             }                
         }
 

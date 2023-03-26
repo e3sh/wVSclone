@@ -49,7 +49,7 @@ function GameCore( sysParam ) {
 	var keyboard_ = new inputKeyboard();
 	var mouse_ = new inputMouse();
 	var joystick_ = new inputGamepad();
-	var touchpad_ = new inputTouchPad( sysParam.canvasId );//<=とりあえずにscreen[4-]のキャンバス指定
+	var touchpad_ = new inputTouchPad( sysParam[sysParam.length-1].canvasId);//<=とりあえずにscreen[4-]のキャンバス指定
 	var vGpad_ = new inputVirtualPad(mouse_, touchpad_);
 
 	var screen_ = [];
@@ -98,7 +98,7 @@ function GameCore( sysParam ) {
 	//document.getElementById("console").innerHTML = "START GAME CORE";
 	// mainloop
 
-	var sysp_cnt = sysParam.screen.length;
+	var sysp_cnt = sysParam.length;
 
 	//var blinkCounter = 0;
 	//const BLINK_ITVL = 21500;
@@ -120,8 +120,6 @@ function GameCore( sysParam ) {
 			task_.step();
 
 			//document.getElementById("manual_1").innerHTML = "";
-			//ctx.clearRect(0,0,1024,800);
-
 			for (var i = 0; i < sysp_cnt; i++){
 				if (screen_[i].getInterval() - sintcnt[i] == 1){
 					screen_[i].reflash();
@@ -130,17 +128,15 @@ function GameCore( sysParam ) {
 	        		//これで表示Bufferがクリアされ、先頭に全画面消去が登録される。
 				}
 			}
-			
 			//task_.step();
 	        task_.draw();
-			
-			//screen_[4].draw();
+
 			for (var i = 0; i < sysp_cnt; i++){
-				//if (screen_[i].getInterval() - sintcnt[i] == 1){
-				//if (screen_[i].view()) screen_[i].draw(); //<=これはoffscreen側で処理
+				if (screen_[i].getInterval() - sintcnt[i] == 1){
+					//if (screen_[i].view()) screen_[i].draw();
 				screen_[i].draw();
 				//これで全画面がCanvasに反映される。
-				//}
+				}
 			}
 			sprite_.allDrawSprite();//スプライトをBufferに反映する。
 

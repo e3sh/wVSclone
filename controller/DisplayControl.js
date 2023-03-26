@@ -19,17 +19,17 @@ function DisplayControl(ctx, c_w, c_h, ix, iy, bt = "use") {
 
     this.buffer = buffer_;
 
-    //var canvas = document.getElementById(canvas_id);
+    var canvas = document.getElementById(canvas_id);
 
-    //canvas.width = c_w;
-    //canvas.height = c_h;
+    canvas.width = c_w;
+    canvas.height = c_h;
 
-    var device = ctx ;//canvas.getContext("2d");
+    var device = canvas.getContext("2d");
 
-    this.cw = c_w//canvas.width;
-    this.ch = c_h//canvas.height;
+    this.cw = canvas.width;
+    this.ch = canvas.height;
 
-    //this.dom = canvas;
+    this.dom = canvas;
 
     device.font = "16px 'Arial'";
 
@@ -150,13 +150,13 @@ function DisplayControl(ctx, c_w, c_h, ix, iy, bt = "use") {
     //---------------------------------------------------------
     this.clear = function (c_str) {
 
-        if (this.flip()){
+        if (enable_flip_flag){
 
-            buffer_.allClear(0, 0, c_w, c_h);
+            buffer_.allClear(0, 0, canvas.width, canvas.height);
 
             if (c_str === void 0){ c_str = bgcolor; }
             if (Boolean(c_str)) {
-                buffer_.fillRect(0, 0, c_w, c_h, c_str);
+                buffer_.fillRect(0, 0, canvas.width, canvas.height, c_str);
             }
         }   
     }
