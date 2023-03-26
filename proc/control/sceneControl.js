@@ -122,11 +122,35 @@ function sceneControl(state) {
         var cw = scrn.cw;
         var ch = scrn.ch;
 
-        scrn.fill(0, 0, cw, ch/2 - size, "black");
-        scrn.fill(0, ch/2 + size, cw, ch/2 - size, "black");
+        var c = "black";//rgba(0,0,0,"+ ((cw-size*2) /cw) +")";
 
-        scrn.fill(0, 0, cw/2 - size, ch, "black");
-        scrn.fill(cw/2 + size, 0, cw/2-size,ch, "black");
+        scrn.fill(0, 0, cw, ch/2 - size, c);
+        scrn.fill(0, ch/2 + size, cw, ch/2 - size, c);
+
+        scrn.fill(0, 0, cw/2 - size, ch, c);
+        scrn.fill(cw/2 + size, 0, cw/2-size,ch, c);
+
+        //scrn.fill(0, 0, cw, ch, c);
+        //scrn.fill(cw/2 - size, ch/2 - size, size*2, size*2);
+
+        /*
+        var fl = {}
+        fl.x = cw/2 - size;
+        fl.y = ch/2 - size;
+        fl.s = size *2;
+        fl.draw = function(context){
+            // 重なり部分をクリアする設定
+            context.globalCompositeOperation = "destination-out";
+            context.fillStyle = "rgba(255, 0, 0, 1)";
+            //context.fillRect(this.x,this.y,this.s,this.s);
+            context.arc(this.x, this.y, this.size/2, 0, Math.PI * 2, false);
+            context.fill();
+            // 半透明色での塗りつぶし
+            context.globalCompositeOperation = "source-over";
+            //context.clearRect(this.x,this.y,this.s,this.s);
+        }
+        scrn.putFunc(fl);
+        */
     }
 }
 

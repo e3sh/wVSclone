@@ -8,38 +8,7 @@
 <link rel="stylesheet" type="text/css" href="display.css" />
 <script src="include.js" type="text/javascript"></script>
 </head>
-<body onLoad="main_r()">
-<!--
-<div id = "manual_1">
-　操作方法：<br />移動(Move):　方向キー(ArrowKey)<br />攻撃(Action):　[Z] or [Space]<br />
-アイテム使用(Use):　[X] or [Ctrl]<br />ジャンプ(Jump):　[C] / 一時停止(Pause):　[ESC]<br>
-・武器使用時は攻撃(Action)操作で玉を消費して画面内のアイテムを回収します。(WANDを除く)<br/>
-・連続して同じ種類の武器を入手すると強化されます。(WANDの場合は、玉を7個追加）<br/>
-Edge/Chrome
- </div>
-<div id = "undermenu">
-<label>即時反映 : <input id ="debug_cb" type = "checkbox" >debug</input><br/></label>
-<label>フロア変更時に反映 : <input id ="lamp_cb" type = "checkbox" >lamp</input></label>
-<label><input id ="mapview_cb" type = "checkbox" >map</input></label>
-</div>
-<div id = "manual_2">
-<br>
-(L):緑玉:体力回復+3/上限値上昇+1(Life)<br />
-(S):青玉:一定時間バリアを貼る(Shield)<br />
-(B):赤玉:視界内の敵にダメージ(Bomd)<br />
-ランプ：敵などを地図に表示(Lamp)<br>
-地図：マップ表示(Map)<br><br>
-<br />
-キー:持った状態で扉に入ると次の面へ<br />
-</div>
-<div id = "console">
-status display .....
-</div>
--->
+<body onLoad="main_r('nouse')">
 <canvas id = "Layer0"></canvas>
-<canvas id = "Layer1"></canvas>
-<canvas id = "Layer2"></canvas>
-<canvas id = "Layer3"></canvas>
-<canvas id = "Layer4"></canvas>
 </body>
 </html>

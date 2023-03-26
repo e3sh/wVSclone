@@ -1,12 +1,21 @@
 ﻿// DisplayControlクラス
 //
 
-function DisplayControl(canvas_id, c_w, c_h) {
+function DisplayControl(ctx, c_w, c_h, ix, iy, bt = "use") {
     //キャンバスID、キャンバス幅、高さ指定。画面表示サイズはCSSのSTYLEで
     //指定してあるのでここでは、操作する解像度を指定する。
 
-    var buffer_ = new offScreen();
-    //var buffer_ = new offScreenTypeB(c_w, c_h);
+    //var buffer_ = new offScreen();//複数のCanvasをLayerと使用する版(1枚Canvas使用にしたのでこちらにする場合は処理で調整が必要)
+    //var buffer_ = new offScreenTypeB(c_w, c_h);//過去の遺物:↓が上位互換なのでこちらに移行
+    //var buffer_ = new offScreenTypeC(c_w, c_h, ix, iy); //offScreenCanvas版(2023/03)
+
+    var buffer_;
+
+    if (bt == "use"){
+        buffer_ = new offScreenTypeC(c_w, c_h, ix, iy); //offScreenCanvas版(2023/03)
+    }else{
+        buffer_ = new offScreen();
+    }
 
     this.buffer = buffer_;
 
@@ -27,13 +36,9 @@ function DisplayControl(canvas_id, c_w, c_h) {
     //加算合成を使用する。
     this.lighter_enable = true;//現在無効
 
-    var enable_flip_flag = true
-
     this.view = buffer_.view;
-    this.flip = function( flg ){
-        enable_flip_flag = flg;
-        buffer_.flip(flg);
-    }
+    this.flip = buffer_.flip;
+
     var intv = 1;
     var bgcolor = "";
  
@@ -41,7 +46,14 @@ function DisplayControl(canvas_id, c_w, c_h) {
     //this.interval = int; // 自動更新での更新間隔(0:自動更新なし　1:毎回　2～:間隔)
     //this.backgroundcolor = bgcolor; //defaultBackgroundcolor;
 
-    this.setInterval = function( num ){ intv = num; }
+    this.setInterval = function( num ){
+        if (num == 0) {
+            buffer_.flip(false);
+        }else{
+            buffer_.flip(true);
+        }
+        intv = num;
+     }
     this.setBackgroundcolor = function( str ){ bgcolor = str; this.backgroundcolor = bgcolor;}
 
     this.getInterval = function(){ return intv; }
@@ -164,6 +176,8 @@ function DisplayControl(canvas_id, c_w, c_h) {
 
         buffer_.reset();
     }
+
+    this.reflash = function () {buffer_.reflash();}
 
     //----------------------------------------------------------
     //描画

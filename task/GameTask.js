@@ -61,9 +61,9 @@ class GameTask_Debug extends GameTask {
 
     draw(g){
         const SC_NUM = g.screen.length;
-
-        var st = "bench:sc_buffer(max)/intv/bgcolor</br>";  
- 
+        
+        var st;// = "bench:sc_buffer(max)/intv/bgcolor</br>";  
+        /*
         for (var i=0 ; i < SC_NUM ;i++){
             st += "sc[" + i + "]" 
             + g.screen[i].count() + " / " 
@@ -71,7 +71,7 @@ class GameTask_Debug extends GameTask {
             + g.screen[i].getBackgroundcolor()
             + " , ";
         }
-
+        */
         var r = g.fpsload.result();
 
         /*
@@ -122,9 +122,10 @@ class GameTask_Debug extends GameTask {
 
             st = "";
             for (var i=0 ; i < SC_NUM ;i++){
-            st = "sc[" + i + "]" 
-            + g.screen[i].getInterval() + ":" 
-            + g.screen[i].getBackgroundcolor()  + "/"
+            //st = "sc[" + i + "]" 
+            st = " " + i + "(" 
+            + g.screen[i].getInterval() + ")" 
+            + g.screen[i].getBackgroundcolor() + "/"
             + g.screen[i].max() + "/" 
             + g.screen[i].count(); 
             sl.push(st);
