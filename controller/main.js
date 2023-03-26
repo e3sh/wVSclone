@@ -12,13 +12,11 @@ function main_r(sw) {
 		offscreen : sw, //offscreenCanvas Use Select "use" or etc / default use
 		screen: [
 	//  { canvasId: "Layer0", resolution: { w: 1920, h: 1280 } },
-		{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } },//BGSurface / systemCanvas Resolution
-		{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } },//SPSurface
-        { resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } },//FGSurface
-        { resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } },//UISurface
-        { resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } } //Effect
-    //    { resolution: { w: 640, h: 400, x:192, y:120 } },//UISurface
-    //    { resolution: { w: 640, h: 400, x:192, y:120 } } //Effect
+			{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } },//BGSurface / systemCanvas Resolution
+			{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } },//SPSurface
+        	{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } },//FGSurface
+       		{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } },//UISurface
+        	{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:0, y:0 } } //Effect
 		]
 	}
 
