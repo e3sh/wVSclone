@@ -141,12 +141,12 @@ function sceneConfig(state) {
 
                 var restxt =  (bl[1].select || bl[2].select) ?"-":((res) ? "有効" : "無効");
 
-                //text.reset();    
+                text.reset();    
                 text.clear();
                 text.print(tmes + restxt, tmsx+2, tmsy+1, "black");
                 text.print(tmes + restxt, tmsx, tmsy, "white");
                 text.draw();
-                text.reset();
+                //text.reset();
             }
 
             if (res) {
@@ -238,12 +238,12 @@ function sceneConfig(state) {
 
                     bl[0].title = ts + res;
 
-                    //text.reset();
+                    text.reset();
                     text.clear();
                     text.print(tmes + res, tmsx+2, tmsy+1, "black");
                     text.print(tmes + res, tmsx, tmsy, "white");
                     text.draw();
-                    text.reset();
+                    //text.reset();
                 }
                 //     bl[1].lamp = false;
                 //    bl[2].lamp = false;
@@ -263,23 +263,23 @@ function sceneConfig(state) {
     var confmenu = [];
 
     var menu_x = 60;
-    var menu_y = 148;
+    var menu_y = 108;
 
     for (var i = 0; i < mttl.length ; i++) {
 
         if (mtyp[i] == 0) {
             var wcm = new sel_menu();
-            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 100, 336);
+            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 100, 296);
         } else {
             var wcm = new sel_number();
-            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 100, 336);
+            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 100, 296);
         }
 
         confmenu.push(wcm);
     }
 
     m = new btn();
-    m.setup("Save.", 100, 360, 120, 16); 
+    m.setup("Save.", 100, 320, 120, 16); 
     m.msg = "Save.";
     m.func = function () {
         save_on = true;
@@ -289,7 +289,7 @@ function sceneConfig(state) {
     menu.push(m);
 
     m = new btn();
-    m.setup("Reset.", 100, 380, 120, 16);
+    m.setup("Reset.", 100, 340, 120, 16);
     m.msg = "Reset.";
     m.func = function () {
         reset_on = true;
@@ -299,7 +299,7 @@ function sceneConfig(state) {
     menu.push(m);
 
     m = new btn();
-    m.setup("Exit.", 100, 400, 120, 16);
+    m.setup("Exit.", 100, 360, 120, 16);
     m.msg = "Exit.";
     m.jp = 2; //Return Scene
     m.func = function () {
@@ -341,9 +341,9 @@ function sceneConfig(state) {
         wipecnt = 0;
         cur_cnt = 0;
 
-        work2.setBackgroundcolor("darkblue");
+        work2.setBackgroundcolor("navy");
         work2.reset();
-        work2.clear("darkblue");
+        work2.clear("navy");
 
         cl = {};
         cl.w = work.cw;
@@ -433,9 +433,9 @@ function sceneConfig(state) {
                     if (menusel < 0) menusel = menu.length - 1;
                     keylock = true;
                     keywait = 10;
+                    text.reset();
                     text.clear();
                     text.draw();
-                    text.reset();
                 }
             }
 
@@ -450,9 +450,9 @@ function sceneConfig(state) {
                     if (menusel > menu.length- 1) menusel = 0;
                     keylock = true;
                     keywait = 10
+                    text.reset();
                     text.clear();
                     text.draw();
-                    text.reset();
                 }
             }
 
@@ -581,23 +581,23 @@ function sceneConfig(state) {
 
             text.clear();
 
-            text.print("設定初期化しました。", 102, 321, "black");
-            text.print("設定初期化しました。", 100, 320, "white");
+            text.print("設定初期化しました。", 102, 281, "black");
+            text.print("設定初期化しました。", 100, 280, "white");
 
             if (Boolean(localStorage)) {
                 localStorage.clear();
-                text.print("ローカルストレージクリア。", 102, 341, "black");
-                text.print("ローカルストレージクリア。", 100, 340, "white");
+                text.print("ローカルストレージクリア。", 102, 301, "black");
+                text.print("ローカルストレージクリア。", 100, 300, "white");
 
             } else {
                 text.print("ローカルストレージが使用できない?"
-                        , 102, 341, "black");
+                        , 102, 301, "black");
                 text.print("ローカルストレージが使用できない?"
-                        , 100, 340, "white");
+                        , 100, 300, "white");
 
             }
             text.draw();
-            text.reset();
+            //text.reset();
 
             for (var i = 0; i < mtyp.length; i++) {
 
@@ -618,20 +618,20 @@ function sceneConfig(state) {
         
             if (state.Config.save() == 0) {
                 text.print("設定をセーブしました。"//this.msg + localStorage.length
-            , 102, 321, "black");
+            , 102, 281, "black");
                 text.print("設定をセーブしました。"
-            , 100, 320, "white");
+            , 100, 280, "white");
 
 
             } else {
                 text.print("ローカルストレージが使用できない?"
-                        , 102, 321, "black");
+                        , 102, 281, "black");
                 text.print("ローカルストレージが使用できない?"
-                        , 100, 320, "white");
+                        , 100, 280, "white");
 
             }
             text.draw();
-            text.reset();
+            //text.reset();
             
             save_on = false;
         }
@@ -677,7 +677,7 @@ function sceneConfig(state) {
     function scene_draw() {
 
         for (var s in wtxt) {
-            work.putchr(wtxt[s], 0, 100 + 16 * s);
+            work.putchr(wtxt[s], 0, 60 + 16 * s);
         }
 
         for (var i in menu) {

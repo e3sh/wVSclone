@@ -1,5 +1,4 @@
-﻿
-// offScreenクラス
+﻿// offScreenクラス
 // (offscreen buffer)
 //
 
@@ -31,19 +30,17 @@ function offScreen(){
     var enable_reset_flag = true;
         
     this.view = function ( flg ){ //flg : bool
-        if (flg === null) {
-            return enable_draw_flag;
-        }else{
+        if (typeof flg == "boolean") {
             enable_draw_flag = flg;
         }
+        return enable_draw_flag;
     }
 
     this.flip = function( flg ){
-        if (flg === null) {
-            return enable_reset_flag;
-        }else{
+        if (typeof flg == "boolean") {
             enable_reset_flag = flg;
         }
+        return enable_draw_flag;
     }
 
     //-------------------------------------------------------------
@@ -256,9 +253,18 @@ function offScreen(){
 
         if (ef_item.length > BUFFER_SIZE) ef_item.length = 0; 
 
+        ef_item = [];
+        buf_count = 0;
+        //
+    }
+
+    //----------------------------------------------------------
+    //(flameloopで実行用）描画バッファ配列のリセット
+    //----------------------------------------------------------
+    this.reflash = function () {
+
         if (enable_reset_flag){
-            ef_item = [];
-            buf_count = 0;
+            this.reset();
         }
         //
     }
@@ -373,12 +379,15 @@ function offScreen(){
     }
     ScreenSubClass.prototype.func[ALLCLEAR] = function (device) {
         //use sx, sy, sw, sh
+        
+        /*
         device.save();
 
         device.setTransform(1, 0, 0, 1, 0, 0);
         device.clearRect(this.sx, this.sy, this.sw, this.sh);
 
         device.restore();
+        */
     }
     ScreenSubClass.prototype.func[FILLRECT] = function (device) {
         //use sx, sy, sw, sh, color

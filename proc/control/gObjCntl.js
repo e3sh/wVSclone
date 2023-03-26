@@ -865,7 +865,7 @@
             if (o.visible && (o.prioritySurface == mode)) {
                 
                 if (o.normal_draw_enable) {
-                    if (dev.gs.in_view(o.x, o.y)){
+                    if (dev.gs.in_stage(o.x, o.y)){
                         o.draw(wscreen, o);
     
                         if (state.Config.debug) {
@@ -893,9 +893,10 @@
 
                 if (o.custom_draw_enable) {
                     if (Boolean(o.custom_draw)) {
-                        o.custom_draw(wscreen, o);
+                        if (dev.gs.in_stage(o.x, o.y)){
+                            o.custom_draw(wscreen, o);
+                        }
                     }
-
                 }
             }
         }
@@ -941,7 +942,7 @@
                     if (o.normal_draw_enable) {
                         device.beginPath();
                         device.strokeStyle = this.col[o.type];
-                        device.lineWidth = 2;
+                        device.lineWidth = 1;
                         device.rect(
                             dev.layout.map_x + o.x / 20, 
                             dev.layout.map_y + o.y / 20,
@@ -983,16 +984,18 @@
                 if ((o.type == 1) || (o.type == 3) || (o.type == 5 )) continue;
                 if (!o.gt.in_view(o.x,o.y)) continue;
                 if (o.normal_draw_enable) {
-                    var w = o.gt.worldtoView(o.x, o.y);
+                    if (dev.gs.in_stage(o.x, o.y)){
+                        var w = o.gt.worldtoView(o.x, o.y);
 
-                    var ww = o.center_x * o.display_size;
-                    var wh = o.center_y * o.display_size;
+                        var ww = o.center_x * o.display_size;
+                        var wh = o.center_y * o.display_size;
  
-                    device.beginPath();
-                    device.fillStyle = "rgba(0,0,0,0.6)";
-                    device.ellipse(w.x, w.y + wh, ww, wh/4, 0,  0, Math.PI*2, true );
+                        device.beginPath();
+                        device.fillStyle = "rgba(0,0,0,0.6)";
+                        device.ellipse(w.x, w.y + wh, ww, wh/4, 0,  0, Math.PI*2, true );
 
-                    device.fill();
+                        device.fill();
+                    }
                 }
             }
         }

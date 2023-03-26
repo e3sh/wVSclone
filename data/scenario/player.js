@@ -471,36 +471,59 @@ function sce_player() {
         var vxf = 0;
         var vyf = 0;
 
-        
-        if ((w.x < 240) && (o.vx < 0)) {
+        // view shift
+        //var vsx = 0; //w(640)
+        //var vsy = 0; //h(480)
+        //var vsx = 192; //(1024-640)/2
+        //var vsy = 120; //( 640-400)/2
+        /*
+        if ((w.x < 220 + w.sx) && (o.vx < 0)) { //640/2-220= 640/2+220 400/2-120 400/2+120 100 550 80 320 
             vxf = 1;
         }
 
-        if ((w.x > o.gt.viewwidth - 240) && (o.vx > 0)) {
+        if ((w.x > o.gt.viewwidth - 220 + w.sx) && (o.vx > 0)) {
             vxf = 1;
         }
 
-        if ((w.y < 240) && (o.vy < 0)) {
+        if ((w.y < 120 + w.sy) && (o.vy < 0)) {
             vyf = 1;
         }
 
-        if ((w.y > o.gt.viewheight - 240) && (o.vy > 0)) {
+        if ((w.y > o.gt.viewheight - 120 + w.sy) && (o.vy > 0)) {
             vyf = 1;
         }
+        */
+
+        var sx = o.gt.world_x;
+        var sy = o.gt.world_y;
+
+        if ((o.gt.viewwidth/2) - (w.x - w.sx) > 150 ){ sx = o.x  - (o.gt.viewwidth/2) + 150;}
+
+        if ((o.gt.viewwidth/2) - (w.x - w.sx) < -150){ sx = o.x  - (o.gt.viewwidth/2) - 150;}
+
+        if ((o.gt.viewheight/2) - (w.y - w.sy) > 80){ sy = o.y  - (o.gt.viewheight/2) + 80;}
+
+        if ((o.gt.viewheight/2) - (w.y - w.sy) < -80){sy = o.y  - (o.gt.viewheight/2)  - 80;}
+
         /*
         if (w.x < 240) vxf = 1;
         if (w.x > o.gt.viewwidth - 240) vxf = 1;
         if (w.y < 240) vyf = 1;
         if (w.y > o.gt.viewheight - 240)vyf = 1;
         */
-        var sx = o.gt.world_x + o.vx * vxf * o.vecfrm;
-        var sy = o.gt.world_y + o.vy * vyf * o.vecfrm;
+        //var sx = o.gt.world_x + (o.vx * vxf) * o.vecfrm;
+        //var sy = o.gt.world_y + (o.vy * vyf) * o.vecfrm;
 
+        //var sx = o.gt.world_x + (o.vx * vxf) * o.vecfrm;
+        //var sy = o.gt.world_y + (o.vy * vyf) * o.vecfrm;
 
         if (!o.gt.in_view(o.x, o.y)){
            if (o.x != o.old_x) sx = o.x - o.gt.viewwidth/2;
            if (o.y != o.old_y) sy = o.y - o.gt.viewheight/2;
         }
+
+        //sx = o.x - o.gt.viewwidth/2;
+        //sy = o.y - o.gt.viewheight/2;
 
         o.gt.viewpos(sx, sy);
 
@@ -571,7 +594,8 @@ function sce_player() {
         //Shield
         //var tw = o.gt.worldtoView(o.x, o.y);
         //scrn.putchr8("@"+o.mvkeytrig, tw.x, tw.y);
-
+        
+        /*
         //Aura Display
         if (o.gameState.player.level > 0){
             var pw = {};
@@ -602,7 +626,8 @@ function sce_player() {
             }
             scrn.putFunc(pw);
         }
-
+        */
+        
         //Shield Display
         if (o.frame <= 300) {
 
