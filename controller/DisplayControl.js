@@ -11,9 +11,15 @@ function DisplayControl(ctx, c_w, c_h, ix, iy, bt = "use") {
 
     var buffer_;
 
-    if (bt == "use"){
-        buffer_ = new offScreenTypeC(c_w, c_h, ix, iy); //offScreenCanvas版(2023/03)
-    }else{
+    if (typeof OffscreenCanvas !== "undefined") {//iPadで動かなかった為、判定追加
+        // OffscreenCanvasが使用可能
+        // ここにOffscreenCanvasを使用するコードを書く
+        if (bt == "use"){ //debugの為、未使用指定できるように判定する。
+            buffer_ = new offScreenTypeC(c_w, c_h, ix, iy); //offScreenCanvas版(2023/03)
+        }else{
+            buffer_ = new offScreen();
+        }
+    } else {
         buffer_ = new offScreen();
     }
 

@@ -214,7 +214,7 @@ context.drawImage(offscreenCanvas, 0, 0);
     //----------------------------------------------------------
     this.count = function () {
         //dummy
-        return 0;
+        return "mode";
     }
 
     //----------------------------------------------------------
@@ -222,7 +222,7 @@ context.drawImage(offscreenCanvas, 0, 0);
     //----------------------------------------------------------
     this.max = function () {
         //dummy
-        return 0;
+        return "C";
     }
 
 
