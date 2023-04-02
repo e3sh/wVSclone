@@ -35,7 +35,7 @@ function scenePause(state) {
 		dev.graphics[1].setInterval(0);//SPRITE
 		dev.graphics[2].setInterval(0);//FG
     
-        work.setInterval(0);//UI
+        //work.setInterval(0);//UI
 
         ret_code = 0;
 
@@ -122,7 +122,8 @@ function scenePause(state) {
             dev.graphics[0].setInterval(1);//BG　WORK2
             dev.graphics[1].setInterval(1);//SPRITE
             dev.graphics[2].setInterval(1);//FG
-            work.setInterval(1);//UI
+            //dev.graphics[3].setInterval(0);//UI
+            //work.setInterval(1);//UI
 
             return 1;//GameScene
         }
