@@ -28,6 +28,8 @@ function geometoryTrance() {
     var workWorldX = this.world_x;
     var workWorldY = this.world_y;
 
+    this.changestate = false;
+
     function rangeCheck(s, r){ // s r range{x; y; w; h} return bool
         return ((Math.abs((s.x + s.w / 2) - (r.x + r.w / 2)) < (s.w + r.w) / 2) &&
             (Math.abs((s.y + s.h / 2) - (r.y + r.h / 2)) < (s.h + r.h) / 2));
@@ -95,8 +97,20 @@ function geometoryTrance() {
     //viewposの設定を確定する（直接プロパティを触った場合は知らん）
     this.commit = function () {
 
-        this.world_x = workWorldX;
-        this.world_y = workWorldY;
+        let changef = false;
+
+        if ((this.world_x != workWorldX)||
+            (this.world_y != workWorldY)){
+
+            this.world_x = workWorldX;
+            this.world_y = workWorldY;
+
+            changef = true;
+        }
+
+        this.changestate = changef;
+
+        return changef; //変更有無:true/false　
     }
 
     //Stageの座標を返す

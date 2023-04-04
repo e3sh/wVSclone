@@ -51,6 +51,22 @@ function gameScene(state){
 	var fdrawcnt = 0;
 	var drawexecute = false;
 
+	var mmrefle = true; 
+
+	var useosc = false;
+
+	let mmcanvas;
+	let mmdevice;
+
+	if (typeof OffscreenCanvas !== "undefined"){ 
+		mmcanvas = new OffscreenCanvas(150, 150);
+	
+		mmdevice = mmcanvas.getContext("2d");
+
+		useosc = true;
+	}
+
+	
 	//縮小マップ枠
 	var SubmapframeDraw = {}
 	SubmapframeDraw.draw = function (device) {
@@ -90,9 +106,22 @@ function gameScene(state){
 		
 	}
 	//縮小マップ表示
-	var SubmapDraw = { mcp : mapChip, draw :
-		 function (device) {
-			for (var i = 0, loopend = this.mcp.length; i < loopend; i++) {
+	var SubmapDraw = new smd(mmdevice, mmcanvas); 
+	
+	function smd(ctx, elm) { 
+		this. mcp = mapChip;
+		let osc = false;
+		//this.draw = osc? this.predr: this.ondr;
+
+		this.d = ctx;
+		this.e = elm;
+
+		this.x = dev.layout.map_x;
+		this.y = dev.layout.map_y;
+		/*
+		this.draw = function (device) {
+			//for (var i = 0, loopend = this.mcp.length; i < loopend; i++) {
+			for (var i in this.mcp){
 				var mc = this.mcp[i];
 				if (mc.lookf){
 					//if ((mc.visible) && ((mc.type == 11) || (mc.type == 12))) {
@@ -103,16 +132,43 @@ function gameScene(state){
 						//device.strokeStyle = (mc.type == 12) ? "orange" : "blue";
 						device.strokeStyle = c[mc.type -10];
 						device.lineWidth = 1;
-						device.rect(dev.layout.map_x + mc.x / 20, dev.layout.map_y + mc.y / 20, 2, 2);
+						device.rect(this.x + mc.x / 20, this.y + mc.y / 20, 2, 2);
 						device.stroke();
 					}
 				}
 			}
 		}
+		*/
+		this.create = function(){
+		//	ondr(this.d);
+			this.d.clearRect(0, 0, 150, 150);
+			for (var i = 0, loopend = this.mcp.length; i < loopend; i++) {
+			//	for (var i in this.mcp){
+					var mc = this.mcp[i];
+					if (mc.lookf){
+						//if ((mc.visible) && ((mc.type == 11) || (mc.type == 12))) {
+						if (mc.visible) {
+							var c = ["dimgray", "steelblue", "orange"];
+	
+							this.d.beginPath();
+							//device.strokeStyle = (mc.type == 12) ? "orange" : "blue";
+							this.d.strokeStyle = c[mc.type -10];
+							this.d.lineWidth = 1;
+							this.d.rect(this.x + mc.x / 20, this.y + mc.y / 20, 2, 2);
+							this.d.stroke();
+						}
+					}
+			//	}
+			}
+		}
+
+		this.draw = function(device){
+			device.drawImage(this.e, this.x, this.y);
+		}
 	}
 	//forgroundBG.putFunc(cl);//submapは[2]に表示、点は[3]に表示に変更
 
-	mapdisp = true;　//以前の処理では自動で消されない画面に書いていたので常時表示処理させる為に常にtrue；
+	mapdisp = true; //以前の処理では自動で消されない画面に書いていたので常時表示処理させる為に常にtrue；
 
 	//処理部
 
@@ -144,6 +200,7 @@ function gameScene(state){
 
 		//フロアチェンジ前の座標がSubmapが見たことにされる為、1度表示されて正しい座標に移動後から壁のlookfを有効にする。	
 		drawexecute = false;
+		mmrefle = true;
 		
 	    if (!Boolean(contflg)) { contflg = false; }
 	    scenechange = false;
@@ -485,8 +542,15 @@ function gameScene(state){
 			work3.clear();
 			if (!mapdisp || lampf) {
 				work3.putFunc(SubmapframeDraw);//forgroundBG.putFunc(SubmapframeDraw);
-				if (!mapdisp) work3.putFunc(SubmapDraw);//mapdispはfalseで表示(今となってはなぜかわからん/そのうち修正)
-				obCtrl.drawPoint(work3, lampf);
+				if (!mapdisp){//mapdispはfalseで表示(今となってはなぜかわからん/そのうち修正)
+					if (mmrefle){
+						SubmapDraw.create();
+						mmrefle = false;
+					}
+					work3.putFunc(SubmapDraw);
+				}
+				obCtrl.drawPoint(dev.graphics[3], lampf);
+				//obCtrl.drawPoint(work3, lampf);//dev.graphics[3]
 			}
 
 			work3.putFunc(ButtomlineBackgroundDraw);
@@ -494,8 +558,14 @@ function gameScene(state){
 
 	        //debug　true　の場合以下表示
  	       if (state.Config.debug) {
-    	        var wtxt = read_debugStates();
+    	        var wtxt = read_debugStates().concat(obCtrl.messagelog.read());
 	    	    for (var s in wtxt) work3.putchr8(wtxt[s], dev.layout.status_x, dev.layout.status_y + 8 * s);
+
+				//wtxt = obCtrl.messagelog.read();
+	    	    //for (var s in wtxt) work3.putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+
+				wtxt = obCtrl.messageview.read();
+	    	    for (var s in wtxt) work3.putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 	    	}
 		}
 		if (!mapdisp){ mapv = true; }
@@ -504,6 +574,9 @@ function gameScene(state){
 	}
 
 	function BGDraw() {
+
+		//if (!dev.gs.changestate) return;
+
 		for (var i in mapChip) {
 			var mc = mapChip[i];
 
@@ -512,6 +585,7 @@ function gameScene(state){
 				var w = dev.gs.worldtoView(mc.x, mc.y);
 
 				if (mc.visible) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
+					if (mc.lookf != drawexecute) mmrefle = true;
 					mc.lookf = drawexecute;//true;　//画面内に入ったことがあるフラグ
 					var wfg = false;
 					if (mc.type == 11) wfg = true; //Forground表示のパターン(壁)
@@ -782,8 +856,8 @@ function gameScene(state){
 	function read_debugStates(){
 		let wtxt = [];
 
-		wtxt.push("o:" + obCtrl.cnt() + "/" + obCtrl.num() + "/" + obCtrl.nonmove);
-		wtxt.push("f:" + mapsc.flame);
+		wtxt.push("o:" + obCtrl.cnt() + "/" + obCtrl.num() + "/" + obCtrl.nonmove + "/" + obCtrl.collisioncount);
+		wtxt.push("f:" + mapsc.flame + "/ " + dev.gs.changestate);
 
 		if (obCtrl.interrapt) {
 			wtxt.push("interrapt:" + obCtrl.SIGNAL);
@@ -791,8 +865,9 @@ function gameScene(state){
 			wtxt.push("running:" + obCtrl.SIGNAL);
 		}
 
-		for (i in obCtrl.item) {
-			wtxt.push("item[" + i + "]:" + obCtrl.item[i]);
+		for (i in obCtrl.item) 
+		{
+			if (Boolean(obCtrl.item[i])) wtxt.push("item[" + i + "]:" + obCtrl.item[i]);
 		}
 
 		var n1 = 0;
@@ -807,42 +882,8 @@ function gameScene(state){
 
 		wtxt.push("wx,wy:" + Math.floor(dev.gs.world_x) + "," + Math.floor(dev.gs.world_y));
 		wtxt.push("play:" + Math.floor(dev.sound.info()) + "." + dev.sound.running() );
+		wtxt.push("");
 
 		return wtxt;
 	}
 }
-/*
-function gs_score_effect( sc ){
-
-    var wscore = sc;
-
-    this.read = function (score) {
-
-        if (score <= wscore) {
-            wscore = score;
-        } else {
-
-            var num = Math.ceil((score - wscore) / 5);
-
-            wscore += num;
-        }
-
-        var sc = wscore;
-
-        var wd = [];
-        var wt = "";
-
-        for (i = 0; i < 7; i++) {
-            var num = sc % 10;
-            wd[7 - i] = num;
-            sc = (sc - num) / 10;
-        }
-
-        for (i in wd) {
-            wt = wt + "" + wd[i];
-        }
-
-        return wt;
-    }
-}
-*/

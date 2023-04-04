@@ -23,7 +23,11 @@
     //以下はコンティニューでもリセット
     //ここらへんもStateGameに持たせるべきか？
 
-    this.item = []; //現在取得しているアイテム(リセットオンだとやられると0）(消す処理自体はgameSceneで処理）
+    var item_ = [];
+    var itemstack_ = [];
+
+
+    this.item = item_; //現在取得しているアイテム(リセットオンだとやられると0）(消す処理自体はgameSceneで処理）
 
     this.combo = []; //連続して敵を倒したり、アイテム[20]を取った数。逃げられたり取りそこなうと0
 
@@ -33,7 +37,9 @@
 
     this.total = []; //種類別の倒した総数(主に敵）　倒した総数/出現した数で撃墜率などを算出で使用予定 combo関係の名残
 
-    this.itemstack = [];
+    this.itemstack = itemstack_;
+
+    this.collisioncount  = 0;
 
     //
 
@@ -74,6 +80,42 @@
 
     var restartFlag = true;
 
+    var msglog = new textbufferControl(23);
+    var msgview = new textbufferControl(28);
+
+    this.messagelog = msglog;
+    this.messageview = msgview;
+
+    function textbufferControl(num = 20){
+
+        const LINE = num + 1;
+        const WIDTH = 40;
+    
+        let buffer = [];
+    
+        this.read = function(){
+    
+            return buffer;
+        }
+    
+        this.write = function(str){
+    
+            if (str.length > WIDTH) str = str.substring(0,WIDTH);
+    
+            buffer.push(str);
+    
+            let bfw = [];
+            for (let i in buffer){
+                if (i > (buffer.length-LINE)){
+                    bfw.push(buffer[i]);
+                }
+            }
+            buffer = bfw;
+        }
+    }
+    var cmdlog = "-----";
+    var cmdcnt = 0;
+
     //再読み込み無しの再起動
     this.reset = function (cont_flag) {
 
@@ -97,6 +139,7 @@
             this.item = [];
             this.itemstack = [];
 
+            msglog.write("ObjCtrl Init.");
         }
 
         if (!cont_flag) {
@@ -107,6 +150,7 @@
 
             state.Config.cold = true;
             //    this.item = [];
+            msglog.write("ObjCtrl Reset.");
         }
 
         if (state.Config.fullpower) {
@@ -114,6 +158,9 @@
         }
 
         this.item[35] = 0; //coinclear;
+
+        msglog.write("ObjCtrl Run.");
+
     }
 
     //move ======================================
@@ -218,18 +265,37 @@
             //messageの処理
 
             for (var mcnt = 0, loopend = o.message.length; mcnt < loopend; mcnt++) {
+
                 var ms = o.message[mcnt];
 
+                if (ms.cmd != cmdlog){//logfilter
+                    msgview.write("." + "=".repeat(cmdcnt/5) + cmdlog );
+                    if ((cmdlog != "search_target_item")&&
+                       (cmdlog != "get_target")&&
+                       (cmdlog != "change_sce")&&
+                       (cmdlog != "set_object")&&
+                       (cmdlog != "set_object_ex")
+                       )
+                    {
+                        msglog.write("." + cmdlog);
+                    }
+                    cmdlog = ms.cmd;
+                    cmdcnt = 0;
+                }else{
+                    cmdcnt++;
+                }
+                
                 if (ms.cmd == "add_score") this.score += ms.src;
-
+                
                 if (ms.cmd == "get_item") {
+                    //msglog.write(ms.cmd + " " + ms.src + "," + ms.dst);
 
                     if (Boolean(this.item[ms.src])) {
                         this.item[ms.src]++;
                     } else {
                         this.item[ms.src] = 1;
                     }
-
+                
                     var c_rate = 1;
 
                     if (ms.src == 35) {
@@ -315,10 +381,17 @@
                         if (this.item[7] > 0) this.item[7]--;
                     }
                 }
+                
 
                 command[ms.cmd](o, ms.src, ms.dst);
 
+                //this.item = item_;
+                //this.itemstack = itemstack_;
+
+
+                //if (o.type==98) msglog.write(ms.cmd + " " + ms.src);// + "," + ms.dst);
             }
+
             o.message = [];
 
             o.mapCollision = false;
@@ -381,6 +454,7 @@
         var res = cdt.getAllCollisionList();
 
         debug_colnum = res.length;
+        this.collisioncount = debug_colnum/2;
 
         for (var i = 0, loopend = res.length; i < loopend; i += 2) {
 
@@ -613,8 +687,258 @@
         this.interrapt = before_int;
         this.SIGNAL = before_SIG;
     }
+    /*
+    var command = {
+        "set_object":function (o, src, dst) {
+            //		set_sce( o.x,  o.y , o.vector , src );
+            map_sc.add(o.x, o.y, o.vector, src , null, null ,o);
+        },
+        "set_object_ex":function (o, src, dst) {
+            // dst.x dst.y dst.vector src dst.sce
+            //		set_sce( o.x,  o.y , o.vector , src, dst );
+            map_sc.add(dst.x, dst.y, dst.vector, src, dst.sce, dst.id, o);
+        },
+        "get_target":function (o, src, dst) {
+            var wdist = 99999;
+        
+            o.target = null; //o; //{}; 見つからなかった場合
+        
+            for (var i in obj) {
+                var wo = obj[i];
+                if (wo.type != src) continue;
+        
+                var d = wo.target_d(o.x, o.y);
+                if (d < wdist) {
+                    o.target = wo;
+                    wdist = d;
+                }
+            }
+        },
+        "change_sce":function (o, src, dst) {
+            //バグの温床になる危険を秘めています。要注意。
+            o.init = sce.init[src];
+            o.move = sce.move[src];
+            o.custom_draw = sce.draw[src];
+        
+            o.init(scrn, o);
+        },        
+        "add_score":function (o, src, dst) {
+            this.score += src;
+        },
+        "get_item":function (o, src, dst) {
+            if (Boolean(item_[src])) {
+                item_[src]++;
+            } else {
+                item_[src] = 1;
+            }
+            var c_rate = 1;
+    
+            this.score += o.score * c_rate;
+    
+            if (src == 35) {
+                if (stockcount == 0) stockcount = 8;
+                stockscore += o.score;
+                stockrate++;
+                //if (stockrate < this.chain_cnt) { stockrate = this.chain_cnt }
+    
+                stockdisp_x = o.x;
+                stockdisp_y = o.y;
+    
+                //var wid = (o.score * c_rate) + "pts.";
+                //dev.sound.effect(11); //get音
+                //map_sc.add(o.x, o.y, 0, 20, 39, wid); //43green
+            }
+            if (src == 21) {
+                var wid = "Extend!";
+                map_sc.add(o.x, o.y, 0, 20, 39, wid);
+            }
+            if (src == 22) {
+                var wid = "GetKey!";
+                dev.sound.effect(11); //get音
+                map_sc.add(o.x, o.y, 0, 20, 39, wid);
+            }
+            if ((src >= 15) && (src <= 19)) {
+                var wid = "Weapon!";
+                dev.sound.effect(11); //get音
+                map_sc.add(o.x, o.y, 0, 20, 39, wid);
+            }
+            var f = false;
+            if ((src == 23) || (src == 24) || (src == 25)) {
+                //dev.sound.effect(9); //cursor音
+                f = true;
+            }
+    
+            if (f) {
+                var w = src;
+                itemstack_.push(w);
+            }
+        },
+        "bomb":function (o, src, dst) {
+            for (i in obj) {
+                if (obj[i].type == 3) {//敵の弾を消滅
+                    obj[i].change_sce(7);
+                }
+            }
+        },
+        "bomb2":function (o, src, dst) {
+    
+            for (i in obj) {
+                o = obj[i];
+        
+                if (o.type == 3) {//敵の弾を回収状態に
+                    o.type = 4;
+                    o.mp = 18;
+                    o.score = 8;
+                    //test用
+                    if (o.chr != 7) {
+                        var witem = [18, 22, 26, 27, 29, 30];
+        
+                        o.mp = witem[Math.floor(Math.random() * witem.length)];
+                    }
+        
+                    o.change_sce(30);
+                }
+            }
+            if (Boolean(this.item[7])) { //PowerUpを減らす。
+    
+                if (this.item[7] > 0) this.item[7]--;
+            }
+        },
+        "bomb3":function (o, src, dst) {
+    
+            for (i in obj) {
+                //画面内にいる敵のみ
+                var onst = o.gt.in_view_range(
+                    obj[i].x - (obj[i].hit_x / 2),
+                    obj[i].y - (obj[i].hit_y / 2), obj[i].hit_x, obj[i].hit_y);
+                if (onst) {
+                    if (obj[i].type == 2) {//敵には一律10のダメージ
+                        obj[i].hp -= 10;
+                        if (obj[i].hp <= 0) obj[i].status = 2;
+                    }
+                    if (obj[i].type == 3) {//敵の弾を消滅
+                        obj[i].change_sce(7);
+                    }
+                }
+            }
+            if (Boolean(this.item[7])) { //PowerUpを減らす。
+    
+                if (this.item[7] > 0) this.item[7]--;
+            }
+        },
+        "bomb4":function (o, src, dst) {
+    
+            for (i in obj) {
+                if (obj[i].chr == src) {
+                    obj[i].status = 0; //接触でなく消滅させる
+                    obj[i].hp = 0;//消えなかったりするのでhp=0してみる。
+                }
+            }
+        },
+        "collect":function (o, src, dst) {
+    
+            for (i in obj) {
+                o = obj[i];
+                if (o.type == 4) {//アイテムを回収モードに変更（上のほうに行ったときに）
+                    if (!Boolean(o.collection_mode)) {
+                        o.collection_mode = true;
+                        o.change_sce(30);
+                    }
+                }
+            }
+        },
+        "collect2":function (o, src, dst) {
+    
+            for (i in obj) {
+                //画面内にいるアイテムのみ　2023/1/12追加コマンド
+                var onst = o.gt.in_view_range(
+                    obj[i].x - (obj[i].hit_x / 2),
+                    obj[i].y - (obj[i].hit_y / 2), obj[i].hit_x, obj[i].hit_y);
+        
+                if (onst) {
+                    //アイテム回収モードにする
+                    if (obj[i].type == 4) {//アイテム
+                            obj[i].change_sce(30);
+                    }
+                }
+            }
+        },
+        "collect3":function (o, src, dst) {
+            for (i in obj) {
+                //自機の半径n内にいるアイテムのみ　2023/1/12追加コマンド
+                if (obj[i].type == 4){//アイテム
+                    if ( o.target_d( obj[i].x, obj[i].y ) < 100){//半径
+                            obj[i].change_sce(30);
+                    }
+                }
+                
+            }
+        },
+        "SIGNAL":function (o, src, dst) {
+            if (this.interrapt) {
+                this.interrapt = false;
+                this.SIGNAL = 0;
+            } else {
+                this.interrapt = true;
+                this.SIGNAL = src;
+    
+                if (src == 0) this.interrapt = false;
+            }
+        },    
+        "reset_combo":function (o, src, dst) {
+            for (var cb in this.combo) {
+                if (src == cb) {
+                    this.combo[cb] = 0;
+                }
+            }
+        },
+        "search_target_item":function (o, src, dst) {
+            //稼働中objに対象のCHNOが存在するか？(KEYSEARCH用) 
+            //無かったら、敵の持ち物をチェックする。
+            //ない場合はkeyon=false;//自分の持ち物にある場合はこれでチェックしない。
+            //戻り値はState.game.keyon,key_x,key_yに入れる。
+            var onflag = false;
+            var wx = 0;
+            var wy = 0;
+        
+            for (var i in obj) {
+                var wo = obj[i];
+                if (wo.type == 2){//enemy
+                    //wo.lighton = true;                
+                    for (var j of wo.pick){
+                        if (j == src){
+                            onflag = true;
+                            wx = wo.x;
+                            wy = wo.y;
+                            wo.lighton = true;
+                        }
+                        if (onflag) break;
+                    }
+                    continue;
+                }
+                if (wo.type == 4){//item
+                    //wo.lighton = true;
+                    if (wo.chr == src){
+                        onflag = true;
+                        wx = wo.x;
+                        wy = wo.y;
+                        wo.lighton = true;
+                        break;
+                    } 
+                    continue;
+                }
+            }
+        
+            state.Game.keyon = onflag;
+            state.Game.key_x = wx;
+            state.Game.key_y = wy;
+        }
+    
+    };
+    
+    */
 
-
+    
     var command = [];
 
     command["set_object"] = function (o, src, dst) {
@@ -725,14 +1049,12 @@
 
                     obj[i].change_sce(7);
                 }
-                /*
+                
                 //bomb時に画面内アイテム回収モードにしてみる2023/1/12追記
-                if (obj[i].type == 4) {//アイテム
-                        obj[i].change_sce(30);
-                }
-                */
+                //if (obj[i].type == 4) {//アイテム
+                //        obj[i].change_sce(30);
+                //}
             }
-            
         }
     }
     //特定のchのみ消す（timeoverリセット用）
@@ -847,7 +1169,7 @@
         state.Game.key_x = wx;
         state.Game.key_y = wy;
     }
-
+    
     // draw ======================================
     // オブジェクトの描画
 
@@ -900,16 +1222,17 @@
                 }
             }
         }
-
+        /*
         if (state.Config.debug && mode) {
             //debug 
             wscreen.putchr8("obj:" + cdt.objectNum, 300, 16);
-            wscreen.putchr8("col:" + debug_colnum/2, 300, 24);
+            wscreen.putchr8("col:" + this.collisioncount, 300, 24);
             //wscreen.putchr8("f:" + debug_cflag, 300, 32);
 
             //wscreen.putchr8("scrst"+ wscreen.count(),300,40);
 
         }
+        */
     }
 
     // drawPoint ==================================

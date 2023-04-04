@@ -331,6 +331,8 @@ function sce_effect_informationCursor() {
         //o.custom_draw_enable = true;
 
         o.prioritySurface = true;//UI Surfaceに表示したい。
+
+        o.search_target_item(22);
     }
 
     this.move = function (scrn, o) {
@@ -338,13 +340,27 @@ function sce_effect_informationCursor() {
         if (!Boolean(o.parent)) return 1;
         if (o.parent.status == 0) return 1;
 
-        o.x = o.parent.x + o.Cos(o.vector) * 80;
-        o.y = o.parent.y + o.Sin(o.vector) * 80;
+        //if (o.normal_draw_enable){
+        //    o.search_target_item(22);
+        //    o.vector = o.target_r(o.gameState.key_x,o.gameState.key_y);
+
+            o.x = o.parent.x + o.Cos(o.vector) * 80;
+            o.y = o.parent.y + o.Sin(o.vector) * 80;
+        //}else{
+        //    o.x = o.parent.x;// + o.Cos(o.vector) * 80;
+        //    o.y = o.parent.y;// + o.Sin(o.vector) * 80;
+        //}
 
         if (!o.gt.in_view(o.gameState.key_x, o.gameState.key_y)){
             if (o.gameState.keyon) o.normal_draw_enable = o.gameState.lamp; //
+
+            if (o.normal_draw_enable){
+                o.search_target_item(22);
+                o.vector = o.target_r(o.gameState.key_x,o.gameState.key_y);
+            }
         }else{
             o.normal_draw_enable = false;
+            if (o.frame%30 == 0) o.search_target_item(22);
         }
 
         //switch (o.frame) {
@@ -352,8 +368,8 @@ function sce_effect_informationCursor() {
                 //
         //        break;
         //    case 30://0.5s毎に処理
-                o.search_target_item(22);
-                o.vector = o.target_r(o.gameState.key_x,o.gameState.key_y);
+        //    o.search_target_item(22);
+        //    o.vector = o.target_r(o.gameState.key_x,o.gameState.key_y);
 
                 //if (!o.gt.in_view(o.gameState.key_x, o.gameState.key_y)){
                 //    if (o.gameState.keyon) o.normal_draw_enable = true;
