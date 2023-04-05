@@ -66,7 +66,7 @@ https://e3sh.github.io/wVSclone/main.html
 - 5 : BulletMode(offRange) 画面外からの弾を消す　 
 - 6 : Weapon Level         パワーアップ状態の増減
 - 8 : Obj Status　Disp     状態確認画面に推移する。　 
-
+- 9 : (Debug)Log View      デバッグ表示時のログ表示切替
 - 0 : Menu Display         本メニューの表示オフオン 　
 
 

@@ -160,6 +160,9 @@ function scenePause(state) {
                 case 8:
                     ret_code = 7; //sceneStatusDisp
                     break;
+                case 9:
+                    state.Config.viewlog = (!state.Config.viewlog);
+                    break;
                 case 0:
                     menuvf = (!menuvf);
                     break;
@@ -182,7 +185,7 @@ function scenePause(state) {
                 arr.push("6: Weapon Level   :+" + state.Game.player.level);
                 arr.push("7: -");//Import/Export :NotSupport");
                 arr.push("8: Obj Status Disp:->");
-                arr.push("9: -");
+                arr.push("9: (Debug)Log View:" + (state.Config.viewlog?"ON":"OFF"));
                 arr.push("0: Menu Display   :" + (menuvf?"ON":"OFF"));
 
                 for (var i in arr){

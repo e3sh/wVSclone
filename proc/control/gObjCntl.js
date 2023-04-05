@@ -268,6 +268,19 @@
 
                 var ms = o.message[mcnt];
 
+                let r = ObjCmdDecode(ms, o, obj, state, sce);
+
+                if (r.exec){
+                    if (ms.cmd != cmdlog){//logfilter
+                        msgview.write("." + "=".repeat(cmdcnt/5) + cmdlog );
+                        if (r.log) msglog.write("." + ms.cmd);
+                        cmdlog = ms.cmd;
+                        cmdcnt = 0;
+                    }else{
+                        cmdcnt++;
+                    }
+                }
+                /*
                 if (ms.cmd != cmdlog){//logfilter
                     msgview.write("." + "=".repeat(cmdcnt/5) + cmdlog );
                     if ((cmdlog != "search_target_item")&&
@@ -388,10 +401,10 @@
                 //this.item = item_;
                 //this.itemstack = itemstack_;
 
-
+            */
                 //if (o.type==98) msglog.write(ms.cmd + " " + ms.src);// + "," + ms.dst);
             }
-
+            
             o.message = [];
 
             o.mapCollision = false;
@@ -938,7 +951,7 @@
     
     */
 
-    
+    /*
     var command = [];
 
     command["set_object"] = function (o, src, dst) {
@@ -1169,7 +1182,7 @@
         state.Game.key_x = wx;
         state.Game.key_y = wy;
     }
-    
+    */
     // draw ======================================
     // オブジェクトの描画
 

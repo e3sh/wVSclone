@@ -65,7 +65,6 @@ function gameScene(state){
 
 		useosc = true;
 	}
-
 	
 	//縮小マップ枠
 	var SubmapframeDraw = {}
@@ -169,7 +168,7 @@ function gameScene(state){
 	//forgroundBG.putFunc(cl);//submapは[2]に表示、点は[3]に表示に変更
 
 	mapdisp = true; //以前の処理では自動で消されない画面に書いていたので常時表示処理させる為に常にtrue；
-
+	//==========================================================================================
 	//処理部
 
 	function game_init(){
@@ -529,44 +528,54 @@ function gameScene(state){
 
 	    //==　ここから文字表示画面（出来るだけ書き換えを少なくする）
 	    //プライオリティ最前面の画面追加したので
-	    var scdispview = false;
+	    
+		var scdispview = false;
         
 	    fdrawcnt++;
 	    if ((fdrawcnt % 6) == 0) {
 	        fdrawcnt = 0;
 	        scdispview = true;
 	    }
-		//var scdispview = true;//debug
-	    if (scdispview){
-			work3.reset();
-			work3.clear();
+		var scdispview = true;//debug
+	    
+		if (scdispview){
+			
+			//work3.reset();
+			//work3.clear();
 			if (!mapdisp || lampf) {
-				work3.putFunc(SubmapframeDraw);//forgroundBG.putFunc(SubmapframeDraw);
-				if (!mapdisp){//mapdispはfalseで表示(今となってはなぜかわからん/そのうち修正)
-					if (mmrefle){
-						SubmapDraw.create();
-						mmrefle = false;
-					}
-					work3.putFunc(SubmapDraw);
-				}
-				obCtrl.drawPoint(dev.graphics[3], lampf);
+				//work3.putFunc(SubmapframeDraw);//forgroundBG.putFunc(SubmapframeDraw);
+				//if (!mapdisp){//mapdispはfalseで表示(今となってはなぜかわからん/そのうち修正)
+				//	if (mmrefle){
+				//		SubmapDraw.create();
+				//		mmrefle = false;
+						//work3.putFunc(SubmapDraw);
+				//	}
+				//	work3.putFunc(SubmapDraw);
+				//}
+				obCtrl.drawPoint(dev.graphics[4], lampf);
 				//obCtrl.drawPoint(work3, lampf);//dev.graphics[3]
 			}
 
-			work3.putFunc(ButtomlineBackgroundDraw);
+			//work3.putFunc(ButtomlineBackgroundDraw);
+			
 			UIDraw();
 
 	        //debug　true　の場合以下表示
  	       if (state.Config.debug) {
-    	        var wtxt = read_debugStates().concat(obCtrl.messagelog.read());
-	    	    for (var s in wtxt) work3.putchr8(wtxt[s], dev.layout.status_x, dev.layout.status_y + 8 * s);
+
+				let wtxt = read_debugStates();
+				if (state.Config.viewlog) wtxt = wtxt.concat(obCtrl.messagelog.read()); 
+    	        //var wtxt = read_debugStates().concat(obCtrl.messagelog.read());
+	    	    for (var s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.status_x, dev.layout.status_y + 8 * s);
 
 				//wtxt = obCtrl.messagelog.read();
 	    	    //for (var s in wtxt) work3.putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 
 				wtxt = obCtrl.messageview.read();
-	    	    for (var s in wtxt) work3.putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+	    	    if (state.Config.viewlog) for (var s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+				
 	    	}
+			
 		}
 		if (!mapdisp){ mapv = true; }
 
@@ -574,8 +583,15 @@ function gameScene(state){
 	}
 
 	function BGDraw() {
+		/*全体画面の背景表示は都度更新も随時更新もあまり負荷変らない為、随時更新で処理する。
+		if (!dev.gs.changestate) return;
+		
+		dev.graphics[0].reset(); //work2
+		dev.graphics[0].clear();
 
-		//if (!dev.gs.changestate) return;
+		dev.graphics[2].reset(); //ForgroundBF
+		dev.graphics[2].clear();
+		*/
 
 		for (var i in mapChip) {
 			var mc = mapChip[i];
@@ -702,18 +718,103 @@ function gameScene(state){
 		}
 	}
 
+	var ui = { cnt: 0,state:[], score:[]};
+
+	//UI表示は都度更新と随時更新では負荷減効果あり、必要時都度更新で処理する。
+	//(ミニマップのレーダー(点)は常時なのでここでは処理しない)
+
 	function UIDraw(){
-		var wtxt = [];
+
+		let insco = [
+			ehighscore.read(state.Result.highscore),//state.Result.highscore,
+			escore.read(obCtrl.score),//obCtrl.score,
+			Math.floor((120000 - mapsc.flame) / 1000),
+		];
+
+		let inste = [ 
+			//ehighscore.read(state.Result.highscore),//state.Result.highscore,
+			//escore.read(obCtrl.score),//obCtrl.score,
+			dead_cnt,
+			mapdisp,
+			lampf,
+			obCtrl.item[20],
+			obCtrl.itemstack.length,
+			state.Game.player.weapon,
+			state.Game.player.level,
+			mapsc.stage,
+			//Math.floor((120000 - mapsc.flame) / 1000),
+			state.Game.player.hp,
+			state.Game.player.maxhp,
+			state.Game.player.barrier,
+			mmrefle
+		];
+
+		let cf= true;
+		for (let i in ui.state) if (ui.state[i] !== inste[i]) cf = false;
+
+		let cs= true;
+		for (let i in ui.score)	if (ui.score[i] !== insco[i]) cs = false;
+
+		ui.state = inste;
+		ui.score = insco;
+		ui.cnt++;
 
 		//work3.fill(dev.layout.hiscore_x + 12 * 6, dev.layout.hiscore_y, 12 * 7, 32); // , "darkblue");
 
-		wt = ehighscore.read(state.Result.highscore);
-		//work3.putchr("Hi-Sc:" + wt, dev.layout.hiscore_x, dev.layout.hiscore_y);
-		work3.putchr("Hi-Sc:" + wt, dev.layout.hiscore_x, dev.layout.hiscore_y);
+		//obCtrl.messageview.write(JSON.stringify(uistate) + "/" + cf);
+		if  (cf && cs) return;
 
-		wt = escore.read(obCtrl.score);
+		obCtrl.messageview.write("** SCORE Draw **" + ui.cnt);
+
+		if (!cf){
+			work3.reset();
+			work3.clear();
+		}else{
+			work3.fill(dev.layout.hiscore_x, dev.layout.hiscore_y,156,32);//,"green");
+			work3.fill(dev.layout.time_x, dev.layout.time_y,120,16);//,"red");
+		}
+
+		//wt = ui.score[0];
+		//wt = ehighscore.read(state.Result.highscore);
+		work3.putchr("Hi-Sc:" + ui.score[0], dev.layout.hiscore_x, dev.layout.hiscore_y);
+
+		//wt = ui.score[1];
+		//wt = escore.read(obCtrl.score);
+		work3.putchr("Score:" + ui.score[1], dev.layout.score_x, dev.layout.score_y);
+
+		work3.putchr("Time:" + Math.floor((120000 - mapsc.flame) / 1000), dev.layout.time_x, dev.layout.time_y);
+
+		if  (cf) return;
+		obCtrl.messageview.write("** UI Draw **"+ ui.cnt);
+		ui.cnt = 0;
+
+		if (!mapdisp || lampf) {
+			work3.putFunc(SubmapframeDraw);//forgroundBG.putFunc(SubmapframeDraw);
+			if (!mapdisp){//mapdispはfalseで表示(今となってはなぜかわからん/そのうち修正)
+				if (mmrefle){
+					SubmapDraw.create();
+					//obCtrl.messageview.write("** Submap Create **");
+					mmrefle = false;
+					//work3.putFunc(SubmapDraw);
+				}
+				work3.putFunc(SubmapDraw);
+			}
+			//obCtrl.drawPoint(dev.graphics[3], lampf);
+			//obCtrl.drawPoint(work3, lampf);//dev.graphics[3]
+		}
+
+		work3.putFunc(ButtomlineBackgroundDraw);
+
+		wt = ui.state[0];
+		//wt = ehighscore.read(state.Result.highscore);
+		//work3.putchr("Hi-Sc:" + wt, dev.layout.hiscore_x, dev.layout.hiscore_y);
+		//work3.putchr("Hi-Sc:" + wt, dev.layout.hiscore_x, dev.layout.hiscore_y);
+
+		wt = ui.state[1];
+		//wt = escore.read(obCtrl.score);
 		//work3.putchr("Score:" + wt, dev.layout.score_x, dev.layout.score_y);
-		work3.putchr("Score:" + wt, dev.layout.score_x, dev.layout.score_y);
+		//work3.putchr("Score:" + wt, dev.layout.score_x, dev.layout.score_y);
+
 
 		//残機表示
 		var zc = 2 - dead_cnt;
@@ -800,7 +901,7 @@ function gameScene(state){
 			}
 		work3.putchr("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y);
 
-		work3.putchr("Time:" + Math.floor((120000 - mapsc.flame) / 100), dev.layout.time_x, dev.layout.time_y);
+		//work3.putchr("Time:" + Math.floor((120000 - mapsc.flame) / 1000), dev.layout.time_x, dev.layout.time_y);
 
 		//work3.putchr8("ITEM", dev.layout.hp_x , dev.layout.hp_y - 40);
 

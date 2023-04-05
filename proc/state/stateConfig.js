@@ -11,6 +11,7 @@ function stateConfig(){
     this.use_audio;
     
     this.debug;
+    this.viewlog;
     this.bulletmode;
 
     this.keyAn = [];
@@ -24,7 +25,7 @@ function stateConfig(){
 
         if (Boolean(localStorage)) {
 
-            var t = ["lamp_use", "map_use", "itemreset", "shotfree", "debug", "bulletmode", "startstage"];
+            var t = ["lamp_use", "map_use", "itemreset", "shotfree", "debug", "viewlog", "bulletmode", "startstage"];
 
             var f = false;
 
@@ -66,6 +67,7 @@ function stateConfig(){
             localStorage.setItem("itemreset", (this.itemreset) ? "on" : "off");
             localStorage.setItem("shotfree", (this.shotfree) ? "on" : "off");
             localStorage.setItem("debug", (this.debug) ? "on" : "off");
+            localStorage.setItem("viewlog", (this.viewlog) ? "on" : "off");
             localStorage.setItem("bulletmode", (this.bulletmode) ? "on" : "off");
             localStorage.setItem("startstage", new String(this.startstage));
 
@@ -94,6 +96,7 @@ function stateConfig(){
         this.use_audio = true;
 
         this.debug = false; //trueでdebugステータス表示。
+        this.viewlog = false; //trueでdebug時にログ表示
         this.bulletmode = false; //trueで画面外から弾が飛んでこなくなる。
 
         //[0-4:Keycode attack bomb, jump, quit, esc] z:90, x:88, c:67, q:81, esc:27
