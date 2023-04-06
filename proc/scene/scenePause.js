@@ -171,10 +171,11 @@ function scenePause(state) {
             }
 
             work.reset();
-            work.fill(0, 240, 8 * 22, 8 * 11, "navy");
+            work.fill(0, 240, 8 * 22, 8 * 11);//, "navy");
 
             if (menuvf){
                 var arr = [];
+                work.fill(0, 240, 8 * 22, 8 * 11, "navy");
                 work.putchr8("Input ["+ inp +"]", 16, 240);
 
                 arr.push("1: Debug Display  :" + (state.Config.debug?"ON":"OFF"));

@@ -97,25 +97,27 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
             let x = sobj.x;
             let y = sobj.y;
 
+            let wid = "Get Item." + msg.src;
+
             if (msg.src == 35) {
-                var wid = sobj.score + "pts.";
+                wid = sobj.score + "pts.";
                 dev.sound.effect(11); //get音
                 mapsc.add(x, y, 0, 20, 39, wid); //43green
             }
 
             if (msg.src == 21) {
-                var wid = "Extend!";
+                wid = "Extend!";
                 mapsc.add(x, y, 0, 20, 39, wid);
             }
 
             if (msg.src == 22) {
-                var wid = "GetKey!";
+                wid = "GetKey!";
                 dev.sound.effect(11); //get音
                 mapsc.add(x, y, 0, 20, 39, wid);
             }
 
             if ((msg.src >= 15) && (msg.src <= 19)) {
-                var wid = "Weapon!";
+                wid = "Weapon!";
                 dev.sound.effect(11); //get音
                 mapsc.add(x, y, 0, 20, 39, wid);
             }
@@ -131,6 +133,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                 objc.itemstack.push(w);
             }
 
+            objc.messageconsole.write(objc.itemTable[msg.src] + ".GET");
             break;
 
         case "bomb":
@@ -186,6 +189,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                     }
                 }
             }
+            objc.messageconsole.write("=BOMB=");
             break;
 
         case "bomb4":
@@ -225,6 +229,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                     }
                 }
             }
+            objc.messageconsole.write("=COLLECT=");
             break;
 
         case "collect3":

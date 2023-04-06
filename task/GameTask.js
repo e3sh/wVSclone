@@ -192,22 +192,42 @@ class GameTask_Load extends GameTask {
             pfunc(st[i], 0, i*16 +16);
         }
 
-        if (g.blink()){    
+        var o = {}
+            o.x = 0;
+            o.y = st.length*16 +32;
+            o.w = 32 * 8;
+            o.h = 8;
+            let wc = Math.floor(Math.cos(((g.time()%3000)/3000)*6.28)*256)+256;
+            wc = (wc > 255)?255: wc;
+            o.c = 'rgb( 0, 0,' + wc + ')';//"navy";
+            //o.c = 'rgb( 0,' +  Math.floor(Math.sin(((g.time()%2000)/2000)*6.28 + 2)*255)  + ',' + Math.floor(Math.cos(((g.time()%2000)/2000)*6.28)*255) + ')';//"navy";
+        o.draw = function (device) {
+                device.beginPath();
+                device.fillStyle = this.c;
+                device.fillRect(this.x, this.y, this.w, this.h);
+            }
+        this.scrn.putFunc(o);
+
+
+        //if (g.blink()){    
             pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
-        }else{
+        //}else{
+            /*
             var o = {}
             o.x = 0;
             o.y = st.length*16 +32;
             o.w = 31 * 8;
             o.h = 24;
+            o.c = 'rgb( 0, 0,' + Math.floor(Math.cos(((g.time()%1000)/1000)*3.14)*255) + ')';//"navy";
             o.draw = function (device) {
                 device.beginPath();
-                device.fillStyle = "navy";
+                device.fillStyle = this.c;
                 device.fillRect(this.x, this.y, this.w, this.h);
             }
             this.scrn.putFunc(o);
-            pfunc("Click Mouse Left Button.", 0, st.length*16 +32+8);
-        }
+            */
+            //pfunc("Click Mouse Left Button.", 0, st.length*16 +32+8);
+        //}
 
         for (var i in this.str){
             pfunc(this.str[i], 320, i*8 + 8);

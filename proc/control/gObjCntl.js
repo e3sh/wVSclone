@@ -82,9 +82,32 @@
 
     var msglog = new textbufferControl(23);
     var msgview = new textbufferControl(28);
+    var msgcnsl = new textbufferControl(26);
 
     this.messagelog = msglog;
     this.messageview = msgview;
+    this.messageconsole = msgcnsl;
+
+    var itemtable = {
+    //  (ITEMLIST) 
+        15:"WAND",  // MP38 Wand
+        16:"SWORD", // MP15 Knife
+        17:"AXE",   // MP37 Axe
+        18:"SPEAR", // MP35 Spear
+        19:"BOOM",  // MP36 Boom
+        20:"BALL",  // MP26 Ball1-3
+        21:"1UP",   // MP 1 Mayura1-4
+        22:"KEY",   // MP27 Key
+        23:"B_BALL",// MP28 BallB1-3
+        24:"S_BALL",// MP29 BallS1-3
+        25:"L_BALL",// MP30 BallL1-3
+        26:"LAMP",  // MP33 Lamp
+        27:"MAP",   // MP34 Map
+        35:"COIN",  // MP32 Coin1-4
+        40:"TRBOX", // MP39 TrBox
+        50:"BOW"    // MP43 Bow
+    }
+    this.itemTable = itemtable;
 
     function textbufferControl(num = 20){
 
@@ -111,6 +134,10 @@
                 }
             }
             buffer = bfw;
+        }
+
+        this.clear = function(){
+            buffer =[];
         }
     }
     var cmdlog = "-----";
@@ -160,6 +187,7 @@
         this.item[35] = 0; //coinclear;
 
         msglog.write("ObjCtrl Run.");
+        msgcnsl.clear();
 
     }
 
@@ -272,7 +300,9 @@
 
                 if (r.exec){
                     if (ms.cmd != cmdlog){//logfilter
-                        msgview.write("." + "=".repeat(cmdcnt/5) + cmdlog );
+                        let rc = (cmdcnt/5 > 10)? 10: cmdcnt/5;
+                        
+                        msgview.write("." + "=".repeat(rc) + cmdlog );
                         if (r.log) msglog.write("." + ms.cmd);
                         cmdlog = ms.cmd;
                         cmdcnt = 0;
@@ -413,7 +443,7 @@
         }
 
         //score view display 
-
+        /*
         if (stockcount > 0) {
             //coin get score display 
             stockcount--;
@@ -434,7 +464,7 @@
                 stockrate = 0;
             }
         }
-
+        */
         //Hit
 
         //restartFlag = false;

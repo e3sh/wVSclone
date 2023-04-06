@@ -497,13 +497,13 @@ function sce_player() {
         var sx = o.gt.world_x;
         var sy = o.gt.world_y;
 
-        if ((o.gt.viewwidth/2) - (w.x - w.sx) > 150 ){ sx = o.x  - (o.gt.viewwidth/2) + 150;}
+        if ((o.gt.viewwidth/2) - (w.x - w.sx) > 120 ){ sx = o.x  - (o.gt.viewwidth/2) + 120;}
 
-        if ((o.gt.viewwidth/2) - (w.x - w.sx) < -150){ sx = o.x  - (o.gt.viewwidth/2) - 150;}
+        if ((o.gt.viewwidth/2) - (w.x - w.sx) < -120){ sx = o.x  - (o.gt.viewwidth/2) - 120;}
 
-        if ((o.gt.viewheight/2) - (w.y - w.sy) > 80){ sy = o.y  - (o.gt.viewheight/2) + 80;}
+        if ((o.gt.viewheight/2) - (w.y - w.sy) > 50){ sy = o.y  - (o.gt.viewheight/2) + 50;}
 
-        if ((o.gt.viewheight/2) - (w.y - w.sy) < -80){sy = o.y  - (o.gt.viewheight/2)  - 80;}
+        if ((o.gt.viewheight/2) - (w.y - w.sy) < -50){sy = o.y  - (o.gt.viewheight/2)  - 50;}
 
         /*
         if (w.x < 240) vxf = 1;
@@ -534,6 +534,8 @@ function sce_player() {
         if (o.doorflag && o.jump == 0) {
             if (keyget > 0) {
                 o.item[22] = 0;
+        
+                //o.gt.viewpos(o.x - o.gt.viewwidth/2, o.y - o.gt.viewheight/2);
 
                 o.gameState.player.hp = o.hp;
 

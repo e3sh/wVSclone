@@ -52,7 +52,15 @@ function motionPattern(){
 	["Mayura3", 2, 0],
 	["Mayura4", 2, 0]
     ];
+	//Option
+	//=================================================
+    no = 3;
 
+	mp[no] = {};
+
+	mp[no].pattern = [
+	["miniMay", 0, 0]
+    ];
 	//ENEMY
 	//=================================================
 	no = 4;
@@ -76,7 +84,24 @@ function motionPattern(){
 	["Unyuu1", 2, 0],
 	["Unyuu2", 2, 0]
     ];
+	//Unyuu右向き
+	//=================================================
+    no = 31;
 
+	mp[no] = {};
+
+	mp[no].pattern = [
+	["Unyuu3", 0, 0]
+    ];
+	//Unyuu左向き
+	//=================================================
+    no = 6;
+
+	mp[no] = {};
+
+	mp[no].pattern = [
+	["Unyuu3", 2, 0]
+    ];
 	//青弾
 	//=================================================
 	no = 7;
@@ -195,15 +220,7 @@ function motionPattern(){
     ["BallL3", 0, 0],
     ["BallL2", 0, 0]
     ];
-	//L
-	//=================================================
-    no = 31;
 
-	mp[no] = {};
-
-	mp[no].pattern = [
-	["Unyuu3", 0, 0]
-    ];
 	//Coin
 	//=================================================
 	no = 32;
@@ -376,3 +393,39 @@ function motionPattern(){
 //@@
 	return mp;
 }
+//===================================
+//2023/04/06 check
+//===================================
+/*
+1 mayura 右向き 2 mayura 左向き
+3 option?
+4 Unyuu  右向き 5 Unyuu  左向き
+6 BUnyuu 左向き
+7 Bullet 
+8-10 (Reserb)
+11 Hit 
+12 Bomb 
+13-14 (Reserb)
+15 Knife 
+16-25 (Reserb)
+26 Ball 27 Key
+28 (B 
+29 (S 
+30 (L 
+31 Generator(BUnyuu 右向き)
+32 Coin 
+33 Lamp 
+34 Map
+35 Spear
+36 Boom
+37 Axe
+38 Wand
+39 TrBox
+40 Baxe
+41 Rod
+42 Sword
+43 Bow
+44 Arrow
+45 Cursor
+46 Barn
+*/

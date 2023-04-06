@@ -1,8 +1,10 @@
 # wVSclone
 repositorie JavascriptActionGameのバージョンアップ版
-- VampireSurviveorsみたいな感じで動かせたり出来るように色々機能追加とかしたいと調整中
 
 https://e3sh.github.io/wVSclone/main.html
+(2023/04/04頃から、何故か一部ファイルが GitHub Page で更新されないため、動作エラーになることあり。
+ Webサーバが必要な機能は使わないようにして(import/exportがローカルでも動けば使うのですが・・・)
+ ローカルで実行できるように作ってあるので、ダウンロードしてmain.html開けば、そのまま実行できます。)
 
 ## 操作方法： キーボード操作　/　ゲームパッド操作
 - 移動(Move):　方向キー(ArrowKey)　/ 十字キー

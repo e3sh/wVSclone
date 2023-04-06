@@ -29,6 +29,10 @@ function sceneTitle(state) {
     var ret_code = 0;
 
     var menusel = 0;
+    var psel = {};
+
+    const DSP_X = 320;
+    const DSP_Y = 112;
 
     var menu = [];
     var mttl = ["GameStart.", "Continue", "Config"];
@@ -101,25 +105,35 @@ function sceneTitle(state) {
             wtxt.push("audio off:" + dev.sound.loadCheck());
         }
 
-        const DSP_X = 320;
-        const DSP_Y = 144;
+        //const DSP_X = 320;
+        //const DSP_Y = 144;
 
-        work2.put("Mayura1", DSP_X - 50 +8 , DSP_Y +8);
-        work2.put("Unyuu1", DSP_X - 50 +8,  DSP_Y  +40);
+        work2.put("Mayura1",DSP_X - 50 +8    , DSP_Y  +8);
+        work2.put("Unyuu1", DSP_X - 50 +8    , DSP_Y +40);
+        work2.put("Unyuu3", DSP_X - 50 +8 -32, DSP_Y +40);
 
-        work2.put("Ball1" , DSP_X - 100 + 0 -16, DSP_Y +72);
-        work2.put("BallB1", DSP_X - 100 + 16 - 16, DSP_Y +72);
-        work2.put("BallS1", DSP_X - 100 + 32 - 16, DSP_Y +72);
-        work2.put("BallL1", DSP_X - 100 + 48 - 16, DSP_Y +72);
-        work2.put("Lamp"  , DSP_X - 100 + 72 - 16, DSP_Y +72);
-        work2.put("Map"   , DSP_X - 100 + 96 - 16, DSP_Y +72);
+        work2.put("Spear", DSP_X - 132 + 0 -16, DSP_Y +72);
+        work2.put("Wand" , DSP_X - 132 +64 -16, DSP_Y +72);
+        work2.put("Axe"  , DSP_X - 132 +80 -16, DSP_Y +72);
+        work2.put("Boom" , DSP_X - 132 +96 -16, DSP_Y +72);
+        work2.put("Knife", DSP_X - 132 +112-16, DSP_Y +72);
+        work2.put("Bow"  , DSP_X - 132 +32 -16, DSP_Y +72);
+
+        work2.put("Ball1" , DSP_X - 100 + 0 -16, DSP_Y +104);
+        work2.put("BallB1", DSP_X - 100 + 16 - 16, DSP_Y +104);
+        work2.put("BallS1", DSP_X - 100 + 32 - 16, DSP_Y +104);
+        work2.put("BallL1", DSP_X - 100 + 48 - 16, DSP_Y +104);
+        work2.put("Lamp"  , DSP_X - 100 + 72 - 16, DSP_Y +104);
+        work2.put("Map"   , DSP_X - 100 + 96 - 16, DSP_Y +104);
+
         //work2.put("TrBox", 320 - 50 + 0 - 8, 304);
-        work2.put("Key"   , DSP_X - 50 + 16 - 8, DSP_Y +102);
+        work2.put("Key"   , DSP_X - 50 + 16 - 8, DSP_Y +136);
 
-        work2.putchr("Player"   , DSP_X, DSP_Y  +  8 -8);
-        work2.putchr("Enemy"    , DSP_X, DSP_Y  + 40 -8);
-        work2.putchr("Ball/Item", DSP_X, DSP_Y  + 72 -8);
-        work2.putchr("Key"      , DSP_X, DSP_Y  +104 -8);
+        work2.putchr("Player", DSP_X, DSP_Y  +  8 -8);
+        work2.putchr("Enemy" , DSP_X, DSP_Y  + 40 -8);
+        work2.putchr("Weapon", DSP_X, DSP_Y  + 72 -8);
+        work2.putchr("Item"  , DSP_X, DSP_Y  +104 -8);
+        work2.putchr("Key"   , DSP_X, DSP_Y  +136 -8);
         //work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
 
         for (var s in wtxt) {
@@ -143,6 +157,7 @@ function sceneTitle(state) {
 
         menusel = 0;
 
+        psel = { mode:0, x:0 };
         //cnt = 0;
 
         //dev.sound.change(0);
@@ -173,6 +188,26 @@ function sceneTitle(state) {
                 if (kstate[40]) {//↓
                     menusel++;
                     if (menusel > menu.length- 1) menusel = 0;
+                    keylock = true;
+                    keywait = 10
+                }
+            }
+            if (Boolean(kstate[37])) {
+                if (kstate[37]) {// <-
+                    psel.mode = 0;
+                    //menusel--;
+                    //if (menusel < 0) menusel = menu.length - 1;
+                    keylock = true;
+                    keywait = 10;
+                }
+            }
+
+            if ((kstate[39])) {
+                if (kstate[39]) {// ->
+                    psel.mode = 1;
+                    psel.x += 2;
+                    //menusel++;
+                    //if (menusel > menu.length- 1) menusel = 0;
                     keylock = true;
                     keywait = 10
                 }
@@ -273,6 +308,7 @@ function sceneTitle(state) {
         //    bvf = true;
         //    cnt = (cnt > 90)? 0 : cnt;
        // }
+
         for (var i in menu) {
 
             if (menu[i].sel) {
@@ -295,8 +331,20 @@ function sceneTitle(state) {
                 work.putchr(menu[i].title, menu[i].x - 4, menu[i].y -1);    
             }
         }
+
+        if (psel.x > 0){
+            if (psel.mode == 1){
+                if (psel.x < DSP_X - 50 +8 -32){ psel.x += 6;}else{ psel.x =DSP_X - 50 +8 -32; }
+            }else{
+                psel.x -= 6;
+            }
+            work.put("Unyuu3", psel.x, DSP_Y +8);
+        }else{
+            psel.x = 0;
+        }
+
         if (state.System.blink()){ 
-        //if (bvf) 
+            //if (bvf) 
             work.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 270);
         }
         //表示
