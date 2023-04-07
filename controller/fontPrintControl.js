@@ -3,23 +3,29 @@
 
 //fprint = new fontPrintControl(
 //    screen, 
-//    "pict/k12x8_jisx0201c.png", 6, 8,
-//    "pict/k12x8_jisx0208c.png",12, 8
+//    image"pict/k12x8_jisx0201c.png", 6, 8,
+//    image"pict/k12x8_jisx0208c.png",12, 8
 //);
-//fprint.mput(textstr, x, y);
+//.print(textstr, x, y);
+//.putchr(textstr, x, y, z);
+//.useScreen(screen_number);
 
-function fontPrintControl( screen, asciiPtn, aw, ah, KanjiPtn, kw, kh ) {
+function fontPrintControl( g, asciiPtn, aw, ah, KanjiPtn, kw, kh ) {
  
-    const buffer_ = screen.buffer;
+    var buffer_ =  g.screen[0].buffer;
     
+    this.useScreen = function (num) {
+
+        buffer_ = g.screen[num].buffer;
+    }
     //var p_ch_ptn = fontParam.pattern;
 
-    const pica = new Image();
-    pica.src = asciiPtn;
+    const pica = asciiPtn;//new Image();
+    //pica.src = asciiPtn;
 
 
-    const pick = new Image();
-    pick.src = KanjiPtn;
+    const pick = KanjiPtn;//new Image();
+    //pick.src = KanjiPtn;
 
     var UTFconv = [];
 
@@ -96,19 +102,7 @@ function fontPrintControl( screen, asciiPtn, aw, ah, KanjiPtn, kw, kh ) {
         return r;
     }
 
-    this.testprint_a = function(x, y){
-        buffer_.fillRect(x, y, 100, 100, "blue");
-        //buffer_.drawImgXY(asciiPtn,x, y);
-        buffer_.drawImgXY(pick,x, y);
-    }
-
-    this.testprint_k = function(x, y){
-        buffer_.fillRect(x, y, 100, 100, "yellow");
-        //buffer_.drawImgXY(KanjiPtn,x, y);
-        buffer_.drawImgXY(pica,x, y);
-    }
-
-    this.mput = function(str, x, y){
+    this.print = function(str, x, y){
 
         for (let i = 0, loopend = str.length; i < loopend; i++) {
             let n = str.charCodeAt(i);

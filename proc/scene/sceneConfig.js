@@ -104,7 +104,7 @@ function sceneConfig(state) {
             for (var j = 0; j < 2; j++) {
                 m = new btn();
                 m.setup(
-                    (j == 0) ? "  On" : "  Off",
+                    (j == 0) ? " Enable" : " Disable",
                     x + 160 + 80 * j, 
                     y, 80, 16
                     );
@@ -143,8 +143,10 @@ function sceneConfig(state) {
 
                 text.reset();    
                 text.clear();
-                text.print(tmes + restxt, tmsx+2, tmsy+1, "black");
-                text.print(tmes + restxt, tmsx, tmsy, "white");
+                //text.print(tmes + restxt, tmsx+2, tmsy+1, "black");
+                //text.print(tmes + restxt, tmsx, tmsy, "white");
+                text.kprint(tmes + restxt, tmsx, tmsy);
+                //text.kputchr(tmes + restxt, tmsx, tmsy, 1.5);
                 text.draw();
                 //text.reset();
             }
@@ -192,10 +194,10 @@ function sceneConfig(state) {
 
                 for (var j = 0; j < 2; j++) {
                     m = new btn();
-                    m.setup((j == 0) ? "  +1" : "  -1",
+                    m.setup((j == 0) ? "  -1" : "  +1",
                 x + 160 + 80 * j, y, 80, 16);
                     m.msg = msg; //; + ((j == 0) ? "有効" : "無効");
-                    m.sw = (j == 0) ? 1 : -1;
+                    m.sw = (j == 0) ? -1 : 1;
                     m.num = num;
 
                     menu.push(m);
@@ -240,8 +242,10 @@ function sceneConfig(state) {
 
                     text.reset();
                     text.clear();
-                    text.print(tmes + res, tmsx+2, tmsy+1, "black");
-                    text.print(tmes + res, tmsx, tmsy, "white");
+                    //text.print(tmes + res, tmsx+2, tmsy+1, "black");
+                    //text.print(tmes + res, tmsx, tmsy, "white");
+                    text.kprint(tmes + res, tmsx, tmsy);
+                    //text.kputchr(tmes + res, tmsx, tmsy, 1.5);
                     text.draw();
                     //text.reset();
                 }
@@ -254,8 +258,8 @@ function sceneConfig(state) {
 
     var menu = []
     var mttl = ["LampUse.", "MapUse.", "ItemReset.", "ShotFree.", "SoundTest.", "StartStage.", "DebugStatus", "BulletErace"];
-    var w_message = ["面の開始からランプを所持する:  ", "面の開始から地図を所持する: ",
-	"死んだときにアイテム放出する: ", "弾を消費しない。:", "サウンドテスト : ", "開始面 : ", "デバッグステータス表示:", "画面外からの弾を消す:"];
+    var w_message = ["面の開始からランプを所持する:", "面の開始から地図を所持する:",
+	"死んだときにアイテム放出する:", "弾を消費しない。:", "サウンドテスト : ", "開始面 : ", "デバッグステータス表示:", "画面外からの弾を消す:"];
     var mtyp = [0, 0, 0, 0, 1, 1, 0, 0];//menu type 0:select 1:number
 
     w_number[5] = 1; //開始面初期値
@@ -269,10 +273,10 @@ function sceneConfig(state) {
 
         if (mtyp[i] == 0) {
             var wcm = new sel_menu();
-            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 100, 296);
+            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 20, menu_y + i * 20 + 8);
         } else {
             var wcm = new sel_number();
-            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 100, 296);
+            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, menu_x, menu_y + i * 20 + 8);
         }
 
         confmenu.push(wcm);
@@ -344,7 +348,7 @@ function sceneConfig(state) {
         work2.setBackgroundcolor("navy");
         work2.reset();
         work2.clear("navy");
-
+/*
         cl = {};
         cl.w = work.cw;
         cl.h = work.ch;
@@ -366,7 +370,7 @@ function sceneConfig(state) {
         }
         work2.putFunc(cl);
         work2.draw();
-        
+  */      
         for (i in w_number) {
             if (Boolean(w_number[i])) {
                 before_wn[i] = w_number[i];
@@ -408,22 +412,27 @@ function sceneConfig(state) {
         var lkey = false;
         var rkey = false;
 
+        const c = dev.directionM( kstate );
+
         if (!keylock) {
-            if (Boolean(kstate[37])) {
-                if (kstate[37]) {//<=
+            //if (Boolean(kstate[37])) {
+                if (c.left) {// <-
+                //if (kstate[37]) {//<=
                     lkey = true;
                     keywait = 10;
                 }
-            }
-            if (Boolean(kstate[39])) {
-                if (kstate[39]) {//=>
+            //}
+            //if (Boolean(kstate[39])) {
+                if (c.right) {// ->
+                //if (kstate[39]) {//=>
                     rkey = true;
                     keywait = 10;
                 }
-            }
+            //}
 
-            if (Boolean(kstate[38])) {
-                if (kstate[38]) {//↑
+            //if (Boolean(kstate[38])) {
+                if (c.up) {//↑
+                //if (kstate[38]) {//↑
                     menusel--;
 
                     if (menusel < mttl.length * 3) {
@@ -437,10 +446,11 @@ function sceneConfig(state) {
                     text.clear();
                     text.draw();
                 }
-            }
+            //}
 
-            if ((kstate[40])) {
-                if (kstate[40]) {//↓
+            //if ((kstate[40])) {
+                if (c.down) {//↓
+                //if (kstate[40]) {//↓
                     menusel++;
 
                     if (menusel < mttl.length * 3) {
@@ -454,7 +464,7 @@ function sceneConfig(state) {
                     text.clear();
                     text.draw();
                 }
-            }
+            //}
 
             var zkey = false;
             if (Boolean(kstate[90])) {
@@ -581,20 +591,23 @@ function sceneConfig(state) {
 
             text.clear();
 
-            text.print("設定初期化しました。", 102, 281, "black");
-            text.print("設定初期化しました。", 100, 280, "white");
+            //text.print("設定初期化しました。", 102, 281, "black");
+            //text.print("設定初期化しました。", 100, 280, "white");
+            text.kprint("設定初期化しました。", 100, 280);
 
             if (Boolean(localStorage)) {
                 localStorage.clear();
-                text.print("ローカルストレージクリア。", 102, 301, "black");
-                text.print("ローカルストレージクリア。", 100, 300, "white");
 
+                //text.print("ローカルストレージクリア。", 102, 301, "black");
+                //text.print("ローカルストレージクリア。", 100, 300, "white");
+                text.kprint("ローカルストレージクリア。", 100, 300);
             } else {
-                text.print("ローカルストレージが使用できない?"
-                        , 102, 301, "black");
-                text.print("ローカルストレージが使用できない?"
-                        , 100, 300, "white");
 
+                //text.print("ローカルストレージが使用できない?"
+                //        , 102, 301, "black");
+                //text.print("ローカルストレージが使用できない?"
+                //        , 100, 300, "white");
+                text.kprint("ローカルストレージが使用できない?", 100, 300);
             }
             text.draw();
             //text.reset();
@@ -617,18 +630,19 @@ function sceneConfig(state) {
             text.clear();
         
             if (state.Config.save() == 0) {
-                text.print("設定をセーブしました。"//this.msg + localStorage.length
-            , 102, 281, "black");
-                text.print("設定をセーブしました。"
-            , 100, 280, "white");
 
-
+            //    text.print("設定をセーブしました。"//this.msg + localStorage.length
+            //, 102, 281, "black");
+            //    text.print("設定をセーブしました。"
+            //, 100, 280, "white");
+                text.kprint("設定をセーブしました。", 100, 280);
             } else {
-                text.print("ローカルストレージが使用できない?"
-                        , 102, 281, "black");
-                text.print("ローカルストレージが使用できない?"
-                        , 100, 280, "white");
 
+            //    text.print("ローカルストレージが使用できない?"
+            //            , 102, 281, "black");
+            //    text.print("ローカルストレージが使用できない?"
+            //            , 100, 280, "white");
+                text.kprint("ローカルストレージが使用できない?", 100, 280);
             }
             text.draw();
             //text.reset();
@@ -677,7 +691,8 @@ function sceneConfig(state) {
     function scene_draw() {
 
         for (var s in wtxt) {
-            work.putchr(wtxt[s], 0, 60 + 16 * s);
+            //work.putchr(wtxt[s], 0, 60 + 16 * s);
+            work.kprint(wtxt[s], 0, 60 + 16 * s);
         }
 
         for (var i in menu) {
@@ -696,9 +711,9 @@ function sceneConfig(state) {
             }
 
             if (menu[i].select) {
-                work.putchr(menu[i].title, menu[i].x - 4, menu[i].y - 1);
+                work.kprint(menu[i].title, menu[i].x - 4, menu[i].y - 1);
             } else {
-                work.putchr(menu[i].title, menu[i].x, menu[i].y);
+                work.kprint(menu[i].title, menu[i].x, menu[i].y);
 
             }
         }

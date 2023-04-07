@@ -129,6 +129,16 @@ function Screen(g,num) {//g.screen（DisplayControll）[num]
         fontput(str, x, y, c);
     }
     //-------------------------------------------------------------
+    this.kprint = function(str, x, y){
+        g.state.System.dev.kanji.useScreen(num); 
+        g.state.System.dev.kanji.print(str, x, y);
+    }
+    this.kputchr = function(str, x, y, z){
+        g.state.System.dev.kanji.useScreen(num); 
+        g.state.System.dev.kanji.putchr(str, x, y, z);
+    }
+
+    //-------------------------------------------------------------
     function fontput(str, x, y, c, z){
         if (g.font[fcolor[c]]){
             g.font[fcolor[c]].useScreen(num); 

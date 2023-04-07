@@ -573,11 +573,12 @@ function gameScene(state){
 	    	    //for (var s in wtxt) work3.putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 
 				wtxt = obCtrl.messageview.read();
-	    	    if (state.Config.viewlog) for (var s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
-				
+	    	    if (state.Config.viewlog) for (var s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+	    	    //if (state.Config.viewlog) for (var s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 	    	}else{
 				wtxt = obCtrl.messageconsole.read();
-	    	    if (state.Config.viewlog) for (var s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+				if (state.Config.viewlog) for (var s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+				//if (state.Config.viewlog) for (var s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 			}
 			
 		}
@@ -814,7 +815,11 @@ function gameScene(state){
 			//obCtrl.drawPoint(work3, lampf);//dev.graphics[3]
 		}
 		
-		UI_PlayerType();
+		if (state.Game.mode !=1 ){
+			UI_PlayerType();
+		}else{
+			UI_PlayerType2();
+		}
 		/*
 		work3.putFunc(ButtomlineBackgroundDraw);
 
@@ -933,7 +938,7 @@ function gameScene(state){
 		work3.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
 		*/
 	}
-
+	//==========
 	function gs_score_effect( sc ){
 
 		var wscore = sc;
@@ -967,7 +972,7 @@ function gameScene(state){
 			return wt;
 		}
 	}
-
+	//==========
 	function read_debugStates(){
 		let wtxt = [];
 
@@ -1001,7 +1006,7 @@ function gameScene(state){
 
 		return wtxt;
 	}
-
+	//==========
 	function UI_PlayerType(){
 
 				work3.putFunc(ButtomlineBackgroundDraw);
@@ -1103,4 +1108,186 @@ function gameScene(state){
 		}
 		work3.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
 	}
+	//==========
+	function UI_PlayerType(){
+
+				work3.putFunc(ButtomlineBackgroundDraw);
+
+		//残機表示
+		var zc = 2 - dead_cnt;
+		if (zc < 3) {
+			for (var i = 0; i < 2 - dead_cnt; i++) {
+				work3.put("Mayura1", dev.layout.zanki_x + i * 32, dev.layout.zanki_y);
+			}
+		} else {
+			work3.put("Mayura1", dev.layout.zanki_x, dev.layout.zanki_y);
+			work3.putchr8("x" + zc, dev.layout.zanki_x + 16, dev.layout.zanki_y);
+		}
+
+		//Lamp/map
+		if(!mapdisp){ work3.put("Map",dev.layout.map_x + 36, dev.layout.map_y + 12) }//dev.layout.zanki_x + 360, dev.layout.zanki_y-16);}
+		if(lampf) { work3.put("Lamp",dev.layout.map_x + 12, dev.layout.map_y + 12) }//dev.layout.zanki_x + 336, dev.layout.zanki_y-16);}
+
+		//ball表示
+		if (Boolean(obCtrl.item[20])) {
+			var n = obCtrl.item[20];
+			if (n <= 8) {
+				//n = 16;
+
+				for (var i = 0; i < n; i++) {
+					work3.put("Ball1",
+					dev.layout.zanki_x + i * 20 + 288, dev.layout.zanki_y - 8);
+				}
+			} else {
+				work3.put("Ball1",
+				dev.layout.zanki_x + 288, dev.layout.zanki_y - 8);
+
+				work3.putchr8("x" + n, dev.layout.zanki_x + 288 + 10, dev.layout.zanki_y - 12);
+			}
+		}
+
+		//取得アイテム表示
+		if (Boolean(obCtrl.itemstack)) {
+
+			var wchr = { 20: "Ball1", 23: "BallB1", 24: "BallS1", 25: "BallL1" }
+			var witem = [];
+
+			for (var i in obCtrl.itemstack) {
+				var w = obCtrl.itemstack[i];
+				witem.push(w);
+			}
+
+			work3.putchr8("[X]", dev.layout.zanki_x + 132 - 16, dev.layout.zanki_y - 16);
+			n = witem.length;
+
+			if (n >= 17) {n = 15; work3.putchr8("...", dev.layout.zanki_x + n * 20 + 128, dev.layout.zanki_y + 8);}
+			//if (n >= 7) n = 7;
+
+			for (var i = 0; i < n; i++) {
+
+				if (i == 0) {
+					work3.put(wchr[witem[witem.length - 1 - i]],
+					dev.layout.zanki_x + i * 20 + 132, dev.layout.zanki_y);
+					//640 - (12 * 12), 479 - 32 + 5);
+				} else {
+					work3.put(wchr[witem[witem.length - 1 - i]],
+					dev.layout.zanki_x + i * 20 + 136, dev.layout.zanki_y + 8);
+				}
+			}
+		}
+
+		n = 0;
+		if (Boolean(obCtrl.item[22])) {
+			n = obCtrl.item[22];
+		}
+		if (n > 0) work3.put("Key", dev.layout.zanki_x + 64, dev.layout.zanki_y);
+
+		var wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Arrow"];
+
+		if (!Boolean(state.Game.player.weapon)) state.Game.player.weapon = 0;
+		if (!Boolean(state.Game.player.level)) state.Game.player.level = 0;
+
+		work3.putchr8("[Z]", dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y - 16);
+		work3.put(wweapon[state.Game.player.weapon], dev.layout.zanki_x + 96, dev.layout.zanki_y);
+		if (state.Game.player.level > 0){
+			var wt = "+" + state.Game.player.level + 
+				((state.Game.player.level > 2 )?" Max":"");
+				work3.putchr8(wt, dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y + 8);
+			}
+		work3.putchr("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y);
+
+		var w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
+
+		HpbarDraw.hp = w_hp; 
+		HpbarDraw.mhp = state.Game.player.maxhp;
+		HpbarDraw.br = state.Game.player.barrier;
+		work3.putFunc(HpbarDraw);
+	   
+		var wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
+
+		if (state.Game.player.barrier) {
+			wst = "HP:" + w_hp +"/SHIELD";       
+		}
+		work3.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
+	}
+	//==========
+	function UI_PlayerType2(){
+
+		work3.putFunc(ButtomlineBackgroundDraw);
+
+		//残機表示
+		var zc = 2 - dead_cnt;
+i
+		if (zc < 3) {
+			for (var i = 0; i < 2 - dead_cnt; i++) {
+				work3.put("Unyuu3", dev.layout.zanki_x + i * 32, dev.layout.zanki_y);
+			}
+		} else {
+			work3.put("Unyuu3", dev.layout.zanki_x, dev.layout.zanki_y);
+			work3.kprint("x" + zc, dev.layout.zanki_x + 16, dev.layout.zanki_y);
+		}
+
+		//Lamp/map
+		if(!mapdisp) work3.put("Map",dev.layout.map_x + 36, dev.layout.map_y + 12);
+		if(lampf) work3.put("Lamp",dev.layout.map_x + 12, dev.layout.map_y + 12);
+
+		//ball表示
+		if (Boolean(obCtrl.item[20])) {
+			var n = obCtrl.item[20];
+
+			work3.kprint("球:" + n,
+			dev.layout.zanki_x + 256, dev.layout.zanki_y - 12);
+		}
+
+		//取得アイテム表示
+		if (Boolean(obCtrl.itemstack)) {
+
+			var wchr = { 20: "..", 23: "爆弾.", 24: "ｼｰﾙﾄﾞ.", 25: "薬." }
+			var witem = [];
+
+			for (var i in obCtrl.itemstack) {
+				var w = obCtrl.itemstack[i];
+				witem.push(w);
+			}
+			//n = witem.length;
+			w = "";
+			for  (var i = 0; i < witem.length; i++)
+				w += wchr[witem[i]];
+			work3.kprint(w + "<-", dev.layout.zanki_x + 136, dev.layout.zanki_y);
+		}
+
+		n = 0;
+		if (Boolean(obCtrl.item[22])) {
+			n = obCtrl.item[22];
+		}
+		if (n > 0) work3.put("sKey", dev.layout.zanki_x + 64, dev.layout.zanki_y);
+
+		var wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Arrow"];
+
+		if (!Boolean(state.Game.player.weapon)) state.Game.player.weapon = 0;
+		if (!Boolean(state.Game.player.level)) state.Game.player.level = 0;
+
+		work3.kprint("武器", dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y - 16);
+		work3.put(wweapon[state.Game.player.weapon], dev.layout.zanki_x + 96, dev.layout.zanki_y);
+		if (state.Game.player.level > 0){
+			var wt = "+" + state.Game.player.level + 
+			((state.Game.player.level > 2 )?" Max":"");
+			work3.kprint(wt, dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y + 8);
+		}
+		work3.kprint("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y +40);
+
+		var w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
+
+		HpbarDraw.hp = w_hp; 
+		HpbarDraw.mhp = state.Game.player.maxhp;
+		HpbarDraw.br = state.Game.player.barrier;
+		work3.putFunc(HpbarDraw);
+
+		var wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
+
+		if (state.Game.player.barrier) {
+			wst = "HP:" + w_hp +"/SHIELD";       
+		}
+		work3.kprint(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
+	}	
 }

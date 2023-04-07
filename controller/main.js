@@ -28,6 +28,8 @@ function main_r(sw) {
 	game.asset.imageLoad( "bg1"		,"pict/bg1.png" );
 	game.asset.imageLoad( "bg2"		,"pict/bg2.png" );
 	game.asset.imageLoad( "bg3"		,"pict/bg3.png" );
+	game.asset.imageLoad( "KanjiHw"	,"pict/k12x8_jisx0201c.png" );
+	game.asset.imageLoad( "KanjiFw"	,"pict/k12x8_jisx0208c.png" );
 
 	game.asset.soundLoad( "00round_start",	"sound/00round_start");  
 	game.asset.soundLoad( "01main",			"sound/01main" 		);

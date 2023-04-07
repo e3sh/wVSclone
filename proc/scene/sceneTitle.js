@@ -60,13 +60,15 @@ function sceneTitle(state) {
     //処理部
 
     function scene_init() {
-
         tsel = 0.0;
 
         //初期化処理
     }
 
     function scene_reset() {
+
+        state.Config.load();
+
         dev.graphics[0].setInterval(0);//BG　WORK2
 		dev.graphics[1].setInterval(0);//SPRITE
 		dev.graphics[2].setInterval(0);//FG
@@ -175,6 +177,9 @@ function sceneTitle(state) {
         var zkey = false;
 
         if (!keylock) {
+
+            const c = dev.directionM( kstate );
+            /*
             if (Boolean(kstate[38])) {
                 if (kstate[38]) {//↑
                     menusel--;
@@ -184,7 +189,7 @@ function sceneTitle(state) {
                 }
             }
 
-            if ((kstate[40])) {
+            if (Boolean(kstate[40])) {
                 if (kstate[40]) {//↓
                     menusel++;
                     if (menusel > menu.length- 1) menusel = 0;
@@ -202,7 +207,7 @@ function sceneTitle(state) {
                 }
             }
 
-            if ((kstate[39])) {
+            if (Boolean(kstate[39])) {
                 if (kstate[39]) {// ->
                     psel.mode = 1;
                     psel.x += 2;
@@ -211,6 +216,31 @@ function sceneTitle(state) {
                     keylock = true;
                     keywait = 10
                 }
+            }
+
+
+            */
+            if (c.up || c.down || c.left || c.right){
+               if (c.up) {//↑
+                    menusel--;
+                    if (menusel < 0) menusel = menu.length - 1;
+                }
+
+                if (c.down) {//↓
+                    menusel++;
+                    if (menusel > menu.length- 1) menusel = 0;
+                }
+
+                if (c.left) {// <-
+                    psel.mode = 0;
+                }
+
+                if (c.right) {// ->
+                    psel.mode = 1;
+                    psel.x += 2;
+                }
+                keylock = true;
+                keywait = 10
             }
 
             var zkey = false;
@@ -243,6 +273,8 @@ function sceneTitle(state) {
                         //document.getElementById("manual_1").style.visibility =  'hidden';
                         //document.getElementById("manual_2").style.visibility =  'hidden';
                         wipef = true;
+                        state.Game.mode = psel.mode;
+                        //console.log(state.Game.mode);
                         ret_code = n;
                         //return n;
                     }

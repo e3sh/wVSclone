@@ -20,6 +20,7 @@ var w = [
     "controller/offScreenTypeC.js",
     "controller/spriteControl.js",
     "controller/spriteFontControl.js",
+    "controller/fontPrintControl.js",
     //class
     "controller/GameTaskClass.js",
 //画面表示や入力関係処理部

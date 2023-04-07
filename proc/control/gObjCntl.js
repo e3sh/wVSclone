@@ -90,6 +90,7 @@
 
     var itemtable = {
     //  (ITEMLIST) 
+    /*
         15:"WAND",  // MP38 Wand
         16:"SWORD", // MP15 Knife
         17:"AXE",   // MP37 Axe
@@ -106,6 +107,23 @@
         35:"COIN",  // MP32 Coin1-4
         40:"TRBOX", // MP39 TrBox
         50:"BOW"    // MP43 Bow
+        */
+        15:"杖"  ,  // MP38 Wand
+        16:"剣"  , // MP15 Knife
+        17:"戦斧",   // MP37 Axe
+        18:"槍"  , // MP35 Spear
+        19:"ﾌﾞｰﾒﾗﾝ",  // MP36 Boom
+        20:"球"  ,  // MP26 Ball1-3
+        21:"1UP" ,   // MP 1 Mayura1-4
+        22:"鍵"  ,   // MP27 Key
+        23:"爆弾",// MP28 BallB1-3
+        24:"ﾊﾞﾘｱ",// MP29 BallS1-3
+        25:"回復",// MP30 BallL1-3
+        26:"ﾗﾝﾌﾟ",  // MP33 Lamp
+        27:"地図",   // MP34 Map
+        35:"ｺｲﾝ",  // MP32 Coin1-4
+        40:"宝箱", // MP39 TrBox
+        50:"弓矢"    // MP43 Bow
     }
     this.itemTable = itemtable;
 
@@ -245,7 +263,10 @@
             }
             */
             //o.mouse_state = mstate;
-            if (o.type == 98) o.key_state = kstate;
+            if (o.type == 98) { 
+                o.key_state = kstate;
+                o.entrypadaxis = dev.directionM( kstate );
+            }
 
             //var w = o.gt.worldtoWorld(o.x, o.y);
             //o.x = w.x;  o.y = w.y;

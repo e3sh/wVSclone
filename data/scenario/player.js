@@ -82,12 +82,17 @@ function sce_player() {
         if (o.jump == 0) o.vset(0);
         var speed = 0;
         
+        let upkey = o.entrypadaxis.up;
+        let downkey = o.entrypadaxis.down;
+        let leftkey = o.entrypadaxis.left;
+        let rightkey = o.entrypadaxis.right;
+        /*
         var upkey = false;
         var downkey = false;
         var leftkey = false;
         var rightkey = false;
 
-        var v = o.vector;
+        //var v = o.vector;
 
         if (Boolean(o.key_state[37])) {
             if (o.key_state[37]) {//<=
@@ -113,18 +118,32 @@ function sce_player() {
                 o.vector = 180;
             }
         }
+        */
+        if (leftkey) {
+            o.vector = 270;
+        }
+        if (upkey) {
+            o.vector = 0;
+        }
+        if (rightkey) {
+            o.vector = 90;
+        }
+        if (downkey) {
+            o.vector = 180;
+        }
+
 
         if (upkey && leftkey) {
-            o.vector = 360 - 45;
+            o.vector = 360 - 45;//315
         }
         if (upkey && rightkey) {
-            o.vector = 0 + 45;
+            o.vector = 0 + 45;//45
         }
         if (downkey && leftkey) {
-            o.vector = 180 + 45;
+            o.vector = 180 + 45;//225
         }
         if (downkey && rightkey) {
-            o.vector = 180 - 45;
+            o.vector = 180 - 45;//135
         }
 
         if (upkey || downkey || leftkey || rightkey) {

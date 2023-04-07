@@ -31,12 +31,17 @@ function deviceControl( g ){
     //dsp[1].setInterval(3);
     //dsp[2].setInterval(3);
     //dsp[3].setInterval(6); //6flame毎に書き換え/表示
-    
 
     this.graphics = dsp;
 
 	//this.canvas = dsp; //使ってないと思うが互換性の為
 	//this.text = dsp[3]; //前にText面があったときの名残で互換性の為残っている。
+
+    this.kanji = new fontPrintControl(
+        g,
+        g.asset.image["KanjiHw"].img, 6, 8,
+        g.asset.image["KanjiFw"].img,12, 8
+    )
 
 	this.gs = new geometoryTrance();
     this.layout = new gameLayout();
@@ -65,7 +70,28 @@ function deviceControl( g ){
     var userinput = new mixuserinput(g);
     this.key_state = userinput;
 
+    this.directionM = function( keystate ){
 
+        const cmap = [
+            38, 40, 37, 39, //↑, ↓, ←, →
+            87, 83, 65, 68, //W, S, A, D
+           104, 98,100,102  //8, 2, 4, 6 (TenKey)
+        ];
+        let result = [];
+        for (let i in cmap){
+            if (Boolean(keystate[cmap[i]])){
+                result[i] = (keystate[cmap[i]])? true: false;
+            }else{
+                result[i] = false;
+            }
+        }
+        return {
+            up:    result[0] || result[4] || result[ 8], 
+            down:  result[1] || result[5] || result[ 9], 
+            left:  result[2] || result[6] || result[10], 
+            right: result[3] || result[7] || result[11],
+        };
+    }
     //this.keyptn = [];
     
     //this.start = function(){
@@ -76,7 +102,10 @@ function deviceControl( g ){
     //        this.keyptn[w[i]] = g.state.Config.keyAn[i];  
     //    }    
     //}
-
+    // mixUserinput: gamepadとvpad入力をキーボードの入力で返す。
+    // axes -> カーソルキー
+    // 各ボタン（A)（B)（X)（Y)（START)　->　c,x,z,q,esc
+ 
     function mixuserinput(g){
 
         var key = g.keyboard;

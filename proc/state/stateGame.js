@@ -32,6 +32,8 @@ function stateGame() {
     this.lamp = false;
     this.map = false;
 
+    this.mode = 0;//Palyer Type Select
+
     this.load = function () {
         //中断セーブからの復帰
 
