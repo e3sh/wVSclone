@@ -138,9 +138,10 @@ class GameTask_Load extends GameTask {
         //cnt;
 
     init(g){
+        const USEFONT = "6x8";// "8x8white";
         this.scrn = g.screen[4];
-        g.font["8x8white"].useScreen(4);
-        this.fontsc =  g.font["8x8white"];
+        g.font[USEFONT].useScreen(4);
+        this.fontsc =  g.font[USEFONT];
         //this.cnt = 0;
     }
 
@@ -183,18 +184,21 @@ class GameTask_Load extends GameTask {
     }
 
     draw(g){
+        const LINEH = 12;
+
         var st = g.asset.check();
 
-        var pfunc = g.asset.image["FontGraph"].ready ? this.fontsc.putchr :this.scrn.print ;  
+        //var pfunc = g.asset.image["FontGraph"].ready ? this.fontsc.putchr :this.scrn.print ;  
+        var pfunc = g.asset.image["KanjiHw"].ready ? this.fontsc.putchr :this.scrn.print ;  
 
         for (var i in st){
             //pfunc(i + " " + st[i], 0, i*16 +16);
-            pfunc(st[i], 0, i*16 +16);
+            pfunc(st[i], 0, i*LINEH + 8);
         }
 
         var o = {}
             o.x = 0;
-            o.y = st.length*16 +32;
+            o.y = st.length*LINEH +32;
             o.w = 32 * 8;
             o.h = 8;
             let wc = Math.floor(Math.cos(((g.time()%3000)/3000)*6.28)*256)+256;
@@ -210,7 +214,7 @@ class GameTask_Load extends GameTask {
 
 
         //if (g.blink()){    
-            pfunc("Push SPACE key or [START] button", 0, st.length*16 +32);
+            pfunc("Push SPACE key or [START] button", 0, st.length*LINEH +32);
         //}else{
             /*
             var o = {}
@@ -257,8 +261,8 @@ class GameTask_Load extends GameTask {
             vy+=8;
         }
 
-        pfunc("[Fullscreen]" + (document.fullscreenEnabled?"Enable":"Disable"), 320, 480-16);
-        pfunc(document.fullscreenElement?"Active":"NonActive", 320, 480-8);
+        pfunc("[Fullscreen]" + (document.fullscreenEnabled?"Enable":"Disable"), 320, this.scrn.ch-16);
+        pfunc(document.fullscreenElement?"Active":"NonActive", 320, this.scrn.ch-8);
 
     }
 }

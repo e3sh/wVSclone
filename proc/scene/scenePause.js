@@ -22,6 +22,9 @@ function scenePause(state) {
 
     var ret_code = 0;
 
+    const DSP_X = 320;
+    const DSP_Y = 160;
+
     //処理部
     function scene_init() {
 
@@ -38,9 +41,6 @@ function scenePause(state) {
         //work.setInterval(0);//UI
 
         ret_code = 0;
-
-        const DSP_X = 320;
-        const DSP_Y = 160;
 
         work.putchr(" == PAUSE ==", DSP_X - 50, DSP_Y);
         work.putchr("Push <Z>key or [Space] ", DSP_X - 100, DSP_Y + 20);
@@ -116,7 +116,7 @@ function scenePause(state) {
             //obCtrl.SIGNAL = 0;
 
             dev.sound.volume(1.0);
-            work.fill(320 - 100, 200, 12 * 24, 20 * 5);
+            work.fill(DSP_X - 100, DSP_Y, 12 * 24, 20 * 5);
             work.draw();
 
             dev.graphics[0].setInterval(1);//BG　WORK2

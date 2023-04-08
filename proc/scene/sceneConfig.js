@@ -697,6 +697,8 @@ function sceneConfig(state) {
 
         for (var i in menu) {
             if (menu[i].lamp) {
+                work.fill(menu[i].x, menu[i].y, menu[i].w, menu[i].h,"orange" );
+                /*
                 var o = {}
                 o.x = menu[i].x;
                 o.y = menu[i].y;
@@ -708,13 +710,16 @@ function sceneConfig(state) {
                     device.fillRect(this.x, this.y, this.w, this.h);
                 }
                 work.putFunc(o);
+                */
             }
 
             if (menu[i].select) {
+                if (!menu[i].lamp) work.fill(menu[i].x - 10, menu[i].y-1 , menu[i].w, 8,"blue" );
+                //work.fill(menu[i].x - 4 -6 , menu[i].y - 1 , menu[i].title.length*6 + 12,8,"blue" );
                 work.kprint(menu[i].title, menu[i].x - 4, menu[i].y - 1);
             } else {
+                //if (!menu[i].lamp) work.fill(menu[i].x, menu[i].y, menu[i].w, menu[i].h,"black" );
                 work.kprint(menu[i].title, menu[i].x, menu[i].y);
-
             }
         }
 

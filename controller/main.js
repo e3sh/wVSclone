@@ -22,6 +22,8 @@ function main_r(sw) {
 
 	var game = new GameCore( sysParam );
 
+	GameAssetSetup(game);
+	/*
     //Game Asset Setup
 	game.asset.imageLoad( "FontGraph","pict/aschr.png" );
 	game.asset.imageLoad( "SPGraph"	,"pict/cha.png" );
@@ -47,12 +49,13 @@ function main_r(sw) {
 	game.asset.soundLoad( "13bomb",			"sound/13bomb"		);
 
     //Game Device Setup
-	game.setSpFont({ name: "stfont",	 id: "FontGraph", pattern: FontPtnCutArray(  0,   0,12,16) });
-	game.setSpFont({ name: "8x8white",	 id: "FontGraph", pattern: FontPtnCutArray(  0, 128, 8, 8) });
-	game.setSpFont({ name: "8x8red",	 id: "FontGraph", pattern: FontPtnCutArray(128, 128, 8, 8) });
-	game.setSpFont({ name: "8x8green",	 id: "FontGraph", pattern: FontPtnCutArray(  0, 192, 8, 8) });
-	game.setSpFont({ name: "8x8blue",	 id: "FontGraph", pattern: FontPtnCutArray(128, 192, 8, 8) });
-   
+	game.setSpFont({ name: "stfont",   id: "FontGraph", pattern: FontPtnCutArray(  0,   0,12,16) });
+	game.setSpFont({ name: "8x8white", id: "FontGraph", pattern: FontPtnCutArray(  0, 128, 8, 8) });
+	game.setSpFont({ name: "8x8red",   id: "FontGraph", pattern: FontPtnCutArray(128, 128, 8, 8) });
+	game.setSpFont({ name: "8x8green", id: "FontGraph", pattern: FontPtnCutArray(  0, 192, 8, 8) });
+	game.setSpFont({ name: "8x8blue",  id: "FontGraph", pattern: FontPtnCutArray(128, 192, 8, 8) });
+	game.setSpFont({ name: "6x8",	   id: "KanjiHw"  , pattern: FontPtnCutArray(  0,  16, 6, 8) });
+	*/
     //Game Task Setup
 	//game.task.add(new GameTask_ClearDisp("cldisp"));
 	game.task.add(new GameTask_Load("load"));
@@ -71,6 +74,61 @@ function main_r(sw) {
 	game.run();
 }
 
+function GameAssetSetup(game){
+
+	game.asset.imageLoad( "FontGraph","pict/aschr.png" );
+	game.asset.imageLoad( "SPGraph"	,"pict/cha.png" );
+	game.asset.imageLoad( "bg1"		,"pict/bg1.png" );
+	game.asset.imageLoad( "bg2"		,"pict/bg2.png" );
+	game.asset.imageLoad( "bg3"		,"pict/bg3.png" );
+	game.asset.imageLoad( "KanjiHw"	,"pict/k12x8_jisx0201c.png" );
+	game.asset.imageLoad( "KanjiFw"	,"pict/k12x8_jisx0208c.png" );
+
+	game.asset.soundLoad( "00round_start",	"sound/00round_start");  
+	game.asset.soundLoad( "01main",			"sound/01main" 		);
+	game.asset.soundLoad( "02warnning",		"sound/02warnning"	);
+	game.asset.soundLoad( "03hurry_up",		"sound/03hurry_up"	);
+	game.asset.soundLoad( "04round_clear",	"sound/04round_clear");
+	game.asset.soundLoad( "05miss",			"sound/05miss"		);
+	game.asset.soundLoad( "06gameover",		"sound/06gameover"	);
+	game.asset.soundLoad( "07swing",		"sound/07swing"		);
+	game.asset.soundLoad( "08bow",			"sound/08bow"		);
+	game.asset.soundLoad( "09select",		"sound/09select"	);
+	game.asset.soundLoad( "10use",			"sound/10use"		);
+	game.asset.soundLoad( "11hit",			"sound/11hit"		);
+	game.asset.soundLoad( "12damage",		"sound/12damage"	);
+	game.asset.soundLoad( "13bomb",			"sound/13bomb"		);
+
+    //Game Device Setup
+	game.setSpFont({ name: "stfont",   id: "FontGraph", pattern: FontPtnCutArray(  0,   0,12,16) });
+	game.setSpFont({ name: "8x8white", id: "FontGraph", pattern: FontPtnCutArray(  0, 128, 8, 8) });
+	game.setSpFont({ name: "8x8red",   id: "FontGraph", pattern: FontPtnCutArray(128, 128, 8, 8) });
+	game.setSpFont({ name: "8x8green", id: "FontGraph", pattern: FontPtnCutArray(  0, 192, 8, 8) });
+	game.setSpFont({ name: "8x8blue",  id: "FontGraph", pattern: FontPtnCutArray(128, 192, 8, 8) });
+	game.setSpFont({ name: "6x8",	   id: "KanjiHw"  , pattern: FontPtnCutArray(  0,  16, 6, 8) });
+
+	return;
+
+	function FontPtnCutArray(sx, sy, sw, sh){
+		//sx:開始左端 sy:開始上端 sw:Font幅 sh:Font高さ
+		var sp = [];
+
+		for (i = 0; i < 7; i++) {
+	    	for (j = 0; j < 16; j++) {
+	        	ptn = {
+	            	x: sw * j + sx, 
+	            	y: sh * i + sy,
+	            	w: sw,
+	            	h: sh
+	        	};
+	        	sp.push(ptn);
+	    	}
+		}
+		return sp;
+	}
+}
+
+/*
 function FontPtnCutArray(sx, sy, sw, sh){
 	//sx:開始左端 sy:開始上端 sw:Font幅 sh:Font高さ
 	var sp = [];
@@ -89,3 +147,4 @@ function FontPtnCutArray(sx, sy, sw, sh){
 
 	return sp;
 }
+*/

@@ -80,9 +80,9 @@
 
     var restartFlag = true;
 
-    var msglog = new textbufferControl(23);
-    var msgview = new textbufferControl(28);
-    var msgcnsl = new textbufferControl(26);
+    var msglog = new textbufferControl(25);
+    var msgview = new textbufferControl(26);
+    var msgcnsl = new textbufferControl(21);
 
     this.messagelog = msglog;
     this.messageview = msgview;
