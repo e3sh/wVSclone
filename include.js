@@ -54,7 +54,7 @@ var w = [
  "data/scenario/exevent.js",
 //処理部
  "proc/control/gObjCntl.js",
- "proc/control/gObjCmDc.js",
+ //"proc/control/gObjCmDc.js",
  "proc/class/gObjClass.js",
  "proc/control/mapSceCntl.js",
  "proc/control/sceneControl.js",

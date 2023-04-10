@@ -1,10 +1,10 @@
 # wVSclone
 repositorie JavascriptActionGameのバージョンアップ版
 
-https://e3sh.github.io/wVSclone/main.html?version=b83610a
-(2023/04/04頃から、何故か一部ファイルが GitHub Page で更新されないため、動作エラーになることあり。
- Webサーバが必要な機能は使わないようにして(import/exportがローカルでも動けば使うのですが・・・)
- ローカルで実行できるように作ってあるので、ダウンロードしてmain.html開けば、そのまま実行できます。)
+https://e3sh.github.io/wVSclone/main.html
+
+(GitHub Page側が更新されず、動作エラーになることあり。
+ ローカル実行は可能)
 
 ## 操作方法： キーボード操作　/　ゲームパッド操作
 - 移動(Move):　方向キー(ArrowKey)＊　/ 十字キー
