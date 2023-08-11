@@ -1,10 +1,99 @@
 # wVSclone
-repositorie JavascriptActionGameのバージョンアップ版
+
+Upgraded version of repository JavascriptActionGame
 
 https://e3sh.github.io/wVSclone/main.html
 
-(GitHub Page側が更新されず、動作エラーになることあり。
- ローカル実行は可能)
+## Operation method: keyboard operation / gamepad operation
+- Move: direction key (arrow key)* / cross key
+- Attack (Action): [Z] or [Space] / (X)｜(□)
+- Use item: [X] or [Ctrl] / (B)｜(○)
+- Jump: [C] / (A)｜(×)
+- Pause: [ESC] / (START)｜(三)  
+
+* You can also move with WASD or the numeric keypad.
+
+・ Attack (action) operation: Consume the ball (Staff: Attack / Other weapons: Collect items on the screen)
+
+## ITEMS: Uses and effects of items
+- ( ): Ball: (light yellow) Staff: Consume to attack / Other Weapons: Consume and collect items on the screen
+- (L): green ball: stamina recovery +3 / upper limit increase +1 (life)
+- (S): Blue Ball: Creates a temporary barrier (shield).
+- (B): Red Ball: Damage enemies within sight (Bomd)
+- Lamp: Display the location of enemies, items and keys on the map (lamp)
+- Map: Map display (map)
+- Key: Allows you to enter the door and move to the next side (key)
+- Coins: Score items
+
+## Weapons: Weapon types and effects
+(manual attack)
+- Staff: Consume balls to attack from a distance.
+ 
+(auto attack)
+- Sword: 90 degree forward melee attack
+- Spear: melee attack in a straight line in the direction of travel
+- Axe: unique circular melee attack
+- Bow (BOW/ARROW): range attack in 3 directions forward (range attack in 1 direction if used by enemy)
+- Boomerang: Area attack in the direction of travel
+
+・Strengthen by acquiring the same type of weapon continuously (shortening attack interval) (maximum +3)
+・(In the case of staff, add 7 balls)
+
+## ENEMYS: About Enemies
+- Some enemies pick up and use weapons.
+- Some enemies shoot bullets.
+- Most enemies pick up items. (Picking it up will drop it into the treasure chest.)
+- If it's a multiple of 5, the enemy already has the key. (boss)
+- Blue enemies emit a certain number of enemies from enemy nests (generators).
+- Enemies may appear in some treasure chests on the field.
+
+## Debug mode:
+Can be set on the title screen setting screen and pause screen
+
+### Title screen settings:
+- DebugStatus : ON to display debug status
+                 Displays the control status of each off-screen buffer, fps/load display, hit detection range, etc.
+- BulletErace: If checked, bullets coming from off screen will be erased.
+                 If the spawned bullet is not within the viewing screen, it will disappear immediately.
+
+
+### Pause screen:
+Switch on/off with the number keys on the full keyboard side.
+
+- 1: Debug display Debug status display
+・ 2: Lamp (at the time of floor change) Possession of lamp (effective after side change)
+・ 3: Map (at the time of floor change) Possession of map (valid even after side change)
+- 4 : Mute (NotSupport) Mutes sound effects/BGM
+- 5 : BulletMode(offRange) Remove bullets outside the screen.
+- 6 : Weapon Level Increase/Decrease Power Up State
+- 8 : Obj Status Disp Transit to the status confirmation screen.
+- 9 : (Debug)Log View Switches log display during debug display.
+- 0: Show menu Show this menu Off On
+
+
+### Status display screen:
+(Screen entered from the pause screen of 8: ObjStatusDisp)
+Screen for checking the internal state with DEBUG (checking the operating state of each character)
+
+Operations on this screen
+- Full keyboard [1] to [9] page selection
+- Full keyboard [0] Select number to go to detail screen
+- [C] Clear background display (clear screen)
+- [V] Inventory status display for each character (excluding own ship)
+- [Z] [SPACE] Return to previous screen (return to pause screen)
+
+## Supported browsers:
+edge/chrome
+
+---------
+以下、原文
+上の翻訳はGoogle翻訳で実施。
+再翻訳を繰り返して調整しているので若干表記変更あり。
+
+# wVSclone
+repositorie JavascriptActionGameのバージョンアップ版
+
+https://e3sh.github.io/wVSclone/main.html
 
 ## 操作方法： キーボード操作　/　ゲームパッド操作
 - 移動(Move):　方向キー(ArrowKey)＊　/ 十字キー
@@ -17,7 +106,7 @@ https://e3sh.github.io/wVSclone/main.html
 
 ・ 攻撃(Action)操作:玉を消費（WAND:攻撃 / 他武器:画面内アイテム回収)
 
-## ITEMS:
+## ITEMS:アイテムの用途や効果
 - ( ):玉　：(薄黄色)　WAND:消耗して攻撃 / 他武器:消耗して画面内アイテム回収
 - (L):緑玉:体力回復+3/上限値上昇+1(Life)
 - (S):青玉:一定時間バリアを貼る(Shield)
@@ -27,7 +116,7 @@ https://e3sh.github.io/wVSclone/main.html
 - 鍵:持った状態で扉に入ると次の面へ(Key)
 - Coin: 得点（SHOPとかSKILLとか実装すると意味を持たせられるかも）
 
-## WEAPONS:
+## WEAPONS:武器の種類と効果
 (手動攻撃)
 - 杖(WAND)：玉消費して遠隔攻撃
 　
@@ -42,7 +131,7 @@ https://e3sh.github.io/wVSclone/main.html
 ・ 連続して同じ種類の武器を入手すると強化(攻撃間隔の短縮)(Maxは+3)　
 ・ (WANDの場合は、玉を7個追加）
 
-## 敵/ENEMYS:
+## ENEMYS:敵について
 - 一部の敵は武器を拾うと使用する。
 - 一部の敵は弾を打つ。
 - ほとんどの敵はアイテムを拾う。(拾っている場合は宝箱を出す。)
@@ -75,15 +164,16 @@ https://e3sh.github.io/wVSclone/main.html
 
 
 ### 状態確認(StatusDisplay)画面:
+(一時停止画面から8:ObjStatusDispで入る画面の)
 DEBUGで内部状態確認用画面(各キャラクターの動作状態確認)
 
-操作
+当画面での操作
 - フルキーボード[1]～[9] Page選択
 - フルキーボード[0]      番号選択で詳細画面に推移 　
 - [C]  背景表示消去(画面クリア)　　　　
 - [V]  各キャラクターのINVENTRY状態表示(自機を除く)　　　　　
 - [Z][SPACE]　前の画面に戻る(Pause画面に戻る)
 
-
-## 動作確認ブラウザ: 
+## 動作確認したブラウザ: 
 Edge/Chrome
+
