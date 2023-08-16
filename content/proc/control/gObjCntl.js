@@ -47,12 +47,42 @@
 
     this.nonmove = 0;
 
+    /*
     var stockscore = 0;
     var stockcount = 0;
     var stockrate = 1;
     var stockdisp_x = 128;
     var stockdisp_y = 96;
+    */
 
+    function priorityBuffer(){
+        // キャラクタ表示の個別重ね合わせ制御用
+        // 画面全体表示のプライオリティ制御は画面別でシステムでやってる。
+        //(なので、システム側にスプライトの機能として持たせる？)
+        // Y座標でソートして表示
+
+        let inbuf = [];
+        let count = 0;
+    
+        this.add = ( obj )=> {
+            inbuf[count] = obj;
+            count++;
+        }
+    
+        this.sort = () => {
+            inbuf.sort((a,b)=> a.y - b.y );
+        }
+            
+        this.buffer =()=> { return inbuf; }
+    
+        this.reset =()=> {
+            inbuf = [];
+            count = 0;
+        }
+    }
+
+    const pbuf = new priorityBuffer();
+    
     var restart_count = 0;
     var map_sc;
 
@@ -73,7 +103,7 @@
     //         自･弾･敵･弾･物･他
     csmap[0] = [0, 0, 2, 1, 1, 0]; //自機味方
     csmap[1] = [0, 0, 1, 0, 0, 0]; //自弾
-    csmap[2] = [2, 1, 1, 0, 1, 0]; //敵
+    csmap[2] = [2, 1, 2, 0, 1, 0]; //敵
     csmap[3] = [1, 0, 0, 0, 0, 0]; //敵弾
     csmap[4] = [1, 0, 1, 0, 0, 0]; //アイテム
     csmap[5] = [0, 0, 0, 0, 0, 0]; //その他
@@ -634,60 +664,55 @@
         //mode: prioritySurface
         if (!Boolean(wscreen)) wscreen = scrn;
 
+        //SPprioritycontroll-Y
+        pbuf.reset();
+
         for (var i in obj) {
             var o = obj[i];
 
-            //	o.wn = i;
-
             if (o.visible && (o.prioritySurface == mode)) {
-                
-                if (o.normal_draw_enable) {
+                if (o.normal_draw_enable || o.custom_draw_enable) {
                     if (dev.gs.in_stage(o.x, o.y)){
-                        o.draw(wscreen, o);
-    
-                        if (state.Config.debug) {
-                            var w = o.gt.worldtoView(o.x, o.y);
-                            var cl = {}
-                            //cl.x = w.x + o.center_x - o.hit_x/2 ;
-                            //cl.y = w.y + o.center_y - o.hit_y/2 ;
-                            cl.x = w.x - o.hit_x/2 ;
-                            cl.y = w.y - o.hit_y/2 ;
-                            cl.w = o.hit_x;
-                            cl.h = o.hit_y;
-                            cl.draw = function(device){
-                                device.beginPath();
-                                device.strokeStyle = "green";
-                                device.lineWidth = 2;
-                                device.rect(this.x, this.y, this.w, this.h );
-                                device.stroke();
-                            }
-                            if (o.type != 5) wscreen.putFunc(cl);
-                            //wscreen.putchr8(o.hp, w.x, w.y);
-                            wscreen.putchr8c(i, w.x, w.y, 0);
-                        } 
-                    }
-                }
-
-                if (o.custom_draw_enable) {
-                    if (Boolean(o.custom_draw)) {
-                        if (dev.gs.in_stage(o.x, o.y)){
-                            o.custom_draw(wscreen, o);
-                        }
+                        pbuf.add(o);
                     }
                 }
             }
         }
-        /*
-        if (state.Config.debug && mode) {
-            //debug 
-            wscreen.putchr8("obj:" + cdt.objectNum, 300, 16);
-            wscreen.putchr8("col:" + this.collisioncount, 300, 24);
-            //wscreen.putchr8("f:" + debug_cflag, 300, 32);
 
-            //wscreen.putchr8("scrst"+ wscreen.count(),300,40);
+        pbuf.sort();
+        let wo = pbuf.buffer();
 
+        for (var i in wo) {
+            var o = wo[i];
+
+            if (o.normal_draw_enable) {
+                o.draw(wscreen, o);
+
+                if (state.Config.debug) {
+                    var w = o.gt.worldtoView(o.x, o.y);
+                    var cl = {}
+                    cl.x = w.x - o.hit_x/2 ;
+                    cl.y = w.y - o.hit_y/2 ;
+                    cl.w = o.hit_x;
+                    cl.h = o.hit_y;
+                    cl.draw = function(device){
+                        device.beginPath();
+                        device.strokeStyle = "green";
+                        device.lineWidth = 2;
+                        device.rect(this.x, this.y, this.w, this.h );
+                        device.stroke();
+                    }
+                    if (o.type != 5) wscreen.putFunc(cl);
+                    //wscreen.putchr8c(i, w.x, w.y, 0);
+                } 
+            }
+
+            if (o.custom_draw_enable) {
+                if (Boolean(o.custom_draw)) {
+                    o.custom_draw(wscreen, o);
+                }
+            }
         }
-        */
     }
 
     // drawPoint ==================================

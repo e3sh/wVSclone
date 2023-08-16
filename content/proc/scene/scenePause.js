@@ -218,4 +218,10 @@ function scenePause(state) {
         */
         //work.reset();
     }
+
+    function submenuStep(){
+    }
+
+    function submenuDraw(){
+    }
 }

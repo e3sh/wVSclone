@@ -19,6 +19,8 @@ function sceneControl(state) {
 
     var wipeEffectCount; 
 
+    var menuvf = false;
+
     //var clRect = function(x,y,w,h){this.draw = function(device){ device.clearRect(x,y,w,h);}}
 
     for (var i in sceneList) {
@@ -71,6 +73,16 @@ function sceneControl(state) {
         wipeEffectCount = (wipeEffectCount > 0) ? 
             wipeEffectCount-(3 * 60/(1000/state.System.deltaTime())) :
             0;
+        /*
+        var kstate = dev.key_state.check();
+
+        var numkey = false;
+        for (var i in kstate){ //Fullkey[0]-[9]
+            if (Boolean(kstate[i]) && (i >= 48) && (i <= 57)){
+                numkey = true;
+            }
+        }
+        */
     }
 
     this.draw = function(){
@@ -155,5 +167,84 @@ function sceneControl(state) {
         scrn.putFunc(fl);
         */
     }
+    /*
+    function submenuCheck(){
+        var kstate = dev.key_state.check();
+
+        var numkey = false;
+        for (var i in kstate){ //Fullkey[0]-[9]
+            if (Boolean(kstate[i]) && (i >= 48) && (i <= 57)){
+                numkey = true;
+            }
+        }
+
+        if (numkey) {
+            var inp = -1;
+            for (var i in kstate){
+                if (Boolean(kstate[i])){
+                    inp = i-48;
+                    break;
+                }
+            }
+
+            ret_code = 0;
+            switch (inp){
+                case 1:
+                    state.Config.debug = (!state.Config.debug);
+                    break;
+                case 2:
+                    state.Config.lamp_use = (!state.Config.lamp_use);
+                    break;
+                case 3:
+                    state.Config.map_use = (!state.Config.map_use);
+                    break;
+                case 4:
+                    //state.System.dev.sound.mute = (!state.System.dev.sound.mute);
+                    break;
+                case 5:
+                    state.Config.bulletmode = (!state.Config.bulletmode);
+                    break;
+                case 6:
+                    state.Game.player.level = (state.Game.player.level++ >= 3) ? 0: state.Game.player.level;
+                    break;
+                case 8:
+                    //ret_code = 7; //sceneStatusDisp
+                    break;
+                case 9:
+                    state.Config.viewlog = (!state.Config.viewlog);
+                    break;
+                case 0:
+                    menuvf = (!menuvf);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    function submenuDraw(){
+
+        if (menuvf){
+            let arr = [];
+            scrn.fill(0, 240, 8 * 22, 8 * 11, "navy");
+            scrn.putchr8("Input ["+ inp +"]", 16, 240);
+
+            arr.push("1: Debug Display  :" + (state.Config.debug?"ON":"OFF"));
+            arr.push("2: Lamp(nextStage):" + (state.Config.lamp_use?"ON":"OFF"));
+            arr.push("3: Map (nextStage):" + (state.Config.map_use?"ON":"OFF"));
+            arr.push("4: -");//Mute (NotSupport)   :" + (state.System.dev.sound.mute?"ON":"OFF"));
+            arr.push("5: Bullet(inRange):" + (state.Config.bulletmode?"ON":"OFF"));
+            arr.push("6: Weapon Level   :+" + state.Game.player.level);
+            arr.push("7: -");//Import/Export :NotSupport");
+            arr.push("8: Obj Status Disp:->");
+            arr.push("9: (Debug)Log View:" + (state.Config.viewlog?"ON":"OFF"));
+            arr.push("0: Menu Display   :" + (menuvf?"ON":"OFF"));
+
+            for (let i in arr){
+                scrn.putchr8(arr[i], 0, 248 + i * 8);
+            }
+        }
+    }
+    */
 }
 

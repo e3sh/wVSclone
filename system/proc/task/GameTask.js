@@ -52,8 +52,12 @@ class GameTask_Debug extends GameTask {
         super(id);
     }
 
+    fontsc;
+
     init(g){
-        g.font["8x8white"].useScreen(3);
+        const USEFONT = "6x8";// "8x8white";
+        g.font[USEFONT].useScreen(3);
+        this.fontsc =  g.font[USEFONT];
     }
 
     step(g) {
@@ -62,51 +66,28 @@ class GameTask_Debug extends GameTask {
     draw(g){
         const SC_NUM = g.screen.length;
         
-        var st;// = "bench:sc_buffer(max)/intv/bgcolor</br>";  
-        /*
-        for (var i=0 ; i < SC_NUM ;i++){
-            st += "sc[" + i + "]" 
-            + g.screen[i].count() + " / " 
-            + g.screen[i].getInterval() + " / " 
-            + g.screen[i].getBackgroundcolor()
-            + " , ";
-        }
-        */
+        var st;  
         var r = g.fpsload.result();
 
         if (g.state.Config.debug){
             var sl = [];
             var r = g.fpsload.result();
             sl.push("fps:" +  Math.trunc(r.fps));
-            sl.push("ave :load/intv/" );// + Math.trunc((r.workload.ave / r.interval.ave)*100) + "%"); 
+            sl.push("ave :load/intv/" ); 
             sl.push("    :" + String(r.workload.ave).substring(0,4) +
                 "/" + String(r.interval.ave).substring(0,4) +  "ms");
-            //    "(" + Math.trunc((r.workload.ave / r.interval.ave)*100) + "%)"); 
-            //sl.push("intv.ave:" + String(r.interval.ave).substring(0,4) + "ms"); 
-            //sl.push("load.ave:" + String(r.workload.ave).substring(0,4) + "ms");
-            //sl.push("workload:"+ Math.trunc((r.workload.ave / r.interval.ave)*100) + "%");
-            //sl.push("");
             sl.push("workload :"+ String((r.workload.ave / r.interval.ave)*100).substring(0,5) + "%");
-            //sl.push("workload:" + "]".repeat(Math.trunc((r.workload.ave / r.interval.ave)*8)));
-            //sl.push("");
-            //sl.push("");
             var ws = String(g.deltaTime()).substring(0, 5);
-            sl.push("deltaTime:"+ ws + "ms");//g.deltaTime());
-            //sl.push("blink:"+ g.blink());
-            //ws = String(60/(1000/g.deltaTime())).substring(0, 5);
-            //sl.push("vec/frm:" + ws);//60/(1000/g.deltaTime()));   
+            sl.push("deltaTime:"+ ws + "ms");
             ws = String(g.time()).substring(0, 10);
-            sl.push("run(ms):" + ws);//60/(1000/g.deltaTime()));   
-            //ws = String(performance.now()).substring(0, 10);
-            //sl.push("p.now():" + ws);//60/(1000/g.deltaTime()));   
+            sl.push("run(ms):" + ws);   
 
-            g.font["8x8white"].useScreen(4);
+            this.fontsc.useScreen(4);
             for(var i=0; i < sl.length; i++){
-                g.font["8x8white"].putchr(sl[i], 320, 320+ i*8);
+                this.fontsc.putchr(sl[i], 320, 320+ i*8);
             }
 
             var sl = [];
-            //sl.push("bench:intv:bgcolor/sc_buffer(max/count)");  
             sl.push("sc(intv)bgcolor");  
 
             st = "";
@@ -121,7 +102,7 @@ class GameTask_Debug extends GameTask {
             }
 
             for(var i=0; i < sl.length; i++){
-                g.font["8x8white"].putchr(sl[i], 480, 320+ i*8);
+                this.fontsc.putchr(sl[i], 480, 320+ i*8);
             }
         }
     }
@@ -213,25 +194,7 @@ class GameTask_Load extends GameTask {
         this.scrn.putFunc(o);
 
 
-        //if (g.blink()){    
-            pfunc("Push SPACE key or [START] button", 0, st.length*LINEH +32);
-        //}else{
-            /*
-            var o = {}
-            o.x = 0;
-            o.y = st.length*16 +32;
-            o.w = 31 * 8;
-            o.h = 24;
-            o.c = 'rgb( 0, 0,' + Math.floor(Math.cos(((g.time()%1000)/1000)*3.14)*255) + ')';//"navy";
-            o.draw = function (device) {
-                device.beginPath();
-                device.fillStyle = this.c;
-                device.fillRect(this.x, this.y, this.w, this.h);
-            }
-            this.scrn.putFunc(o);
-            */
-            //pfunc("Click Mouse Left Button.", 0, st.length*16 +32+8);
-        //}
+        pfunc("Push SPACE key or [START] button", 0, st.length*LINEH +32);
 
         for (var i in this.str){
             pfunc(this.str[i], 320, i*8 + 8);
@@ -274,8 +237,6 @@ class GameTask_Device extends GameTask {
     }
         scrn;
         fontsc;
-        //str;
-        //cnt;
         toggleFullScreen = function() {
             if (!document.fullscreenElement) {
               document.documentElement.requestFullscreen();
@@ -284,29 +245,21 @@ class GameTask_Device extends GameTask {
             }
         }
         keylock = 0;
-        //vp;
-
+ 
     init(g){
+        const USEFONT = "6x8";// "8x8white";
+
         this.scrn = g.screen[4];
-        g.font["8x8white"].useScreen(4);
-        this.fontsc =  g.font["8x8white"];
-        //this.cnt = 0;
-        //this.vp = new inputVirtualPad();
+        g.font[USEFONT].useScreen(4);
+        this.fontsc =  g.font[USEFONT];
     }
 
     step(g) {
-        //var pstate = g.touchpad.check();
         var ks = g.keyboard.state();
 
         if (Boolean(ks[70])) {//[f]key
             if (ks[70]){
-                //if (g.time()>this.keylock+10000){}
-                //    this.toggleFullScreen();
-                //    this.keylock = g.time();
                 if (!document.fullscreenElement){ 
-            //
-                    //document.documentElement.requestFullscreen();
-                    //for (var i in g.screen)
                     g.systemCanvas.requestFullscreen();
                }
             }
@@ -314,7 +267,6 @@ class GameTask_Device extends GameTask {
 
         g.vgamepad.check(g.mouse, g.touchpad);
 
-        //if (typeof g.state.Config.debug !== 'undefined') g.state.Config.debug = true;
     }
 
     draw(g){
