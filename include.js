@@ -5,6 +5,7 @@
 var w = [
 //WebGameCoreSystem Files
     //SystemControl
+    /*
     "system/proc/func/GameAssetManager.js",
     "system/proc/func/GameTaskControl.js",
     "system/proc/GameCore.js",
@@ -21,7 +22,8 @@ var w = [
     "system/proc/func/spriteFontControl.js",
     "system/proc/func/fontPrintControl.js",
     "system/proc/task/GameTaskClass.js",
-
+    */
+    "system/coremin.js",
  //画面表示や入力関係処理部(compatible-convert)
  "content/proc/conv/deviceControl.js",
  "content/proc/conv/screen.js",

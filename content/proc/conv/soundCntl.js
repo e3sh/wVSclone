@@ -114,7 +114,7 @@ function soundCntl( asset ) {
     var nextplnum = -1;
     var nextloopf = false;
 
-    var pla = new Audio("sound/" + sd[0] + ext);
+    var pla = new Audio();
 
     //pla.pause();
 
