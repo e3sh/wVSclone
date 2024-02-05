@@ -166,15 +166,37 @@ class GameTask_Load extends GameTask {
 
     draw(g){
         const LINEH = 12;
+        const DELAY = 1000;
+        const LWAIT = 8;
 
         var st = g.asset.check();
 
         //var pfunc = g.asset.image["FontGraph"].ready ? this.fontsc.putchr :this.scrn.print ;  
         var pfunc = g.asset.image["KanjiHw"].ready ? this.fontsc.putchr :this.scrn.print ;  
 
+        let c = 0 + DELAY/LWAIT;
+        //let t = Math.tranc(g.time()/LWAIT);
+        let t = g.time()/LWAIT;
+
         for (var i in st){
             //pfunc(i + " " + st[i], 0, i*16 +16);
-            pfunc(st[i], 0, i*LINEH + 8);
+            let wl = c - t
+
+            if (wl < 0) {
+                pfunc(st[i], 0, i*LINEH + 8);
+            }else{
+                if (wl < st[i].length){
+                    let s = st[i].substring(0, 
+                        st[i].length - wl) + " _";
+
+                    pfunc(s, 0, i*LINEH + 8);
+                    //pfunc(s, 1, i*LINEH + 8);
+
+                }else{
+                    pfunc("_", 0, i*LINEH + 8);
+                }
+            }
+            c += st[i].length;
         }
 
         var o = {}
