@@ -178,15 +178,15 @@ function sceneStatusDisp(state) {
         }
 
         var numkey = false; //menu select num
-        var arCOLkey = false; //list select 
+        var arrowkey = false; //list select 
         for (var i in kstate){
             if (Boolean(kstate[i])){
                 numkey = ((i >= 48) && (i <= 57))? true: false; //Fullkey[0]-[9]
-                arCOLkey = ((i >= 37) && (i <= 40))? true: false; //ArCOLkey
+                arrowkey = ((i >= 37) && (i <= 40))? true: false; //Arrowkey
             }
         }
 
-        if (zkey || ckey || vkey || numkey || arCOLkey) keywait = 8;
+        if (zkey || ckey || vkey || numkey || arrowkey) keywait = 8;
 
         // select key function section
         if (zkey) {
@@ -231,7 +231,7 @@ function sceneStatusDisp(state) {
             }
         }
 
-        if (arCOLkey) {
+        if (arrowkey) {
             var s = sel;
             for (var i in kstate){
                 if (Boolean(kstate[i])){
