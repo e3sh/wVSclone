@@ -99,6 +99,8 @@ function sceneStatusDisp(state) {
     
     function obj_draw(num){
 
+        const COL=49; 
+
         var c=0;
 
         work.reset();
@@ -112,7 +114,7 @@ function sceneStatusDisp(state) {
             var s = String(st[i]);
 
             if (!s.includes("object") && !s.includes("function")){
-                work.putchr8(String(st[i]).substring(0, 39),Math.floor(c/50)*320,(c%50)*8+8 );
+                work.putchr8(String(st[i]).substring(0, 39),Math.floor(c/COL)*320,(c%COL)*8+8 );
                 c++;
             }
             if (c>100) break;
@@ -120,8 +122,8 @@ function sceneStatusDisp(state) {
 
         state.obCtrl.lookObjv(work, num, 240, 80);
 
-        if (state.obCtrl.lookpick(work, num, Math.floor(c/50)*320+8, ((c+2)%50)*8+16)){
-            work.putchr8("pickitem/thisitem",Math.floor(c/50)*320+8, ((c+1)%50)*8+8 );
+        if (state.obCtrl.lookpick(work, num, Math.floor(c/COL)*320+8, ((c+2)%COL)*8+16)){
+            work.putchr8("pickitem/thisitem",Math.floor(c/COL)*320+8, ((c+1)%COL)*8+8 );
         };
 
         work.draw();
@@ -176,15 +178,15 @@ function sceneStatusDisp(state) {
         }
 
         var numkey = false; //menu select num
-        var arrowkey = false; //list select 
+        var arCOLkey = false; //list select 
         for (var i in kstate){
             if (Boolean(kstate[i])){
                 numkey = ((i >= 48) && (i <= 57))? true: false; //Fullkey[0]-[9]
-                arrowkey = ((i >= 37) && (i <= 40))? true: false; //Arrowkey
+                arCOLkey = ((i >= 37) && (i <= 40))? true: false; //ArCOLkey
             }
         }
 
-        if (zkey || ckey || vkey || numkey || arrowkey) keywait = 8;
+        if (zkey || ckey || vkey || numkey || arCOLkey) keywait = 8;
 
         // select key function section
         if (zkey) {
@@ -229,7 +231,7 @@ function sceneStatusDisp(state) {
             }
         }
 
-        if (arrowkey) {
+        if (arCOLkey) {
             var s = sel;
             for (var i in kstate){
                 if (Boolean(kstate[i])){

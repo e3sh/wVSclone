@@ -16,8 +16,10 @@ function stateGame() {
     this.player.weapon = 0;//初期装備0:wand
     //this.player.equip.--- etc...
     //this.player.status.dex --- etc..
-    this.player.speed = 6;//maxspeed 現在未使用/SpeedUp実装時使用？
+    this.player.speed = 6;//maxspeed 現在未使用/SpeedUp実装時使用？(player処理では定数で記述中)
     this.player.level = 0;//現状weaponLevelで使用予定
+    this.player.skill_ex = [0, 0, 0, 0, 0, 0];//武器毎の獲得スコア累積 /処理未作成の為未使用（2024/02/14）
+    this.player.skill_lv = [0, 0, 0, 0, 0, 0];//武器毎のlevel　/処理未作成の為未使用（2024/02/14）
 
     this.outviewMove = true;//未使用
     this.outviewCollision =true;//画面外の敵も壁の当たり判定処理を行う。

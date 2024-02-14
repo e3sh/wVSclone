@@ -189,7 +189,7 @@ gObjectClass.prototype = {
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
 
-    get_item : function (src, dst) { //src:score dst:dummy
+    get_item : function (src, dst) { //src:chr dst:id
         var msg = {}; msg.cmd = "get_item";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
@@ -366,7 +366,7 @@ gObjectClass.prototype = {
                             if ((this.chr != 21) && (this.chr != 22)) {//1up or Key
                                 this.sound.effect(9); //cursor音
                             }
-                            this.get_item(this.chr);
+                            this.get_item(this.chr, this.id);
                         }
                     }
                 }

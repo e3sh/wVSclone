@@ -117,6 +117,8 @@ class GameTask_Load extends GameTask {
         fontsc;
         str;
         //cnt;
+        infoflg;
+        infodly;
 
     init(g){
         const USEFONT = "6x8";// "8x8white";
@@ -124,6 +126,8 @@ class GameTask_Load extends GameTask {
         g.font[USEFONT].useScreen(4);
         this.fontsc =  g.font[USEFONT];
         //this.cnt = 0;
+        this.infoflg = false;
+        this.infodly = 0;
     }
 
     step(g) {
@@ -132,6 +136,7 @@ class GameTask_Load extends GameTask {
         var tstate = g.touchpad.check();
 
         if (typeof g.state.Config.debug !== 'undefined') g.state.Config.debug = true;
+        g.state.Config.debug = this.infoflg;
 
         var startflag = false; 
         if (Boolean(kstate[32])||g.gamepad.btn_start||mstate.button==0) {
@@ -139,6 +144,13 @@ class GameTask_Load extends GameTask {
                 startflag = true;
             }
         }
+        if (Boolean(kstate[27])||g.gamepad.btn_start||mstate.button==0) {
+            if (kstate[27]) {//esckey↓
+                this.infoflg = true;
+                this.infodly = g.time();
+            }
+        }
+
         if (tstate.pos.length > 2){
             startflag = true;
         }
@@ -166,13 +178,24 @@ class GameTask_Load extends GameTask {
 
     draw(g){
         const LINEH = 12;
-        const DELAY = 1000;
-        const LWAIT = 8;
+        const DELAY = this.infodly;//1000;
+        const LWAIT = 4;
 
-        var st = g.asset.check();
+
+        let st = g.asset.check();
+
+        if (!this.infoflg){
+            st = [];
+            st.push("> Loading/Running Information.");
+            st.push("> Input Device Status. [ESC]");
+            st.push("");
+            st.push("vvvvvvvvvvvvvvvvvvvvvv");
+            st.push("vvvv  GAME START  vvvv");
+            st.push("vvvvvvvvvvvvvvvvvvvvvv");
+        }
 
         //var pfunc = g.asset.image["FontGraph"].ready ? this.fontsc.putchr :this.scrn.print ;  
-        var pfunc = g.asset.image["KanjiHw"].ready ? this.fontsc.putchr :this.scrn.print ;  
+        const pfunc = g.asset.image["KanjiHw"].ready ? this.fontsc.putchr :this.scrn.print ;  
 
         let c = 0 + DELAY/LWAIT;
         //let t = Math.tranc(g.time()/LWAIT);
@@ -218,37 +241,38 @@ class GameTask_Load extends GameTask {
 
         pfunc("Push SPACE key or [START] button", 0, st.length*LINEH +32);
 
-        for (var i in this.str){
-            pfunc(this.str[i], 320, i*8 + 8);
-        }
+        if (this.infoflg)
+        {
+            for (var i in this.str){
+                pfunc(this.str[i], 320, i*8 + 8);
+            }
 
-        var ks = g.keyboard.state();
-        var ms = g.mouse.check_last();
-        var ts = g.touchpad.check();
+            var ks = g.keyboard.state();
+            var ms = g.mouse.check_last();
+            var ts = g.touchpad.check();
 
-        st = "";
-        for (var i in ks){
-            //if (ks[i]) st += "[" + String.fromCharCode(i) + ":" + i + "]"; 
-            if (ks[i]) st += "[" + i + "]"; 
-        }
-        pfunc("[Keyboard]", 320, this.str.length*8 +16);
-        if (st.length>0) pfunc("KeyCode:" + st, 320, this.str.length*8 +24);
+            st = "";
+            for (var i in ks){
+                //if (ks[i]) st += "[" + String.fromCharCode(i) + ":" + i + "]"; 
+                if (ks[i]) st += "[" + i + "]"; 
+            }
+            pfunc("[Keyboard]", 320, this.str.length*8 +16);
+            if (st.length>0) pfunc("KeyCode:" + st, 320, this.str.length*8 +24);
         
-        st = "x:" + ms.x + " y:" + ms.y + " button:" + ms.button + " wheel:" + ms.wheel;
-        pfunc("[Mouse]", 320, this.str.length*8 +40);
-        pfunc("State:" + st, 320, this.str.length*8 +48);
+            st = "x:" + ms.x + " y:" + ms.y + " button:" + ms.button + " wheel:" + ms.wheel;
+            pfunc("[Mouse]", 320, this.str.length*8 +40);
+            pfunc("State:" + st, 320, this.str.length*8 +48);
 
-        var vy = 0;
-        pfunc("[TouchPad]" + navigator.maxTouchPoints, 320, this.str.length*8 +64);
-        for (var i in ts.pos){
-            pfunc("State:" + "[" + i + "]" + ts.pos[i].x + "," + ts.pos[i].y + "," + ts.pos[i].id
-            , 320, this.str.length*8 +72 + vy);
-            vy+=8;
+            var vy = 0;
+            pfunc("[TouchPad]" + navigator.maxTouchPoints, 320, this.str.length*8 +64);
+            for (var i in ts.pos){
+                pfunc("State:" + "[" + i + "]" + ts.pos[i].x + "," + ts.pos[i].y + "," + ts.pos[i].id
+                , 320, this.str.length*8 +72 + vy);
+                vy+=8;
+            }
+            pfunc("[Fullscreen]" + (document.fullscreenEnabled?"Enable":"Disable"), 320, this.scrn.ch-16);
+            pfunc(document.fullscreenElement?"Active":"NonActive", 320, this.scrn.ch-8);
         }
-
-        pfunc("[Fullscreen]" + (document.fullscreenEnabled?"Enable":"Disable"), 320, this.scrn.ch-16);
-        pfunc(document.fullscreenElement?"Active":"NonActive", 320, this.scrn.ch-8);
-
     }
 }
 

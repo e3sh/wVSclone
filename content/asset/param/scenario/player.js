@@ -45,6 +45,7 @@ function sce_player() {
 
         o.before_hp = o.hp;
         o.before_weapon = o.gameState.player.weapon;
+        o.before_wlevel = o.gameState.player.level;
 
         o.lighton = true;
 
@@ -435,12 +436,14 @@ function sce_player() {
             this.set_object_ex(w,
                     o.x + o.Cos(wv) * 40,
                     o.y + o.Sin(wv) * 40,
-                    0, "common_vset0" //38
+                    0, "common_vset0"
+                    ,o.before_wlevel 
             );
 
             o.before_weapon = o.gameState.player.weapon;
+            //o.before_wlevel = o.gameState.player.level;
         }
-
+        o.before_wlevel = o.gameState.player.level;
         //Damege表示
         if (o.damageflag) {
             if (o.frame > SHIELD_TIME) {

@@ -460,7 +460,7 @@ function gameScene(state){
 	            if (obCtrl.item[16] > 0) {
 					if (state.Game.player.weapon == 1){
 						state.Game.player.level++;
-					}else state.Game.player.level = 0;
+					}else state.Game.player.level = obCtrl.itemlv;
 					obCtrl.item[16] = 0;
 	                state.Game.player.weapon = 1;
 	                //dev.sound.effect(9); //cursor音
@@ -470,7 +470,7 @@ function gameScene(state){
 	            if (obCtrl.item[17] > 0) {
 					if (state.Game.player.weapon == 2){
 						state.Game.player.level++;
-					}else state.Game.player.level = 0;
+					}else state.Game.player.level = obCtrl.itemlv;
 		            obCtrl.item[17] = 0;
 	                state.Game.player.weapon = 2;
 	                //dev.sound.effect(9); //cursor音
@@ -480,7 +480,7 @@ function gameScene(state){
 	            if (obCtrl.item[19] > 0) {
 					if (state.Game.player.weapon == 3){
 						state.Game.player.level++;
-					}else state.Game.player.level = 0;
+					}else state.Game.player.level = obCtrl.itemlv;
 					obCtrl.item[19] = 0;
 	                state.Game.player.weapon = 3;
 	                //dev.sound.effect(9); //cursor音
@@ -490,7 +490,7 @@ function gameScene(state){
 	            if (obCtrl.item[18] > 0) {
 					if (state.Game.player.weapon == 4){
 						state.Game.player.level++;
-					}else state.Game.player.level = 0;
+					}else state.Game.player.level = obCtrl.itemlv;
 		            obCtrl.item[18] = 0;
 	                state.Game.player.weapon = 4;
 	                //dev.sound.effect(9); //cursor音
@@ -501,7 +501,7 @@ function gameScene(state){
 	            if (obCtrl.item[50] > 0) {
 					if (state.Game.player.weapon == 5){
 						state.Game.player.level++;
-					}else state.Game.player.level = 0;
+					}else state.Game.player.level = obCtrl.itemlv;
 		            obCtrl.item[50] = 0;
 	                state.Game.player.weapon = 5;
 	                //dev.sound.effect(9); //cursor音
@@ -887,7 +887,7 @@ function gameScene(state){
 
 		wtxt.push("wx,wy:" + Math.floor(dev.gs.world_x) + "," + Math.floor(dev.gs.world_y));
 		wtxt.push("play:" + Math.floor(dev.sound.info()) + "." + dev.sound.running() );
-		wtxt.push("");
+		wtxt.push("ilv:" + obCtrl.itemlv);
 
 		return wtxt;
 	}

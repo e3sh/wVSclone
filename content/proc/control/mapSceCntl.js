@@ -174,9 +174,11 @@ function mapSceControl(){
         ev.r = r;
         ev.ch = ch;
         ev.sce = sce;
-
-        if (Boolean(id)) ev.id = id;
-        if (Boolean(parent)) ev.parent = parent;
+        ev.id = id;
+        ev.parent = parent;
+        
+        //if (Boolean(id)) ev.id = id;
+        //if (Boolean(parent)) ev.parent = parent;
 
         event[event.length] = ev;
     }

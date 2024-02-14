@@ -19,13 +19,12 @@
 
     //	this.restart = 0;
 
-
     //以下はコンティニューでもリセット
     //ここらへんもStateGameに持たせるべきか？
 
     var item_ = [];
     var itemstack_ = [];
-
+    var itemlv_;
 
     this.item = item_; //現在取得しているアイテム(リセットオンだとやられると0）(消す処理自体はgameSceneで処理）
 
@@ -41,8 +40,9 @@
 
     this.collisioncount  = 0;
 
-    //
+    this.itemlv = itemlv_; //武器Weaponを拾った時のItemLevel保持用work
 
+    //
     this.hidan = 0;
 
     this.nonmove = 0;
@@ -1128,7 +1128,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
              mapsc.add(
                  sobj.x, sobj.y,
                  sobj.vector,
-                 msg.src , null, null ,
+                 msg.src , 0, 0,
                  sobj
              );
              wlog = false; 
@@ -1208,8 +1208,9 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                  mapsc.add(x, y, 0, 20, 39, wid);
              }
  
-             if ((msg.src >= 15) && (msg.src <= 19)) {
-                 wid = "Weapon!";
+             if (((msg.src >= 15) && (msg.src <= 19)) || (msg.src==50)){
+                 objc.itemlv = msg.dst;
+                 wid = "Weapon!"; 
                  dev.sound.effect(11); //get音
                  mapsc.add(x, y, 0, 20, 39, wid);
              }
@@ -1220,7 +1221,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                  f = true;
              }
  
-             if (f) {
+             if (f) { //useble items
                  var w = msg.src;
                  objc.itemstack.push(w);
              }
