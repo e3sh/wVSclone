@@ -741,7 +741,8 @@ function gameScene(state){
 			dead_cnt,
 			mapdisp,
 			lampf,
-			obCtrl.item[20],
+			obCtrl.item[20],//ball
+			obCtrl.item[22],//key
 			obCtrl.itemstack.length,
 			state.Game.player.weapon,
 			state.Game.player.level,

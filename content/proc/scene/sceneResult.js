@@ -31,26 +31,27 @@ function sceneResult(state) {
     var counter = 0;
 
     var menu = [];
+    var diag;
     
-    var m = {};
-    m.title = "[   ok.  ]";
-    m.x = 320-80;
-    m.y = 280;
-    m.w = 120;
-    m.h = 16;
-    m.sel = false;
-    m.func = function () {
-	//text.clear();
-	 return 11; //GameScene:1 + ContinueFlag:+10
-};
-
+    var m = {
+        title: "[   ok.  ]",
+        x: 320-80 ,y: 280 ,w: 120 ,h: 16,
+        sel: false,
+        func: function () {
+            return 11; //GameScene:1 + ContinueFlag:+10
+        }
+    };
     menu.push(m);
 
     //処理部
-
     function scene_init() {
-
         //初期化処理
+        diag = new DialogControl(
+            [
+            { keynum:38, text:"dummy", icon:"Mayura1", x:320-80, y:160, w:200, h:100, keyon:false }//upkey
+            ,{ keynum:40, text:"テストです。地図", icon:"Map", x:320-80, y:360, w:200, h:100, keyon:false }//downkey
+            ]
+        );
     }
 
     function scene_reset() {
@@ -107,6 +108,9 @@ function sceneResult(state) {
         var ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
 
         zkey = zkey || xkey || ckey; //any key
+
+        //diag.step(kstate);
+
 //        if ((mstate.button == 0) && (!keylock)) {
         counter ++;
         if (counter > 30) {
@@ -178,13 +182,14 @@ function sceneResult(state) {
               //  menu[i].sel = false;
             //}
 
-            }
+        }
 
-            var stage = state.Game.nowstage;
-            wtxt.push(" == Stage -" + stage + "- Clear ==");
-//        wtxt.push(" == Result Scene (Stage Clear) ==");
-//        wtxt.push("---------------");
-//        wtxt.push("Push rMouse Button to Start");
+        var stage = state.Game.nowstage;
+        wtxt.push(" == Stage -" + stage + "- Clear ==");
+//      wtxt.push(" == Result Scene (Stage Clear) ==");
+//      wtxt.push("---------------");
+//      wtxt.push("Push rMouse Button to Start");
+
 
         return 0; //戻すコードで推移する画面を選ぶようにするか？
     }
@@ -217,7 +222,58 @@ function sceneResult(state) {
             //		        work.print(wtxt[s],0,0 + 16*s +200);	
         }
 
+        //diag.draw(work);
         //表示
 
     }
+
+    function DialogControl(mlist){
+
+        var menulist = mlist;
+
+        this.step = function(keystate){
+
+            for (let i in menulist){
+
+                let m = menulist[i];
+
+                if (Boolean(keystate[m.keynum])){
+                    menulist[i].keyon = (keystate[m.keynum]) ? true: false ; 
+                }
+            }
+        }
+
+        this.draw = function(device){
+
+            for (let i in menulist){
+
+                let m = menulist[i];
+
+                if (m.keyon) {
+                    var o = {x: m.x, y: m.y, w: m.w, h:m.h };                    
+                    o.draw = function (device) {
+                        device.beginPath();
+                        device.fillStyle = "orange";
+                        device.fillRect(this.x, this.y, this.w, this.h);
+                    }
+                    device.putFunc(o);
+                }
+                var o = {x: m.x, y: m.y, w: m.w, h:m.h };                    
+                o.draw = function (device) {
+                    device.beginPath();
+                    device.strokeStyle = "White";
+                    device.strokeRect(this.x, this.y, this.w, this.h);
+                }
+                device.putFunc(o);
+    
+                //onsole.log(m);
+
+                device.kprint(m.text, m.x + 10 , m.y + 20);
+                device.put(m.icon, m.x + 10, m.y+ 10);
+
+            }
+
+        }
+    }
+
 }
