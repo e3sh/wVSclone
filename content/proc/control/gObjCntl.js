@@ -118,7 +118,7 @@
     this.messageview = msgview;
     this.messageconsole = msgcnsl;
 
-    var itemtable = {
+    var itemtable = {//表示用のアイテムリスト
     //  (ITEMLIST) 
         15:"杖"  ,  // MP38 Wand
         16:"剣"  , // MP15 Knife
@@ -1088,6 +1088,25 @@
         return result;
     }
 
+    // GameScene以外のSceneからItem追加する為のMethod
+    this.get_item = function( num ){
+
+        if (Boolean(this.item[ num ])) {
+            this.item[ num ]++;
+        } else {
+            this.item[ num ] = 1;
+        }
+
+        if ((num == 23) || (num == 24) || (num == 25)) {
+            //useble items
+            let w = num;
+            this.itemstack.push(w);
+        }
+
+        dev.sound.effect(11); //get音
+
+        this.messageconsole.write(this.itemTable[num] + ".GET");
+    };
 }
 
 // gObjCmdDec

@@ -32,7 +32,8 @@ function sceneResult(state) {
 
     var menu = [];
     var diag;
-    
+    var dexef;
+
     var m = {
         title: "[   ok.  ]",
         x: 320-80 ,y: 280 ,w: 120 ,h: 16,
@@ -43,15 +44,43 @@ function sceneResult(state) {
     };
     menu.push(m);
 
+    const nop = function(){};
+    const getitem = function(num){
+        //console.log("test");
+        state.obCtrl.get_item(num);//23:B 24:S 25:L
+    };
+
+    const bonusTable = [
+        { ch:15, text:"杖"  ,sp:"Wand"   },
+        { ch:16, text:"剣"  ,sp:"Knife"  },
+        { ch:17, text:"斧"  ,sp:"Axe"    },
+        { ch:18, text:"槍"  ,sp:"Spear"  },
+        { ch:19, text:"ブーメラン",sp:"Boom" },
+        //{ ch:20, text:"GET 球"  ,sp:"Ball1"  },
+        //{ ch:21, text:"GET 1UP" ,sp:"Mayura1"},
+        { ch:22, text:"鍵"  ,sp:"Key"    },
+        { ch:23, text:"爆弾",sp:"BallB1" },
+        { ch:24, text:"バリア玉",sp:"BallS1" },
+        { ch:25, text:"回復玉",sp:"BallL1" },
+        { ch:26, text:"ランプ",sp:"Lamp"   },
+        { ch:27, text:"地図",sp:"Map"    },
+        //{ ch:35, text:"GET ｺｲﾝ" ,sp:"Coin1"  },
+        { ch:50, text:"弓矢",sp:"Bow"    }
+    ];
+
     //処理部
     function scene_init() {
         //初期化処理
-        diag = new DialogControl(
+        /*diag = new DialogControl(
+
             [
-            { keynum:38, text:"dummy", icon:"Mayura1", x:320-80, y:160, w:200, h:100, keyon:false }//upkey
-            ,{ keynum:40, text:"テストです。地図", icon:"Map", x:320-80, y:360, w:200, h:100, keyon:false }//downkey
+            { keynum:38, text:"Selector", icon:"Mayura1", func:nop , x:320-80, y:200, w:120, h:50, keyon:false }//upkey
+            ,{ keynum:40, text:"地図", icon:"Map", func:nop , x:320-80, y:326, w:120, h:50, keyon:false }//downkey
+            ,{ keynum:37, text:"x3get テスト", icon:"BallB1", func:getitem(23) , x:320-80-150, y:255, w:120, h:50, keyon:false }//left
+            ,{ keynum:39, text:"選択肢", icon:"TrBox", func:nop , x:320-80+150, y:255, w:120, h:50, keyon:false }//right
             ]
         );
+        */
     }
 
     function scene_reset() {
@@ -94,6 +123,27 @@ function sceneResult(state) {
 
         work2.putFunc(o);
         work2.draw();
+
+        let dpara = [
+            { keynum:38, text:"Selector", icon:"Mayura1", func:nop , x:320-80, y:200, w:120, h:50, keyon:false }//upkey
+            ,{ keynum:40, text:"地図", icon:"Map", func:nop , x:320-80, y:326, w:120, h:50, keyon:false }//downkey
+            ,{ keynum:37, text:"x3get テスト", icon:"BallB1", func:nop , x:320-80-150, y:255, w:120, h:50, keyon:false }//left
+            ,{ keynum:39, text:"選択肢", icon:"TrBox", func:nop , x:320-80+150, y:255, w:120, h:50, keyon:false }//right
+            ];
+
+        for ( let i in dpara ){//keycode udlr
+            let p = dpara[ i ];
+
+            let n = Math.floor(Math.random() * bonusTable.length);
+
+            p.text = bonusTable[ n ].text;
+            p.icon = bonusTable[ n ].sp;
+            
+            p.func = { call:getitem, p:bonusTable[ n ].ch };
+        }
+
+        diag = new DialogControl(dpara);
+        dexef = false;        
     }
 
     function scene_step() {
@@ -106,6 +156,8 @@ function sceneResult(state) {
         var zkey = false; if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
         var xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
         var ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
+
+        let esckey = false; if (Boolean(kstate[27])) { if (kstate[27]) esckey = true; }
 
         zkey = zkey || xkey || ckey; //any key
 
@@ -122,17 +174,24 @@ function sceneResult(state) {
                             var n = menu[i].func();
                             if (n != 0) {
                                 //wipef = true;
+                                if (!dexef) {diag.exec(); dexef=true;}
                                 ret_code = n;
-                                return n;
+                                //return n;//
                             }
                         }
                     //return 2;
                     }
                 }
             }
+            if (esckey){//restart test
+                counter = 0;
+                //return 5;
+                ret_code = 5;
+            } 
         }
 
-        if (!zkey) keylock = false;
+        if ( !zkey ) keylock = false;
+
 
         if (wipef) {
 
@@ -185,13 +244,14 @@ function sceneResult(state) {
         }
 
         var stage = state.Game.nowstage;
-        wtxt.push(" == Stage -" + stage + "- Clear ==");
+        wtxt.push(" == Stage -" + stage + "- Clear ==");//+ ret_code);
 //      wtxt.push(" == Result Scene (Stage Clear) ==");
 //      wtxt.push("---------------");
 //      wtxt.push("Push rMouse Button to Start");
 
 
-        return 0; //戻すコードで推移する画面を選ぶようにするか？
+        if (ret_code != 0) diag.effect();
+        return (( zkey ) || ( diag.step(kstate) != 0 )) ? 0 :ret_code;
     }
 
     function scene_draw() {
@@ -222,16 +282,19 @@ function sceneResult(state) {
             //		        work.print(wtxt[s],0,0 + 16*s +200);	
         }
 
-        //diag.draw(work);
+        diag.draw(work);
         //表示
 
     }
 
     function DialogControl(mlist){
 
+        var FLCOLOR = "White";
         var menulist = mlist;
 
         this.step = function(keystate){
+
+            let c = 0;
 
             for (let i in menulist){
 
@@ -239,6 +302,30 @@ function sceneResult(state) {
 
                 if (Boolean(keystate[m.keynum])){
                     menulist[i].keyon = (keystate[m.keynum]) ? true: false ; 
+
+                    //if (m.keyon) m.func();        
+                    if (menulist[i].keyon) c++;
+
+                } else menulist[i].keyon = false;
+            }
+
+            return c;
+        }
+
+        this.exec = function(){
+            for (let i in menulist) {
+                let m = menulist[i];
+                if (m.keyon) m.func.call(m.func.p);
+                menulist[i].text = "GET " + m.text;
+            }
+            FLCOLOR = "Navy";
+        }
+
+        this.effect = function(){
+            for (let i in menulist) {
+                if (menulist[i].keyon) {
+                    if (menulist[i].w >0) menulist[i].w--;
+                    if (menulist[i].h >0) menulist[i].h--;
                 }
             }
         }
@@ -249,26 +336,26 @@ function sceneResult(state) {
 
                 let m = menulist[i];
 
-                if (m.keyon) {
+                //if (m.keyon) {
                     var o = {x: m.x, y: m.y, w: m.w, h:m.h };                    
                     o.draw = function (device) {
                         device.beginPath();
-                        device.fillStyle = "orange";
+                        device.fillStyle = (m.keyon)?"orange":"blue";
                         device.fillRect(this.x, this.y, this.w, this.h);
                     }
                     device.putFunc(o);
-                }
+                //}
                 var o = {x: m.x, y: m.y, w: m.w, h:m.h };                    
                 o.draw = function (device) {
                     device.beginPath();
-                    device.strokeStyle = "White";
+                    device.strokeStyle = FLCOLOR;
                     device.strokeRect(this.x, this.y, this.w, this.h);
                 }
                 device.putFunc(o);
     
                 //onsole.log(m);
 
-                device.kprint(m.text, m.x + 10 , m.y + 20);
+                device.kprint(m.text, m.x + 24 , m.y + 20);
                 device.put(m.icon, m.x + 10, m.y+ 10);
 
             }

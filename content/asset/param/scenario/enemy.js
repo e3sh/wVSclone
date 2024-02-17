@@ -948,7 +948,7 @@ function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリスト
         23, 24, 25, //COLORBALLS
         20, //BALL
     //    35,//:COINはPASS
-        00
+        0
     ];
 
     var rc = 0; //nonitem
@@ -1016,8 +1016,8 @@ function sce_enemy_inv_gr(scrn, o){
 
     if ((w.x >= 0) && (w.x <= scrn.cw) && (w.y >= 0) && (w.y <= scrn.ch)) {
         //scrn.putchr8("@", w.x, w.y);
-        var tx = w.x;
-        var ty = w.y;
+        var tx = w.x + o.shiftx;
+        var ty = w.y + o.shifty;
 
         w.x = w.x + o.Cos(o.vector) * 16;
         w.y = w.y + o.Sin(o.vector) * 16;
@@ -1054,8 +1054,8 @@ function sce_enemy_inv_gr(scrn, o){
         lbar.hp = o.hp;
         lbar.mhp = o.maxhp;
 
-        lbar.x = w.x;
-        lbar.y = w.y;
+        lbar.x = w.x + o.shiftx;
+        lbar.y = w.y + o.shifty;
 
         //scrn.putchr8(o.hp + "/" +o.maxhp,w.x,w.y);
 

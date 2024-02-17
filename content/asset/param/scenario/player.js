@@ -680,8 +680,8 @@ function sce_player() {
         lbar.mhp = o.maxhp;
         var w = o.gt.worldtoView(o.x, o.y);
 
-        lbar.x = w.x;
-        lbar.y = w.y;
+        lbar.x = w.x + o.shiftx;
+        lbar.y = w.y + o.shifty;
         lbar.br = barriref ? "skyblue" : "limegreen";
 
         lbar.draw = function(device){
