@@ -243,6 +243,8 @@ class GameTask_Load extends GameTask {
 
         if (this.infoflg)
         {
+            pfunc(g.task.namelist(), 0, this.scrn.ch-8);
+
             for (var i in this.str){
                 pfunc(this.str[i], 320, i*8 + 8);
             }

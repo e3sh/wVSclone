@@ -63,7 +63,7 @@ function stateConfig(){
         if (Boolean(localStorage)) {
 
             localStorage.setItem("lamp_use", (this.lamp_use) ? "on" : "off");
-            localStorage.setItem("map_use", (this.map_use) ? "on" : "off");
+            localStorage.setItem("map_use", (this.map_use) ? "on" : "off"); 
             localStorage.setItem("itemreset", (this.itemreset) ? "on" : "off");
             localStorage.setItem("shotfree", (this.shotfree) ? "on" : "off");
             localStorage.setItem("debug", (this.debug) ? "on" : "off");

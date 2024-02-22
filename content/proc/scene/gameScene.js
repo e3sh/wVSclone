@@ -144,11 +144,15 @@ function gameScene(state){
 			for (var i = 0, loopend = this.mcp.length; i < loopend; i++) {
 			//	for (var i in this.mcp){
 					var mc = this.mcp[i];
-					if (mc.lookf){
+					//if (mc.lookf){
 						//if ((mc.visible) && ((mc.type == 11) || (mc.type == 12))) {
 						if (mc.visible) {
-							var c = ["dimgray", "steelblue", "orange"];
-	
+							let c;
+							if (mc.lookf){
+								c = ["dimgray", "steelblue", "orange"];
+							} else {
+								c = ["darkslategray", "darkslategray", "orange"];
+							}
 							this.d.beginPath();
 							//device.strokeStyle = (mc.type == 12) ? "orange" : "blue";
 							this.d.strokeStyle = c[mc.type -10];
@@ -156,7 +160,7 @@ function gameScene(state){
 							this.d.rect(this.x + mc.x / 20, this.y + mc.y / 20, 2, 2);
 							this.d.stroke();
 						}
-					}
+					//}
 			//	}
 			}
 		}
@@ -275,7 +279,8 @@ function gameScene(state){
 	    sndcf = true;
 
 		lampf = state.Config.lamp_use ? true : false;
-	    mapdisp = state.Config.map_use ? false : true;
+	    mapdisp = state.Config.map_use ? false : true; 
+		//mapdisp = false;
 	    mapv = false;
 	   //debug code-- 2023/01/07
 		//lampf = true ;
@@ -441,8 +446,11 @@ function gameScene(state){
 	        if (i == 27) {//map
 	            if (obCtrl.item[27] > 0) {
 	                obCtrl.item[27] = 0;
-	                mapdisp = false;
+	                mapdisp = false; //falseで表示
 	                //dev.sound.effect(9); //cursor音
+					for (let i in mapChip){
+					//	mapChip[i].lookf = true; //mapを一気に表示
+					}
 	            }
 	        }
 	        //weapons

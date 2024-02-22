@@ -99,17 +99,18 @@ function sceneTitle(state) {
         //ForgroundBG.clear();
         wtxt = [];
         wtxt.push("==WebDungeonActionG==");
-        wtxt.push("-----------------&");
-
+        wtxt.push("--------------------&");
+        
+        
         if (state.Config.use_audio) {
-            wtxt.push("audio on:" + dev.sound.loadCheck());
+           wtxt.push("audio on:" + dev.sound.loadCheck());
         } else {
-            wtxt.push("audio off:" + dev.sound.loadCheck());
+           wtxt.push("audio off:" + dev.sound.loadCheck());
         }
 
         //const DSP_X = 320;
         //const DSP_Y = 144;
-
+          
         work2.put("Mayura1",DSP_X - 50 +8    , DSP_Y  +8);
         work2.put("Unyuu1", DSP_X - 50 +8    , DSP_Y +40);
         work2.put("Unyuu3", DSP_X - 50 +8 -32, DSP_Y +40);
@@ -137,7 +138,7 @@ function sceneTitle(state) {
         work2.putchr("Item"  , DSP_X, DSP_Y  +104 -8);
         work2.putchr("Key"   , DSP_X, DSP_Y  +136 -8);
         //work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
-
+        
         for (var s in wtxt) {
             work2.putchr(wtxt[s], 0, DSP_Y  - 80 + 16 * s);        
         }
