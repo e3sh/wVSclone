@@ -315,8 +315,10 @@ function sceneResult(state) {
         this.exec = function(){
             for (let i in menulist) {
                 let m = menulist[i];
-                if (m.keyon) m.func.call(m.func.p);
-                menulist[i].text = "GET " + m.text;
+                if (m.keyon) {
+                    m.func.call(m.func.p);
+                    menulist[i].text = "GET " + m.text;
+                }
             }
             FLCOLOR = "Navy";
         }
