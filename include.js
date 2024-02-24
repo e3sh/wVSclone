@@ -66,7 +66,8 @@ var w = [
  "content/proc/scene/sceneResult.js",
  "content/proc/scene/scenePause.js",
  "content/proc/scene/sceneStatusDisp.js",
-//処理部（状態管理）
+ "content/proc/scene/sceneOption.js",
+ //処理部（状態管理）
  "content/proc/state/stateConfig.js",
  "content/proc/state/stateResult.js",
  "content/proc/state/stateSystem.js", 

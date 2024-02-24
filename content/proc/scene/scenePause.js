@@ -157,6 +157,9 @@ function scenePause(state) {
                 case 6:
                     state.Game.player.level = (state.Game.player.level++ >= 3) ? 0: state.Game.player.level;
                     break;
+                case 7:
+                    ret_code = 8; //sceneOption
+                    break;
                 case 8:
                     ret_code = 7; //sceneStatusDisp
                     break;
@@ -184,7 +187,7 @@ function scenePause(state) {
                 arr.push("4: -");//Mute (NotSupport)   :" + (state.System.dev.sound.mute?"ON":"OFF"));
                 arr.push("5: Bullet(inRange):" + (state.Config.bulletmode?"ON":"OFF"));
                 arr.push("6: Weapon Level   :+" + state.Game.player.level);
-                arr.push("7: -");//Import/Export :NotSupport");
+                arr.push("7: Map Option Menu:->");//Import/Export;
                 arr.push("8: Obj Status Disp:->");
                 arr.push("9: (Debug)Log View:" + (state.Config.viewlog?"ON":"OFF"));
                 arr.push("0: Menu Display   :" + (menuvf?"ON":"OFF"));
