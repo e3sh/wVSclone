@@ -82,6 +82,14 @@ function mapSceControl(){
         return stage_mch;
     }
 
+    this.ini_sc = function () {
+        return stage_inisc;
+    }
+
+    this.event = function () {
+        return event;
+    }
+
     this.init = function () {
         this.stage = 1;
 

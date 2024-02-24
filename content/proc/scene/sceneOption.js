@@ -151,52 +151,52 @@ function sceneOption(state) {
         //work.reset();
     }
 
-
-	function work1(){
-    
-        var obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
-        var mapsc  = state.mapsc; //= new mapSceControl();
-    
-        var itemtable = {//表示用のアイテムリスト
-            //  (ITEMLIST) 
-                15:"杖"  ,  // MP38 Wand
-                16:"剣"  , // MP15 Knife
-                17:"戦斧",   // MP37 Axe
-                18:"槍"  , // MP35 Spear
-                19:"ﾌﾞｰﾒﾗﾝ",  // MP36 Boom
-                20:"球"  ,  // MP26 Ball1-3
-                21:"1UP" ,   // MP 1 Mayura1-4
-                22:"鍵"  ,   // MP27 Key
-                23:"爆弾",// MP28 BallB1-3
-                24:"ﾊﾞﾘｱ",// MP29 BallS1-3
-                25:"回復",// MP30 BallL1-3
-                26:"ﾗﾝﾌﾟ",  // MP33 Lamp
-                27:"地図",   // MP34 Map
-                35:"ｺｲﾝ",  // MP32 Coin1-4
-                40:"宝箱", // MP39 TrBox
-                50:"弓矢"    // MP43 Bow
-        }
-    }
         // drawPoint ==================================
         // マップ用オブジェクト位置描画 sce
         function charDraw() {
 
-            let obj = state.obCtrl.obj;
-
-            for (var i in obj) {
-                var o = obj[i];
-    
-                if (o.visible) {
-    
-                    if ((o.type == 1) || (o.type == 3) || (o.type == 5)) continue;
-    
-                    if ((o.type != 98) && (!flag)) continue;
-    
-                    if (o.normal_draw_enable) {
-                        work.kprint( o.ch, o.x/8, o.y/8);
-                    }
-                }
+            const ctable = {
+                0:"J", //自機
+                1:"E", //敵
+                15:"W", //Wand
+                16:"S", //Knife
+                17:"A", //Axe
+                18:"I", //Spear
+                19:"M", //Boom
+                20:"o", //玉
+                21:"P", //1UP
+                22:"K", //Key
+                23:"b", //爆弾
+                24:"s", //ﾊﾞﾘｱ
+                25:"l", //回復
+                26:"R", //Lamp
+                27:"M", //Map
+                35:"c", //Coin
+                40:"T", //TrBox
+                50:"B"  //Bow
             }
+                
+            let obj = state.mapsc.ini_sc();
+
+            for (let i in obj) {
+                let o = obj[i];
+
+                let c = "" + o.ch;
+                if (Boolean(ctable[o.ch])) c = ctable[o.ch];
+
+                work.kprint(c, 150 + Math.floor(o.x/8), Math.floor(o.y/8));
+            }
+            
+            /*
+            obj = state.mapsc.event();
+
+            for (let i in obj) {
+                let o = obj[i];
+                work.kprint("e" + o.ch, 150 + o.x/8, o.y/8);
+            }
+                */
+            
+            
         }
     
         //マップ表示
