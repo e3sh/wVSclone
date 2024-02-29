@@ -790,8 +790,8 @@
                     if (dev.gs.in_stage(o.x, o.y)){
                         var w = o.gt.worldtoView(o.x, o.y);
 
-                        var ww = o.center_x * o.display_size;
-                        var wh = o.center_y * o.display_size;
+                        var ww = o.center_x * o.display_size + (o.shifty/8);//shiftyはJUMP時に
+                        var wh = o.center_y * o.display_size + (o.shifty/8);//影を小さくする補正処理の為
  
                         device.beginPath();
                         device.fillStyle = "rgba(0,0,0,0.6)";

@@ -209,7 +209,7 @@ function sce_friend_straight() {
         o.startflag = true;
 
         o.x += o.Cos(o.vector) * 35;
-        o.y += o.Sin(o.vector) * 35;
+        o.y += o.Sin(o.vector) * 26;//35;
 
         o.shotcount = 0;
 
@@ -256,7 +256,7 @@ function sce_friend_straight() {
         var r = Math.abs(o.shotcount - 5);
 
         o.x = o.parent.x + o.Cos(o.vector) * (50 - r) ;
-        o.y = o.parent.y + o.Sin(o.vector) * (50 - r) ;
+        o.y = o.parent.y + o.Sin(o.vector) * ((50 - r) *0.75);
 
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 
@@ -273,7 +273,7 @@ function sce_friend_boom() {
         o.startflag = true;
 
         o.x += o.Cos(o.vector) * 35;
-        o.y += o.Sin(o.vector) * 35;
+        o.y += o.Sin(o.vector) * 26;//35;
 
         o.shotcount = 0;
 
@@ -349,8 +349,8 @@ function sce_friend_rotate_full() {
     this.init = function (scrn, o) {
         o.vset(0);
 
-        o.x += o.Cos(o.vector) * 35;
-        o.y += o.Sin(o.vector) * 35;
+        o.x += o.Cos(o.vector) * 40;//35;
+        o.y += o.Sin(o.vector) * 20;//35;
 
         o.rotatecount = 0;
 
@@ -386,8 +386,8 @@ function sce_friend_rotate_full() {
             o.vector = (o.startv + (o.rotatecount * 18))%360;
         }
 
-        o.x = o.parent.x + o.Cos(o.vector) * 35;
-        o.y = o.parent.y + o.Sin(o.vector) * 35;
+        o.x = o.parent.x + o.Cos(o.vector) * 40;//35;
+        o.y = o.parent.y + o.Sin(o.vector) * 20;//35;
 
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 
@@ -410,7 +410,7 @@ function sce_friend_rotate() {
         }
 
         o.x += o.Cos(o.vector) * 35;
-        o.y += o.Sin(o.vector) * 35;
+        o.y += o.Sin(o.vector) * 26;//35;
 
         o.rotatecount = 0;
 
@@ -446,7 +446,7 @@ function sce_friend_rotate() {
         }
 
         o.x = o.parent.x + o.Cos(o.vector) * 35;
-        o.y = o.parent.y + o.Sin(o.vector) * 35;
+        o.y = o.parent.y + o.Sin(o.vector) * 26;//35;
 
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 
