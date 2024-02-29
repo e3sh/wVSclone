@@ -66,6 +66,7 @@ Switch on/off with the number keys on the full keyboard side.
 - 4 : Mute (NotSupport) Mutes sound effects/BGM
 - 5 : BulletMode(offRange) Remove bullets outside the screen.
 - 6 : Weapon Level Increase/Decrease Power Up State
+- 7 : Map Option Menu Transit to the Option screen.
 - 8 : Obj Status Disp Transit to the status confirmation screen.
 - 9 : (Debug)Log View Switches log display during debug display.
 - 0: Show menu Show this menu Off On
@@ -158,6 +159,7 @@ https://e3sh.github.io/wVSclone/main.html
 - 4 : Mute (NotSupport)    効果音・BGMのMUTE（今のところ、うまく動かないので効果なし) 
 - 5 : BulletMode(offRange) 画面外からの弾を消す　 
 - 6 : Weapon Level         パワーアップ状態の増減
+- 7 : Map Option Menu      Option画面に推移する。
 - 8 : Obj Status　Disp     状態確認画面に推移する。　 
 - 9 : (Debug)Log View      デバッグ表示時のログ表示切替
 - 0 : Menu Display         本メニューの表示オフオン 　
