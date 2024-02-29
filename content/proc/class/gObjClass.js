@@ -99,6 +99,27 @@ function gObjectClass() {
     //ラジアンから角度に変換
     //
     function ToDegree(r) { return (r * (180.0 / Math.PI)); }
+
+    //キャラクタの内部パラメータ用(Obj以外のリストで持たせてIDで管理でもいいが、
+    //バトルシステム的な部分は定まっていないのでこんな感じでというメモ
+    /*
+    let spec = {
+        HP: 0, //Maxhp
+        MP: 0, //MagicPoint
+        STR: 0,
+        VIT: 0,
+        DEX: 0,
+        AGI: 0,
+        VIT: 0,
+        INT: 0,
+        MND: 0,
+        LAK: 0,
+        ETC: 0
+    }
+    let health = [];//Buff.Debuffのリスト配列(オブジェクトでもよいかも)
+    let bag = [];//持ち物とか（IDでのリスト）
+    */
+
 }
 
 //メソッドのprototype宣言部　===================================

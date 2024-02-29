@@ -21,6 +21,8 @@ function sceneOption(state) {
     let ret_code = 6; //scenePause
     let retmf = false; //return mode false:pause true:gameS
 
+    let sel = 0;
+
     //処理部
     function scene_init() {
         //初期化処理
@@ -116,7 +118,21 @@ function sceneOption(state) {
         }
 
         if (numkey) {}
-        if (arrowkey) {}
+        if (arrowkey) {
+            let s = sel;
+            for (let i in kstate){
+                if (Boolean(kstate[i])){
+                    s = s + ((i == 37)? -40 :0)//leftkey 
+                    + ((i == 38)? -1 :0) //upkey
+                    + ((i == 39)? +40 :0) //rightkey
+                    + ((i == 40)? +1 :0);//downkey
+                }
+            }
+            if (s < 0) s = 0;
+            //if (s > maxpage) s = maxpage;
+
+            sel = s;
+        }
 
         let s = "";
         for (let i in kstate){
@@ -139,7 +155,7 @@ function sceneOption(state) {
         }
 
         mapDraw();
-        charDraw();
+        charDraw(sel);
 
         work.draw();
 
@@ -153,27 +169,29 @@ function sceneOption(state) {
 
         // drawPoint ==================================
         // マップ用オブジェクト位置描画 sce
-        function charDraw() {
+        function charDraw(sel) {
 
             const ctable = {
-                0:"J", //自機
-                1:"E", //敵
-                15:"W", //Wand
-                16:"S", //Knife
-                17:"A", //Axe
-                18:"I", //Spear
-                19:"M", //Boom
-                20:"o", //玉
-                21:"P", //1UP
-                22:"K", //Key
-                23:"b", //爆弾
-                24:"s", //ﾊﾞﾘｱ
-                25:"l", //回復
-                26:"R", //Lamp
-                27:"M", //Map
-                35:"c", //Coin
-                40:"T", //TrBox
-                50:"B"  //Bow
+                0: "Mayura1", //自機
+                1: "Unyuu1" , //敵
+                14:"Unyuu3", //Boss
+                15:"Wand"   , //Wand
+                16:"Knife"  , //Knife
+                17:"Axe"    , //Axe
+                18:"Spear"  , //Spear
+                19:"Boom"   , //Boom
+                20:"Ball1"  , //玉
+                21:"miniMay", //1UP
+                22:"Key",    //Key
+                23:"BallB1",  //爆弾
+                24:"BallS1",  //ﾊﾞﾘｱ
+                25:"BallL1",  //回復
+                26:"Lamp",    //Lamp
+                27:"Map",     //Map
+                34:"Unyuu2",  //sBoss
+                35:"Coin1",   //Coin
+                40:"TrBox",   //TrBox
+                50:"Bow"      //Bow
             }
                 
             let obj = state.mapsc.ini_sc();
@@ -184,7 +202,26 @@ function sceneOption(state) {
                 let c = "" + o.ch;
                 if (Boolean(ctable[o.ch])) c = ctable[o.ch];
 
-                work.kprint(c, 150 + Math.floor(o.x/8), Math.floor(o.y/8));
+                let x = (i>39)?540:16;
+                let y = ((i>39)?(i-40)*8:i*8+64); 
+                let s = "  :" + o.sc;
+                let z = 0.5;
+
+                if ( i == sel) {
+                    s = "  :[SELECT]";
+                    //work.fill(150 + o.x/8, o.y/8, 16, 16, "green");
+                    z = 1.0;
+                }
+
+                work.put(c, x, y, 0,0,255, z);
+                work.kprint(s, x, y);
+
+                work.put(c,
+                    150 + Math.floor(o.x/8), Math.floor(o.y/8),
+                    0,0,255,
+                    z);
+
+
             }
             
             /*
