@@ -703,6 +703,11 @@
                         device.stroke();
                     }
                     if (o.type != 5) wscreen.putFunc(cl);
+                    if ('spec' in o){
+                        if ('LV' in o.spec){
+                            wscreen.putchr8c("Lv" + o.spec.LV, w.x -12, w.y, 1);
+                        }
+                    }
                     //wscreen.putchr8c(i, w.x, w.y, 0);
                 } 
             }
@@ -996,7 +1001,7 @@
             let o = Object.entries(obj[num]);
 
             o.forEach(function(element){
-                var w = String(element).split(",");
+                let w = String(element).split(",");
                 //var w = element.split(",");
                 //st.push(element);
                 var s = w[0];
@@ -1004,7 +1009,13 @@
                     s = s + " ".repeat(13);
                     s = s.substring(0, 13);
                 }
-                st.push("."+ s + ":" + w[1]);
+                let s2 = w[1];
+                /*
+                for (let i = 2; i < w.length; i++){
+                    s2 = s2 + w[i];
+                }
+                */
+                st.push("."+ s + ":" + s2);
             });
             st.push("");
             st.push("Object.entries end.");

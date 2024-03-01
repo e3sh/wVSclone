@@ -51,6 +51,8 @@ function sce_player() {
 
         o.doorflag = false;
 
+        o.spec.LV = o.gameState.player.level;
+
         //残機無限増やしの抑制の為、ExtendItemを状況により消す。
         if (o.gameState.player.zanki >= Math.floor(o.gameState.nowstage / 5) + 2) {
             o.bomb4(21); //Extendのステータスを0にする。
@@ -391,7 +393,7 @@ function sce_player() {
             o.autoshot = 1;
             //o.collect3();
             //o.sound.effect(7); //スイング音
-            var wdelay = ((o.gameState.player.level >3 )? 3 : o.gameState.player.level)*4;
+            let wdelay = ((o.gameState.player.level >3 )? 3 : o.gameState.player.level)*4;
             // lv.0 20 0.3s /lv.1 16 0.25s /lv.2 12 0.2s /lv.3 08 0.12s(Max)
             o.autotrig = 20 -wdelay;//20 0.3s
             //o.set_object_ex(20, o.x, o.y, 0, 43, o.gameState.player.weapon + "_");
@@ -441,6 +443,7 @@ function sce_player() {
             );
 
             o.before_weapon = o.gameState.player.weapon;
+            o.spec.LV = o.gameState.player.level;
             //o.before_wlevel = o.gameState.player.level;
         }
         o.before_wlevel = o.gameState.player.level;

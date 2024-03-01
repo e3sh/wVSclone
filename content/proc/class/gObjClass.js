@@ -87,9 +87,30 @@ function gObjectClass() {
         this.colcheck = !(type == 5);
         this.dmgcheck = !(type == 4 || type == 5);
     
-        if (type == 98 || type == 0 || type == 2){
+        if (type == 98 || type == 0 || type == 2){ //自機、味方、敵
             this.jump = 0; //敵でも使うのでここに追加
             this.jpvec = -5.0;
+
+            this.spec = { 
+                LV: 0,
+                HP: 0, //Maxhp
+                MP: 0, //MagicPoint
+                STR: 0,
+                VIT: 0,
+                DEX: 0,
+                AGI: 0,
+                VIT: 0,
+                INT: 0,
+                MND: 0,
+                LAK: 0,
+                ETC: 0
+            }
+            //キャラクタの内部パラメータ用(Obj以外のリストで持たせてIDで管理でもいいが、
+            //バトルシステム的な部分は定まっていないのでこんな感じで
+            /*
+            let health = [];//Buff.Debuffのリスト配列(オブジェクトでもよいかも)
+            let bag = [];//持ち物とか（IDでのリスト）
+            */
         }
     }
 
@@ -99,27 +120,6 @@ function gObjectClass() {
     //ラジアンから角度に変換
     //
     function ToDegree(r) { return (r * (180.0 / Math.PI)); }
-
-    //キャラクタの内部パラメータ用(Obj以外のリストで持たせてIDで管理でもいいが、
-    //バトルシステム的な部分は定まっていないのでこんな感じでというメモ
-    /*
-    let spec = {
-        HP: 0, //Maxhp
-        MP: 0, //MagicPoint
-        STR: 0,
-        VIT: 0,
-        DEX: 0,
-        AGI: 0,
-        VIT: 0,
-        INT: 0,
-        MND: 0,
-        LAK: 0,
-        ETC: 0
-    }
-    let health = [];//Buff.Debuffのリスト配列(オブジェクトでもよいかも)
-    let bag = [];//持ち物とか（IDでのリスト）
-    */
-
 }
 
 //メソッドのprototype宣言部　===================================

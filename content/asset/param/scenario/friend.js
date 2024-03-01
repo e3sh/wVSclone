@@ -208,8 +208,8 @@ function sce_friend_straight() {
         //o.get_target(98);
         o.startflag = true;
 
-        o.x += o.Cos(o.vector) * 35;
-        o.y += o.Sin(o.vector) * 26;//35;
+        o.x += o.Cos(o.vector) * 50;
+        o.y += o.Sin(o.vector) * 50;//35;
 
         o.shotcount = 0;
 
@@ -253,10 +253,10 @@ function sce_friend_straight() {
             o.status = 0;
         }
 
-        var r = Math.abs(o.shotcount - 5);
+        let r = Math.abs(o.shotcount - 5);
 
-        o.x = o.parent.x + o.Cos(o.vector) * (50 - r) ;
-        o.y = o.parent.y + o.Sin(o.vector) * ((50 - r) *0.75);
+        o.x = o.parent.x + o.Cos(o.vector) * (50 - r) - o.Cos(o.vector) * r * 10 * (o.parent.spec.LV);
+        o.y = o.parent.y + o.Sin(o.vector) * (50 - r) - o.Sin(o.vector) * r * 10 * (o.parent.spec.LV);
 
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 
@@ -349,8 +349,8 @@ function sce_friend_rotate_full() {
     this.init = function (scrn, o) {
         o.vset(0);
 
-        o.x += o.Cos(o.vector) * 40;//35;
-        o.y += o.Sin(o.vector) * 20;//35;
+        o.x += o.Cos(o.vector) * 40 * (1 + o.parent.spec.LV * 0.3);//35;
+        o.y += o.Sin(o.vector) * 20 * (1 + o.parent.spec.LV * 0.3);//35;
 
         o.rotatecount = 0;
 
@@ -386,8 +386,8 @@ function sce_friend_rotate_full() {
             o.vector = (o.startv + (o.rotatecount * 18))%360;
         }
 
-        o.x = o.parent.x + o.Cos(o.vector) * 40;//35;
-        o.y = o.parent.y + o.Sin(o.vector) * 20;//35;
+        o.x = o.parent.x + o.Cos(o.vector) * 40 * (1 + o.parent.spec.LV * 0.3);//35;
+        o.y = o.parent.y + o.Sin(o.vector) * 20 * (1 + o.parent.spec.LV * 0.3);//35;
 
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 
@@ -409,8 +409,8 @@ function sce_friend_rotate() {
             o.startv = (360 + (o.vector - 60)) % 360;
         }
 
-        o.x += o.Cos(o.vector) * 35;
-        o.y += o.Sin(o.vector) * 26;//35;
+        o.x += o.Cos(o.vector) * 35 * (1 + o.parent.spec.LV * 0.3);
+        o.y += o.Sin(o.vector) * 26 * (1 + o.parent.spec.LV * 0.3);//35;
 
         o.rotatecount = 0;
 
@@ -445,8 +445,8 @@ function sce_friend_rotate() {
             o.vector = (o.startv + (o.rotatecount * 12))%360;
         }
 
-        o.x = o.parent.x + o.Cos(o.vector) * 35;
-        o.y = o.parent.y + o.Sin(o.vector) * 26;//35;
+        o.x = o.parent.x + o.Cos(o.vector) * 35 * (1 + o.parent.spec.LV * 0.3);
+        o.y = o.parent.y + o.Sin(o.vector) * 26 * (1 + o.parent.spec.LV * 0.3);//35;
 
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 
