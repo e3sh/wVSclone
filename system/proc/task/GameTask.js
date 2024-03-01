@@ -144,8 +144,8 @@ class GameTask_Load extends GameTask {
                 startflag = true;
             }
         }
-        if (Boolean(kstate[27])||g.gamepad.btn_start||mstate.button==0) {
-            if (kstate[27]) {//esckey↓
+        if (Boolean(kstate[27])||g.gamepad.btn_back) {
+            if (kstate[27]||g.gamepad.btn_back) {//esckey↓
                 this.infoflg = true;
                 this.infodly = g.time();
             }
