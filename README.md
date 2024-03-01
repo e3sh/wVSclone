@@ -177,4 +177,11 @@ DEBUGで内部状態確認用画面(各キャラクターの動作状態確認)
 - [Z][SPACE]　前の画面に戻る(Pause画面に戻る)
 
 ## 動作確認したブラウザ: 
-Edge/Chrome
+Edge/Chrome　(　PC版　)
+
+(iOS/iPadOSのSafari,Chromeでは上手く動かせていません。) 
+- Safari(iOS版) 音が出ない。処理重い。(iPhoneSE2) ← 処理重さはoffScreenCanvas仕様に変更による影響
+- Safari(iPadOS版) 音が出ない。(iPadmini4)
+- Chrome(iPadOS版) GamePadが動かない。(iPadmini4)
+ 
+音についてはブラウザ操作での制限かなにかだと思われる。(PCでも鳴らないことがある為）
