@@ -65,7 +65,21 @@ function sceneOption(state) {
                 vkey = true;
             }
         }
-        
+      
+        let ikey = false; //map_reset
+        if (Boolean(kstate[73])) {
+            if (kstate[73]) {//rkey
+                ikey = true;
+            }
+        }
+
+        let ekey = false; //map_reset
+        if (Boolean(kstate[69])) {
+            if (kstate[69]) {//rkey
+                ekey = true;
+            }
+        }
+
         let rkey = false; //map_reset
         if (Boolean(kstate[82])) {
             if (kstate[82]) {//rkey
@@ -82,7 +96,7 @@ function sceneOption(state) {
             }
         }
 
-        if (zkey || ckey || rkey || vkey || numkey || arrowkey) keywait = 8;
+        if (zkey || ckey || ikey|| ekey || rkey || vkey || numkey || arrowkey) keywait = 8;
 
         // select key function section
         if (zkey) {
@@ -107,6 +121,20 @@ function sceneOption(state) {
                 dev.graphics[i].reset();
                 dev.graphics[i].clear();
                 dev.graphics[i].draw();
+            }
+        }
+
+        if (ikey) {
+            //IMPORT
+        }
+        if (ekey) {
+            //EXPORT
+            if (retmf){
+            let obj1 = state.mapsc.ini_sc();
+            let obj2 = state.mapsc.mapChip();
+
+            exportFile("inisc.json",obj1);
+            exportFile("mapChip.json",obj2);
             }
         }
 
@@ -146,9 +174,9 @@ function sceneOption(state) {
         st.push("=== COMMAND ===");
         st.push("Z: " + (retmf?"RETURN TITLE":"EXIT"));
         st.push("C: CLEAR_SCREEN");
-        st.push("I: MAP_IMPORT（未実装）" );
-        st.push("E: MAP_EXPORT（未実装）" );
-        st.push("R: MAP_RESET （不具合有）"  );
+        st.push("I: MAP_IMPORT（"+(ikey?"?":"未実装")+"）" );
+        st.push("E:" + (retmf?" MAP_EXPORT":" _"));
+        st.push("R: MAP_RESET"  );
 
         for (let i in st){
             work.kprint(st[i] ,0 ,0 + i*8 );
@@ -252,7 +280,21 @@ function sceneOption(state) {
                 }
             }
         }
-    
+        
+        function exportFile(filename = "sample.json", obj){
+
+            const json = JSON.stringify(obj, null, 2);
+            const blob = new Blob([json], {type: "application/json"});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+          }
+
+
+
 }
 
 
