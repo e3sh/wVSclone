@@ -791,11 +791,35 @@ function scenario() {
 
     // wVSc追加分
     //-----------------------------------------------------------------------
-    w = new sce_effect_informationCursor()
+    w = new sce_effect_informationCursor();
 
     sc_init["effect_informationCursor"] = w.init;
     sc_move["effect_informationCursor"] = w.move;
     sc_draw["effect_informationCursor"] = w.draw;
+    //-----------------------------------------------------------------------
+    w = new sce_friend_option(0);
+
+    sc_init["sce_friend_option_0"] = w.init;
+    sc_move["sce_friend_option_0"] = w.move;
+    sc_draw["sce_friend_option_0"] = w.draw;
+    //-----------------------------------------------------------------------
+    w = new sce_friend_option(1);
+
+    sc_init["sce_friend_option_1"] = w.init;
+    sc_move["sce_friend_option_1"] = w.move;
+    sc_draw["sce_friend_option_1"] = w.draw;
+    //-----------------------------------------------------------------------
+    w = new sce_friend_option(2);
+
+    sc_init["sce_friend_option_2"] = w.init;
+    sc_move["sce_friend_option_2"] = w.move;
+    sc_draw["sce_friend_option_2"] = w.draw;
+    //-----------------------------------------------------------------------
+    w = new sce_friend_option(3);
+
+    sc_init["sce_friend_option_3"] = w.init;
+    sc_move["sce_friend_option_3"] = w.move;
+    sc_draw["sce_friend_option_3"] = w.draw;
     //=============================================================================
     //ExEvent処理用シナリオ
     //-----------------------------------------------------------------------
