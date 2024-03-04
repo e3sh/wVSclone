@@ -45,6 +45,7 @@ var w = [
  "content/asset/param/scenario/player.js",
  "content/asset/param/scenario/player_bullet.js",
  "content/asset/param/scenario/friend.js",
+ "content/asset/param/scenario/friend_option.js",
  "content/asset/param/scenario/enemy.js",
  "content/asset/param/scenario/enemy_bullet.js",
  "content/asset/param/scenario/boss.js",

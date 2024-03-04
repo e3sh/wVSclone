@@ -9,6 +9,21 @@ function sce_player() {
     const SHIELD_TIME = 300;
     const TRIG_WAIT = 20;
 
+    let op = {
+        ptr: 0,
+        x: Array(40),
+        y: Array(40)
+    }
+
+    const wpn = {
+        0:{ch:6,sce:"common_vset8"},//wand
+        1:{ch:10,sce:"friend_rotate"},//sword
+        2:{ch:38,sce:"friend_rotate_full"},//axe
+        3:{ch:37,sce:"friend_boom"},//boom
+        4:{ch:36,sce:"friend_straight"},//spear
+        5:{ch:46,sce:"common_vset10"} //arrow
+    }
+
     // 自機の移動　====
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
@@ -51,7 +66,13 @@ function sce_player() {
 
         o.doorflag = false;
 
+        o.repro = false;
+
         o.spec.LV = o.gameState.player.level;
+
+        op.ptr = 0;
+        op.x.fill(o.x);
+        op.y.fill(o.y);
 
         //残機無限増やしの抑制の為、ExtendItemを状況により消す。
         if (o.gameState.player.zanki >= Math.floor(o.gameState.nowstage / 5) + 2) {
@@ -426,6 +447,22 @@ function sce_player() {
 //                    o.set_object(39); //wand
                     break;
             }
+            /*
+            for (let i=0; i < op.x.length; i++){
+
+                if (i > op.x.length - o.item[20]) {
+                    if ((i % 10) == 0){
+                        o.set_object_ex(wpn[o.gameState.player.weapon].ch,
+                            op.x[(op.ptr + i) % op.x.length],
+                            op.y[(op.ptr + i) % op.x.length],
+                            o.vector, 
+                            wpn[o.gameState.player.weapon].sce
+                        );
+                    }
+                }
+
+            }
+            */
         }
 
         if (o.gameState.player.weapon != o.before_weapon) {
@@ -483,6 +520,12 @@ function sce_player() {
             //o.x += o.vx;  o.y += o.vy;
             o.x += (o.vx * o.vecfrm);  o.y += (o.vy * o.vecfrm);
 
+            if ((o.x == o.old_x)&&(o.y == o.old_y)){}else{
+                op.x[op.ptr] = o.x;
+                op.y[op.ptr] = o.y + o.shifty;
+                op.ptr++;
+                op.ptr = op.ptr % op.x.length; 
+            }
             //var w = o.gt.worldtoWorld(o.x, o.y);
             //o.x = w.x;  o.y = w.y;
 
@@ -569,6 +612,14 @@ function sce_player() {
             }
             o.doorflag = false;
         }else{ o.doorflag = false; }
+
+        //option
+        if ((o.item[20] > 10) && !o.repro){
+            o.set_object_ex(0, o.x, o.y, o.vector, "sce_friend_option_0");
+            o.repro = true;
+        }
+        if (o.item[20] < 10) o.repro = false;
+        
 
         var f = 0;
 
@@ -701,6 +752,46 @@ function sce_player() {
 	        device.stroke();
         }
         scrn.putFunc(lbar);
+
+        for (let i=0; i < op.x.length; i++){
+            let w = o.gt.worldtoView(
+                op.x[(op.ptr + i) % op.x.length],
+                op.y[(op.ptr + i) % op.x.length]
+            );
+
+            if (i > op.x.length - o.item[20]) {
+                if (((i-1) % 10) == 0){
+                    /*
+                    //scrn.fill(w.x-8, w.y-8,16,16,c);
+                    scrn.putFunc( {   x: w.x ,y: w.y ,r: 6 - o.frame%6/2,
+                            draw: function (device) {
+                                device.beginPath();
+                                device.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+                                device.fillStyle = "white";
+                                device.fill();
+                            }
+                        } );
+                    */
+                }else{
+                    scrn.fill(w.x, w.y, 2, 2,"white");
+                }
+            }else{
+                //scrn.fill(w.x, w.y, 2, 2,"gray");
+            }
+
+            if (i > op.x.length - o.itemstack.length){    
+                if (Boolean(o.itemstack[op.x.length - i])){
+                    if (o.itemstack[op.x.length - i] == 23){
+                        scrn.fill(w.x, w.y, 3, 3,"Orange");
+                    }else if (o.itemstack[op.x.length - i] == 24){
+                        scrn.fill(w.x, w.y, 3, 3,"Cyan");
+                    }else if (o.itemstack[op.x.length - i] == 25){
+                        scrn.fill(w.x, w.y, 3, 3,"Green");
+                    }
+                }
+            }
+
+        }
     }
 }
 
