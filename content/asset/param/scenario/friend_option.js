@@ -13,8 +13,6 @@ function sce_friend_option(mode) {
         mode 3: option4 o.parent.parent.parent.parent
     */
 
-    //let master; 
-
     let op = {
         ptr: 0,
         x: Array(10),
@@ -57,21 +55,15 @@ function sce_friend_option(mode) {
         op.x.fill(o.x);
         op.y.fill(o.y);
         op.r.fill(0);
-
-        //let mtable = {0:o.parent, 1:o.parent.parent, 2:o.parent.parent.parent, 3:o.parent.parent.parent.parent};
-        //mtable = o;
-        //for (let i=0; i<mode; i++){
-        //    master = master.parent;
-        //}
-        //master = mtable[mode];
     }
 
     this.draw = damage_gr1;
 
     this.move = function (scrn, o) {
 
-        if (!Boolean(o.parent)) return 1;
-        if (o.parent.status == 0) return 1;
+        //親がいなくなったら消滅
+        if (!Boolean(o.parent)) o.status = 0;//return 1; 
+        if (o.parent.status == 0) o.status = 0;//return 1;　
 
         o.frame+= o.vecfrm;
 
@@ -87,43 +79,11 @@ function sce_friend_option(mode) {
         if ((o.autoshot == 0) && (o.gameState.player.weapon !=0 )) {
 //          if (o.gameState.player.weapon !=0 ) {
             o.autoshot = 1;
-            //o.collect3();
             //o.sound.effect(7); //スイング音
             let wdelay = ((o.gameState.player.level >3 )? 3 : o.gameState.player.level)*4;
             // lv.0 20 0.3s /lv.1 16 0.25s /lv.2 12 0.2s /lv.3 08 0.12s(Max)
             o.autotrig = 20 -wdelay;//20 0.3s
-            //o.set_object_ex(20, o.x, o.y, 0, 43, o.gameState.player.weapon + "_");
-/*
-            switch (o.gameState.player.weapon) {
-                case 1:
-                    o.set_object(10); //sword
-                    //o.autotrig = 30;
-                    break;
-                case 2:
-                    o.set_object(38); //axe
-                    //o.autotrig = 30;
-                    break;
-                case 3:
-                    o.set_object(37); //boom
-                    //o.autotrig = 30;
-                    break;
-                case 4:
-                    o.set_object(36); //spare
-                    //o.autotrig = 30;
-                    break;
-                case 5:
-                    o.set_object_ex(46, o.x, o.y, o.vector - 10, "common_vset10");
-                    o.set_object_ex(46, o.x, o.y, o.vector, "common_vset10");
-                    o.set_object_ex(46, o.x, o.y, o.vector + 10, "common_vset10");
-                    //o.set_object(46)
-                    o.set_object(47); //Bow and Arrow
-                    //o.autotrig = 30;
-                    break;
-                default:
-//                    o.set_object(39); //wand
-                    break;
-            }
-            */
+
             o.set_object_ex(wpn[o.gameState.player.weapon].ch,
                 o.x, o.y, o.vector, 
                 wpn[o.gameState.player.weapon].sce
