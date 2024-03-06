@@ -102,54 +102,6 @@ function sce_boss_1(){
             o.status = 2;
         }
 
-        //o.frame++;
-
-        /*
-        if (o.wdspf) {
-            o.display_size = 2.0 * (o.frame / 60.0);
-        } else {
-            o.display_size = 2.0;
-            o.custom_draw_enable = true;
-        }
-
-        switch (o.frame) {
-            //case 13:
-                //    o.SIGNAL(6055);//ボス戦開始のお知らせ(マップシナリオ進行の停止）
-            //case 14:
-            //    o.vset(1);
-
-            //    break;
-            case 60:
-                o.wdspf = false;
-
-                if (o.hp <= 0) {
-                    //    o.bomb();
-                } else {
-                    o.cnt++;
-
-                    if (o.cnt > 7) {
-                        o.cnt = 0;
-                        o.set_object(30);
-                    }
-                }
-                o.vset(2);
-                o.vector = (o.vector + 8 + 360) % 360;
-                o.frame = 59; // 59;
-                break;
-            default:
-                break;
-        };
-
-        if (o.status == 2) {
-            o.set_object_ex(14, o.x, o.y, 180, 50);//Boss2
-            o.status = 2;
-        }
-
-        o.frame++;
-        */
-        //		if (o.hp <=0 ) o.pause_system(42);
-        //		if (o.hp <= 0) o.bomb();
-
         return o.sc_move();
     }
 }
@@ -211,47 +163,6 @@ function sce_boss_2(){
                 o.smode = 0;
             }
         }
-            /*
-            //switch (o.frame) {
-        switch (Math.trunc(o.alive/100)%40) {
-            case 1366:
-                o.get_target(98);
-                o.vector = o.target_v();
-                o.vset(1);
-                //    o.set_object(103);
-                break;
-            case 1500:
-                o.set_object_ex(32, o.x, o.y, (o.vector + 45) % 360, 49);
-                o.set_object_ex(32, o.x, o.y, (o.vector + 315) % 360, 49);
-                break;
-            case 3500:
-                var larm = (o.vector + 90) % 360;
-                var rarm = (o.vector + 270) % 360;
-
-                o.set_object_ex(32, o.x + o.Cos(larm)*100, o.y + o.Sin(larm)*100, o.vector, 51);
-                o.set_object_ex(32, o.x, o.y, o.vector, 51);
-                o.set_object_ex(32, o.x + o.Cos(rarm) * 100, o.y + o.Sin(rarm) * 100, o.vector, 51);
-                break;
-            default:
-                break;
-        };
-        //o.frame+= o.vecfrm;
-
-        if ((o.w_cnt % 10 == 0) && (o.frame == 90)) {
-            o.set_object_ex(32, o.x, o.y, (o.vector + 45) % 360, 49);
-            o.set_object_ex(32, o.x, o.y, (o.vector + 315) % 360, 49);
-        }
-
-        if ((o.w_cnt % 10 == 5) && (o.frame == 90)) {
-
-            var larm = (o.vector + 90) % 360;
-            var rarm = (o.vector + 270) % 360;
-
-            o.set_object_ex(32, o.x + o.Cos(larm)*100, o.y + o.Sin(larm)*100, o.vector, 51);
-            o.set_object_ex(32, o.x, o.y, o.vector, 51);
-            o.set_object_ex(32, o.x + o.Cos(rarm) * 100, o.y + o.Sin(rarm) * 100, o.vector, 51);
-        }
-        */
         if (o.status == 2) {
             o.bomb();
             //o.SIGNAL(0); //ボス戦終了のお知らせ(マップシナリオ進行の停止）

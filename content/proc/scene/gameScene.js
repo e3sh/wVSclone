@@ -189,7 +189,7 @@ function gameScene(state){
 		state.Game.item = obCtrl.item;
 		state.Result.combo = obCtrl.combo;
 
-		scenechange = false;
+		//scenechange = false;
 	}
 
 	function game_reset(contflg) {
@@ -206,7 +206,7 @@ function gameScene(state){
 		mmrefle = true;
 		
 	    if (!Boolean(contflg)) { contflg = false; }
-	    scenechange = false;
+	    //scenechange = false;
 
 	    if (state.Game.cold) {//タイトル画面から始めた場合
 
@@ -321,6 +321,17 @@ function gameScene(state){
 
 	    //ゲームの進行
 	    if (obCtrl.interrapt) {
+			// SIGNAL LIST
+			//   1: PauseScene
+			// 835: resultScene
+			//1709: LvUpScene
+			//4649: Restart/Gover(zanki状態による)
+			//6055:（未使用）Boss
+			//他数字は空き10106234569ぉｐ1709
+			// GameScene切り替え依頼をobjから行う場合にSIGNALで
+			// interraptがtrueとなる。次のフレームで自動でfalse。
+			//
+
 	        if (obCtrl.SIGNAL == 1) {
 	            mapsc.enable = false;
 	            mapsc.counter_runnning = false;
@@ -340,10 +351,12 @@ function gameScene(state){
 				return 6;//pause
 	        }
 
+			/*
 	        if (obCtrl.SIGNAL == 6055) {//boss戦に入ったのでマップシナリオカウント停止
 	            mapsc.enable = true;
 	            mapsc.counter_runnning = false;
 	        }
+			*/
 
 	        if (obCtrl.SIGNAL == 835) {//リザルト画面要求(面クリアー処理予定
 
@@ -366,13 +379,21 @@ function gameScene(state){
 
 	                obCtrl.draw(work2);
 
-	                scenechange = true;
+	                //scenechange = true;
 
 	                dev.sound.change(4);//Stageclear
 	                dev.sound.play();
 
 	                return 5; //result
 	        }
+
+	        if (obCtrl.SIGNAL == 1709) {//LevelUp要求
+
+				mapsc.enable = true;
+				mapsc.counter_runnning = false;
+
+				return 9; //Lvup
+			}
 
 	        if (obCtrl.SIGNAL == 4649) {//リスターとシグナルが来た(自機が死んで3.0sec位あと）
 	            dead_cnt++;
@@ -407,7 +428,7 @@ function gameScene(state){
 
                     obCtrl.draw(work2);
 
-                    scenechange = true;
+                    //scenechange = true;
 
                     if (Boolean(localStorage)) { //ローカルストレージ使えたらハイスコア記録しとく
                         localStorage.setItem("highscore", new String(state.Result.highscore));
@@ -894,9 +915,12 @@ function gameScene(state){
 			if (i == 2) n2 = obCtrl.obCount[i];
 		}
 
+		let spec = state.Game.player.spec;
+
 		wtxt.push("wx,wy:" + Math.floor(dev.gs.world_x) + "," + Math.floor(dev.gs.world_y));
 		wtxt.push("play:" + Math.floor(dev.sound.info()) + "." + dev.sound.running() );
-		wtxt.push("ilv:" + obCtrl.itemlv);
+		wtxt.push("lv:" + spec.LV + " v"+ spec.VIT + ":m" + spec.MND + ":i" + spec.INT );
+		wtxt.push("");
 
 		return wtxt;
 	}

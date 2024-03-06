@@ -104,7 +104,7 @@ function sce_en_bullet_hominglaser() {
 
         //o.display_size = 2.0;
         o.display_size = 2.0;
-        o.alpha = 128;
+        //o.alpha = 128;
 
         //	o.mp = 4;
 
@@ -132,7 +132,8 @@ function sce_en_bullet_hominglaser() {
                 break;
         };
 
-        if (o.frame%5==0)o.set_object_ex(32, o.x, o.y, o.vector, 56);
+        //if (o.frame%5==0)o.set_object_ex(32, o.x, o.y, o.vector, 56);
+        if (o.frame == 0)o.set_object_ex(32, o.x, o.y, o.vector, 56);
 
         o.w_cnt++
         o.frame++;
@@ -164,11 +165,13 @@ function sce_en_bullet_infolaser() {
             case 0:
                 o.normal_draw_enable = false;
                 o.custom_draw_enable = true;
+                o.set_object_ex(32, o.x + o.vx, o.y + o.vy, o.vector, 56);
                 break;
             case 45:
                 o.normal_draw_enable = true;
                 o.custom_draw_enable = false;
-                o.msf = true;
+                o.vset(12);
+                //o.msf = true;
                 break;
             default:
                 break;
@@ -176,11 +179,12 @@ function sce_en_bullet_infolaser() {
 
         if (o.msf) {
             //for (var i = 1; i <= 5; i++) {
-                o.vset(48);
+                //o.vset(12);
                 
                 //o.vset(12 * i);
-                o.set_object_ex(32, o.x + o.vx, o.y + o.vy, o.vector, 56);
+                //o.set_object_ex(32, o.x + o.vx, o.y + o.vy, o.vector, 56);
             //}
+            //o.msf = false;
         }
         o.frame++;
 
@@ -258,16 +262,63 @@ function sce_en_bullet_laser_tail() {
     this.init = function (scrn, o) {
         o.vset(0);
         o.display_size = 1.5;
+        
+        o.old_x = o.x;
+        o.old_y = o.y;
+
+        o.op = {
+            ptr: 0,
+            x: Array(5),
+            y: Array(5),
+            r: Array(5)
+        }
+
+        let op = o.op;
+
+        op.ptr = 0;
+        op.x.fill(o.x);
+        op.y.fill(o.y);
+        op.r.fill(0);
+
+        o.cf = false;
     }
 
     this.move = function (scrn, o) {
 
-        if (o.frame > 20) o.status = 0; //時間が来たら消す。
+        if ((o.frame > 5)&&!o.cf) {
+            o.set_object_ex(32, o.x + o.vx, o.y + o.vy, o.vector, 56);//o.status = 0; //時間が来たら消す。
+            o.cf = true;
+        }
+        //親がいなくなったら消滅
+        if (!Boolean(o.parent)) o.status = 0;//return 1; 
+        if (o.parent.status == 0) o.status = 0;//return 1;　
+        
+        if (o.frame > 180) o.status = 0; //時間が来たら消す。3s
+       
+        o.frame+= o.vecfrm;
+        
+        let p = o.parent;
 
-        o.display_size = 1.5 + o.frame /20;
-        o.frame++;
+        //o.display_size = 1.5 + o.frame /20;
 
-        return o.sc_move();
+        let op = o.op;
+
+        op.x[op.ptr] = p.x;
+        op.y[op.ptr] = p.y;
+        op.ptr++;
+        op.ptr = op.ptr % op.x.length; 
+        
+        o.old_x = o.x;
+        o.old_y = o.y;
+
+        o.x = op.x[op.ptr];
+        o.y = op.y[op.ptr];
+
+        f = 0;
+        if (o.status == 0) f = 1; //未使用ステータスの場合は削除
+
+        return f;
+        //        return o.sc_move();
     }
 
 }

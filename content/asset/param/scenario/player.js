@@ -68,7 +68,16 @@ function sce_player() {
 
         o.repro = false;
 
+        //o.spec = o.gameState.player.spec;
+
         o.spec.LV = o.gameState.player.level;
+        o.spec.HP = o.gameState.player.maxhp;
+
+        o.gameState.player.spec = o.spec;
+
+        //o.spec.VIT = 0; //HPrecover+ : init 3 +
+        //o.spec.INT = 0, //BombPower+ : init -10
+        //o.spec.MND = 0, //ShieldTime+: init 300flame(5s) +
 
         op.ptr = 0;
         op.x.fill(o.x);
@@ -348,11 +357,14 @@ function sce_player() {
                             o.gameState.player.hp = o.hp;
                         }
                         o.gameState.player.maxhp = o.maxhp;
+                        o.spec.HP = o.maxhp;
                         o.item[25]--;
                         o.set_object_ex(20, o.x, o.y, 0, 43, "+3");
                     }
 
                     o.trigerSub = TRIG_WAIT;
+
+
                 }
             }
         }
@@ -707,7 +719,7 @@ function sce_player() {
         */
         
         //Shield Display
-        if (o.frame <= 300) {
+        if (o.frame <= SHIELD_TIME) {
 
             var cl = {};
             var w = o.gt.worldtoView(o.x, o.y);

@@ -21,6 +21,19 @@ function stateGame() {
     this.player.skill_ex = [0, 0, 0, 0, 0, 0];//武器毎の獲得スコア累積 /処理未作成の為未使用（2024/02/14）
     this.player.skill_lv = [0, 0, 0, 0, 0, 0];//武器毎のlevel　/処理未作成の為未使用（2024/02/14）
 
+    this.player.spec = {};
+    this.player.spec.LV = 0; //WeaponLevel ( = state.Game.player.level) 
+    this.player.spec.HP = 0; //Maxhp (notuse)
+    this.player.spec.MP = 0; //MagicPoint (notuse) 
+    this.player.spec.STR = 0;
+    this.player.spec.DEX = 0;
+    this.player.spec.AGI = 0;
+    this.player.spec.VIT = 0; //HPrecover+ : init 3 +
+    this.player.spec.INT = 0; //BombPower+ : init -10
+    this.player.spec.MND = 0; //ShieldTime+: init 300flame(5s) +
+    this.player.spec.LAK = 0;
+    this.player.spec.ETC = 0;    
+
     this.outviewMove = true;//未使用
     this.outviewCollision =true;//画面外の敵も壁の当たり判定処理を行う。
     this.outviewHit = true;//未使用

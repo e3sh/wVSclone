@@ -92,16 +92,15 @@ function gObjectClass() {
             this.jpvec = -5.0;
 
             this.spec = { 
-                LV: 0,
-                HP: 0, //Maxhp
-                MP: 0, //MagicPoint
+                LV: 0, //WeaponLevel ( = state.Game.player.level) 
+                HP: 0, //Maxhp (notuse)
+                MP: 0, //MagicPoint (notuse) 
                 STR: 0,
-                VIT: 0,
                 DEX: 0,
                 AGI: 0,
-                VIT: 0,
-                INT: 0,
-                MND: 0,
+                VIT: 0, //HPrecover+ : init 3 +
+                INT: 0, //BombPower+ : init -10
+                MND: 0, //ShieldTime+: init 300flame(5s) +
                 LAK: 0,
                 ETC: 0
             }

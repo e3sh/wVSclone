@@ -17,7 +17,7 @@ function sceneControl(state) {
     sceneList[6] = new scenePause(state);      titleSce[6] = "Pause";
     sceneList[7] = new sceneStatusDisp(state); titleSce[7] = "Status";
     sceneList[8] = new sceneOption(state);     titleSce[8] = "Option";
-
+    sceneList[9] = new sceneLvUp(state);       titleSce[9] = "LvUp";
 
     var wipeEffectCount; 
 

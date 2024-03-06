@@ -703,11 +703,13 @@
                         device.stroke();
                     }
                     if (o.type != 5) wscreen.putFunc(cl);
+                    /*
                     if ('spec' in o){
                         if ('LV' in o.spec){
                             wscreen.putchr8c("Lv" + o.spec.LV, w.x -12, w.y, 1);
                         }
                     }
+                    */
                     //wscreen.putchr8c(i, w.x, w.y, 0);
                 } 
             }
@@ -1051,6 +1053,16 @@
         return result;
     }
 
+    this.player_objv = function(scrn){
+     
+        for (let o of obj) {
+            if (o.type == 98){
+                cntl_draw(scrn, o);
+                break;
+            } 
+        }
+    }
+
     this.lookpick = function(scrn, num, x, y){
 
         var result = false;
@@ -1291,6 +1303,9 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
              break;
  
          case "bomb3":
+             //msg.src : add attack power
+             let atrpwr = isNaN(msg.src)? 0: msg.src;
+
              if (Boolean(objc.item[7])) {
                  if (objc.item[7] > 0) objc.item[7]--;
              }
@@ -1302,7 +1317,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
      
                  if (onst) {
                      if (obj[i].type == 2) {//敵には一律10のダメージ
-                         obj[i].hp -= 10;
+                         obj[i].hp -= (10 + atrpwr);
                          if (obj[i].hp <= 0) obj[i].status = 2;
                      }
      
