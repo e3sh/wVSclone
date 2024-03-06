@@ -123,7 +123,7 @@ function sce_en_bullet_hominglaser() {
                 if (o.frame > 90) o.get_target(2);
 
                 o.target_rotate_r(15 + ((o.frame < 20) ? 15 : 0));
-                o.vset(2 + ((o.frame > 40) ? 4 : 0) + ((o.frame > 50) ? 4 : 0));
+                o.vset(2 + ((o.frame > 40) ? 2 : 0) + ((o.frame > 50) ? 2 : 0));
                 break;
             case 30:
                 o.w_cnt = 25;
@@ -170,7 +170,7 @@ function sce_en_bullet_infolaser() {
             case 45:
                 o.normal_draw_enable = true;
                 o.custom_draw_enable = false;
-                o.vset(12);
+                o.vset(6);
                 //o.msf = true;
                 break;
             default:
@@ -284,22 +284,23 @@ function sce_en_bullet_laser_tail() {
     }
 
     this.move = function (scrn, o) {
-
+        /*
         if ((o.frame > 5)&&!o.cf) {
             o.set_object_ex(32, o.x + o.vx, o.y + o.vy, o.vector, 56);//o.status = 0; //時間が来たら消す。
             o.cf = true;
         }
+        */
         //親がいなくなったら消滅
         if (!Boolean(o.parent)) o.status = 0;//return 1; 
         if (o.parent.status == 0) o.status = 0;//return 1;　
         
-        if (o.frame > 180) o.status = 0; //時間が来たら消す。3s
+        if (o.frame > 300) o.status = 0; //時間が来たら消す。5s
        
         o.frame+= o.vecfrm;
         
         let p = o.parent;
 
-        //o.display_size = 1.5 + o.frame /20;
+        //o.display_size = 1.5 + o.frame /200;
 
         let op = o.op;
 
@@ -313,6 +314,11 @@ function sce_en_bullet_laser_tail() {
 
         o.x = op.x[op.ptr];
         o.y = op.y[op.ptr];
+
+        if ((o.frame > 5)&&!o.cf) {
+            o.set_object_ex(32, o.x + o.vx, o.y + o.vy, o.vector, 56);//o.status = 0; //時間が来たら消す。
+            o.cf = true;
+        }
 
         f = 0;
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
