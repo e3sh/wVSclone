@@ -42,8 +42,10 @@ function mapSceControl(){
 	//    stage_data = new Stage1_tod(num, kyuse);
         if (num <= 0){
             stage_data = new Stage1_vsv(num);//TEST STAGE
+        }else if (num%15 == 0) {
+            stage_data = new Stage1_brm(num);//BossRooｍ
         }else if (num <= 30 ){
-            stage_data = new Stage1(num);
+            stage_data = new Stage1(num);//NormalStage
         }else{
     	    stage_data = new Stage1_tod(num, kyuse);//TEST STAGE
         }

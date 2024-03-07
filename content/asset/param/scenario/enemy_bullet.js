@@ -217,8 +217,8 @@ function sce_en_bullet_infolaser() {
             device.moveTo(this.x, this.y);
             device.lineTo(this.tx, this.ty);
             //            device.strokeStyle = "rgb(255*cl.alpha , 0, 0)";
-            device.lineWidth = "1";
-            device.strokeStyle = "rgba( 255, 0, 0," + cl.alpha + ")";
+            device.lineWidth = "2";
+            device.strokeStyle = "rgba( 255, 192, 128," + cl.alpha + ")";
             //            device.strokeStyle = 'rgb(255*cl.alpha , 0, 0)';
 
             device.stroke();
@@ -295,19 +295,22 @@ function sce_en_bullet_laser_tail() {
         if (!Boolean(o.parent)) o.status = 0;//return 1; 
         if (o.parent.status == 0) o.status = 0;//return 1;　
         
-        if (o.frame > 180) o.status = 0; //時間が来たら消す。3s
-        if (o.alive > 3000) o.status = 0; //時間が来たら消す。3s
-        
+        if (o.frame > 150) o.status = 0; //時間が来たら消す。3s
+        if (o.alive > 2500) o.status = 0; //時間が来たら消す。3s
+                
         o.frame+= o.vecfrm;
-        
+
         let p = o.parent;
 
-        //o.display_size = 1.5 + o.frame /200;
+        //o.display_size = 1.0 + o.alive / 6000;
+        //if (o.alive > 1500) o.display_size = 1.0 + (3000 - o.alive )/3000; 
 
         let op = o.op;
 
         op.x[op.ptr] = p.x;
         op.y[op.ptr] = p.y;
+        o.vector = p.vector;
+     
         op.ptr++;
         op.ptr = op.ptr % op.x.length; 
         
@@ -317,11 +320,11 @@ function sce_en_bullet_laser_tail() {
         o.x = op.x[op.ptr];
         o.y = op.y[op.ptr];
 
-        if ((o.frame > 5)&&!o.cf) {
+        if ((o.frame > 1)&&!o.cf) {
             o.set_object_ex(32, o.x + o.vx, o.y + o.vy, o.vector, 56);//o.status = 0; //時間が来たら消す。
             o.cf = true;
         }
-
+        
         f = 0;
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 

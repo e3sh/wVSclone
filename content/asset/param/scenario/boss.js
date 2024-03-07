@@ -156,9 +156,9 @@ function sce_boss_2(){
                 var larm = (o.vector + 90) % 360;
                 var rarm = (o.vector + 270) % 360;
 
-                o.set_object_ex(32, o.x + o.Cos(larm)*100, o.y + o.Sin(larm)*100, o.vector, 51);
+                o.set_object_ex(32, o.x + o.Cos(larm)*32, o.y + o.Sin(larm)*32, o.vector, 51);
                 o.set_object_ex(32, o.x, o.y, o.vector, 51);
-                o.set_object_ex(32, o.x + o.Cos(rarm) * 100, o.y + o.Sin(rarm) * 100, o.vector, 51);
+                o.set_object_ex(32, o.x + o.Cos(rarm) * 32, o.y + o.Sin(rarm) * 32, o.vector, 51);
 
                 o.smode = 0;
             }

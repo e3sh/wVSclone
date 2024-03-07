@@ -41,7 +41,8 @@ var w = [
  "content/asset/param/stage/Stage1_tod.js",
  "content/asset/param/stage/Dangeon_tod.js",
  "content/asset/param/stage/Stage1_vsv.js",
-//データ部(キャラクタの動きなどの設定）
+ "content/asset/param/stage/Stage1_brm.js",
+ //データ部(キャラクタの動きなどの設定）
  "content/asset/param/scenario.js",
  "content/asset/param/scenario/player.js",
  "content/asset/param/scenario/player_bullet.js",
