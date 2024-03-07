@@ -1,6 +1,6 @@
 ﻿//　ステージの設定(用語が混乱してるけど　マップ、マップシナリオ、マップチップの統合）
 
-function Stage1_test(stageno) {
+function Stage1_vsv(stageno) {
 
     //stageno = 0;
     var BLOCK_W = 96;

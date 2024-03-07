@@ -23,7 +23,8 @@ var w = [
     "system/proc/func/fontPrintControl.js",
     "system/proc/task/GameTaskClass.js",
     */
-    "system/coremin.js",
+    "https://e3sh.github.io/WebGameCoreSystem/coremin.js",
+    //"system/coremin.js",
  //画面表示や入力関係処理部(compatible-convert)
  "content/proc/conv/deviceControl.js",
  "content/proc/conv/screen.js",
@@ -39,7 +40,7 @@ var w = [
  "content/asset/param/stage/Dangeon.js",
  "content/asset/param/stage/Stage1_tod.js",
  "content/asset/param/stage/Dangeon_tod.js",
- "content/asset/param/stage/Stage1_test.js",
+ "content/asset/param/stage/Stage1_vsv.js",
 //データ部(キャラクタの動きなどの設定）
  "content/asset/param/scenario.js",
  "content/asset/param/scenario/player.js",

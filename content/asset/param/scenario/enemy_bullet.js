@@ -123,7 +123,7 @@ function sce_en_bullet_hominglaser() {
                 //if (o.frame > 90) o.get_target(2);
 
                 if (o.frame < 90) o.target_rotate_r(15 + ((o.frame < 20) ? 15 : 0));
-                o.vset(2 + ((o.frame > 40) ? 2 : 0) + ((o.frame > 50) ? 2 : 0));
+                o.vset(2 + ((o.frame > 40) ? 4 : 0) + ((o.frame > 50) ? 4 : 0));
                 break;
             case 30:
                 o.w_cnt = 25;

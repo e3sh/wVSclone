@@ -329,6 +329,12 @@ gObjectClass.prototype = {
 
         return Math.sqrt((Math.abs(tx - x) * Math.abs(tx - x)) + (Math.abs(ty - y) * Math.abs(ty - y)));
     },
+    //指定角度回転
+    rotate: function(r){
+        r = r % 360;
+        r = (r > 179)? -360 + r:r;
+        this.vector = (this.vector + r);
+    },
 
     // sin 0-360 ↑方向が0の数値をいれて処理する
     Sin : function (vec) { return Math.sin((vec - 90) * (Math.PI / 180.0)); },
