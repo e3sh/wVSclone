@@ -278,6 +278,7 @@
             if (o.type == 98) { 
                 o.key_state = kstate;
                 o.entrypadaxis = dev.directionM( kstate );
+                o.score = this.score;
             }
 
             //var w = o.gt.worldtoWorld(o.x, o.y);
@@ -865,7 +866,7 @@
         if (!Boolean(id)) id = ch_ptn[ch].id;
         o.id = id;
 
-        o.score = ch_ptn[ch].score;
+        o.score = ch_ptn[ch].score; 
         o.status = 1; //StatusValue.Normal ;
 
         if (!Boolean(sc)) sc = ch_ptn[ch].senario[0];

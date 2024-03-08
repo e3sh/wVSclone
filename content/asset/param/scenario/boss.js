@@ -114,7 +114,8 @@ function sce_boss_2(){
         o.get_target(98);
         o.w_cnt = 0;
 
-        o.display_size = 0.001;
+        //o.display_size = 0.001;
+        o.display_size = 2.0;
         o.weight = 4.0;
 
         o.hit_x *= 2.0;
@@ -128,8 +129,9 @@ function sce_boss_2(){
 
     this.move = function (scrn, o) {
 
-        if (o.alive < 1000) {// 出現から1s(1000ms)
-            o.display_size = 2.0 * (o.alive / 1000);
+        if (o.alive < 1500) {// 出現から1.5s(1500ms)
+            //o.display_size = 2.0 * (o.alive / 1500);
+            o.alpha = 255*(o.alive/1500);
         } else {
             o.display_size = 2.0;
 
@@ -137,22 +139,27 @@ function sce_boss_2(){
             o.vector = o.target_v();
             o.vset(1);
 
-            var tc = Math.trunc(o.alive/100)%40;
+            var tc = Math.trunc((o.alive-1500)/100)%100;//0.1s:100 count loop
             if (tc <= 1) {
                 o.smode = 1;
                 o.get_target(98);
                 o.vector = o.target_v();
                 o.vset(1);
             }
+            o.vset(1);
+            
+            if ((tc > 10)&&(tc < 45)) o.vset(0);
 
             if ((tc > 15)&&(o.smode == 1)){
-                o.set_object_ex(32, o.x, o.y, (o.vector + 45) % 360, 49);
-                o.set_object_ex(32, o.x, o.y, (o.vector + 315) % 360, 49);
-
+                o.set_object_ex(32, o.x, o.y, (o.vector + 90) % 360, 49);
+                o.set_object_ex(32, o.x, o.y, (o.vector + 270) % 360, 49);
+                o.set_object(3);
                 o.smode = 2;
             }
 
-            if ((tc > 35)&&(o.smode == 2)){
+            if ((tc > 50)&&(tc < 90)) o.vset(0);
+
+            if ((tc > 55)&&(o.smode == 2)){
                 var larm = (o.vector + 90) % 360;
                 var rarm = (o.vector + 270) % 360;
 

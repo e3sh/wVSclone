@@ -72,6 +72,9 @@ function sce_player() {
 
         o.spec.LV = o.gameState.player.level;
         o.spec.HP = o.gameState.player.maxhp;
+        o.spec.VIT = o.gameState.player.spec.VIT;
+        o.spec.INT = o.gameState.player.spec.INT;
+        o.spec.MND = o.gameState.player.spec.MND;
 
         o.gameState.player.spec = o.spec;
 
@@ -619,11 +622,23 @@ function sce_player() {
 
                 o.gameState.player.hp = o.hp;
 
+                o.gameState.player.spec.VIT = o.spec.VIT;
+                o.gameState.player.spec.INT = o.spec.INT;
+                o.gameState.player.spec.MND = o.spec.MND;
+
                 o.SIGNAL(835);
                 //    o.hp = 10;
             }
             o.doorflag = false;
         }else{ o.doorflag = false; }
+
+        //LvUp (score > o.spec.MIN,VIT,INT)
+        let lups = Math.pow(o.spec.VIT, 3)* 300 ;
+        if (o.score > lups){
+            o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup" + o.spec.VIT);
+            o.spec.VIT++;
+            o.sound.effect(14);
+        }
 
         //option
         if ((o.item[20] > 10) && !o.repro){

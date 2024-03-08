@@ -564,7 +564,7 @@ function sceneConfig(state) {
         if (!Boolean(sndtst)) sndtst = w_number[4];
 
         if (sndtst != w_number[4]) {
-            if ((w_number[4] >= 0) && (w_number[4] <14)) {
+            if ((w_number[4] >= 0) && (w_number[4] <15)) {//
                 dev.sound.change(Math.floor(w_number[4]));
                 dev.sound.play(0);
             }

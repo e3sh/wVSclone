@@ -99,7 +99,7 @@ function sce_en_bullet_hominglaser() {
     this.init = function (scrn, o) {
         //	o.vector = 0;
         //        o.vector = (o.vector > 180) ? o.vector - 45 : o.vector + 45;
-        o.vset(2);
+        o.vset(3);
         o.get_target(98);
 
         //o.display_size = 2.0;
@@ -108,7 +108,7 @@ function sce_en_bullet_hominglaser() {
 
         //	o.mp = 4;
 
-        o.w_cnt = 0;
+        o.w_cnt = 15;
         //        o.normal_draw_enable = false;
         //        o.custom_draw_enable = true;
     }
@@ -122,11 +122,11 @@ function sce_en_bullet_hominglaser() {
             case 26:
                 //if (o.frame > 90) o.get_target(2);
 
-                if (o.frame < 90) o.target_rotate_r(15 + ((o.frame < 20) ? 15 : 0));
-                o.vset(2 + ((o.frame > 40) ? 4 : 0) + ((o.frame > 50) ? 4 : 0));
+                if (o.frame < 180) o.target_rotate_r(15 + ((o.frame < 20) ? 15 : 0));
+                o.vset(3 + ((o.frame > 40) ? 1 : 0) + ((o.frame > 50) ? 1 : 0));
                 break;
             case 30:
-                o.w_cnt = 25;
+                o.w_cnt = 22;
                 break;
             default:
                 break;
@@ -165,6 +165,9 @@ function sce_en_bullet_infolaser() {
             case 0:
                 o.normal_draw_enable = false;
                 o.custom_draw_enable = true;
+                //o.set_object_ex(32, o.x + o.vx, o.y + o.vy, o.vector, 56);
+                //break;
+            case 44:
                 o.set_object_ex(32, o.x + o.vx, o.y + o.vy, o.vector, 56);
                 break;
             case 45:
@@ -321,10 +324,16 @@ function sce_en_bullet_laser_tail() {
         o.y = op.y[op.ptr];
 
         if ((o.frame > 1)&&!o.cf) {
-            o.set_object_ex(32, o.x + o.vx, o.y + o.vy, o.vector, 56);//o.status = 0; //時間が来たら消す。
+            o.set_object_ex(32, o.x + o.vx, o.y + o.vy, o.vector, 56);
+            //o.set_object(3);
             o.cf = true;
         }
-        
+        if (o.status == 0) {
+            if (o.alive > 1800){
+                o.set_object(3);
+            }
+        }
+
         f = 0;
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 

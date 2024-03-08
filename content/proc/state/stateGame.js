@@ -48,6 +48,7 @@ function stateGame() {
     this.map = false;
 
     this.mode = 0;//Palyer Type Select
+    this.score = 0;
 
     this.load = function () {
         //中断セーブからの復帰

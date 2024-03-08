@@ -33,7 +33,8 @@ function soundCntl( asset ) {
         "10use",
         "11hit",
         "12damage",
-        "13bomb"
+        "13bomb",
+        "14powup"
     ];
 
     var snd = [];

@@ -58,6 +58,7 @@ function GameAssetSetup(game){
 	game.asset.soundLoad( "10use",		asset_path_cts + 	"sound/10use"		);
 	game.asset.soundLoad( "11hit",		asset_path_cts + 	"sound/11hit"		);
 	game.asset.soundLoad( "12damage",	asset_path_cts + 	"sound/12damage"	);
+	game.asset.soundLoad( "14powup",	asset_path_cts + 	"sound/14powup"		);
 	game.asset.soundLoad( "13bomb",		asset_path_cts + 	"sound/13bomb"		);
 
     //Game Device Setup

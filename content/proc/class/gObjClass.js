@@ -310,7 +310,7 @@ gObjectClass.prototype = {
         if (w > 179) w = -360 + w;
 
         r = d - w;
-        if (Math.abs(r) > 100) {
+        if (Math.abs(r) > 180) {
             w = (this.vector + 180) % 360;
             if (w > 179) w = -360 + w;
             r = (d - w) * -1;
