@@ -129,7 +129,7 @@ function character(){
 	[47, 43, 1, BULLET_P,  8, 8, 16, 16, "friend_front", 30, 5, 5, 5, 5, 0, 0],//bow friend
 	[48, 44, 1, BULLET_E, 24, 8, 16, 16, "common_vset8", 30, 5, 5, 5, 5, 0, 0],//arrow enemy
 	[49, 43, 1, BULLET_E,  8, 8, 16, 16, "friend_front", 30, 5, 5, 5, 5, 0, 0],//bow enemy
-	[50, 43, 1, ITEM, 24, 8, 48, 16, 30, 30, 5, 5, 5, 5, 0, 100],//item bow
+	[50, 43, 1, ITEM, 24, 8, 48, 16, 30, 30, 5, 5, 5, 5, 0, 0],//item bow
 	
 	//InformationCursor処理用(MotionPattern準備中)(MP仮)
 	[100, 45, 1, ETC, 8, 8, 16, 16, "effect_informationCursor", 30, 5, 5, 5, 5, 0, 0], //InformationCursor

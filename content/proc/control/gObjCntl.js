@@ -1055,13 +1055,19 @@
     }
 
     this.player_objv = function(scrn){
-     
+        
+        let rc = {x:0, y:0};
+
         for (let o of obj) {
+            if (o instanceof Object){
+            if (Boolean(o.type)){
             if (o.type == 98){
                 cntl_draw(scrn, o);
+                rc = o.gt.worldtoView(o.x, o.y);
                 break;
-            } 
-        }
+            } }
+        }}
+        return rc;
     }
 
     this.lookpick = function(scrn, num, x, y){

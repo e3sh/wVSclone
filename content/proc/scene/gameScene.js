@@ -51,9 +51,11 @@ function gameScene(state){
 	var fdrawcnt = 0;
 	var drawexecute = false;
 
-	var mmrefle = true; 
+	var mmrefle = true; //mini map reflash
 
-	var useosc = false;
+	var useosc = false;  //Use Off Screen Canvas
+
+	let UI_force_reflash = false;
 
 	let mmcanvas;
 	let mmdevice;
@@ -97,12 +99,18 @@ function gameScene(state){
 	    //device.lineWidth = 1;
 	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, (this.hp/this.mhp)*100, 14-1);
 	    //device.stroke();
-	    device.beginPath();
+	    //device.beginPath();
 	    device.strokeStyle = "white";
 	    device.lineWidth = 2;
 	    device.rect(dev.layout.hp_x, dev.layout.hp_y, 102, 15);
 	    device.stroke();
-		
+
+	    device.beginPath();
+		device.strokeStyle = "green";
+	    device.lineWidth = 1;
+		device.moveTo(dev.layout.hp_x +  1, dev.layout.hp_y +14);
+		device.lineTo(dev.layout.hp_x +100, dev.layout.hp_y +14);
+	    device.stroke();
 	}
 	//縮小マップ表示
 	var SubmapDraw = new smd(mmdevice, mmcanvas); 
@@ -227,10 +235,12 @@ function gameScene(state){
 	            dead_cnt = 0;
 	            state.Game.nowstage = state.Config.startstage;
 
-	            state.Game.player.maxhp = 100;
-	            state.Game.player.hp = state.Game.player.maxhp;
+	            //state.Game.player.maxhp = 100;
+	            //state.Game.player.hp = state.Game.player.maxhp;
 
-	            state.Game.player.weapon = 0; //wand
+	            //state.Game.player.weapon = 0; //wand
+
+				state.Game.reset();//↑3行も含む処理(2024/03/10)
 	        }
 	        state.Game.player.barrier = false;//バリア中オンにする
 
@@ -282,7 +292,7 @@ function gameScene(state){
 	    mapdisp = state.Config.map_use ? false : true; 
 		//mapdisp = false;
 	    mapv = false;
-	   //debug code-- 2023/01/07
+        //debug code-- 2023/01/07
 		//lampf = true ;
 	    //mapdisp = false;
 		//^^^^^
@@ -290,11 +300,14 @@ function gameScene(state){
 	}
 
 	function game_step() {
+
 		dev.gs.commit();
 		if (!this.reset_enable){
 			this.reset_enable = true; // reset無しで戻ってきたときにtrueに変更
 			mapsc.pauseOff(state.System.time());
-		}
+			UI_force_reflash = true;
+		} 
+
 		//StateGameに今の状態を反映
 		state.Game.lamp = lampf; 
 		state.Game.map =  !mapdisp; //現状の処理で使用時falseとなっているの為Not演算で反転
@@ -302,10 +315,8 @@ function gameScene(state){
 	    if (!dev.sound.running()) {
 	        if (mapsc.flame < 120000) {
 	            dev.sound.change(1);// normal bgm
-
 	        } else {
 	            dev.sound.change(3);// timeover sound
-
 	        }
 	        dev.sound.play();
 	    }
@@ -313,7 +324,6 @@ function gameScene(state){
 		if ((mapsc.flame >= (120000 - 2000)) && sndcf) {
 	        dev.sound.change(2); //Warning sound
 	        dev.sound.play();
-
 	        //dev.sound.next(3);
 
 	        sndcf = false;
@@ -327,10 +337,11 @@ function gameScene(state){
 			//1709: LvUpScene
 			//4649: Restart/Gover(zanki状態による)
 			//6055:（未使用）Boss
-			//他数字は空き10106234569ぉｐ1709
+			//他数字は空き
 			// GameScene切り替え依頼をobjから行う場合にSIGNALで
 			// interraptがtrueとなる。次のフレームで自動でfalse。
 			//
+			//UI_force_reflash = true;
 
 	        if (obCtrl.SIGNAL == 1) {
 	            mapsc.enable = false;
@@ -392,6 +403,16 @@ function gameScene(state){
 				mapsc.enable = true;
 				mapsc.counter_runnning = false;
 
+				state.Game.item = obCtrl.item;
+				state.Game.itemstack = obCtrl.itemstack;
+				state.Game.player.zanki = 2 - dead_cnt;
+
+				obCtrl.interrapt = false;
+				obCtrl.SIGNAL = 0;
+
+				this.reset_enable = false;
+				mapsc.pauseOn(state.System.time());
+
 				return 9; //Lvup
 			}
 
@@ -444,7 +465,9 @@ function gameScene(state){
 	        //bg_scroll = true;
 	        mapsc.enable = true;
 	        mapsc.counter_runnning = true;
-	        //			demo_mode = false;
+
+			//UI_force_reflash = false;
+	        //demo_mode = false;
 	    }
 
 	    //item
@@ -588,7 +611,7 @@ function gameScene(state){
 
 			//work3.putFunc(ButtomlineBackgroundDraw);
 			
-			UIDraw();
+			UIDraw( UI_force_reflash );
 
 	        //debug　true　の場合以下表示
  	       if (state.Config.debug) {
@@ -613,6 +636,7 @@ function gameScene(state){
 		}
 		if (!mapdisp){ mapv = true; }
 
+		if (UI_force_reflash) UI_force_reflash = false;
 		drawexecute = true;         
 	}
 
@@ -757,7 +781,7 @@ function gameScene(state){
 	//UI表示は都度更新と随時更新では負荷減効果あり、必要時都度更新で処理する。
 	//(ミニマップのレーダー(点)は常時なのでここでは処理しない)
 
-	function UIDraw(){
+	function UIDraw( force_reflash ){
 
 		let insco = [
 			ehighscore.read(state.Result.highscore),//state.Result.highscore,
@@ -798,6 +822,8 @@ function gameScene(state){
 		ui.score = insco;
 		ui.time = intim;
 		ui.cnt++;
+
+		if (force_reflash){ cf = false; cs = false; ct = false;}
 
 		//work3.fill(dev.layout.hiscore_x + 12 * 6, dev.layout.hiscore_y, 12 * 7, 32); // , "darkblue");
 

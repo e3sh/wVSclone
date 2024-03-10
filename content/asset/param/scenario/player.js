@@ -6,7 +6,8 @@
 // 自機の動作に関するシナリオ
 function sce_player() {
 
-    const SHIELD_TIME = 300;
+    const SHIELD_TIME_BASE = 300;
+    let SHIELD_TIME = SHIELD_TIME_BASE;
     const TRIG_WAIT = 20;
 
     let op = {
@@ -23,6 +24,9 @@ function sce_player() {
         4:{ch:36,sce:"friend_straight"},//spear
         5:{ch:46,sce:"common_vset10"} //arrow
     }
+
+    let delay_st;
+    let lvupf;
 
     // 自機の移動　====
     //-----------------------------------------------------------------------
@@ -75,12 +79,17 @@ function sce_player() {
         o.spec.VIT = o.gameState.player.spec.VIT;
         o.spec.INT = o.gameState.player.spec.INT;
         o.spec.MND = o.gameState.player.spec.MND;
+        o.spec.ETC = o.gameState.player.spec.ETC;
 
         o.gameState.player.spec = o.spec;
+
+        SHIELD_TIME = SHIELD_TIME_BASE + o.spec.VIT*30; //0.5s(30f)
 
         //o.spec.VIT = 0; //HPrecover+ : init 3 +
         //o.spec.INT = 0, //BombPower+ : init -10
         //o.spec.MND = 0, //ShieldTime+: init 300flame(5s) +
+
+        lvupf = false;
 
         op.ptr = 0;
         op.x.fill(o.x);
@@ -329,7 +338,7 @@ function sce_player() {
 
                     if (w == 23) {
                         o.sound.effect(13);
-                        o.bomb3();
+                        o.bomb3(o.spec.INT);
                         o.set_object_ex(6, o.x, o.y, 0, 47); //Bomb爆発演出(赤)
                         o.item[23]--;
                     }
@@ -337,22 +346,28 @@ function sce_player() {
                     if (w == 24) {
                         o.sound.effect(10);
                         if (!o.gameState.player.barrier) o.before_hp = o.hp;
+
+                        SHIELD_TIME = SHIELD_TIME_BASE + o.spec.VIT*30;
                         o.frame = 0;
                         o.item[24]--;
                         //    o.set_object_ex(20, o.x, o.y, 0, 44, "Shield");
                     }
 
                     if (w == 25) {
+                        let rhp = 3 + o.spec.MND;
+
                         o.sound.effect(10);
                         if (o.frame <= SHIELD_TIME) {
-                            o.before_hp += 3;
+                            o.before_hp += rhp;
                             o.maxhp++;
 
                             if (o.before_hp > o.maxhp) o.before_hp = o.maxhp;
 
                             o.gameState.player.hp = o.before_hp;
                         } else {
-                            o.hp += 3;
+                            let rhp = 3 + o.spec.MND;
+
+                            o.hp += rhp;//3;
                             o.maxhp++;
 
                             if (o.hp > o.maxhp) o.hp = o.maxhp;
@@ -362,7 +377,7 @@ function sce_player() {
                         o.gameState.player.maxhp = o.maxhp;
                         o.spec.HP = o.maxhp;
                         o.item[25]--;
-                        o.set_object_ex(20, o.x, o.y, 0, 43, "+3");
+                        o.set_object_ex(20, o.x, o.y, 0, 43, "+"+rhp );
                     }
 
                     o.trigerSub = TRIG_WAIT;
@@ -625,19 +640,38 @@ function sce_player() {
                 o.gameState.player.spec.VIT = o.spec.VIT;
                 o.gameState.player.spec.INT = o.spec.INT;
                 o.gameState.player.spec.MND = o.spec.MND;
+                o.gameState.player.spec.ETC = o.spec.ETC;
 
-                o.SIGNAL(835);
+                o.SIGNAL(835);//STAGE CLEAR
                 //    o.hp = 10;
             }
             o.doorflag = false;
         }else{ o.doorflag = false; }
 
         //LvUp (score > o.spec.MIN,VIT,INT)
-        let lups = Math.pow(o.spec.VIT, 3)* 300 ;
-        if (o.score > lups){
-            o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup" + o.spec.VIT);
-            o.spec.VIT++;
+        /*
+        o.spec.VIT = o.gameState.player.spec.VIT;
+        o.spec.INT = o.gameState.player.spec.INT;
+        o.spec.MND = o.gameState.player.spec.MND;
+
+        let total_st = o.spec.VIT + o.spec.INT + o.spec.MND; 
+        */
+        let lups = Math.pow(o.spec.ETC+1 , 2)* 100 ;//100, 400, 900, 1600, 2500,....
+        if ((o.score > lups)&& !lvupf){
+            o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
+            o.spec.ETC++;
             o.sound.effect(14);
+            delay_st = o.alive;
+            //o.SIGNAL(1709);//LVUP
+            lvupf = true;
+        }
+
+        if (lvupf){ //↑のLvUp検出で音を鳴らしてから0.5秒後にLvUpMenuへ
+            //スコア数値の表示演出完了待ち（数字じゃなくてゲージにするか？）
+            if (o.alive > delay_st +500){
+                lvupf = false;
+                o.SIGNAL(1709);//LVUP
+            }
         }
 
         //option
@@ -646,7 +680,6 @@ function sce_player() {
             o.repro = true;
         }
         if (o.item[20] < 10) o.repro = false;
-        
 
         var f = 0;
 
@@ -742,7 +775,8 @@ function sce_player() {
             cl.x = w.x + o.shiftx;
             cl.y = w.y + o.shifty;
             cl.r = 30 + o.frame % 5;
-            cl.c = "rgb(" + 255 + "," + (255 - o.frame) + "," + (255 - o.frame) + ")"; 
+            let cn = Math.trunc(255 * ((SHIELD_TIME - o.frame)/SHIELD_TIME));
+            cl.c = "rgb(" + 255 + "," + cn + "," + cn + ")"; 
             cl.draw = function (device) {
                 device.beginPath();
                 device.strokeStyle = this.c; //"white";
@@ -778,7 +812,7 @@ function sce_player() {
 	        device.rect(this.x -17, this.y+16+2, 34, 4);
 	        device.stroke();
         }
-        scrn.putFunc(lbar);
+        if (o.hp != o.maxhp) scrn.putFunc(lbar);
 
         for (let i=0; i < op.x.length; i++){
             let w = o.gt.worldtoView(

@@ -24,6 +24,8 @@ function sceneLvUp(state) { //2024/03/06
     let diag;
     let dexef;
 
+    let stbar;
+
     //処理部
     function scene_init() {
         //初期化処理
@@ -63,48 +65,39 @@ function sceneLvUp(state) { //2024/03/06
         work2.draw();
 
         let dpara = [
-            { keynum:38, text:"SHIELD Time +0.5s", icon:"BallS1",
+            { keynum:38, text:"Time +0.5s", icon:"BallS1",
                 func: { call: function(p){
                     state.Game.player.spec.VIT++;
                     ret_code = p;
                 }, p:1},
-                x:320-80, y:200, w:120, h:50, keyon:false }//upkey
-
+                x:-35, y:-25-55, w:70, h:50, keyon:false, select: false }//upkey
+                /*
             ,{ keynum:40, text:"SELECT", icon:"Ball3", 
                 func: { call: function(p){
                     ret_code = p;
-                }, p:0},
-                x:320-80, y:326, w:120, h:50, keyon:false }//downkey
-
-            ,{ keynum:37, text:"HP Recovery +1", icon:"BallL1", 
+                }, p:1},
+                x:-35, y:-25+55, w:70, h:50, keyon:false }//downkey
+                */
+            ,{ keynum:37, text:"Recover +1", icon:"BallL1", 
                 func: { call: function(p){
                     state.Game.player.spec.MND++;
                     ret_code = p;
                 }, p:1},
-                x:320-80-150, y:255, w:120, h:50, keyon:false }//left
+                x:-35-80, y:-25, w:70, h:50, keyon:false, select: false }//left
 
-            ,{ keynum:39, text:"Bomb Damage +2", icon:"BallB1", 
+            ,{ keynum:39, text:"Damage +2", icon:"BallB1", 
                 func: { call: function(p){
                     state.Game.player.spec.INT++;
                     ret_code = p;
                 }, p:1},
-                x:320-80+150, y:255, w:120, h:50, keyon:false }//right
+                x:-35+80, y:-25, w:70, h:50, keyon:false, select: false }//right
         ];
-
-        for ( let i in dpara ){//keycode udlr
-            let p = dpara[ i ];
-
-            let n = Math.floor(Math.random() * bonusTable.length);
-
-            p.text = bonusTable[ n ].text;
-            p.icon = bonusTable[ n ].sp;
-            
-            p.func = { call:getitem, p:bonusTable[ n ].ch };
-        }
 
         diag = new DialogControl(dpara);
         dexef = false;     
         
+        stbar = new statusBarMeter(["cyan","orange","limegreen","white","","",""]);
+
         keylock = false;
     }
 
@@ -129,12 +122,26 @@ function sceneLvUp(state) { //2024/03/06
         work2.draw();
         work2.reset();
 
-        wtxt.push(" == Level Up ==");
+        wtxt.push("LevelUp#" + state.Game.player.spec.ETC);
+        //wtxt.push(" VIT=" + state.Game.player.spec.VIT);
+        //wtxt.push(" INT=" + state.Game.player.spec.INT);
+        //wtxt.push(" MND=" + state.Game.player.spec.MND); 
+
+        stbar.setStatusArray([
+            state.Game.player.spec.VIT,
+            state.Game.player.spec.INT,
+            state.Game.player.spec.MND
+            //state.Game.player.spec.ETC
+        ]);
 
         if (keylock && !dexef && diag.step(kstate) == 1) {
             diag.exec(); 
             keylock = false; 
             dexef = true;
+
+            dev.graphics[0].setInterval(1);//BG
+            dev.graphics[1].setInterval(1);//SPRITE
+            work2.setInterval(1);//<-dev.g2　FG
         }
 
         if (ret_code != 0) diag.effect();
@@ -143,20 +150,22 @@ function sceneLvUp(state) { //2024/03/06
 
     function scene_draw() {
 
+        let w = state.obCtrl.player_objv(work);
+
+        diag.draw(work, w.x, w.y);
+
         for (var s in wtxt) {
-            work.putchr(wtxt[s], 320-150, 120 + 16 * s );
+            work.putchr8(wtxt[s], w.x -35, w.y + 16*s + 32 );
         }
+        stbar.draw(work, w.x -35, w.y + 48);
 
-        diag.draw(work);
-
-        state.obCtrl.player_objv(work);
         //表示
     }
 
     function DialogControl(mlist){
 
-        var FLCOLOR = "White";
-        var menulist = mlist;
+        let FLCOLOR = "White";
+        let menulist = mlist;
 
         this.step = function(keystate){
 
@@ -183,51 +192,82 @@ function sceneLvUp(state) { //2024/03/06
                 let m = menulist[i];
                 if (m.keyon) {
                     m.func.call(m.func.p);
-                    menulist[i].text = "GET " + m.text;
+                    menulist[i].text = "GET_STATUS";
+                    menulist[i].select = true;
                 }
             }
-            FLCOLOR = "Navy";
+            //FLCOLOR = "Navy";
         }
 
         this.effect = function(){
+          
             for (let i in menulist) {
                 if (menulist[i].keyon) {
-                    if (menulist[i].w >0) menulist[i].w--;
-                    if (menulist[i].h >0) menulist[i].h--;
+                    //if (menulist[i].w >0){ menulist[i].w--;}
+                    if (menulist[i].h >0){ menulist[i].h--;}
                 }
             }
         }
 
-        this.draw = function(device){
+        this.draw = function(device, x, y){
 
             for (let i in menulist){
 
                 let m = menulist[i];
 
                 //if (m.keyon) {
-                    var o = {x: m.x, y: m.y, w: m.w, h:m.h };                    
+                    let o = {x: x + m.x, y: y + m.y, w: m.w, h:m.h };                    
                     o.draw = function (device) {
                         device.beginPath();
-                        device.fillStyle = (m.keyon)?"orange":"blue";
+                        device.fillStyle = (m.select)?"orange":(m.keyon)?"steelblue":"blue";
                         device.fillRect(this.x, this.y, this.w, this.h);
+
+                        //device.beginPath();
+                        if (!m.select){
+                            device.strokeStyle = FLCOLOR;
+                            device.strokeRect(this.x, this.y, this.w, this.h);
+                        }
                     }
                     device.putFunc(o);
                 //}
-                var o = {x: m.x, y: m.y, w: m.w, h:m.h };                    
+                /*
+                //o = {x: x + m.x, y: y + m.y, w: m.w, h:m.h };                    
                 o.draw = function (device) {
                     device.beginPath();
                     device.strokeStyle = FLCOLOR;
                     device.strokeRect(this.x, this.y, this.w, this.h);
                 }
                 device.putFunc(o);
-    
+                */
                 //onsole.log(m);
 
-                device.kprint(m.text, m.x + 24 , m.y + 20);
-                device.put(m.icon, m.x + 10, m.y+ 10);
-
+                device.kprint(m.text, x + m.x +8 , y + m.y + 20);
+                device.put(m.icon, x + m.x + 10, y + m.y+ 10);
             }
 
+        }
+    }
+
+    function statusBarMeter(setupParam){
+        //setupParamater [barcolor, ...,}]
+        let status;
+
+        this.setStatusArray = function(ary){
+            status = ary;
+        }
+
+        this.draw = function(device, x, y){
+            
+            let o = { s:status, b:setupParam, x:x, y:y }
+            o.draw = function(device){
+                device.beginPath();
+
+                for (let i in this.s){
+                    device.fillStyle = this.b[i];
+                    device.fillRect(this.x, this.y + i*3, 2*this.s[i], 2);
+                }
+            }
+            device.putFunc(o);
         }
     }
 

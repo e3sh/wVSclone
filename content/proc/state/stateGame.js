@@ -50,6 +50,24 @@ function stateGame() {
     this.mode = 0;//Palyer Type Select
     this.score = 0;
 
+    this.reset = function(){
+
+        this.player.zanki = 2;
+        this.player.hp = 10;
+        this.player.maxhp = this.player.hp;
+        this.player.weapon = 0;//初期装備0:wand
+     
+        this.player.level = 0;//現状weaponLevelで使用予定
+ 
+        this.player.spec.LV = 0; //WeaponLevel ( = state.Game.player.level) 
+        this.player.spec.HP = 0; //Maxhp (notuse)
+        this.player.spec.MP = 0; //MagicPoint (notuse) 
+        this.player.spec.VIT = 0; //HPrecover+ : init 3 +
+        this.player.spec.INT = 0; //BombPower+ : init -10
+        this.player.spec.MND = 0; //ShieldTime+: init 300flame(5s) +
+        this.player.spec.ETC = 0; //LvUp回数記録   
+    }
+
     this.load = function () {
         //中断セーブからの復帰
 
