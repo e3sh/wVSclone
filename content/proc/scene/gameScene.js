@@ -92,7 +92,7 @@ function gameScene(state){
 		//device.globalAlpha = 1.0;
 	}
     //hpbar
-	var HpbarDraw = { hp: 0, mhp: 0, br: true }
+	var HpbarDraw = { hp: 0, mhp: 0, br: true, exp: 0 }
 	HpbarDraw.draw = function (device) {
 	    device.beginPath();
 	    device.fillStyle = (this.br) ? "skyblue" : "limegreen";
@@ -106,15 +106,14 @@ function gameScene(state){
 	    device.stroke();
 
 	    device.beginPath();
-		device.strokeStyle = "green";
-	    device.lineWidth = 1;
-		device.moveTo(dev.layout.hp_x +  1, dev.layout.hp_y +14);
-		device.lineTo(dev.layout.hp_x +100, dev.layout.hp_y +14);
+		device.strokeStyle = "dimgray";
+	    device.lineWidth = 2;
+		device.moveTo(dev.layout.hp_x +1        , dev.layout.hp_y +14);
+		device.lineTo(dev.layout.hp_x + this.exp, dev.layout.hp_y +14);
 	    device.stroke();
 	}
 	//縮小マップ表示
 	var SubmapDraw = new smd(mmdevice, mmcanvas); 
-	
 	function smd(ctx, elm) { 
 		this. mcp = mapChip;
 		let osc = false;
@@ -178,6 +177,36 @@ function gameScene(state){
 		}
 	}
 	//forgroundBG.putFunc(cl);//submapは[2]に表示、点は[3]に表示に変更
+
+	//LvUpStatusMatar
+	let stbar = new statusBarMeter(["cyan","orange","limegreen","white"]);
+    function statusBarMeter(setupParam){
+        //setupParamater [barcolor, ...,}]
+        let status;
+
+        this.setStatusArray = function(ary){
+            status = ary;
+        }
+
+        this.draw = function(device, x, y){
+            
+            let o = { s:status, b:setupParam, x:x, y:y }
+            o.draw = function(device){
+                device.beginPath();
+
+                for (let i in this.s){
+					device.fillStyle = this.b[i];
+                    for (let j=0; j<this.s[i]; j++){
+						if (j<7){
+                        	device.fillRect(this.x + j*4, this.y + i*4, 3, 3);
+						}
+                    }
+                }
+
+            }
+            device.putFunc(o);
+        }
+    }
 
 	mapdisp = true; //以前の処理では自動で消されない画面に書いていたので常時表示処理させる為に常にtrue；
 	//==========================================================================================
@@ -1043,6 +1072,10 @@ function gameScene(state){
 		HpbarDraw.hp = w_hp; 
 		HpbarDraw.mhp = state.Game.player.maxhp;
 		HpbarDraw.br = state.Game.player.barrier;
+		
+		let BaseLup = Math.pow(state.Game.player.spec.ETC   ,2)* 100;
+		let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;
+		HpbarDraw.exp = Math.abs(Math.trunc((obCtrl.score-BaseLup)/(NextLup-BaseLup)*100));
 		work3.putFunc(HpbarDraw);
 	   
 		var wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
@@ -1051,108 +1084,15 @@ function gameScene(state){
 			wst = "HP:" + w_hp +"/SHIELD";       
 		}
 		work3.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
-	}
-	//==========
-	function UI_PlayerType(){
 
-				work3.putFunc(ButtomlineBackgroundDraw);
+		stbar.setStatusArray([
+            state.Game.player.spec.VIT,
+            state.Game.player.spec.INT,
+            state.Game.player.spec.MND,
+            state.Game.player.spec.ETC
+        ]);
+		stbar.draw(work3, dev.layout.zanki_x + 252, dev.layout.zanki_y -16);
 
-		//残機表示
-		var zc = 2 - dead_cnt;
-		if (zc < 3) {
-			for (var i = 0; i < 2 - dead_cnt; i++) {
-				work3.put("Mayura1", dev.layout.zanki_x + i * 32, dev.layout.zanki_y);
-			}
-		} else {
-			work3.put("Mayura1", dev.layout.zanki_x, dev.layout.zanki_y);
-			work3.putchr8("x" + zc, dev.layout.zanki_x + 16, dev.layout.zanki_y);
-		}
-
-		//Lamp/map
-		if(!mapdisp){ work3.put("Map",dev.layout.map_x + 36, dev.layout.map_y + 12) }//dev.layout.zanki_x + 360, dev.layout.zanki_y-16);}
-		if(lampf) { work3.put("Lamp",dev.layout.map_x + 12, dev.layout.map_y + 12) }//dev.layout.zanki_x + 336, dev.layout.zanki_y-16);}
-
-		//ball表示
-		if (Boolean(obCtrl.item[20])) {
-			var n = obCtrl.item[20];
-			if (n <= 8) {
-				//n = 16;
-
-				for (var i = 0; i < n; i++) {
-					work3.put("Ball1",
-					dev.layout.zanki_x + i * 20 + 288, dev.layout.zanki_y - 8);
-				}
-			} else {
-				work3.put("Ball1",
-				dev.layout.zanki_x + 288, dev.layout.zanki_y - 8);
-
-				work3.putchr8("x" + n, dev.layout.zanki_x + 288 + 10, dev.layout.zanki_y - 12);
-			}
-		}
-
-		//取得アイテム表示
-		if (Boolean(obCtrl.itemstack)) {
-
-			var wchr = { 20: "Ball1", 23: "BallB1", 24: "BallS1", 25: "BallL1" }
-			var witem = [];
-
-			for (var i in obCtrl.itemstack) {
-				var w = obCtrl.itemstack[i];
-				witem.push(w);
-			}
-
-			work3.putchr8("[X]", dev.layout.zanki_x + 132 - 16, dev.layout.zanki_y - 16);
-			n = witem.length;
-
-			if (n >= 17) {n = 15; work3.putchr8("...", dev.layout.zanki_x + n * 20 + 128, dev.layout.zanki_y + 8);}
-			//if (n >= 7) n = 7;
-
-			for (var i = 0; i < n; i++) {
-
-				if (i == 0) {
-					work3.put(wchr[witem[witem.length - 1 - i]],
-					dev.layout.zanki_x + i * 20 + 132, dev.layout.zanki_y);
-					//640 - (12 * 12), 479 - 32 + 5);
-				} else {
-					work3.put(wchr[witem[witem.length - 1 - i]],
-					dev.layout.zanki_x + i * 20 + 136, dev.layout.zanki_y + 8);
-				}
-			}
-		}
-
-		n = 0;
-		if (Boolean(obCtrl.item[22])) {
-			n = obCtrl.item[22];
-		}
-		if (n > 0) work3.put("Key", dev.layout.zanki_x + 64, dev.layout.zanki_y);
-
-		var wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Arrow"];
-
-		if (!Boolean(state.Game.player.weapon)) state.Game.player.weapon = 0;
-		if (!Boolean(state.Game.player.level)) state.Game.player.level = 0;
-
-		work3.putchr8("[Z]", dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y - 16);
-		work3.put(wweapon[state.Game.player.weapon], dev.layout.zanki_x + 96, dev.layout.zanki_y);
-		if (state.Game.player.level > 0){
-			var wt = "+" + state.Game.player.level + 
-				((state.Game.player.level > 2 )?" Max":"");
-				work3.putchr8(wt, dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y + 8);
-			}
-		work3.putchr("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y);
-
-		var w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
-
-		HpbarDraw.hp = w_hp; 
-		HpbarDraw.mhp = state.Game.player.maxhp;
-		HpbarDraw.br = state.Game.player.barrier;
-		work3.putFunc(HpbarDraw);
-	   
-		var wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
-
-		if (state.Game.player.barrier) {
-			wst = "HP:" + w_hp +"/SHIELD";       
-		}
-		work3.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
 	}
 	//==========
 	function UI_PlayerType2(){

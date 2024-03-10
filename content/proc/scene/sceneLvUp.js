@@ -263,9 +263,12 @@ function sceneLvUp(state) { //2024/03/06
                 device.beginPath();
 
                 for (let i in this.s){
-                    device.fillStyle = this.b[i];
-                    device.fillRect(this.x, this.y + i*3, 2*this.s[i], 2);
+                    for (let j=0; j<this.s[i]; j++){
+                        device.fillStyle = this.b[i];
+                        device.fillRect(this.x + j*4, this.y + i*4, 3, 3);
+                    }
                 }
+
             }
             device.putFunc(o);
         }
