@@ -76,7 +76,7 @@ function stateGame() {
      
         this.player.level = 0;//現状weaponLevelで使用予定
 
-        //this.spec = new stateSpec();
+        this.player.spec = new stateSpec();
 
         this.player.spec.LV = 0; //WeaponLevel ( = state.Game.player.level) 
         this.player.spec.HP = 0; //Maxhp (notuse)
