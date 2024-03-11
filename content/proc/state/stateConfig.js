@@ -9,6 +9,7 @@ function stateConfig(){
     this.startstage;
 
     this.use_audio;
+    this.master_volume;
     
     this.debug;
     this.viewlog;
@@ -94,6 +95,7 @@ function stateConfig(){
         this.startstage = 1;//開始ステージ　0:Stage1_test/1－30：Stage1/30-：Stage_tod
 
         this.use_audio = true;
+        this.master_volume = 5;//(0-10)予定(現在未使用)
 
         this.debug = false; //trueでdebugステータス表示。
         this.viewlog = false; //trueでdebug時にログ表示

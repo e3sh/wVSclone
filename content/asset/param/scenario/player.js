@@ -338,7 +338,7 @@ function sce_player() {
 
                     if (w == 23) {
                         o.sound.effect(13);
-                        o.bomb3(o.spec.INT);
+                        o.bomb3(o.spec.INT*2);
                         o.set_object_ex(6, o.x, o.y, 0, 47); //Bomb爆発演出(赤)
                         o.item[23]--;
                     }

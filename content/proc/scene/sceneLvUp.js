@@ -65,7 +65,8 @@ function sceneLvUp(state) { //2024/03/06
         work2.draw();
 
         let dpara = [
-            { keynum:38, text:"Time +0.5s", icon:"BallS1",
+            { keynum:38, text:["Time +0.5s", (5 + state.Game.player.spec.VIT * 0.5) + "s-> " + (5 + (state.Game.player.spec.VIT+1) * 0.5) + "s" ],
+                icon:"BallS1",
                 func: { call: function(p){
                     state.Game.player.spec.VIT++;
                     ret_code = p;
@@ -78,14 +79,16 @@ function sceneLvUp(state) { //2024/03/06
                 }, p:1},
                 x:-35, y:-25+55, w:70, h:50, keyon:false }//downkey
                 */
-            ,{ keynum:37, text:"Recover +1", icon:"BallL1", 
+            ,{ keynum:37, text:["Recover +1", (3 + state.Game.player.spec.MND) + " -> " + (3 + state.Game.player.spec.MND+1) ], 
+                icon:"BallL1", 
                 func: { call: function(p){
                     state.Game.player.spec.MND++;
                     ret_code = p;
                 }, p:1},
                 x:-35-80, y:-25, w:70, h:50, keyon:false, select: false }//left
 
-            ,{ keynum:39, text:"Damage +2", icon:"BallB1", 
+            ,{ keynum:39, text:["Damage +2", (10 + state.Game.player.spec.INT*2) + " -> " + (10 + (state.Game.player.spec.INT+1)*2) ], 
+                icon:"BallB1", 
                 func: { call: function(p){
                     state.Game.player.spec.INT++;
                     ret_code = p;
@@ -203,7 +206,7 @@ function sceneLvUp(state) { //2024/03/06
                 let m = menulist[i];
                 if (m.keyon) {
                     m.func.call(m.func.p);
-                    menulist[i].text = "GET_STATUS";
+                    menulist[i].text[1] = "GET_STATUS";
                     menulist[i].select = true;
                 }
             }
@@ -252,7 +255,9 @@ function sceneLvUp(state) { //2024/03/06
                 */
                 //onsole.log(m);
 
-                device.kprint(m.text, x + m.x +8 , y + m.y + 20);
+                for (let i in m.text)   
+                device.kprint(m.text[i], x + m.x +8 , y + m.y + 20 + i*8);
+
                 device.put(m.icon, x + m.x + 10, y + m.y+ 10);
             }
 
