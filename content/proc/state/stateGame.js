@@ -3,6 +3,8 @@
 //save_loadの実装で中断セーブが出来るようになる予定
 function stateGame() {
 
+    const INITIAL_HP = 10;
+
     this.item;
     this.itemstack;
     this.nowstage;
@@ -11,7 +13,7 @@ function stateGame() {
     function statePlayer(){
 
         this.zanki = 2;
-        this.hp = 10; //Initial HP
+        this.hp = INITIAL_HP; //Initial HP
         this.maxhp = this.hp;
         this.weapon = 0;//初期装備0:wand
         //this.player.equip.--- etc...
@@ -68,7 +70,7 @@ function stateGame() {
     this.reset = function(){
 
         this.player.zanki = 2;
-        this.player.hp = 10;
+        this.player.hp = INITIAL_HP;
         this.player.maxhp = this.player.hp;
         this.player.weapon = 0;//初期装備0:wand
      

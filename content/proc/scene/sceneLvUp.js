@@ -139,13 +139,24 @@ function sceneLvUp(state) { //2024/03/06
             keylock = false; 
             dexef = true;
 
-            dev.graphics[0].setInterval(1);//BG
-            dev.graphics[1].setInterval(1);//SPRITE
-            work2.setInterval(1);//<-dev.g2　FG
+            //dev.graphics[0].setInterval(1);//BG
+            //dev.graphics[1].setInterval(1);//SPRITE
+            //work2.setInterval(1);//<-dev.g2　FG
         }
 
         if (ret_code != 0) diag.effect();
-        return ( diag.step(kstate) != 0 ) ? 0 :ret_code;
+
+        if ( diag.step(kstate) == 0 ) {
+            if (ret_code != 0) {
+
+                dev.graphics[0].setInterval(1);//BG
+                dev.graphics[1].setInterval(1);//SPRITE
+                work2.setInterval(1);//<-dev.g2　FG
+
+                return ret_code;
+            }
+        } 
+        return 0;
     }
 
     function scene_draw() {

@@ -104,13 +104,14 @@ function gameScene(state){
 	    device.lineWidth = 2;
 	    device.rect(dev.layout.hp_x, dev.layout.hp_y, 102, 15);
 	    device.stroke();
-
+		/*
 	    device.beginPath();
-		device.strokeStyle = "dimgray";
+		device.strokeStyle = "white";//"dimgray";
 	    device.lineWidth = 2;
 		device.moveTo(dev.layout.hp_x +1        , dev.layout.hp_y +14);
 		device.lineTo(dev.layout.hp_x + this.exp, dev.layout.hp_y +14);
 	    device.stroke();
+		*/
 	}
 	//縮小マップ表示
 	var SubmapDraw = new smd(mmdevice, mmcanvas); 
@@ -1075,7 +1076,7 @@ function gameScene(state){
 		
 		let BaseLup = Math.pow(state.Game.player.spec.ETC   ,2)* 100;
 		let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;
-		HpbarDraw.exp = Math.abs(Math.trunc((obCtrl.score-BaseLup)/(NextLup-BaseLup)*100));
+		//HpbarDraw.exp = Math.abs(Math.trunc((obCtrl.score-BaseLup)/(NextLup-BaseLup)*100));
 		work3.putFunc(HpbarDraw);
 	   
 		var wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
@@ -1089,7 +1090,8 @@ function gameScene(state){
             state.Game.player.spec.VIT,
             state.Game.player.spec.INT,
             state.Game.player.spec.MND,
-            state.Game.player.spec.ETC
+            //state.Game.player.spec.ETC
+			Math.abs(Math.trunc((obCtrl.score-BaseLup)/(NextLup-BaseLup)*7))
         ]);
 		stbar.draw(work3, dev.layout.zanki_x + 252, dev.layout.zanki_y -16);
 

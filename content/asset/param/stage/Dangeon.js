@@ -183,6 +183,76 @@
                             c++;
                         }
                     }
+
+                    //
+                    if (typ ==   2 +   1) typ = 2;
+                    if (typ ==   2 +   4) typ = 2;
+                    if (typ ==   2 +   1+4) typ = 2;
+                    if (typ ==   8 +   1) typ = 8;
+                    if (typ ==   8 +  32) typ = 8;
+                    if (typ ==   8 +  1+32) typ = 8;
+                    if (typ ==  16 +   4) typ = 16;
+                    if (typ ==  16 + 128) typ = 16;
+                    if (typ ==  16 + 4+128) typ = 16;
+                    if (typ ==  64 +  32) typ = 64;
+                    if (typ ==  64 + 128) typ = 64;
+                    if (typ ==  64 + 32+128) typ = 64;
+
+                    if (typ ==  11 +   4) typ = 11;
+                    if (typ ==  11 +  32) typ = 11;
+
+                    if (typ == (11+16) +  32) typ = (11+16);
+                    if (typ == (11+64) +  64) typ = (11+ 4);
+
+                    if (typ ==  22 +   1) typ = 22;
+                    if (typ ==  22 + 128) typ = 22;
+
+                    if (typ == (22+64) +  1) typ = (22+64);
+                    if (typ == (22+8) + 128) typ = (22+8);
+
+                    if (typ == 104 +   1) typ = 104;
+                    if (typ == 104 + 128) typ = 104;
+
+                    if (typ == (104+16) +1) typ = (104+16);
+                    if (typ == (104+ 2) + 128) typ = (104+2);
+
+                    if (typ == 208 +   4) typ = 208;
+                    if (typ == 208 +  32) typ = 208;
+
+                    if (typ == (208+8) +   4) typ = (208+8);
+                    if (typ == (208+2) +  32) typ = (208+2);
+
+                    if (typ ==  31 +  32) typ = 31;
+                    if (typ ==  31 + 128) typ = 31;
+                    if (typ == 107 +   4) typ = 107;
+                    if (typ == 107 + 128) typ = 107;
+                    if (typ == 214 +   1) typ = 214;
+                    if (typ == 214 +  32) typ = 214;
+                    if (typ == 248 +   1) typ = 248;
+                    if (typ == 248 +   4) typ = 248;
+
+                    if (typ == 24 +   1) typ = 24;
+                    if (typ == 24 +   4) typ = 24;
+                    if (typ == 24 +  32) typ = 24;
+                    if (typ == 24 + 128) typ = 24;
+                    if (typ == 24 +  1+4) typ = 24;
+                    if (typ == 24 +  1+32) typ = 24;
+                    if (typ == 24 +  1+128) typ = 24;
+                    if (typ == 24 +  4+32) typ = 24;
+                    if (typ == 24 +  4+128) typ = 24;
+                    if (typ == 24 + 32+128) typ = 24;
+
+                    if (typ == 66 +   1) typ = 66;
+                    if (typ == 66 +   4) typ = 66;
+                    if (typ == 66 +  32) typ = 66;
+                    if (typ == 66 + 128) typ = 66;
+                    if (typ == 66 +  1+4) typ = 66;
+                    if (typ == 66 +  1+32) typ = 66;
+                    if (typ == 66 +  1+128) typ = 66;
+                    if (typ == 66 +  4+32) typ = 66;
+                    if (typ == 66 +  4+128) typ = 66;
+                    if (typ == 66 + 32+128) typ = 66;
+
                     typemap[i][j] = typ;
                 }
             }

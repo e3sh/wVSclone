@@ -11,8 +11,10 @@ function soundCntl( asset ) {
     var dev_ready = false;
 
     var mute = false;
-
+    let master_volume = 0.5;
+  
     this.mute = mute;
+    this.mastervolume = master_volume;
 
     var ext = ".mp3";
     if ((new Audio()).canPlayType("audio/ogg")=="probably"){ext=".ogg";}
@@ -142,7 +144,7 @@ function soundCntl( asset ) {
                 snd[soundname].volume = 0;
                 snd[soundname].muted = true;
             } else {
-                snd[soundname].volume = 1.0;
+                snd[soundname].volume = this.mastervolume;
                 snd[soundname].muted = false;
             }
             //pla.currentTime = 0;
