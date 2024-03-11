@@ -8,31 +8,46 @@ function stateGame() {
     this.nowstage;
     this.cold;
     
-    this.player = {};
+    function statePlayer(){
 
-    this.player.zanki = 2;
-    this.player.hp = 10;
-    this.player.maxhp = this.player.hp;
-    this.player.weapon = 0;//初期装備0:wand
-    //this.player.equip.--- etc...
-    //this.player.status.dex --- etc..
-    this.player.speed = 6;//maxspeed 現在未使用/SpeedUp実装時使用？(player処理では定数で記述中)
-    this.player.level = 0;//現状weaponLevelで使用予定
-    this.player.skill_ex = [0, 0, 0, 0, 0, 0];//武器毎の獲得スコア累積 /処理未作成の為未使用（2024/02/14）
-    this.player.skill_lv = [0, 0, 0, 0, 0, 0];//武器毎のlevel　/処理未作成の為未使用（2024/02/14）
+        this.zanki = 2;
+        this.hp = 10; //Initial HP
+        this.maxhp = this.hp;
+        this.weapon = 0;//初期装備0:wand
+        //this.player.equip.--- etc...
+        //this.player.status.dex --- etc..
+        this.speed = 6;//maxspeed 現在未使用/SpeedUp実装時使用？(player処理では定数で記述中)
+        this.level = 0;//現状weaponLevelで使用予定
+        this.skill_ex = [0, 0, 0, 0, 0, 0];//武器毎の獲得スコア累積 /処理未作成の為未使用（2024/02/14）
+        this.skill_lv = [0, 0, 0, 0, 0, 0];//武器毎のlevel　/処理未作成の為未使用（2024/02/14）
 
-    this.player.spec = {};
-    this.player.spec.LV = 0; //WeaponLevel ( = state.Game.player.level) 
-    this.player.spec.HP = 0; //Maxhp (notuse)
-    this.player.spec.MP = 0; //MagicPoint (notuse) 
-    this.player.spec.STR = 0;
-    this.player.spec.DEX = 0;
-    this.player.spec.AGI = 0;
-    this.player.spec.VIT = 0; //HPrecover+ : init 3 +
-    this.player.spec.INT = 0; //BombPower+ : init -10
-    this.player.spec.MND = 0; //ShieldTime+: init 300flame(5s) +
-    this.player.spec.LAK = 0;
-    this.player.spec.ETC = 0;    
+        this.spec = new stateSpec();
+    }
+
+    class stateSpec {
+            LV; HP; MP; 
+            STR; DEX; AGI;
+            VIT; INT; MND; 
+            LAK; ETC;
+
+            constructor(){
+                this.LV = 0; //WeaponLevel ( = state.Game.player.level) 
+                this.HP = 0; //Maxhp (notuse)
+                //this.MP = 0; //MagicPoint (notuse) 
+                //this.STR;
+                //this.DEX;
+                //this.AGI;
+                this.VIT = 0; //HPrecover+ : init 3 +
+                this.INT = 0; //BombPower+ : init -10
+                this.MND = 0; //ShieldTime+: init 300flame(5s) +
+                //this.LAK;
+                this.ETC = 0;
+
+                //console.log("ss" + this.LV);
+            }
+    }
+    
+    this.player = new statePlayer();
 
     this.outviewMove = true;//未使用
     this.outviewCollision =true;//画面外の敵も壁の当たり判定処理を行う。
@@ -49,7 +64,7 @@ function stateGame() {
 
     this.mode = 0;//Palyer Type Select
     this.score = 0;
-
+    
     this.reset = function(){
 
         this.player.zanki = 2;
@@ -58,14 +73,16 @@ function stateGame() {
         this.player.weapon = 0;//初期装備0:wand
      
         this.player.level = 0;//現状weaponLevelで使用予定
- 
+
+        //this.spec = new stateSpec();
+
         this.player.spec.LV = 0; //WeaponLevel ( = state.Game.player.level) 
         this.player.spec.HP = 0; //Maxhp (notuse)
         this.player.spec.MP = 0; //MagicPoint (notuse) 
         this.player.spec.VIT = 0; //HPrecover+ : init 3 +
         this.player.spec.INT = 0; //BombPower+ : init -10
         this.player.spec.MND = 0; //ShieldTime+: init 300flame(5s) +
-        this.player.spec.ETC = 0; //LvUp回数記録   
+        this.player.spec.ETC = 0; //LvUp回数記録
     }
 
     this.load = function () {
