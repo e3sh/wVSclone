@@ -83,6 +83,7 @@ function sce_friend_option(mode) {
             let wdelay = ((o.gameState.player.level >3 )? 3 : o.gameState.player.level)*4;
             // lv.0 20 0.3s /lv.1 16 0.25s /lv.2 12 0.2s /lv.3 08 0.12s(Max)
             o.autotrig = 20 -wdelay;//20 0.3s
+            if (o.gameState.player.weapon == 3) o.autotrig = 240 /(o.gameState.player.level + 1);//Boom
 
             o.set_object_ex(wpn[o.gameState.player.weapon].ch,
                 o.x, o.y, o.vector, 
