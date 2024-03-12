@@ -610,6 +610,7 @@ function sce_enemy_move_std2( intrvl, sdst ) {
                     break;
                 case 3:
                     o.set_object(43); //boom
+                    o.autotrig = 240;
                     break;
                 case 4:
                     o.set_object(44); //spare

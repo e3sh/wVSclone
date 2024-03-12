@@ -268,7 +268,7 @@ function sce_friend_boom() {
     //　味方（支援機）の動作/ブーメラン
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
-        o.vset(4);
+        o.vset(6);
         o.get_target(o.parent.type);//消したらバグる。
         o.startflag = true;
 
@@ -316,17 +316,24 @@ function sce_friend_boom() {
             //f = 1; //敵にダメージで消滅
         }
 
+        
         o.shotcount+= o.vecfrm;
         if (o.shotcount > 30) {
-            //o.target_rotate_r(45);
-            o.vector = o.target_v(o.parent.x, o.parent.y);
+            //o.vset(3)
+            if (o.shotcount < 90) o.target_rotate_r(4);
+            //o.vector = o.target_v(o.parent.x, o.parent.y);
+            //o.vector = o.target_v(o.parent.x, o.parent.y);
 
         }
-        o.vset(4);
+        
+        o.vset(3);
+        if (o.shotcount < 20) o.vset(7);
 
         o.bup_vector = o.vector;
 
-        if ((o.target_d(o.parent.x, o.parent.y) < 24) || (o.shotcount > 180)) {
+        if ((o.target_d(o.parent.x, o.parent.y) < 18) || (o.shotcount > 300)) {
+            o.parent.autotrig = 5;
+
             o.status = 0;
         }
 
@@ -338,6 +345,8 @@ function sce_friend_boom() {
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 
         if (o.states == 2) f = 1;//敵にダメージで消滅
+
+        if (o.shotcount > 180) return o.sc_move();
         return f;
     }
 }

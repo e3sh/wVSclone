@@ -114,7 +114,7 @@ function sce_player() {
             o.gameState.player.barrier = true;
             o.lighton = true;
             //    o.damageflag = false;
-            o.maxspeed = 4;//SHIELD中はスピードダウン
+            o.maxspeed = 4.5;//SHIELD中はスピードダウン
         }
         if ((o.frame > SHIELD_TIME) && o.gameState.player.barrier) {
             //無敵時間終わったら瞬間に元に戻す
@@ -462,6 +462,7 @@ function sce_player() {
                     break;
                 case 3:
                     o.set_object(37); //boom
+                    o.autotrig = 240 /(o.gameState.player.level + 1);
                     //o.autotrig = 30;
                     break;
                 case 4:
@@ -515,8 +516,10 @@ function sce_player() {
             o.before_weapon = o.gameState.player.weapon;
             o.spec.LV = o.gameState.player.level;
             //o.before_wlevel = o.gameState.player.level;
+            o.autotrig = 5;//持ち替えた場合にwaitなしに
         }
         o.before_wlevel = o.gameState.player.level;
+        
         //Damege表示
         if (o.damageflag) {
             if (o.frame > SHIELD_TIME) {
