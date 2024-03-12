@@ -871,8 +871,15 @@ function gameScene(state){
 		}
 
 		if (!cs || !cf){
-			work3.putchr("Hi-Sc:" + ui.score[0], dev.layout.hiscore_x, dev.layout.hiscore_y);
-			work3.putchr("Score:" + ui.score[1], dev.layout.score_x, dev.layout.score_y);
+			//work3.putchr("Hi-Sc:" + ui.score[0], dev.layout.hiscore_x, dev.layout.hiscore_y);
+			//work3.putchr("Score:" + ui.score[1], dev.layout.score_x, dev.layout.score_y);
+
+			work3.putchr("Exp " + ui.score[1], dev.layout.hiscore_x, dev.layout.hiscore_y);
+			let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;
+			let Nextstr = "        Next " + NextLup;
+			Nextstr = Nextstr.substring(Nextstr.length-11);
+			work3.putchr(Nextstr, dev.layout.score_x, dev.layout.score_y);
+
 			if  (cf) obCtrl.messageview.write("** SCORE Draw ** f:" + ui.cnt);
 		}
 

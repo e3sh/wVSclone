@@ -93,7 +93,7 @@ function sce_friend_option(mode) {
         
         //if (Boolean(o.gameState.player.item)){
         //if (Boolean(o.gameState.player.item[20])){    
-            if ((o.item[20] > (mode+2)*10)&& !o.repro){
+            if ((o.item[20] >= (mode+2)*10) && !o.repro){
                 if (mode < 3){
                     o.set_object_ex(0, o.x, o.y, o.vector, "sce_friend_option_" + (mode + 1));
                     o.repro = true;

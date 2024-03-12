@@ -681,7 +681,7 @@ function sce_player() {
         }
 
         //option
-        if ((o.item[20] > 10) && !o.repro){
+        if ((o.item[20] >= 10) && !o.repro){
             o.set_object_ex(0, o.x, o.y, o.vector, "sce_friend_option_0");
             o.repro = true;
         }
