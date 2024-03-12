@@ -114,6 +114,7 @@ function sce_player() {
             o.gameState.player.barrier = true;
             o.lighton = true;
             //    o.damageflag = false;
+            o.maxspeed = 4;//SHIELD中はスピードダウン
         }
         if ((o.frame > SHIELD_TIME) && o.gameState.player.barrier) {
             //無敵時間終わったら瞬間に元に戻す
@@ -122,6 +123,8 @@ function sce_player() {
             o.gameState.player.hp = o.before_hp;
             o.gameState.player.barrier = false;
             o.lighton = false;
+
+            o.maxspeed = 6;//通常時の移動速度
         }
 
         if (o.jump == 0) o.vset(0);
@@ -389,7 +392,7 @@ function sce_player() {
         
         if (ckey) { //item drop　->change　itemget　2023/1/12
             if (o.shot == 0 && o.jump == 0) {
-                o.shot = 1;
+                //o.shot = 1;
                 /*
                 //　item　drop
 　                if (o.itemstack.length > 0) {
@@ -424,7 +427,7 @@ function sce_player() {
         }
 
         if (o.jump == 1){
-            o.autoshot = 1;
+            //o.autoshot = 1;//Jump中、攻撃抑止
             o.jpcount--;
             o.shifty = o.shifty + o.jpvec;
             o.jpvec = o.jpvec + 0.4 * o.vecfrm;

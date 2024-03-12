@@ -16,7 +16,10 @@ function Stage1_brm() {
     //this.colmap = cmap;
 
     function mapScenro() {
-        let map_sc = []; //　出現パターン
+        let map_sc = [
+            [100, 0, 0, 0, 37, 0] //SCE_MESSEGE_BILLBOARD_WM
+        ]; //　出現パターン
+
         return map_sc;
     }
 
@@ -51,33 +54,34 @@ function Stage1_brm() {
         for (let i = 13; i <= 17 ;i++) {
             for (let j = 0; j<3 ;j++){
                 mc.push([11,  i * BLOCK_W + 32 * j,  8 * BLOCK_H -32, 32, 32, true , 1, true ]);//Wall
-                mc.push([12,  i * BLOCK_W + 32 * j,  8 * BLOCK_H -32, 32, 32, false, 0, true ]);//Floor
+                //mc.push([12,  i * BLOCK_W + 32 * j,  8 * BLOCK_H -32, 32, 32, false, 0, true ]);//Floor
                 mc.push([12,  i * BLOCK_W + 32 * j,  8 * BLOCK_H , 32, 32, false, 0, true ]);//shadow
+                mc.push([12,  i * BLOCK_W + 32 * j,  8 * BLOCK_H +32, 32, 32, false, 0, true ]);//shadow
 
                 mc.push([11,  i * BLOCK_W + 32 * j,  26 * BLOCK_H, 32, 32, true , 1, true ]);//Wall
-                mc.push([12,  i * BLOCK_W + 32 * j,  26 * BLOCK_H, 32, 32, false, 0, true ]);//Floor
-                mc.push([12,  i * BLOCK_W + 32 * j,  26 * BLOCK_H -32, 32, 32, false, 0, true ]);//shadow
+                //mc.push([12,  i * BLOCK_W + 32 * j,  26 * BLOCK_H, 32, 32, false, 0, true ]);//Floor
+                //mc.push([12,  i * BLOCK_W + 32 * j,  26 * BLOCK_H -32, 32, 32, false, 0, true ]);//shadow
             }
         }
 
         for (let i = 8; i <= 25 ;i++) {
             for (let j = 0; j<3 ;j++){
                 mc.push([11,  13 * BLOCK_W -32,  i * BLOCK_H +32 *j, 32, 32, true , 1, true ]);//Wall
-                mc.push([12,  13 * BLOCK_W -32,  i * BLOCK_H +32 *j, 32, 32, false, 0, true ]);//Floor
-                mc.push([12,  13 * BLOCK_W,  i * BLOCK_H + 32 *j, 32, 32, false, 0, true ]);//shadow
-
+                //mc.push([12,  13 * BLOCK_W -32,  i * BLOCK_H +32 *j, 32, 32, false, 0, true ]);//Floor
+                //mc.push([12,  13 * BLOCK_W,  i * BLOCK_H + 32 *j, 32, 32, false, 0, true ]);//shadow
+　
                 mc.push([11,  18 * BLOCK_W,  i * BLOCK_H + 32 *j, 32, 32, true , 1, true ]);//Wall
-                mc.push([12,  18 * BLOCK_W,  i * BLOCK_H + 32 *j, 32, 32, false, 0, true ]);//Floor
-                mc.push([12,  18 * BLOCK_W -32,  i * BLOCK_H + 32 *j, 32, 32, false, 0, true ]);//shadow
+                //mc.push([12,  18 * BLOCK_W,  i * BLOCK_H + 32 *j, 32, 32, false, 0, true ]);//Floor
+                //mc.push([12,  18 * BLOCK_W -32,  i * BLOCK_H + 32 *j, 32, 32, false, 0, true ]);//shadow
             }
         }
 
 
         wx = 15;
-        wy = 11;
+        wy = 8;
         w = [13,
             wx * 96 + 16,
-            wy * 96 + 16,
+            wy * 96,
             64,
             64,
             true,
@@ -115,14 +119,21 @@ function Stage1_brm() {
         let ms = [];
         //  開始フレーム,座標,,角度,シナリオ,キャラ
 
-        ms.push([false, 15, 23, 0, "player", 0]);//Player
+        ms.push([false, 15, 25, 0, "player", 0]);//Player
 
-        ms.push([true, 15, 14, 0, "boss_1", 14]);//boss
+        ms.push([true, 15, 12, 0, "boss_1", 14]);//boss
         //ms.push([true, 15, 14, 0, "boss_2", 14]);//boss
-        ms.push([true, 15, 14, 0, "common_vset0", 22]);//key
+        ms.push([true, 15, 12, 0, "common_vset0", 22]);//key
 
-        ms.push([true, 14, 16, 0, "boss_0", 34]);//sub
-        ms.push([true, 16, 16, 0, "boss_0", 34]);//sub
+        ms.push([true, 13, 16, 0, "boss_0", 34]);//sub
+        ms.push([true, 17, 16, 0, "boss_0", 34]);//sub
+
+        ms.push([true, 14, 20, 0, "enemy_mimic", 40]);//mimic
+        ms.push([true, 16, 20, 0, "enemy_mimic", 40]);//mimic
+        ms.push([true, 13, 21, 0, "enemy_mimic", 40]);//mimic
+        ms.push([true, 17, 21, 0, "enemy_mimic", 40]);//mimic
+
+        ms.push([true, 0, 0, 0, 37, 40]);//billboard
 
         let map_sc = []; //　出現パターン
 

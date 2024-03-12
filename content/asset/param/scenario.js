@@ -406,11 +406,13 @@ function scenario() {
 
     //メッセージ表示(warning)
     //-----------------------------------------------------------------------
-    w = new sce_message_billboard( ["Event Message Test",
-    		    "= WARNING MESSAGE =",
-	    	    "!! Message Test !!!",
-		        "!!! Message Test !!",
-		        "= WARNING MESSAGE ="], 3);
+    w = new sce_message_billboard( [
+        "= Welcome to BOSS ROOM ==",
+    	//"LAIR OF THE BOSS ENEMY!",
+	    //"HOURS 9AM TO 3PM BY APPOINTMENT ONLY",
+		//"THE BOSS IS *IN*!",
+		"= BEWARE OF THE BEAST!! ="],
+        3);
 
     sc_init[37] = w.init;
     sc_move[37] = w.move;
