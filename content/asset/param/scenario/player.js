@@ -134,39 +134,7 @@ function sce_player() {
         let downkey = o.entrypadaxis.down;
         let leftkey = o.entrypadaxis.left;
         let rightkey = o.entrypadaxis.right;
-        /*
-        var upkey = false;
-        var downkey = false;
-        var leftkey = false;
-        var rightkey = false;
 
-        //var v = o.vector;
-
-        if (Boolean(o.key_state[37])) {
-            if (o.key_state[37]) {//<=
-                leftkey = true;
-                o.vector = 270;
-            }
-        }
-        if (Boolean(o.key_state[38])) {
-            if (o.key_state[38]) {//↑
-                upkey = true;
-                o.vector = 0;
-            }
-        }
-        if (Boolean(o.key_state[39])) {
-            if (o.key_state[39]) {//=>
-                rightkey = true;
-                o.vector = 90;
-            }
-        }
-        if (Boolean(o.key_state[40])) {
-            if (o.key_state[40]) {//↓
-                downkey = true;
-                o.vector = 180;
-            }
-        }
-        */
         if (leftkey) {
             o.vector = 270;
         }
@@ -390,24 +358,9 @@ function sce_player() {
             }
         }
         
-        if (ckey) { //item drop　->change　itemget　2023/1/12
+        if (ckey) { //Jump
             if (o.shot == 0 && o.jump == 0) {
-                //o.shot = 1;
-                /*
-                //　item　drop
-　                if (o.itemstack.length > 0) {
 
-                    var w = o.itemstack.pop();
-                    o.item[w]--;
-
-                    this.set_object_ex(w,
-                    o.x + o.Cos(o.vector) * 40,
-                    o.y + o.Sin(o.vector) * 40,
-                    o.vector, "common_vset0" //38
-                    );
-                }
-                //o.collect2();
-                */
                 o.jump = 1;
                 o.jpcount = 40;
                 o.jpvec = -5.6 - 0.4 * o.vecfrm;;
@@ -481,22 +434,6 @@ function sce_player() {
 //                    o.set_object(39); //wand
                     break;
             }
-            /*
-            for (let i=0; i < op.x.length; i++){
-
-                if (i > op.x.length - o.item[20]) {
-                    if ((i % 10) == 0){
-                        o.set_object_ex(wpn[o.gameState.player.weapon].ch,
-                            op.x[(op.ptr + i) % op.x.length],
-                            op.y[(op.ptr + i) % op.x.length],
-                            o.vector, 
-                            wpn[o.gameState.player.weapon].sce
-                        );
-                    }
-                }
-
-            }
-            */
         }
 
         if (o.gameState.player.weapon != o.before_weapon) {
@@ -572,64 +509,23 @@ function sce_player() {
 
         //視点変更処理（自機以外では基本的に発生しない）(演出では使えるかもしれない）
         var w = o.gt.worldtoView(o.x, o.y);
-        var vxf = 0;
-        var vyf = 0;
 
         // view shift
-        //var vsx = 0; //w(640)
-        //var vsy = 0; //h(480)
-        //var vsx = 192; //(1024-640)/2
-        //var vsy = 120; //( 640-400)/2
-        /*
-        if ((w.x < 220 + w.sx) && (o.vx < 0)) { //640/2-220= 640/2+220 400/2-120 400/2+120 100 550 80 320 
-            vxf = 1;
-        }
-
-        if ((w.x > o.gt.viewwidth - 220 + w.sx) && (o.vx > 0)) {
-            vxf = 1;
-        }
-
-        if ((w.y < 120 + w.sy) && (o.vy < 0)) {
-            vyf = 1;
-        }
-
-        if ((w.y > o.gt.viewheight - 120 + w.sy) && (o.vy > 0)) {
-            vyf = 1;
-        }
-        */
-
         var sx = o.gt.world_x;
         var sy = o.gt.world_y;
 
         if ((o.gt.viewwidth/2) - (w.x - w.sx) > 120 ){ sx = o.x  - (o.gt.viewwidth/2) + 120;}
-
         if ((o.gt.viewwidth/2) - (w.x - w.sx) < -120){ sx = o.x  - (o.gt.viewwidth/2) - 120;}
-
         if ((o.gt.viewheight/2) - (w.y - w.sy) > 50){ sy = o.y  - (o.gt.viewheight/2) + 50;}
-
         if ((o.gt.viewheight/2) - (w.y - w.sy) < -50){sy = o.y  - (o.gt.viewheight/2)  - 50;}
-
-        /*
-        if (w.x < 240) vxf = 1;
-        if (w.x > o.gt.viewwidth - 240) vxf = 1;
-        if (w.y < 240) vyf = 1;
-        if (w.y > o.gt.viewheight - 240)vyf = 1;
-        */
-        //var sx = o.gt.world_x + (o.vx * vxf) * o.vecfrm;
-        //var sy = o.gt.world_y + (o.vy * vyf) * o.vecfrm;
-
-        //var sx = o.gt.world_x + (o.vx * vxf) * o.vecfrm;
-        //var sy = o.gt.world_y + (o.vy * vyf) * o.vecfrm;
 
         if (!o.gt.in_view(o.x, o.y)){
            if (o.x != o.old_x) sx = o.x - o.gt.viewwidth/2;
            if (o.y != o.old_y) sy = o.y - o.gt.viewheight/2;
         }
 
-        //sx = o.x - o.gt.viewwidth/2;
-        //sy = o.y - o.gt.viewheight/2;
-
         o.gt.viewpos(sx, sy);
+        //
 
         o.vector = wvec;
         o.vx = wvx;
@@ -716,8 +612,8 @@ function sce_player() {
                 }
 
             }
-            o.display_size = 2.5;
-            o.change_sce(7);
+            o.display_size = 1.3;
+            o.change_sce("effect_bomb_x");//7
 
             o.sound.change(5);
             o.sound.play(5);
@@ -825,10 +721,10 @@ function sce_player() {
                 op.x[(op.ptr + i) % op.x.length],
                 op.y[(op.ptr + i) % op.x.length]
             );
-
+            
             if (i > op.x.length - o.item[20]) {
+                /*
                 if (((i-1) % 10) == 0){
-                    /*
                     //scrn.fill(w.x-8, w.y-8,16,16,c);
                     scrn.putFunc( {   x: w.x ,y: w.y ,r: 6 - o.frame%6/2,
                             draw: function (device) {
@@ -838,14 +734,15 @@ function sce_player() {
                                 device.fill();
                             }
                         } );
-                    */
                 }else{
+                    */
                     scrn.fill(w.x, w.y, 2, 2,"white");
                 }
+            /*
             }else{
                 //scrn.fill(w.x, w.y, 2, 2,"gray");
             }
-
+            */            
             if (i > op.x.length - o.itemstack.length){    
                 if (Boolean(o.itemstack[op.x.length - i])){
                     if (o.itemstack[op.x.length - i] == 23){

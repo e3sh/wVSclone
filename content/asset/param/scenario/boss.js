@@ -107,6 +107,7 @@ function sce_boss_1(){
 }
 
 function sce_boss_2(){
+    const GLOWTIME = 2000;//ms(waittime)
     // HLaser用母機
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
@@ -129,17 +130,19 @@ function sce_boss_2(){
 
     this.move = function (scrn, o) {
 
-        if (o.alive < 1500) {// 出現から1.5s(1500ms)
+        if (o.alive < GLOWTIME) {// 出現から1.5s(1500ms)
             //o.display_size = 2.0 * (o.alive / 1500);
-            o.alpha = 255*(o.alive/1500);
+            o.alpha = 255*(o.alive/GLOWTIME);
+            o.type = 5;//出現中はEffectタイプにして無敵
         } else {
             o.display_size = 2.0;
+            o.type = 2;
 
             o.get_target(98);
             o.vector = o.target_v();
             o.vset(1);
 
-            var tc = Math.trunc((o.alive-1500)/100)%100;//0.1s:100 count loop
+            var tc = Math.trunc((o.alive-GLOWTIME)/100)%100;//0.1s:100 count loop
             if (tc <= 1) {
                 o.smode = 1;
                 o.get_target(98);

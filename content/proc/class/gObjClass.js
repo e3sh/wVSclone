@@ -355,8 +355,8 @@ gObjectClass.prototype = {
                 //↑ここで弾を消しているので削除すると弾が消えなくなる。2023/01/20消してしまってbugったので記録。
                 break;
             case 2: //敵
-                this.display_size *= 2; //爆発を大きくする
-                this.change_sce(7);
+                //this.display_size *= 2; //爆発を大きくする
+                this.change_sce("effect_bomb_x");//7
                 this.sound.effect(8); //爆発音
                 
                 //this.pick[35] = Math.floor(Math.random() * 3) + 1;

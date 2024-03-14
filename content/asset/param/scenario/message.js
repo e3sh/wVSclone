@@ -5,6 +5,9 @@
 //プレイ中、画面効果（演出）として文字等を表示する部分
 function sce_message_billboard( msg, wait) {
 
+    const msg_x = 480 -(20*16);
+    const msg_y = 50;
+
     //メッセージ表示（ひとまとまりの文章など）
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
@@ -58,10 +61,10 @@ function sce_message_billboard( msg, wait) {
 
         for (var i = 0; i <= o.mes_line; i++) {
             if (i < o.mes_line) {
-                scrn.putchr(o.p_st[i], 95, 150 + 16 * i);
+                scrn.putchr(o.p_st[i], msg_x, msg_y + 16 * i);
             } else {
                 var wst = o.p_st[i].slice(0, o.mes_col + 1);
-                scrn.putchr(wst, 95, 150 + 16 * i);
+                scrn.putchr(wst, msg_x, msg_y + 16 * i);
             }
         }
     }

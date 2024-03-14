@@ -17,7 +17,7 @@ function sce_effect_vanish() {
 }
 
 function sce_effect_bomb() {
-    //BOMB　移動停止させて、表示を爆発にし1.5秒後に消える。
+    //BOMB　移動停止させて、表示を爆発にし0.5秒後に消える。
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
         o.vset(0);
@@ -51,8 +51,44 @@ function sce_effect_bomb() {
     }
 }
 
+function sce_effect_bomb_x() {
+    //BOMB　移動停止させて、点滅させて　1.0秒後に消える。
+    //-----------------------------------------------------------------------
+    this.init = function (scrn, o) {
+        o.vset(0);
+        //o.mp = 12;
+        o.type = 5; //　その他
+        o.status = 5; //廃棄処理中　
+        o.frame = 0;
+    }
+
+    this.move = function (scrn, o) {
+
+        switch (o.frame) {
+            case 5:
+                //
+                break;
+            case 75:
+                //            return -1;
+                o.status = 0;
+                break;
+            default:
+                break;
+        };
+        o.frame++;
+
+        if (o.frame%5 < 2) o.visible = true; else o.visible = false;
+
+        if (o.frame > 10) o.alpha -= 3;
+
+        //if (o.frame >= 30) o.status = 0; //return -1;
+
+        return o.sc_move();
+    }
+}
+
 function sce_effect_hit() {
-    //Hit　移動停止させて、表示を爆発(hit)にし1.5秒後に消える。
+    //Hit　移動停止させて、表示を爆発(hit)にし1秒後に消える。
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
         o.vset(0);
@@ -363,65 +399,8 @@ function sce_effect_informationCursor() {
             if (o.frame%30 == 0) o.search_target_item(22);
         }
 
-        //switch (o.frame) {
-        //    case 5:
-                //
-        //        break;
-        //    case 30://0.5s毎に処理
-        //    o.search_target_item(22);
-        //    o.vector = o.target_r(o.gameState.key_x,o.gameState.key_y);
-
-                //if (!o.gt.in_view(o.gameState.key_x, o.gameState.key_y)){
-                //    if (o.gameState.keyon) o.normal_draw_enable = true;
-                //}else{
-                //    o.normal_draw_enable = false;
-                //}
-                //o.x = o.parent.x;
-                //o.y = o.parent.y;
-                //鍵
-                //o.target_r(o.gameState.key_x,o.gameState.key_y)
-                //            return -1;
-                //o.status = 0;
-        //        o.frame = 0;
-        //        break;
-        //    case 180:
-        //        break;
-        //    default:
-        //        break;
-        //};
         o.frame++;
 
-        //if (o.frame > 30) o.alpha -= 3;
-         //   if (o.frame >= 30) o.status = 0; //return -1;
-
         return o.sc_move();
-    }
-
-    this.draw = function (scrn, o) {
-
-        //TestStatusView
-        /*
-        scrn.putchr8("frm:" + o.frame, scrn.cw/2,scrn.ch/2);
-        scrn.putchr8("keyon:" + o.gameState.keyon, scrn.cw/2,scrn.ch/2 +8);
-        if (o.gameState.keyon){
-            scrn.putchr8("x:" + o.gameState.key_x, scrn.cw/2,scrn.ch/2 +16);
-            scrn.putchr8("y:" + o.gameState.key_y, scrn.cw/2,scrn.ch/2 +24);
-            var r = o.target_r(o.gameState.key_x,o.gameState.key_y);
-
-            scrn.putchr8("r:" + Math.trunc(r),scrn.cw/2, scrn.ch/2 +32);
-            if (!o.gt.in_view(o.gameState.key_x, o.gameState.key_y)){//物が画面内にない場合矢印表示
-                var w = o.gt.worldtoView(o.x, o.y);
-
-                scrn.put("Arrow", 
-                    w.x + o.Cos(r)*150, 
-                    w.y + o.Sin(r)*150, 
-                    0, r, 255, 2.0);
-            }                
-                //scrn.putchr8("[]"
-                // , w.x + o.Cos(r)*150
-                // , w.y + o.Sin(r)*150
-                //);
-        }
-       */
     }
 }

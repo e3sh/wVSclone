@@ -801,7 +801,7 @@ function sce_enemy_trbox() {
         // o.sc_moveを使えないので、（押しても動かさないため）直接記述
         
         if (this.status == 2) {//状態が衝突の場合
-            this.change_sce(7);
+            this.change_sce("effect_bomb_x");//7
             //this.sound.effect(8); //爆発音
 
             //入ってるアイテムを出す。
@@ -858,7 +858,7 @@ function sce_enemy_trbox_mimic() {
         // o.sc_moveを使えないので、（押しても動かさないため）直接記述
         
         if (this.status == 2) {//状態が衝突の場合
-            this.change_sce(7);
+            this.change_sce("effect_bomb_x");//7
             //this.sound.effect(8); //爆発音
 
             //敵を出す処理

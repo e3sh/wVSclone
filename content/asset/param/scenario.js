@@ -99,14 +99,19 @@ function scenario() {
     sc_init["effect_bomb"] = w.init;
     sc_move["effect_bomb"] = w.move;
 
+    //BOMB　移動停止させて、点滅させて　1.0秒後に消える
+    //-----------------------------------------------------------------------
+    w = new sce_effect_bomb_x();
+  
+    sc_init["effect_bomb_x"] = w.init;
+    sc_move["effect_bomb_x"] = w.move;
+    sc_draw["effect_bomb_x"] = w.draw;
+
     //BOMB　表示を爆発にし１秒後に消える。(誘爆用)
     //-----------------------------------------------------------------------
     w = new sce_effect_bombExp();
-
-    //sc_init[7] = w.init;
-    //sc_move[7] = w.move;//そのまま入れ替える場合は注釈をはずす
-    //sc_draw[7] = w.draw;
-    
+ 
+    //現在未使用(2024/03/14)
     sc_init["effect_bombEx"] = w.init;
     sc_move["effect_bombEx"] = w.move;
     sc_draw["effect_bombEx"] = w.draw;
@@ -115,6 +120,7 @@ function scenario() {
     //-----------------------------------------------------------------------
     w = new sce_player_start();
 
+    //現在未使用(2024/03/14)
     sc_init[8] = w.init;
     sc_move[8] = w.move;
 
@@ -262,7 +268,8 @@ function scenario() {
     //支援機の動作２
     //-----------------------------------------------------------------------
     w = new sce_friend_sidearm();
-
+    
+    //現在未使用(2024/03/14)
     sc_init[21] = w.init;
     sc_move[21] = w.move;
 
@@ -334,6 +341,7 @@ function scenario() {
     //-----------------------------------------------------------------------
     w = new sce_effect_billboard( 0 );
 
+    //現在未使用(2024/03/14)
     sc_init[28] = w.init;
     sc_move[28] = w.move;
 
@@ -345,6 +353,7 @@ function scenario() {
     //-----------------------------------------------------------------------
     w = new sce_effect_billboard(90);
 
+    //現在未使用(2024/03/14)
     sc_init[29] = w.init;
     sc_move[29] = w.move;
 
@@ -408,10 +417,11 @@ function scenario() {
     //-----------------------------------------------------------------------
     w = new sce_message_billboard( [
         "= Welcome to BOSS ROOM ==",
-    	//"LAIR OF THE BOSS ENEMY!",
+    	"LAIR OF THE BOSS ENEMY!",
 	    //"HOURS 9AM TO 3PM BY APPOINTMENT ONLY",
-		//"THE BOSS IS *IN*!",
-		"= BEWARE OF THE BEAST!! ="],
+		"THE BOSS IS *IN*!",
+		//"= BEWARE OF THE BEAST!! ="
+        ""],
         3);
 
     sc_init[37] = w.init;
@@ -797,7 +807,7 @@ function scenario() {
 
     sc_init["effect_informationCursor"] = w.init;
     sc_move["effect_informationCursor"] = w.move;
-    sc_draw["effect_informationCursor"] = w.draw;
+    //sc_draw["effect_informationCursor"] = w.draw;
     //-----------------------------------------------------------------------
     w = new sce_friend_option(0);
 

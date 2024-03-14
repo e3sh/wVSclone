@@ -100,7 +100,10 @@ function sce_friend_option(mode) {
                 }
             }
 
-            if (o.item[20] < (mode+1)*10) return 1; //
+            if (o.item[20] < (mode+1)*10) {
+                o.parent.repro = false;//自分が消えるときに親の出産フラグをリセット
+                return 1;
+             } //
         //    }
         //}
         // 移動処理
