@@ -133,7 +133,9 @@ function sce_boss_2(){
         if (o.alive < GLOWTIME) {// 出現から1.5s(1500ms)
             //o.display_size = 2.0 * (o.alive / 1500);
             o.alpha = 255*(o.alive/GLOWTIME);
-            o.type = 5;//出現中はEffectタイプにして無敵
+
+            o.hp = o.maxhp;//出現中はHP減らない処理（一撃でmaxhpダメージ与えれば倒せるが）
+            //o.type = 5;//出現中はEffectタイプにして無敵
         } else {
             o.display_size = 2.0;
             o.type = 2;
@@ -220,20 +222,25 @@ function sce_boss_damage_gr(scrn, o) {
     cl.y = w.y;
     //cl.sr = ((360 * ((o.maxhp - o.hp) / o.maxhp) - 90) * (Math.PI / 180));
     cl.sr = (o.hp / o.maxhp) * 0.5 * Math.PI;
+
+    cl.cbar = (o.hp / o.maxhp>0.5)?"limegreen":(o.hp / o.maxhp>0.3)?"yellowgreen":"red"; 
+    cl.cborder = (o.hp / o.maxhp>0.5)?"white":(o.hp / o.maxhp>0.3)?"yellow":"orange"; 
+
+    cl.colf = (o.hp/o.maxhp>0.3)?true :false ;
     cl.draw = function (device) {
         var st = (1.25 -0.5) * Math.PI;
         var ed = (0.75 -0.5) * Math.PI;
         var v = st - this.sr;
 
         device.beginPath();
-        device.strokeStyle = "limegreen";//"white";
+        device.strokeStyle = this.cbar;
         device.lineWidth = "5";
         device.beginPath();
         device.arc(this.x, this.y, 32 + 10, st, v, true);
         device.stroke();
 
         device.beginPath();
-        device.strokeStyle = "silver";
+        device.strokeStyle = this.cborder;
         device.lineWidth = "1";
         device.arc(this.x, this.y, 30 + 10, st, ed, true);
 

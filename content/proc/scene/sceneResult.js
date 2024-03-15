@@ -58,7 +58,7 @@ function sceneResult(state) {
         { ch:19, text:"ブーメラン",sp:"Boom" },
         //{ ch:20, text:"GET 球"  ,sp:"Ball1"  },
         //{ ch:21, text:"GET 1UP" ,sp:"Mayura1"},
-        { ch:22, text:"鍵"  ,sp:"Key"    },
+        //{ ch:22, text:"鍵"  ,sp:"Key"    },
         { ch:23, text:"爆弾",sp:"BallB1" },
         { ch:24, text:"バリア玉",sp:"BallS1" },
         { ch:25, text:"回復玉",sp:"BallL1" },

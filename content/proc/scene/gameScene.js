@@ -94,13 +94,17 @@ function gameScene(state){
     //hpbar
 	var HpbarDraw = { hp: 0, mhp: 0, br: true, exp: 0 }
 	HpbarDraw.draw = function (device) {
+
+		let cbar =  (this.br) ? "skyblue" : (this.hp/this.mhp>0.5)?"limegreen":(this.hp/this.mhp>0.3)?"yellowgreen":"red"; 
+		let cborder = (this.hp/this.mhp>0.5)?"white":(this.hp/this.mhp>0.3)?"yellow":"orange"; 
+
 	    device.beginPath();
-	    device.fillStyle = (this.br) ? "skyblue" : "limegreen";
-	    //device.lineWidth = 1;
+	    device.fillStyle = cbar; 
+		//device.lineWidth = 1;
 	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, (this.hp/this.mhp)*100, 14-1);
 	    //device.stroke();
 	    //device.beginPath();
-	    device.strokeStyle = "white";
+	    device.strokeStyle = cborder; 
 	    device.lineWidth = 2;
 	    device.rect(dev.layout.hp_x, dev.layout.hp_y, 102, 15);
 	    device.stroke();

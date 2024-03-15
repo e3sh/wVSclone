@@ -1060,15 +1060,18 @@ function sce_enemy_inv_gr(scrn, o){
 
         //scrn.putchr8(o.hp + "/" +o.maxhp,w.x,w.y);
 
+        lbar.cbar = (lbar.hp/lbar.mhp>0.5)?"limegreen":(lbar.hp/lbar.mhp>0.3)?"yellowgreen":"red"; 
+		lbar.cborder = (lbar.hp/lbar.mhp>0.5)?"white":(lbar.hp/lbar.mhp>0.3)?"yellow":"orange"; 
+
         lbar.draw = function(device){
             device.beginPath();
-	        device.fillStyle = "limegreen";
+	        device.fillStyle = this.cbar;
 	        device.lineWidth = 1;
 	        device.fillRect(this.x -16, this.y +16+3, (this.hp/this.mhp)*32, 2);
 	        device.stroke();
 
 	        device.beginPath();
-	        device.strokeStyle = "white"; 
+	        device.strokeStyle = this.cborder; 
 	        device.lineWidth = 1;
 	        device.rect(this.x -17, this.y+16+2, 34, 4);
 	        device.stroke();
