@@ -7,7 +7,7 @@ function Screen(g,num) {//g.screen（DisplayControll）[num]
     var scrn = g.screen[num];
     //document.getElementById("console").innerHTML = g.asset.Image;
     //キャラクタパターンテクスチャー
-    var tex_p = g.asset.image["SPGraph"].img;
+    //var tex_p = g.asset.image["SPGraph"].img;
 
     this.cw = scrn.cw;
     this.ch = scrn.ch;
@@ -39,7 +39,8 @@ function Screen(g,num) {//g.screen（DisplayControll）[num]
     //-------------------------------------------------------------
     //表示位置はx,yが表示中心となるように表示されます。
     this.put = function (sp, x, y, m, r, alpha, z) {
-        var d = sp_ptn[sp];
+        let d = sp_ptn[sp];
+        let tex_p = g.asset.image[d.pict].img;
 
     	//Debug(error回避)用
         if (!Boolean(d)) {

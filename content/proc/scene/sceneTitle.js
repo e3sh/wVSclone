@@ -98,23 +98,23 @@ function sceneTitle(state) {
         work2.clear("black");
         //ForgroundBG.clear();
         wtxt = [];
-        wtxt.push("==WebDungeonActionG==");
-        wtxt.push("--------------------&");
         
+        //wtxt.push("==WebDungeonActionG==");
+        //wtxt.push("--------------------&");
         
         if (state.Config.use_audio) {
            wtxt.push("audio on:" + dev.sound.loadCheck());
         } else {
            wtxt.push("audio off:" + dev.sound.loadCheck());
         }
-
-        //const DSP_X = 320;
-        //const DSP_Y = 144;
+        
+        const DSP_X = 320;
+        const DSP_Y = 128;
           
-        work2.put("Mayura1",DSP_X - 50 +8    , DSP_Y  +8);
-        work2.put("Unyuu1", DSP_X - 50 +8    , DSP_Y +40);
-        work2.put("Unyuu3", DSP_X - 50 +8 -32, DSP_Y +40);
-
+        work2.put("Mayura1",DSP_X -32 ,DSP_Y +40);
+        work2.put("Unyuu1", DSP_X -32     ,DSP_Y +72);
+        work2.put("Unyuu3", DSP_X -32 -32 ,DSP_Y +72);
+        /*
         work2.put("Spear", DSP_X - 132 + 0 -16, DSP_Y +72);
         work2.put("Wand" , DSP_X - 132 +64 -16, DSP_Y +72);
         work2.put("Axe"  , DSP_X - 132 +80 -16, DSP_Y +72);
@@ -128,19 +128,25 @@ function sceneTitle(state) {
         work2.put("BallL1", DSP_X - 100 + 48 - 16, DSP_Y +104);
         work2.put("Lamp"  , DSP_X - 100 + 72 - 16, DSP_Y +104);
         work2.put("Map"   , DSP_X - 100 + 96 - 16, DSP_Y +104);
-
+        */
         //work2.put("TrBox", 320 - 50 + 0 - 8, 304);
-        work2.put("Key"   , DSP_X - 50 + 16 - 8, DSP_Y +136);
+        work2.put("Key"   , DSP_X - 50 + 16 , DSP_Y +104);
+        
+        work2.putchr("Player", DSP_X, DSP_Y  + 40 );
+        work2.putchr("Enemy" , DSP_X, DSP_Y  + 72 );
+        
+        //work2.putchr("Weapon", DSP_X, DSP_Y  + 72 -8);
+        //work2.putchr("Item"  , DSP_X, DSP_Y  +104 -8);
+        work2.putchr("Key"   , DSP_X, DSP_Y  +100 );
+        
 
-        work2.putchr("Player", DSP_X, DSP_Y  +  8 -8);
-        work2.putchr("Enemy" , DSP_X, DSP_Y  + 40 -8);
-        work2.putchr("Weapon", DSP_X, DSP_Y  + 72 -8);
-        work2.putchr("Item"  , DSP_X, DSP_Y  +104 -8);
-        work2.putchr("Key"   , DSP_X, DSP_Y  +136 -8);
+        work2.put("TitleLogo", DSP_X, DSP_Y);
+        work2.kprint("土日ダンジョン　令和版",DSP_X +50, DSP_Y + 20)
+
         //work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
         
         for (var s in wtxt) {
-            work2.putchr(wtxt[s], 0, DSP_Y  - 80 + 16 * s);        
+            //work2.putchr(wtxt[s], 0, DSP_Y  - 80 + 16 * s);        
         }
 
         work2.draw();
@@ -367,11 +373,11 @@ function sceneTitle(state) {
 
         if (psel.x > 0){
             if (psel.mode == 1){
-                if (psel.x < DSP_X - 50 +8 -32){ psel.x += 6;}else{ psel.x =DSP_X - 50 +8 -32; }
+                if (psel.x < DSP_X - 32 -32){ psel.x += 6;}else{ psel.x = DSP_X - 32 -32; }
             }else{
                 psel.x -= 6;
             }
-            work.put("Unyuu3", psel.x, DSP_Y +8);
+            work.put("Unyuu3", psel.x, DSP_Y +40 +16);
         }else{
             psel.x = 0;
         }

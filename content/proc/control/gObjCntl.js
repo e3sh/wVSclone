@@ -1175,7 +1175,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
      switch (msg.cmd){
          case "set_object":
              mapsc.add(
-                 sobj.x, sobj.y,
+                 sobj.x, sobj.y + sobj.shifty ,
                  sobj.vector,
                  msg.src , 0, 0,
                  sobj

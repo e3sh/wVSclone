@@ -45,6 +45,14 @@ function GameAssetSetup(game){
 	game.asset.imageLoad( "KanjiHw"	, asset_path_sys + "k12x8_jisx0201c.png" );
 	game.asset.imageLoad( "KanjiFw"	, asset_path_sys + "k12x8_jisx0208c.png" );
 
+	game.asset.imageLoad( "_equip"  ,asset_path_cts + "pict/icon-1_1.png" );
+	game.asset.imageLoad( "_item"   ,asset_path_cts + "pict/icon-1_2.png" );
+	game.asset.imageLoad( "_icon"   ,asset_path_cts + "pict/icon-3_1.png" );
+	game.asset.imageLoad( "_itype"  ,asset_path_cts + "pict/icon-3_2.png" );
+	game.asset.imageLoad( "_irare"  ,asset_path_cts + "pict/icon-3_3.png" );
+
+	game.asset.imageLoad( "TitleLogo",asset_path_cts + "pict/TitleLogoTemp.png" );
+
 	game.asset.soundLoad( "00round_start", asset_path_cts + "sound/00round_start");  
 	game.asset.soundLoad( "01main",		asset_path_cts + "sound/01main" 		);
 	game.asset.soundLoad( "02warnning",	asset_path_cts + 	"sound/02warnning"	);
@@ -58,8 +66,8 @@ function GameAssetSetup(game){
 	game.asset.soundLoad( "10use",		asset_path_cts + 	"sound/10use"		);
 	game.asset.soundLoad( "11hit",		asset_path_cts + 	"sound/11hit"		);
 	game.asset.soundLoad( "12damage",	asset_path_cts + 	"sound/12damage"	);
-	game.asset.soundLoad( "14powup",	asset_path_cts + 	"sound/14powup"		);
 	game.asset.soundLoad( "13bomb",		asset_path_cts + 	"sound/13bomb"		);
+	game.asset.soundLoad( "14powup",	asset_path_cts + 	"sound/14powup"		);
 
     //Game Device Setup
 	game.setSpFont({ name: "stfont",   id: "FontGraph", pattern: FontPtnCutArray(  0,   0,12,16) });

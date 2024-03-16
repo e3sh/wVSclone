@@ -423,9 +423,9 @@ function sce_player() {
                     //o.autotrig = 30;
                     break;
                 case 5:
-                    o.set_object_ex(46, o.x, o.y, o.vector - 10, "common_vset10");
-                    o.set_object_ex(46, o.x, o.y, o.vector, "common_vset10");
-                    o.set_object_ex(46, o.x, o.y, o.vector + 10, "common_vset10");
+                    o.set_object_ex(46, o.x, o.y + o.shifty , o.vector - 10, "common_vset10");
+                    o.set_object_ex(46, o.x, o.y + o.shifty , o.vector, "common_vset10");
+                    o.set_object_ex(46, o.x, o.y + o.shifty , o.vector + 10, "common_vset10");
                     //o.set_object(46)
                     o.set_object(47); //Bow and Arrow
                     //o.autotrig = 30;
@@ -560,7 +560,7 @@ function sce_player() {
         */
         let lups = Math.pow(o.spec.ETC+1 , 2)* 100 ;//100, 400, 900, 1600, 2500,....
         if ((o.score > lups)&& !lvupf){
-            o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
+            //o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
             o.spec.ETC++;
             o.sound.effect(14);
             delay_st = o.alive;
@@ -572,6 +572,7 @@ function sce_player() {
             //スコア数値の表示演出完了待ち（数字じゃなくてゲージにするか？）
             if (o.alive > delay_st +500){
                 lvupf = false;
+                o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
                 o.SIGNAL(1709);//LVUP
             }
         }
@@ -676,17 +677,22 @@ function sce_player() {
 
             cl.x = w.x + o.shiftx;
             cl.y = w.y + o.shifty;
-            cl.r = 30 + o.frame % 5;
-            let cn = Math.trunc(255 * ((SHIELD_TIME - o.frame)/SHIELD_TIME));
-            cl.c = "rgb(" + 255 + "," + cn + "," + cn + ")"; 
+            cl.r = 25 + o.frame % 5;
+            let sp =  ((SHIELD_TIME - o.frame)/SHIELD_TIME);
+            let cR = Math.trunc(63  * sp) + 192;
+            let cG = Math.trunc(127 * sp) + 128;
+            let cB = Math.trunc(255 * sp);
+            cl.c = "rgb(" + cR + "," + cG + "," + cB + ")";
+            cl.lw = Math.trunc(o.frame) % Math.trunc(30 * sp); 
             cl.draw = function (device) {
                 device.beginPath();
                 device.strokeStyle = this.c; //"white";
-                device.lineWidth = "1";
+                device.lineWidth = this.lw;//"1";
                 device.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
                 device.stroke();
             }
-            scrn.putFunc(cl);
+            //if (Math.trunc(o.frame % 1)== 0)
+             scrn.putFunc(cl);
 
             barriref = true;
         }

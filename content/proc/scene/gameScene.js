@@ -1065,7 +1065,7 @@ function gameScene(state){
 		}
 		if (n > 0) work3.put("Key", dev.layout.zanki_x + 64, dev.layout.zanki_y);
 
-		var wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Arrow"];
+		var wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Bow"];
 
 		if (!Boolean(state.Game.player.weapon)) state.Game.player.weapon = 0;
 		if (!Boolean(state.Game.player.level)) state.Game.player.level = 0;
@@ -1159,7 +1159,7 @@ function gameScene(state){
 		}
 		if (n > 0) work3.put("sKey", dev.layout.zanki_x + 64, dev.layout.zanki_y);
 
-		var wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Arrow"];
+		var wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Bow"];
 
 		if (!Boolean(state.Game.player.weapon)) state.Game.player.weapon = 0;
 		if (!Boolean(state.Game.player.level)) state.Game.player.level = 0;

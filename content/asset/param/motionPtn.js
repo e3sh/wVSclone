@@ -238,12 +238,36 @@ function motionPattern(){
 	, ["Coin1", 2, 0]];
 
 	//=================================================
-	no = 15;
+	no = 15;//item
 
 	mp[no] = {};
 
 	mp[no].pattern = [
-	["Knife", -1, -1]
+	["Knife", 0, 0]
+    ];
+	//=================================================
+	no = 16;//item
+
+	mp[no] = {};
+
+	mp[no].pattern = [
+	["Spear", 0, 0]
+    ];
+	//=================================================
+	no = 17;//item
+
+	mp[no] = {};
+
+	mp[no].pattern = [
+	["Boom", 0, 0]
+    ];
+	//=================================================
+	no = 18;//item
+
+	mp[no] = {};
+
+	mp[no].pattern = [
+	["Bow", 0, 0]
     ];
 
 	//=================================================
@@ -268,7 +292,7 @@ function motionPattern(){
 	mp[no] = {};
 
 	mp[no].pattern = [
-	["Spear", -1, -1]
+	["lance", -1, -1]
     ];
 	//=================================================
 	no = 36;
@@ -276,25 +300,25 @@ function motionPattern(){
 	mp[no] = {};
 
 	mp[no].pattern = [
-	["Boom", -1, -1]
+	["BoomR", -1, -1]
     ];
 
 	//=================================================
-	no = 37;
+	no = 37;//item
 
 	mp[no] = {};
 
 	mp[no].pattern = [
-	["Axe", -1, -1]
+	["Axe", 0, 0]
     ];
 
 	//=================================================
-	no = 38;
+	no = 38;//item
 
 	mp[no] = {};
 
 	mp[no].pattern = [
-	["Wand", -1, -1]
+	["Wand", 0, 0]
     ];
 
 	//=================================================
@@ -340,7 +364,7 @@ function motionPattern(){
 	mp[no] = {};
 
 	mp[no].pattern = [
-	["Bow", -1, -1]
+	["LBow", -1, -1]
     ];
 
 	//
@@ -406,8 +430,11 @@ function motionPattern(){
 11 Hit 
 12 Bomb 
 13-14 (Reserb)
-15 Knife 
-16-25 (Reserb)
+15 Knife
+16 Spear
+17 Boom
+18 Bow
+19-25 (Reserb)
 26 Ball 27 Key
 28 (B 
 29 (S 
@@ -416,15 +443,15 @@ function motionPattern(){
 32 Coin 
 33 Lamp 
 34 Map
-35 Spear
-36 Boom
+35 Spear/Lance
+36 Boom/BoomR
 37 Axe
 38 Wand
 39 TrBox
 40 Baxe
 41 Rod
 42 Sword
-43 Bow
+43 Bow/LBow
 44 Arrow
 45 Cursor
 46 Barn
