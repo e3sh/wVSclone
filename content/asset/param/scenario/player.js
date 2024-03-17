@@ -100,6 +100,8 @@ function sce_player() {
             o.bomb4(21); //Extendのステータスを0にする。
         }
         o.set_object(100);//InformationCursorSetup
+
+        o.frame = SHIELD_TIME;
     }
 
     this.draw = damage_gr1;

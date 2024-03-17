@@ -272,34 +272,113 @@ function Stage1(stageno) {
 
     function mapInitial(stageno) { //flag = true 初期マップ展開有り　false 自機リスタート
 
-        var shuffled = [];
+        //各部屋にIDを割付しサイズを確認
+        function roomDivision(array){
 
-        for (var i = 0; i < rlist.length; i++) {
+            let cmpf = Array(array.length);
+            cmpf.fill(false);
 
-            shuffled[i] = i;
+            let id = 0;
+            for (let w in array){
+                if (!cmpf[w]){
+                    array[w].id = id;
+                    cmpf[w] = true;
+                    check_blankarea(id, array[w].x, array[w].y);
+                    id++;
+                }
+                    //break;
+            }
+            return array;
+            //再帰用関数
+            function check_blankarea(id, x, y){
+                //alert(id + ":" + x + ":" + y);
+                //console.log(id + ":" + x + ":" + y);
+                let vx = [-1,  0,  1,  0];
+                let vy = [ 0, -1,  0,  1];
+
+                for (let i in vx){
+                    for (let w in array){
+                        if (cmpf[w]) continue;
+                        if ((array[w].x == x + vx[i])&&(array[w].y == y + vy[i])){
+                            array[w].id = id;
+                            cmpf[w] = true;
+                            check_blankarea(id, x+vx[i], y+vy[i]);
+                            //alert("!");
+                       }
+                    }
+                }   
+                return;
+            }
+        }
+        
+        //ID毎の部屋のサイズを調べて、部屋数と最大サイズの部屋IDと最小サイズの部屋IDを返す。
+        function roomSizeCheck(ilist){
+
+            let cnt = [];
+            for (let i in ilist){
+                if (Boolean(cnt[ilist[i].id])){
+                    cnt[ilist[i].id]++
+                }else{
+                    cnt[ilist[i].id]=1;
+                }
+            };
+            let maxid; for (let i in cnt){ if (cnt[i] == Math.max(...cnt)) {maxid = i; } }
+            let minid; for (let i in cnt){ if (cnt[i] == Math.min(...cnt)) {minid = i; } }
+
+            return {rooms: cnt.length, max:maxid, min:minid };
         }
 
-        for (i = 0; i < 3000; i++) {
+        //渡された配列をシャッフル
+        function shuffle( shuffled ){
+    
+            for (i = 0; i < 3000; i++) {
+                var snum = Math.floor(rnd.next() * shuffled.length);
+                var dnum = Math.floor(rnd.next() * shuffled.length);
+    
+                var w = shuffled[snum];
+                shuffled[snum] = shuffled[dnum];
+                shuffled[dnum] = w;
+            }
 
-            var snum = Math.floor(rnd.next() * shuffled.length);
-            var dnum = Math.floor(rnd.next() * shuffled.length);
-
-            var w = shuffled[snum];
-            shuffled[snum] = shuffled[dnum];
-            shuffled[dnum] = w;
+            return shuffled;
         }
 
-  
+        rlist = roomDivision(rlist);
+
+        let room_status = roomSizeCheck(rlist);
+
+        let shuffled = [];
+        let startroom = [];
+        for (let i = 0; i < rlist.length; i++) {
+            if (rlist[i].id == room_status.min){
+                startroom.push(i);
+            }else{
+                shuffled.push(i);    
+            }
+        }
+        startroom = shuffle(startroom);//最小サイズの部屋(自機の開始位置)
+        shuffled = shuffle(shuffled);//他の場所（敵やアイテムを配置）
+        
         var ms = [];
         //  開始フレーム,座標,,角度,シナリオ,キャラ
 
-        var r = shuffled[0];
+        let r = startroom[0];　//自機の開始位置は一番小さい部屋内（敵は配置しない）2024/03/17
         ms.push([false, rlist[r].x * BLOCK_W + 10, rlist[r].y * BLOCK_H + 10, 0, "player", 0]);
         //ms.push([false, rlist[r].x * BLOCK_W + 10, rlist[r].y * BLOCK_H + 10, 0, "effect_informationCursor", 0]);
-
         //ms.push([false, rlist[r].x * 96 + 10, rlist[r].y * 96 + 10, 0, "friend_rotate", 10]);
+    
+        let itl = [20, 20, 20, 20, 23, 24, 25];
+        for (let i=1; i < 7; i++){
+            let r = startroom[i%startroom.length];
+            ms.push([
+                true
+                , rlist[r].x * BLOCK_W +  Math.floor(rnd.next() * (BLOCK_W/4)) *4 - BLOCK_W/2
+                , rlist[r].y * BLOCK_H +  Math.floor(rnd.next() * (BLOCK_W/4)) *4 - BLOCK_W/2
+                , 0, "common_vset0", itl[i]
+            ]);
+        }
 
-        var rcnt = 1;
+        var rcnt = 0;
 
         if ((stageno % 5) == 0) {
             //bossstage
@@ -381,7 +460,7 @@ function Stage1(stageno) {
                 ms.push(w);
 
                 rcnt++;
-                if (rcnt >= rlist.length) rcnt = 0;
+                if (rcnt >= shuffled.length) rcnt = 0;
             }
         }
 

@@ -87,15 +87,15 @@ function spdata(){
 	sp_ptn["TitleLogo"] = ptn; 
 
 	sp_ptn["Wand"]  = sp_ptn["_equip_25"];
-	sp_ptn["Knife"] = sp_ptn["_equip_4"];
+	sp_ptn["Knife"] = sp_ptn[ "_equip_4"];
 	sp_ptn["Axe"]   = sp_ptn["_equip_22"];
-	sp_ptn["Bow"]  = sp_ptn["_equip_36"];
+	sp_ptn["Bow"]   = sp_ptn["_equip_36"];
 	sp_ptn["Spear"] = sp_ptn["_equip_16"];
-	sp_ptn["Boom"] = sp_ptn["_equip_34"];
-	sp_ptn["TrBox"] = sp_ptn["_item_40"];
+	sp_ptn["Boom"]  = sp_ptn["_equip_34"];
+	sp_ptn["TrBox"] = sp_ptn["_item_41"];
 
-	sp_ptn["Key"]   = sp_ptn["_item_61"];
-	sp_ptn["sKey"]   = sp_ptn["_item_61"];
+	sp_ptn["Key"]   = sp_ptn["_item_60"];
+	sp_ptn["sKey"]  = sp_ptn["_item_60"];
 
 	return sp_ptn;
 
