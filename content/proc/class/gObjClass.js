@@ -403,7 +403,7 @@ gObjectClass.prototype = {
         }
 
         if (this.damageflag){
-            this.damage.count = 15;
+            this.damage.count = 30;
             var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
             if (onst) {
                 this.set_object_ex(6, this.x, this.y, this.vector, "effect_hit");
@@ -417,7 +417,8 @@ gObjectClass.prototype = {
         if (this.damage.count > 0) {
             this.damage.count--;
             this.vector = (this.damage.vector + 180) % 360;
-            this.vset(this.damage.dist / (10 * this.weight));
+            this.vset(this.damage.dist / (10 * this.weight));//反射移動
+            if (this.damage.count <15) this.vset(0); //硬直時間 
         }
 
         if (this.status == 0) f = 1; //未使用ステータスの場合は削除

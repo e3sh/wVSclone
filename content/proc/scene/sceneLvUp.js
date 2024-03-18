@@ -66,7 +66,7 @@ function sceneLvUp(state) { //2024/03/06
 
         let dpara = [
             { keynum:38, text:["Time +0.5s", (5 + state.Game.player.spec.VIT * 0.5) + "s-> " + (5 + (state.Game.player.spec.VIT+1) * 0.5) + "s" ],
-                icon:"BallS1",
+                icon:"BallS1", barcolor: "cyan",  
                 func: { call: function(p){
                     state.Game.player.spec.VIT++;
                     ret_code = p;
@@ -80,7 +80,7 @@ function sceneLvUp(state) { //2024/03/06
                 x:-35, y:-25+55, w:70, h:50, keyon:false }//downkey
                 */
             ,{ keynum:37, text:["Recover +1", (3 + state.Game.player.spec.MND) + " -> " + (3 + state.Game.player.spec.MND+1) ], 
-                icon:"BallL1", 
+                icon:"BallL1", barcolor: "limegreen",
                 func: { call: function(p){
                     state.Game.player.spec.MND++;
                     ret_code = p;
@@ -88,7 +88,7 @@ function sceneLvUp(state) { //2024/03/06
                 x:-35-80, y:-25, w:70, h:50, keyon:false, select: false }//left
 
             ,{ keynum:39, text:["Damage +2", (10 + state.Game.player.spec.INT*2) + " -> " + (10 + (state.Game.player.spec.INT+1)*2) ], 
-                icon:"BallB1", 
+                icon:"BallB1", barcolor: "orangered",
                 func: { call: function(p){
                     state.Game.player.spec.INT++;
                     ret_code = p;
@@ -99,7 +99,7 @@ function sceneLvUp(state) { //2024/03/06
         diag = new DialogControl(dpara);
         dexef = false;     
         
-        stbar = new statusBarMeter(["cyan","orange","limegreen","white","","",""]);
+        //stbar = new statusBarMeter(["cyan","orange","limegreen","white"]);
 
         keylock = false;
     }
@@ -130,11 +130,19 @@ function sceneLvUp(state) { //2024/03/06
         //wtxt.push(" INT=" + state.Game.player.spec.INT);
         //wtxt.push(" MND=" + state.Game.player.spec.MND); 
 
+        /*
         stbar.setStatusArray([
             state.Game.player.spec.VIT,
             state.Game.player.spec.INT,
             state.Game.player.spec.MND
             //state.Game.player.spec.ETC
+        ]);
+        */
+
+        diag.setStatusArray([
+            state.Game.player.spec.VIT,
+            state.Game.player.spec.MND, //順番注意
+            state.Game.player.spec.INT
         ]);
 
         if (keylock && !dexef && diag.step(kstate) == 1) {
@@ -171,7 +179,7 @@ function sceneLvUp(state) { //2024/03/06
         for (var s in wtxt) {
             work.putchr8(wtxt[s], w.x -35, w.y + 16*s + 32 );
         }
-        stbar.draw(work, w.x -35, w.y + 48);
+        //stbar.draw(work, w.x -35, w.y + 48);
 
         //表示
     }
@@ -180,6 +188,11 @@ function sceneLvUp(state) { //2024/03/06
 
         let FLCOLOR = "White";
         let menulist = mlist;
+        let status = [];
+
+        this.setStatusArray = function(ary){
+            status = ary;
+        }
 
         this.step = function(keystate){
 
@@ -259,6 +272,12 @@ function sceneLvUp(state) { //2024/03/06
                 device.kprint(m.text[i], x + m.x +8 , y + m.y + 20 + i*8);
 
                 device.put(m.icon, x + m.x + 10, y + m.y+ 10);
+
+                if (Boolean(status[i])){
+                    for (let j=0; j<status[i]; j++){
+                        device.fill(x + m.x + 20 + j*4, y + m.y + 10, 3, 6, m.barcolor);
+                    }
+                }
             }
 
         }

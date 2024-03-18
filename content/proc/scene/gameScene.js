@@ -185,7 +185,8 @@ function gameScene(state){
 
 	//LvUpStatusMatar
 	let stbar = new statusBarMeter(["cyan","orange","limegreen","white"]);
-    function statusBarMeter(setupParam){
+
+	function statusBarMeter(setupParam){
         //setupParamater [barcolor, ...,}]
         let status;
 
@@ -203,7 +204,7 @@ function gameScene(state){
 					device.fillStyle = this.b[i];
                     for (let j=0; j<this.s[i]; j++){
 						if (j<7){
-                        	device.fillRect(this.x + j*4, this.y + i*4, 3, 3);
+                        	device.fillRect(this.x + j*4, this.y + i*5, 3, 4);
 						}
                     }
                 }
@@ -1100,9 +1101,9 @@ function gameScene(state){
 		stbar.setStatusArray([
             state.Game.player.spec.VIT,
             state.Game.player.spec.INT,
-            state.Game.player.spec.MND,
+            state.Game.player.spec.MND //,
             //state.Game.player.spec.ETC
-			Math.abs(Math.trunc((obCtrl.score-BaseLup)/(NextLup-BaseLup)*7))
+			//Math.abs(Math.trunc((obCtrl.score-BaseLup)/(NextLup-BaseLup)*7))
         ]);
 		stbar.draw(work3, dev.layout.zanki_x + 252, dev.layout.zanki_y -16);
 

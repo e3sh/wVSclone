@@ -790,7 +790,7 @@ function sce_enemy_trbox() {
         o.pickgetf = false;
         o.pickviewitem = 0;
 
-        o.pick = o.parent.pick;
+        if (Boolean(o.parent)) o.pick = o.parent.pick;
     }
 
     this.move = function (scrn, o) {

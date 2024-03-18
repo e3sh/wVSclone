@@ -86,16 +86,28 @@ function spdata(){
 	let ptn = { pict: "TitleLogo",x: 0, y: 0, w: 406, h: 68 };
 	sp_ptn["TitleLogo"] = ptn; 
 
-	sp_ptn["Wand"]  = sp_ptn["_equip_25"];
-	sp_ptn["Knife"] = sp_ptn[ "_equip_4"];
-	sp_ptn["Axe"]   = sp_ptn["_equip_22"];
-	sp_ptn["Bow"]   = sp_ptn["_equip_36"];
-	sp_ptn["Spear"] = sp_ptn["_equip_16"];
-	sp_ptn["Boom"]  = sp_ptn["_equip_34"];
-	sp_ptn["TrBox"] = sp_ptn["_item_41"];
+	sp_ptn["Wand"]  = sp_ptn["_equip_26"];//24
+	//sp_ptn["Rod"]  = sp_ptn["_equip_26"];
 
-	sp_ptn["Key"]   = sp_ptn["_item_60"];
-	sp_ptn["sKey"]  = sp_ptn["_item_60"];
+	sp_ptn["Knife"] = sp_ptn[ "_equip_6"];//4
+	//sp_ptn["Sword"]  = sp_ptn["_equip_6"];
+	
+	sp_ptn["Axe"]   = sp_ptn["_equip_24"];//22
+	//sp_ptn["Baxe"]  = sp_ptn["_equip_24"];
+	
+	sp_ptn["Bow"]   = sp_ptn["_equip_39"];//36
+	//sp_ptn["LBow"]  = sp_ptn["_equip_39"];
+	
+	sp_ptn["Spear"] = sp_ptn["_equip_18"];//16
+	//sp_ptn["lance"]  = sp_ptn["_equip_19"];
+	
+	sp_ptn["Boom"]  = sp_ptn["_equip_61"];//34
+	//sp_ptn["BoomR"] = sp_ptn["_equip_61"];//34
+	
+	//sp_ptn["TrBox"] = sp_ptn["_item_42"];
+
+	//sp_ptn["Key"]   = sp_ptn["_item_61"];//60
+	//sp_ptn["sKey"]  = sp_ptn["_item_61"];
 
 	return sp_ptn;
 

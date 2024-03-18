@@ -372,8 +372,8 @@ function Stage1(stageno) {
             let r = startroom[i%startroom.length];
             ms.push([
                 true
-                , rlist[r].x * BLOCK_W +  Math.floor(rnd.next() * (BLOCK_W/4)) *4 - BLOCK_W/2
-                , rlist[r].y * BLOCK_H +  Math.floor(rnd.next() * (BLOCK_W/4)) *4 - BLOCK_W/2
+                , rlist[r].x * BLOCK_W + BLOCK_W/2
+                , rlist[r].y * BLOCK_H + BLOCK_W/2
                 , 0, "common_vset0", itl[i]
             ]);
         }
