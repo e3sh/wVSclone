@@ -710,13 +710,24 @@ function gameScene(state){
 							shiftx = Math.trunc((w.x - w.sx - dev.gs.viewwidth/2) /24);
 							shifty = Math.trunc((w.y - w.sy - dev.gs.viewheight/2) /24);
 
-							forgroundBG.putPattern(
-								tex_bg, bgData[mc.no], 
-								w.x + shiftx,// - Math.abs(shiftx)/2,
-								w.y + shifty,// - Math.abs(shifty)/2,
-								mc.w,// + Math.abs(shiftx)/2, 
-								mc.h //+ Math.abs(shifty)/2
-							);
+							if (mc.no == 1){
+								forgroundBG.fill(
+									w.x + shiftx,
+									w.y + shifty,
+									mc.w, 
+									mc.h,
+									"rgba(4,4,4,0.8)"
+								);
+							}else{
+								forgroundBG.putPattern(
+									tex_bg, bgData[mc.no], 
+									w.x + shiftx,// - Math.abs(shiftx)/2,
+									w.y + shifty,// - Math.abs(shifty)/2,
+									mc.w,// + Math.abs(shiftx)/2, 
+									mc.h //+ Math.abs(shifty)/2
+								);
+							}
+
 						} else {
 							work2.putPattern(
 								tex_bg, bgData[mc.no], 

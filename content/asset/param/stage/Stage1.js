@@ -30,6 +30,89 @@ function Stage1(stageno) {
     var cmap = [];
     this.colmap = cmap;
 
+    //rlistで各部屋にID付与
+    rlist = roomDivision(rlist);
+
+    //各部屋にIDを割付しサイズを確認
+    function roomDivision(array){
+
+        let cmpf = Array(array.length);
+        cmpf.fill(false);
+
+        let id = 0;
+        for (let w in array){
+            if (!cmpf[w]){
+                array[w].id = id;
+                cmpf[w] = true;
+                check_blankarea(id, array[w].x, array[w].y);
+                id++;
+            }
+            //break;
+        }
+        return array;
+        //再帰用関数
+        function check_blankarea(id, x, y){
+            //alert(id + ":" + x + ":" + y);
+            //console.log(id + ":" + x + ":" + y);
+            let vx = [-1,  0,  1,  0];
+            let vy = [ 0, -1,  0,  1];
+
+            for (let i in vx){
+                for (let w in array){
+                    if (cmpf[w]) continue;
+                    if ((array[w].x == x + vx[i])&&(array[w].y == y + vy[i])){
+                        array[w].id = id;
+                        cmpf[w] = true;
+                        check_blankarea(id, x+vx[i], y+vy[i]);
+                        //alert("!");
+                    }
+                }
+            }   
+            return;
+        }
+    }
+
+    //ID毎の部屋のサイズを調べて、部屋数と最大サイズの部屋IDと最小サイズの部屋IDを返す。
+    function roomSizeCheck(ilist){
+
+        let cnt = [];
+        let ha = [];
+
+        for (let i in ilist){
+            if (Boolean(cnt[ilist[i].id])){
+                cnt[ilist[i].id]++
+
+                if (ha[ilist[i].id].min.x > ilist[i].x) ha[ilist[i].id].min.x = ilist[i].x;
+                if (ha[ilist[i].id].min.y > ilist[i].y) ha[ilist[i].id].min.y = ilist[i].y;
+                if (ha[ilist[i].id].max.x < ilist[i].x) ha[ilist[i].id].max.x = ilist[i].x;
+                if (ha[ilist[i].id].max.y < ilist[i].y) ha[ilist[i].id].max.y = ilist[i].y;
+            }else{
+                cnt[ilist[i].id]=1;
+
+                let d = {min:{x:ilist[i].x, y:ilist[i].y}, max:{x:ilist[i].x, y:ilist[i].y}};
+                ha[ilist[i].id]=d;
+            }
+        };
+        let maxid; for (let i in cnt){ if (cnt[i] == Math.max(...cnt)) {maxid = i; } }
+        let minid; for (let i in cnt){ if (cnt[i] == Math.min(...cnt)) {minid = i; } }
+
+        return {rooms: cnt.length, max:maxid, min:minid, pos: ha };
+    }
+
+    //渡された配列をシャッフル
+    function shuffle( shuffled ){
+
+        for (i = 0; i < 3000; i++) {
+            var snum = Math.floor(rnd.next() * shuffled.length);
+            var dnum = Math.floor(rnd.next() * shuffled.length);
+
+            var w = shuffled[snum];
+            shuffled[snum] = shuffled[dnum];
+            shuffled[dnum] = w;
+        }
+
+        return shuffled;
+    }
     //　マップ設定値
     //  
     //　x,y　　座標　
@@ -227,13 +310,16 @@ function Stage1(stageno) {
             mc.push(w);
         }
 
-        for (let i in rlist){//clist
+        let room_status = roomSizeCheck(rlist);
+        let room = room_status.pos;
+
+        for (let i in room){//rlist,clist
             //天井
             w = [1,
-                rlist[i].x * BLOCK_W, //clist
-                rlist[i].y * BLOCK_H, //clist
-                96,
-                96,
+                (room[i].min.x - 1) * BLOCK_W -32, //rlist,clist
+                (room[i].min.y - 1) * BLOCK_H -32, //rlist,clist
+                (room[i].max.x - room[i].min.x + 2) * BLOCK_W + 96 + 32 + 32,
+                (room[i].max.y - room[i].min.y + 2) * BLOCK_H + 96 + 32 + 32,
                 true,//HitCheck有
                 3, //ceiling(FG)
                 true
@@ -282,79 +368,6 @@ function Stage1(stageno) {
     }
 
     function mapInitial(stageno) { //flag = true 初期マップ展開有り　false 自機リスタート
-
-        //各部屋にIDを割付しサイズを確認
-        function roomDivision(array){
-
-            let cmpf = Array(array.length);
-            cmpf.fill(false);
-
-            let id = 0;
-            for (let w in array){
-                if (!cmpf[w]){
-                    array[w].id = id;
-                    cmpf[w] = true;
-                    check_blankarea(id, array[w].x, array[w].y);
-                    id++;
-                }
-                    //break;
-            }
-            return array;
-            //再帰用関数
-            function check_blankarea(id, x, y){
-                //alert(id + ":" + x + ":" + y);
-                //console.log(id + ":" + x + ":" + y);
-                let vx = [-1,  0,  1,  0];
-                let vy = [ 0, -1,  0,  1];
-
-                for (let i in vx){
-                    for (let w in array){
-                        if (cmpf[w]) continue;
-                        if ((array[w].x == x + vx[i])&&(array[w].y == y + vy[i])){
-                            array[w].id = id;
-                            cmpf[w] = true;
-                            check_blankarea(id, x+vx[i], y+vy[i]);
-                            //alert("!");
-                       }
-                    }
-                }   
-                return;
-            }
-        }
-        
-        //ID毎の部屋のサイズを調べて、部屋数と最大サイズの部屋IDと最小サイズの部屋IDを返す。
-        function roomSizeCheck(ilist){
-
-            let cnt = [];
-            for (let i in ilist){
-                if (Boolean(cnt[ilist[i].id])){
-                    cnt[ilist[i].id]++
-                }else{
-                    cnt[ilist[i].id]=1;
-                }
-            };
-            let maxid; for (let i in cnt){ if (cnt[i] == Math.max(...cnt)) {maxid = i; } }
-            let minid; for (let i in cnt){ if (cnt[i] == Math.min(...cnt)) {minid = i; } }
-
-            return {rooms: cnt.length, max:maxid, min:minid };
-        }
-
-        //渡された配列をシャッフル
-        function shuffle( shuffled ){
-    
-            for (i = 0; i < 3000; i++) {
-                var snum = Math.floor(rnd.next() * shuffled.length);
-                var dnum = Math.floor(rnd.next() * shuffled.length);
-    
-                var w = shuffled[snum];
-                shuffled[snum] = shuffled[dnum];
-                shuffled[dnum] = w;
-            }
-
-            return shuffled;
-        }
-
-        rlist = roomDivision(rlist);
 
         let room_status = roomSizeCheck(rlist);
 

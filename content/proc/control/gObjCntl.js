@@ -414,7 +414,7 @@
         debug_colnum = res.length;
         this.collisioncount = debug_colnum/2;
 
-        if (state.System.time() > this.ceildelay+1000) this.ceilflag = false;//再表示までの遅延
+        if (state.System.time() > this.ceildelay+300) this.ceilflag = false;//再表示までの遅延
 
         for (var i = 0, loopend = res.length; i < loopend; i += 2) {
 
@@ -631,6 +631,8 @@
         if (f == 0) {
             restart_count+= 60/(1000/state.System.deltaTime());//60fに対して現在のフレームレート補正値を加算
             //state.Game.player.hp = 0;
+            //this.ceilflag = true; //天井
+            this.ceildelay = state.System.time()+1000;//部屋で死んだ場合の消灯時間延長
 
             if (restart_count > 180) {//3秒後
                 before_int = this.interrapt;
