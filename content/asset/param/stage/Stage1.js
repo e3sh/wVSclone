@@ -13,11 +13,10 @@ function Stage1(stageno) {
     dgn.create();
 
     var mp = dgn.mapdata;
-    var hlist = [];
-
-    hlist = dgn.ml;
-
-    var rlist = dgn.il;
+ 
+    let hlist = dgn.ml; //通路を含む壁がないエリア
+    let rlist = dgn.il; //壁際を除く部屋部分(初期配置エリア
+    let clist = dgn.rl; //壁際含む部屋部分(通路は含まない)
 
     stageno = Math.floor(Math.random() * 1000000);
     var rnd = new myrnd(stageno);//seed);
@@ -217,16 +216,29 @@ function Stage1(stageno) {
         for (var i in hlist) {
 
             w = [0,
-        hlist[i].x * BLOCK_W, // + 10,
-        hlist[i].y * BLOCK_H, // + 10,
-        96,
-        96,
-        false,
-        0,
-        true
-        ];
+                hlist[i].x * BLOCK_W, // + 10,
+                hlist[i].y * BLOCK_H, // + 10,
+                96,
+                96,
+                false,
+                0, //BG
+                true
+                ];
             mc.push(w);
+        }
 
+        for (let i in rlist){//clist
+            //天井
+            w = [1,
+                rlist[i].x * BLOCK_W, //clist
+                rlist[i].y * BLOCK_H, //clist
+                96,
+                96,
+                true,//HitCheck有
+                3, //ceiling(FG)
+                true
+             ];
+             mc.push(w);
         }
 
         var r = Math.floor(rnd.next() * rlist.length)
@@ -246,19 +258,18 @@ function Stage1(stageno) {
 
         //no:graphics　type:floortype　0:床　1:壁　2:ドア
 
-
         for (var j in mc) {
             var w = mc[j];
 
             var chip = {};
 
-            chip.no = w[0];
+            chip.no = w[0]; //bgchip_no(絵の種類)
             chip.x = w[1];
             chip.y = w[2];
             chip.w = w[3];
             chip.h = w[4];
-            chip.c = w[5];
-            chip.type = w[6] + 10; //当たり判定混合用に背景ユニットはtype+10で処理することにする。
+            chip.c = w[5]; //Hitcheck
+            chip.type = w[6] + 10; //当たり判定混合用に背景ユニットはtype+10で処理することにする。FG/BGはこの数字でif分岐(0:BG_1:FG_2:DOOR）
             chip.view = false;
             chip.visible = w[7];
             chip.lookf = false;

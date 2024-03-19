@@ -230,10 +230,11 @@ function soundCntl( asset ) {
 
         if (mute) vol = 0.0;
 
+        vol = (vol > this.mastervolume)?this.mastervolume: vol;
+
         for (var i in snd) {
             snd[i].volume = vol;
         }
-
         //snd[plnum].volume = vol;
     }
 

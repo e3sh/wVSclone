@@ -697,9 +697,12 @@ function gameScene(state){
 					if (mc.lookf != drawexecute) mmrefle = true;
 					mc.lookf = drawexecute;//true;　//画面内に入ったことがあるフラグ
 					var wfg = false;
-					if (mc.type == 11) wfg = true; //Forground表示のパターン(壁)
+					if (mc.type%2 == 1) wfg = true; //Forground表示のパターン(壁):type偶数はBG/奇数がFG
+					let ceilview = true;
+					if (obCtrl.ceilflag && mc.type == 13) ceilview = false;//天井を表示しない 
 					//if (Boolean(tex_bg[mc.no])) {
-					if (Boolean(bgData[mc.no])) {
+					if (Boolean(bgData[mc.no])){
+						if (ceilview){
 						if (wfg) {
 							var shiftx = 0;
 							var shifty = -24;
@@ -721,6 +724,7 @@ function gameScene(state){
 								w.y, 
 								mc.w, mc.h
 							);
+						}
 						}
 						//work2.putchr(Number(mc.no).toString(), w.x, w.y);
 					} else {
@@ -782,7 +786,9 @@ function gameScene(state){
 				var w = dev.gs.worldtoView(mc.x, mc.y);
 	
 				if (mc.visible) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
-					if (mc.type == 11) {//Forground表示のパターン(壁)に影をつける
+					let alpha = 0.6;
+					if (( obCtrl.ceilflag && mc.type == 13)) alpha = 0.15;
+					if (mc.type%2 == 1) {//Forground表示のパターン(壁)に影をつける
 	
 						var shiftx = 0;
 						var shifty = -24;
@@ -793,13 +799,14 @@ function gameScene(state){
 						var cl = {}
 						cl.x = w.x - shiftx;
 						cl.y = w.y - shifty;
-						cl.w = mc.w;
-						cl.h = mc.h;
+						cl.w = mc.w -1;
+						cl.h = mc.h -1;
+						cl.fs = "rgba(0,0,0," + alpha + ")";
 
 						cl.draw = function (device) {
 						device.beginPath();
 
-						device.fillStyle = "rgba(0,0,0,0.6)"//"blue";
+						device.fillStyle = this.fs //"blue";
 						//device.lineWidth = 1;
 						device.fillRect(this.x, this.y, this.w, this.h);
 					}

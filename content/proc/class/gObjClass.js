@@ -45,7 +45,7 @@ function gObjectClass() {
     this.normal_draw_enable = true;
     this.custom_draw_enable = false;
 
-    this.damegeflag = false;
+    this.damageflag = false;
 
     this.damage = { count: 0, vector: 0, dist: 0, no: 0 };
 
@@ -137,7 +137,7 @@ gObjectClass.prototype = {
         this.normal_draw_enable = true;
         this.custom_draw_enable = false;
 
-        this.damegeflag = false;
+        this.damageflag = false;
     },
 
     //移動物処理用の関数のデフォルト

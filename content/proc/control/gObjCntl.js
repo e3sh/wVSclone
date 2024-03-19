@@ -42,6 +42,9 @@
 
     this.itemlv = itemlv_; //武器Weaponを拾った時のItemLevel保持用work
 
+    this.ceilflag = false; //天井の下にいるかF
+    this.ceildelay = 0; //消した後すぐには再表示させないための遅延カウンタ
+
     //
     this.hidan = 0;
 
@@ -411,6 +414,8 @@
         debug_colnum = res.length;
         this.collisioncount = debug_colnum/2;
 
+        if (state.System.time() > this.ceildelay+1000) this.ceilflag = false;//再表示までの遅延
+
         for (var i = 0, loopend = res.length; i < loopend; i += 2) {
 
             var o = res[i];
@@ -480,6 +485,19 @@
                             o.mapColX = bupColX;// || o.mapColX;
                             o.mapColY = bupColY;// || o.mapColY;
                         }
+
+                        if (w.type == 13) {//背景種類　天井　
+
+                            if (o.type == 98) {//　obj.type　が　自機
+                                this.ceilflag = true; //天井
+                                this.ceildelay = state.System.time();//最後に消した基準タイム
+                                //alert("c");
+                            }
+                            o.mapCollision = bupCol;// || o.mapCollision;
+                            o.mapColX = bupColX;// || o.mapColX;
+                            o.mapColY = bupColY;// || o.mapColY;
+                        }
+
                     }
                 }
                 //wall and wall
@@ -570,7 +588,9 @@
 
                         if (o.type != o.crash.type) {
                             //if (o.crash.type != 4) o.hp -= o.crash.attack; // ((o.crash.hp > 0) ? o.crash.hp : 1);
-                            if (o.crash.dmgcheck) o.hp -= o.crash.attack; // ((o.crash.hp > 0) ? o.crash.hp : 1);
+                            if (o.damage.count <=10 ){ //吹き飛び中(硬直)時間中はダメージが入らないようにする
+                                if (o.crash.dmgcheck) o.hp -= o.crash.attack; // ((o.crash.hp > 0) ? o.crash.hp : 1);
+                            }
                         } else {
                             o.mapCollision = true; // whp = -1; //同じtype同士が衝突した場合はダメージ発生無しの衝突処理のみ
                         }

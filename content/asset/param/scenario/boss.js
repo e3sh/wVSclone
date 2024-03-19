@@ -124,6 +124,8 @@ function sce_boss_2(){
 
         o.custom_draw_enable = true;
         o.smode = 0;
+
+        o.maxhp = 300;
     }
 
     this.draw = sce_boss_damage_gr;

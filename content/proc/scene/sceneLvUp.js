@@ -65,7 +65,7 @@ function sceneLvUp(state) { //2024/03/06
         work2.draw();
 
         let dpara = [
-            { keynum:38, text:["Time +0.5s", (5 + state.Game.player.spec.VIT * 0.5) + "s-> " + (5 + (state.Game.player.spec.VIT+1) * 0.5) + "s" ],
+            { keynum:38, text:["0.5s Ext.", (5 + state.Game.player.spec.VIT * 0.5) + "s->" + (5 + (state.Game.player.spec.VIT+1) * 0.5) + "s" ],
                 icon:"BallS1", barcolor: "cyan",  
                 func: { call: function(p){
                     state.Game.player.spec.VIT++;
@@ -79,7 +79,7 @@ function sceneLvUp(state) { //2024/03/06
                 }, p:1},
                 x:-35, y:-25+55, w:70, h:50, keyon:false }//downkey
                 */
-            ,{ keynum:37, text:["Recover +1", (3 + state.Game.player.spec.MND) + " -> " + (3 + state.Game.player.spec.MND+1) ], 
+            ,{ keynum:37, text:[" Heal+1", " " + (3 + state.Game.player.spec.MND) + " -> " + (3 + state.Game.player.spec.MND+1) ], 
                 icon:"BallL1", barcolor: "limegreen",
                 func: { call: function(p){
                     state.Game.player.spec.MND++;
@@ -87,7 +87,7 @@ function sceneLvUp(state) { //2024/03/06
                 }, p:1},
                 x:-35-80, y:-25, w:70, h:50, keyon:false, select: false }//left
 
-            ,{ keynum:39, text:["Damage +2", (10 + state.Game.player.spec.INT*2) + " -> " + (10 + (state.Game.player.spec.INT+1)*2) ], 
+            ,{ keynum:39, text:["Damage+2", " " + (10 + state.Game.player.spec.INT*2) + "-> " + (10 + (state.Game.player.spec.INT+1)*2) ], 
                 icon:"BallB1", barcolor: "orangered",
                 func: { call: function(p){
                     state.Game.player.spec.INT++;
@@ -219,7 +219,7 @@ function sceneLvUp(state) { //2024/03/06
                 let m = menulist[i];
                 if (m.keyon) {
                     m.func.call(m.func.p);
-                    menulist[i].text[1] = "GET_STATUS";
+                    menulist[i].text[1] = "GET_STAT";
                     menulist[i].select = true;
                 }
             }
@@ -269,7 +269,7 @@ function sceneLvUp(state) { //2024/03/06
                 //onsole.log(m);
 
                 for (let i in m.text)   
-                device.kprint(m.text[i], x + m.x +8 , y + m.y + 20 + i*8);
+                device.putchr8(m.text[i], x + m.x +2 , y + m.y + 20 + i*8);
 
                 device.put(m.icon, x + m.x + 10, y + m.y+ 10);
 
