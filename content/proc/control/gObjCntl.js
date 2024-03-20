@@ -24,7 +24,7 @@
 
     var item_ = [];
     var itemstack_ = [];
-    var itemlv_;
+    var itemlv_= 0;
 
     this.item = item_; //現在取得しているアイテム(リセットオンだとやられると0）(消す処理自体はgameSceneで処理）
 
@@ -44,6 +44,7 @@
 
     this.ceilflag = false; //天井の下にいるかF
     this.ceildelay = 0; //消した後すぐには再表示させないための遅延カウンタ
+    this.ceilindex = -1; //消す天井のmapChip_index
 
     //
     this.hidan = 0;
@@ -214,7 +215,7 @@
         }
 
         if (state.Config.fullpower) {
-            this.item[7] = 10;
+            //this.item[7] = 10;
         }
 
         this.item[35] = 0; //coinclear;
@@ -241,7 +242,7 @@
             //for (var i = 0, loopend = obj.length; i < loopend; i++) {
             var o = obj[i];
 
-            o.vecfrm = 60/(1000/state.System.deltaTime());
+            o.vecfrm = 60/(1000/state.System.deltaTime()); o.vecfrm = (o.vecfrm >3)?3:o.vecfrm;//フレームレート低下弊害抑止(20f/s<は処理落ち)
             o.alive =  state.System.time() - o.barthTime;
             //o.vecfrm = 1;
             //o.colitem && o.colitem.remove();
@@ -491,6 +492,7 @@
                             if (o.type == 98) {//　obj.type　が　自機
                                 this.ceilflag = true; //天井
                                 this.ceildelay = state.System.time();//最後に消した基準タイム
+                                this.ceilindex = w.index;
                                 //alert("c");
                             }
                             o.mapCollision = bupCol;// || o.mapCollision;
@@ -1155,6 +1157,10 @@
             this.itemstack.push(w);
         }
 
+        if (((num >= 15) && (num <= 19)) || (num == 50)){
+            state.Game.player.stack.push({ch:num, id:0});
+        }
+
         dev.sound.effect(11); //get音
 
         this.messageconsole.write(this.itemTable[num] + ".GET");
@@ -1280,7 +1286,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
              }
  
              if (((msg.src >= 15) && (msg.src <= 19)) || (msg.src==50)){
-                 objc.itemlv = msg.dst;
+                 state.Game.player.stack.push({ch:msg.src, id:msg.dst});
                  wid = "Weapon!"; 
                  dev.sound.effect(11); //get音
                  mapsc.add(x, y, 0, 20, 39, wid);
@@ -1310,9 +1316,6 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
              break;
  
          case "bomb2":
-             if (Boolean(objc.item[7])) { 
-                 if (objc.item[7] > 0) objc.item[7]--;
-             }
              for (let i in obj) {
                  let o = obj[i];
      
@@ -1335,9 +1338,6 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
              //msg.src : add attack power
              let atrpwr = isNaN(msg.src)? 0: msg.src;
 
-             if (Boolean(objc.item[7])) {
-                 if (objc.item[7] > 0) objc.item[7]--;
-             }
              for (let i in obj) {
                  //画面内にいる敵のみ
                  var onst = sobj.gt.in_view_range(

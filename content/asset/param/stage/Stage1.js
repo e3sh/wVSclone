@@ -359,9 +359,11 @@ function Stage1(stageno) {
             chip.view = false;
             chip.visible = w[7];
             chip.lookf = false;
+            chip.index = -1;
 
             map_cp.push(chip);
         }
+        for (let i in map_cp){map_cp[i].index = i;}
 
         this.colmap = cmap;
         return map_cp;

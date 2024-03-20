@@ -215,6 +215,9 @@ function gameScene(state){
     }
 
 	mapdisp = true; //以前の処理では自動で消されない画面に書いていたので常時表示処理させる為に常にtrue；
+
+	//let getweapon = new get_weapon_check( state );
+
 	//==========================================================================================
 	//処理部
 
@@ -496,43 +499,49 @@ function gameScene(state){
 	                return 3; //gover
 	            }
 	        }
-	    } else {
+	    } else {　//not Interrapt
 	        //bg_scroll = true;
 	        mapsc.enable = true;
 	        mapsc.counter_runnning = true;
 
 			//UI_force_reflash = false;
 	        //demo_mode = false;
-	    }
+	    //}
 
 	    //item
-	    for (i in obCtrl.item) {
-		//	
-			if (i == 21) {//extend
-	            if (obCtrl.item[21] > 0) {
-	                obCtrl.item[21] = 0;
-	                dead_cnt--;
-	                dev.sound.effect(11); //get音
-	            }
-	        }
-	        if (i == 26) {//lamp
-	            if (obCtrl.item[26] > 0) {
-	                obCtrl.item[26] = 0;
-	                lampf = true;
-	                //dev.sound.effect(9); //cursor音
-	            }
-	        }
-	        if (i == 27) {//map
-	            if (obCtrl.item[27] > 0) {
-	                obCtrl.item[27] = 0;
-	                mapdisp = false; //falseで表示
-	                //dev.sound.effect(9); //cursor音
-					for (let i in mapChip){
-					//	mapChip[i].lookf = true; //mapを一気に表示
+			let wchk = false;
+			for (let i in obCtrl.item) {
+			//	
+				if (i == 21) {//extend
+					if (obCtrl.item[21] > 0) {
+						obCtrl.item[21] = 0;
+						dead_cnt--;
+						dev.sound.effect(11); //get音
 					}
-	            }
-	        }
-	        //weapons
+				}
+				if (i == 26) {//lamp
+					if (obCtrl.item[26] > 0) {
+						obCtrl.item[26] = 0;
+						lampf = true;
+						//dev.sound.effect(9); //cursor音
+					}
+				}
+				if (i == 27) {//map
+					if (obCtrl.item[27] > 0) {
+						obCtrl.item[27] = 0;
+						mapdisp = false; //falseで表示
+						//dev.sound.effect(9); //cursor音
+						for (let i in mapChip){
+						//	mapChip[i].lookf = true; //mapを一気に表示
+						}
+					}
+				}
+				//weapons
+				//if (!wchk) wchk = getweapon.check(i);//1frameでは１個分の武器のみ取得チェック(重複すると消滅等発生する為)
+				//get_weapon_checksub( i );
+		}
+		}
+		/*	
 	        if (i == 15) {//wand
 	            if (obCtrl.item[15] > 0) {
 					if (state.Game.player.weapon == 0){
@@ -594,8 +603,9 @@ function gameScene(state){
 	                //dev.sound.effect(9); //cursor音
 	            }
 	        }
+			
 	    }
-
+		*/
 		obCtrl.move(mapsc);
 		mapsc.step(obCtrl, state.System.time());
 
@@ -603,6 +613,52 @@ function gameScene(state){
 
 	    return 0;
 	}
+
+
+	/*
+	function get_weapon_check( state ){
+
+		let obCtrl = state.obCtrl; 
+
+		let weaponlist = [
+			{no: 0,chr:15, name:"rod"  },
+			{no: 1,chr:16, name:"sword"},
+			{no: 2,chr:17, name:"axe"  },
+			{no: 3,chr:19, name:"spear"},
+			{no: 4,chr:18, name:"boom" },
+			{no: 5,chr:50, name:"bow"  }
+		];
+
+		let execute = false;
+
+		this.check = checksub;
+
+		function checksub( item ){
+			let execute = false;
+
+			for (let p of weaponlist){
+				if (item == p.chr) {
+					if (obCtrl.item[p.chr] > 0) {
+						obCtrl.item[p.chr]--;
+	
+						if (state.Game.player.weapon == p.no){
+							if ( p.name  == "rod" ) {obCtrl.item[20] = obCtrl.item[20] + 7;}//get ball
+							else {state.Game.player.level++;}
+						}else{
+							state.Game.player.level = obCtrl.itemlv;
+						}
+						state.Game.player.weapon = p.no;
+	
+						execute = true;
+					} else {
+						execute = false;
+					}
+				}
+			}
+			return execute;
+		}
+	}
+	*/
 
 	function game_draw() {
         
@@ -696,10 +752,10 @@ function gameScene(state){
 				if (mc.visible) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
 					if (mc.lookf != drawexecute) mmrefle = true;
 					mc.lookf = drawexecute;//true;　//画面内に入ったことがあるフラグ
-					var wfg = false;
+					var wfg = false; //with forground?
 					if (mc.type%2 == 1) wfg = true; //Forground表示のパターン(壁):type偶数はBG/奇数がFG
 					let ceilview = true;
-					if (obCtrl.ceilflag && mc.type == 13) ceilview = false;//天井を表示しない 
+					if (obCtrl.ceilflag && mc.type == 13 && obCtrl.ceilindex == i) ceilview = false;//天井を表示しない 
 					//if (Boolean(tex_bg[mc.no])) {
 					if (Boolean(bgData[mc.no])){
 						if (ceilview){
@@ -798,7 +854,7 @@ function gameScene(state){
 	
 				if (mc.visible) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
 					let alpha = 0.6;
-					if (( obCtrl.ceilflag && mc.type == 13)) alpha = 0.15;
+					if ( obCtrl.ceilflag && mc.type == 13 && obCtrl.ceilindex == i) alpha = 0.15;
 					if (mc.type%2 == 1) {//Forground表示のパターン(壁)に影をつける
 	
 						var shiftx = 0;

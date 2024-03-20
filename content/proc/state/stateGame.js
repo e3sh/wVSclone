@@ -22,6 +22,10 @@ function stateGame() {
         this.level = 0;//現状weaponLevelで使用予定
         this.skill_ex = [0, 0, 0, 0, 0, 0];//武器毎の獲得スコア累積 /処理未作成の為未使用（2024/02/14）
         this.skill_lv = [0, 0, 0, 0, 0, 0];//武器毎のlevel　/処理未作成の為未使用（2024/02/14）
+        let stack_ = [];
+        this.stack = stack_;
+        //{ 15:0, 16:0, 17:0, 18:0, 19:0, 50:0 };//GetWeaponItemLvWork use ObjCtrl getitem and player_sce
+        //15:rod 16:sword 17:axe 19:spare 18:boom 50:bow
 
         this.spec = new stateSpec();
     }

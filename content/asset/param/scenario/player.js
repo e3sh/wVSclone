@@ -28,6 +28,49 @@ function sce_player() {
     let delay_st;
     let lvupf;
 
+	function get_weapon_check( o ){
+
+        let player = o.gameState.player;
+
+		let weaponlist = [
+			{no: 0,chr:15, name:"rod"  },
+			{no: 1,chr:16, name:"sword"},
+			{no: 2,chr:17, name:"axe"  },
+			{no: 3,chr:19, name:"spear"},
+			{no: 4,chr:18, name:"boom" },
+			{no: 5,chr:50, name:"bow"  }
+		];
+
+		this.check = checksub;
+
+		function checksub(){
+			let execute = false;
+
+            if (!Boolean(player.stack)) return execute;
+            if (player.stack.length > 0){
+                let w = player.stack.pop();
+
+                for (let p of weaponlist){
+                    if (w.ch == p.chr) {
+                        if (o.item[p.chr] > 0) o.item[p.chr]--;
+
+                        if (player.weapon == p.no){
+                            if ( p.name  == "rod" ) {o.item[20] = o.item[20] + 7;}//get ball
+                            else {player.level++;}
+                        }else{
+                            player.level = w.id;
+                        }
+                        player.weapon = p.no;
+                        execute = true;
+                    } else {
+                        execute = false;
+                    }
+                }
+            }
+            return execute;
+		}
+	}
+
     // 自機の移動　====
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
@@ -66,11 +109,15 @@ function sce_player() {
         o.before_weapon = o.gameState.player.weapon;
         o.before_wlevel = o.gameState.player.level;
 
+        if (!Boolean(o.gameState.player.stack)) o.gameState.player.stack = [];
+
         o.lighton = true;
 
         o.doorflag = false;
 
         o.repro = false;
+
+        o.getweapon = new get_weapon_check( o );
 
         //o.spec = o.gameState.player.spec;
 
@@ -82,7 +129,7 @@ function sce_player() {
         o.spec.ETC = o.gameState.player.spec.ETC;
 
         o.gameState.player.spec = o.spec;
-
+    
         SHIELD_TIME = SHIELD_TIME_BASE + o.spec.VIT*30; //0.5s(30f)
 
         //o.spec.VIT = 0; //HPrecover+ : init 3 +
@@ -437,7 +484,11 @@ function sce_player() {
                     break;
             }
         }
+        
+        //武器取得チェック(武器用スタックに何かあるか)
+        o.getweapon.check();
 
+        //武器持ち替え
         if (o.gameState.player.weapon != o.before_weapon) {
 
             var ww = [15, 16, 17, 19, 18, 50];
@@ -533,6 +584,7 @@ function sce_player() {
         o.vx = wvx;
         o.vy = wvy;
 
+        //Door in (StageClear)
         if (o.doorflag && o.jump == 0) {
             if (keyget > 0) {
                 o.item[22] = 0;
