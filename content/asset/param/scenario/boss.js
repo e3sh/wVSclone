@@ -221,7 +221,7 @@ function sce_boss_damage_gr(scrn, o) {
     cl = {};
     var w = o.gt.worldtoView(o.x, o.y);
     cl.x = w.x;
-    cl.y = w.y;
+    cl.y = w.y + 3 * o.display_size;
     //cl.sr = ((360 * ((o.maxhp - o.hp) / o.maxhp) - 90) * (Math.PI / 180));
     cl.sr = (o.hp / o.maxhp) * 0.5 * Math.PI;
 

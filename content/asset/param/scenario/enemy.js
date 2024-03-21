@@ -304,6 +304,7 @@ function sce_enemy_randomshot() {
         o.hit_y *= 1.5;
 
         o.hp = 20;
+        o.maxhp = o.hp;
 
         o.pickgetf = false;
         o.pickviewitem = 0;
@@ -1056,7 +1057,7 @@ function sce_enemy_inv_gr(scrn, o){
         lbar.mhp = o.maxhp;
 
         lbar.x = w.x + o.shiftx;
-        lbar.y = w.y + o.shifty;
+        lbar.y = w.y + o.shifty + o.hit_y + 3*o.display_size;
 
         //scrn.putchr8(o.hp + "/" +o.maxhp,w.x,w.y);
 
@@ -1067,13 +1068,13 @@ function sce_enemy_inv_gr(scrn, o){
             device.beginPath();
 	        device.fillStyle = this.cbar;
 	        device.lineWidth = 1;
-	        device.fillRect(this.x -16, this.y +16+3, (this.hp/this.mhp)*32, 2);
+	        device.fillRect(this.x -16, this.y +3, (this.hp/this.mhp)*32, 2);
 	        device.stroke();
 
 	        device.beginPath();
 	        device.strokeStyle = this.cborder; 
 	        device.lineWidth = 1;
-	        device.rect(this.x -17, this.y+16+2, 34, 4);
+	        device.rect(this.x -17, this.y +2, 34, 4);
 	        device.stroke();
         }
         scrn.putFunc(lbar);

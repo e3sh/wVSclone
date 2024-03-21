@@ -163,7 +163,7 @@ function sce_player() {
             o.gameState.player.barrier = true;
             o.lighton = true;
             //    o.damageflag = false;
-            o.maxspeed = 4.5;//SHIELD中はスピードダウン
+            if (o.gameState.player.weapon !=0 ) o.maxspeed = 4.5;//SHIELD中はスピードダウン/RODでは減速無し
         }
         if ((o.frame > SHIELD_TIME) && o.gameState.player.barrier) {
             //無敵時間終わったら瞬間に元に戻す
@@ -758,7 +758,7 @@ function sce_player() {
         var w = o.gt.worldtoView(o.x, o.y);
 
         lbar.x = w.x + o.shiftx;
-        lbar.y = w.y + o.shifty;
+        lbar.y = w.y + o.shifty + o.hit_y + 3;
         //lbar.br = barriref ? "skyblue" : (lbar.hp/lbar.mhp>0.3)?"limegreen":"red";
 
         lbar.cbar = (barriref)?"skyblue" : (lbar.hp/lbar.mhp>0.5)?"limegreen":(lbar.hp/lbar.mhp>0.3)?"yellowgreen":"red"; 
@@ -768,13 +768,13 @@ function sce_player() {
             device.beginPath();
 	        device.fillStyle = this.cbar;
 	        device.lineWidth = 1;
-	        device.fillRect(this.x -16, this.y +16+3, (this.hp/this.mhp)*32, 2);
+	        device.fillRect(this.x -16, this.y +3, (this.hp/this.mhp)*32, 2);
 	        device.stroke();
 
 	        device.beginPath();
 	        device.strokeStyle = this.cborder;  
 	        device.lineWidth = 1;
-	        device.rect(this.x -17, this.y+16+2, 34, 4);
+	        device.rect(this.x -17, this.y +2, 34, 4);
 	        device.stroke();
         }
         if (o.hp != o.maxhp) scrn.putFunc(lbar);
