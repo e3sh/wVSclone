@@ -30,6 +30,8 @@ function Stage1(stageno) {
     var cmap = [];
     this.colmap = cmap;
 
+    this.startroom_id; 
+
     //rlistで各部屋にID付与
     rlist = roomDivision(rlist);
 
@@ -313,18 +315,41 @@ function Stage1(stageno) {
         let room_status = roomSizeCheck(rlist);
         let room = room_status.pos;
 
+        let sid; //startroom_id; 
+
         for (let i in room){//rlist,clist
             //天井
+            let x = (room[i].min.x - 1) * BLOCK_W;
+            let y = (room[i].min.y - 1) * BLOCK_H;
+            let wdt = (room[i].max.x - room[i].min.x + 2) * BLOCK_W;
+            let hgt = (room[i].max.y - room[i].min.y + 2) * BLOCK_H;
+
+
             w = [1,
-                (room[i].min.x - 1) * BLOCK_W -32, //rlist,clist
-                (room[i].min.y - 1) * BLOCK_H -32, //rlist,clist
-                (room[i].max.x - room[i].min.x + 2) * BLOCK_W + 96 + 32 + 32,
-                (room[i].max.y - room[i].min.y + 2) * BLOCK_H + 96 + 32 + 32,
+                x -32, //rlist,clist
+                y -32, //rlist,clist
+                wdt + 96 +32 +32,
+                hgt + 96 +32 +32,
                 true,//HitCheck有
                 3, //ceiling(FG)
                 true
              ];
+
              mc.push(w);
+
+             if (i == room_status.min) {
+
+                w = [14, //魔法陣画像
+                    x + (wdt/2)+32, y + (hgt/2)+32, 64, 64, false,//HitCheck有
+                    0, //(BG)
+                    true //visibility
+                 ];
+
+                sid = mc.length - 1;
+                //console.log("r:"+sid);
+
+                mc.push(w);
+             }
         }
 
         var r = Math.floor(rnd.next() * rlist.length)
@@ -365,7 +390,9 @@ function Stage1(stageno) {
         }
         for (let i in map_cp){map_cp[i].index = i;}
 
+        this.startroom_id = sid;
         this.colmap = cmap;
+
         return map_cp;
     }
 
@@ -554,6 +581,7 @@ function Stage1(stageno) {
     	[11, 256 - 96, 160 - 128, 31, 31], //11,160,32 壁5
     	[12, 96 - 96, 192 - 128, 31, 31], //12,0,64 床(壁際)
         [13,  0, 0, 32, 32], //13, 0, 0 Door
+        [14,  0, 32, 32, 32], //14, 0, 32 魔法陣
         ];
 
         var bg_ptn = []; // BGパターン

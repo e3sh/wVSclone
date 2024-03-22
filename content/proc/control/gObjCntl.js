@@ -496,7 +496,13 @@
                                 //alert("c");
                             }
                             if ((o.type == 2)||(o.type == 3)) {//　obj.type　が　敵/敵弾
-                                bupCol = false;//部屋内だと衝突解除
+                                
+                                if (mapsc.startroom_id() == w.index){ //開始部屋に入れない処理
+                                    bupCol  = o.mapCollision;
+                                    bupColX = o.mapColX;
+                                    bupColY = o.mapColY;
+                                    //console.log("rc"+w.index + ":" + mapsc.startroom_id());
+                                } 
                             }
 
                             o.mapCollision = bupCol;// || o.mapCollision;

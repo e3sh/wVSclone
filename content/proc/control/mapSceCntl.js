@@ -34,7 +34,9 @@ function mapSceControl(){
 	var stage_ptn; //bgグラフィック分割用データ(bgのspdata)
 
 	var colmap;
-	this.cmap = function () { return colmap; };   //当たり判定用マップデータ[x,y]
+    let sid;
+	this.cmap = function () { return colmap; } //当たり判定用マップデータ[x,y]
+    this.startroom_id = function(){return sid; } //開始部屋のMapChipIndex
 
 	newdata(this.stage, this.keyuse);
 
@@ -57,6 +59,9 @@ function mapSceControl(){
 	    stage_ptn = stage_data.bgPtn();
 
 	    colmap = stage_data.colmap;
+        sid = stage_data.startroom_id;
+
+        //console.log(sid);
 	}
 
 	this.change = function (stage) {
