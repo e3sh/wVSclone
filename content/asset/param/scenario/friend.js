@@ -332,6 +332,7 @@ function sce_friend_boom() {
         o.bup_vector = o.vector;
 
         if ((o.target_d(o.parent.x, o.parent.y) < 18) || (o.shotcount > 300)) {
+            o.parent.triger = 5;
             o.parent.autotrig = 5;
 
             o.status = 0;

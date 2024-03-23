@@ -15,15 +15,24 @@ function sce_player() {
         x: Array(40),
         y: Array(40)
     }
-
+    /*
     const wpn = {
-        0:{ch:6,sce:"common_vset8"},//wand
-        1:{ch:10,sce:"friend_rotate"},//sword
-        2:{ch:38,sce:"friend_rotate_full"},//axe
-        3:{ch:37,sce:"friend_boom"},//boom
-        4:{ch:36,sce:"friend_straight"},//spear
-        5:{ch:46,sce:"common_vset10"} //arrow
+        0:{ch:6,sce:"common_vset8"    },//wand
+        1:{ch:10,sce:"friend_rotate"    },//sword
+        2:{ch:38,sce:"friend_rotate_full"   },//axe
+        3:{ch:37,sce:"friend_boom"          },//boom
+        4:{ch:36,sce:"friend_straight"          },//spear
+        5:{ch:46,sce:"common_vset10"          } //arrow
     }
+    */
+    let weaponlist = [
+        {no: 0,chr:15, name:"rod"  ,auto: false },
+        {no: 1,chr:16, name:"sword",auto: true },
+        {no: 2,chr:17, name:"axe"  ,auto: true },
+        {no: 3,chr:19, name:"spear",auto: false },
+        {no: 4,chr:18, name:"boom" ,auto: true },
+        {no: 5,chr:50, name:"bow"  ,auto: true }
+    ];
 
     let delay_st;
     let lvupf;
@@ -31,7 +40,7 @@ function sce_player() {
 	function get_weapon_check( o ){
 
         let player = o.gameState.player;
-
+        /*
 		let weaponlist = [
 			{no: 0,chr:15, name:"rod"  },
 			{no: 1,chr:16, name:"sword"},
@@ -40,7 +49,7 @@ function sce_player() {
 			{no: 4,chr:18, name:"boom" },
 			{no: 5,chr:50, name:"bow"  }
 		];
-
+        */
 		this.check = checksub;
 
 		function checksub(){
@@ -177,39 +186,22 @@ function sce_player() {
         }
 
         if (o.jump == 0) o.vset(0);
-        var speed = 0;
+        let speed = 0;
         
         let upkey = o.entrypadaxis.up;
         let downkey = o.entrypadaxis.down;
         let leftkey = o.entrypadaxis.left;
         let rightkey = o.entrypadaxis.right;
 
-        if (leftkey) {
-            o.vector = 270;
-        }
-        if (upkey) {
-            o.vector = 0;
-        }
-        if (rightkey) {
-            o.vector = 90;
-        }
-        if (downkey) {
-            o.vector = 180;
-        }
+        if (leftkey)  o.vector = 270;
+        if (upkey)    o.vector = 0;
+        if (rightkey) o.vector = 90;
+        if (downkey)  o.vector = 180;
 
-
-        if (upkey && leftkey) {
-            o.vector = 360 - 45;//315
-        }
-        if (upkey && rightkey) {
-            o.vector = 0 + 45;//45
-        }
-        if (downkey && leftkey) {
-            o.vector = 180 + 45;//225
-        }
-        if (downkey && rightkey) {
-            o.vector = 180 - 45;//135
-        }
+        if (upkey   && leftkey)  o.vector = 360 - 45;//315
+        if (upkey   && rightkey) o.vector =   0 + 45;//45
+        if (downkey && leftkey)  o.vector = 180 + 45;//225
+        if (downkey && rightkey) o.vector = 180 - 45;//135
 
         if (upkey || downkey || leftkey || rightkey) {
             //加速制御
@@ -231,62 +223,31 @@ function sce_player() {
 
         if (o.vector > 180) { o.mp = 2; } else { o.mp = 1; }
 
-        var powup = 0;
-        var oneup = 0;
-        var keyget = 0;
+        let powup = 0;
+        let oneup = 0;
+        let keyget = 0;
         for (var i in o.item) {
-            if (i == 20) {
-                powup = o.item[i];
-            }
-            if (i == 21) {
-                oneup = o.item[i];
-            }
-            if (i == 22) {
-                keyget = o.item[i];
-            }
+            if (i == 20) powup  = o.item[i];
+            if (i == 21) oneup  = o.item[i];
+            if (i == 22) keyget = o.item[i];
         }
 
-        var zkey = false;
-        if (Boolean(o.key_state[90])) {
-            if (o.key_state[90]) {//zkey↓
-                zkey = true;
-            }
-        }
-        if (Boolean(o.key_state[32])) {
-            if (o.key_state[32]) {//spacebar↓
-                zkey = true;
-            }
-        }
+        let zkey = false;
+        if (Boolean(o.key_state[90])) { if (o.key_state[90]) zkey = true; }
+        if (Boolean(o.key_state[32])) { if (o.key_state[32]) zkey = true; } //spacebar
 
-        var xkey = false;
+        let xkey = false;
 
-        if (Boolean(o.key_state[88])) {
-            if (o.key_state[88]) {//xkey↓
-                xkey = true;
-            }
-        }
-        if (Boolean(o.key_state[17])) {
-            if (o.key_state[17]) {//ctrlkey↓
-                xkey = true;
-            }
-        }
+        if (Boolean(o.key_state[88])) { if (o.key_state[88]) xkey = true; }
+        if (Boolean(o.key_state[17])) { if (o.key_state[17]) xkey = true; } //ctrlkey
+        
+        let ckey = false;
+        if (Boolean(o.key_state[67])) { if (o.key_state[67]) ckey = true; }
 
-        var ckey = false;
+        let esckey = false;
+        if (Boolean(o.key_state[27])) { if (o.key_state[27]) esckey = true; }
 
-        if (Boolean(o.key_state[67])) {
-            if (o.key_state[67]) {//ckey↓
-                ckey = true;
-            }
-        }
-
-
-        var esckey = false;
-        if (Boolean(o.key_state[27])) {
-            if (o.key_state[27]) {//↓
-                esckey = true;
-            }
-        }
-
+        //トリガーの入力間隔WAIT
         o.triger-= o.vecfrm;
         if ((o.triger <= 0) && (!zkey)) {
             o.shot = 0;
@@ -305,17 +266,14 @@ function sce_player() {
             o.autotrig = 5;
         }
 
-        //       if (eval(o.mouse_state.button) == 0) {
         if (zkey) {
-            //o.vset(4);
             if (o.shot == 0) {
                 o.shot = 1;
 
                 o.sound.effect(7); //スイング音
                 o.triger = 15;
-                //o.set_object_ex(20, o.x, o.y, 0, 43, o.gameState.player.weapon + "_");
                 switch (o.gameState.player.weapon) {
-                      case 0:
+                    case 0:
                         o.set_object(39); //wand
                         if ((powup > 0) || (o.config.shotfree)) {
                             o.set_object(6);
@@ -325,27 +283,29 @@ function sce_player() {
                             o.triger = TRIG_WAIT;
                         }
                         break;
-//                    case 1:
-//                        o.set_object(10); //sword
-//                        break;
-//                    case 2:
-//                        o.set_object(38); //spare
-//                        break;
-//                    case 3:
-//                        o.set_object(37); //boom
-//                        break;
-//                    case 4:
-//                        o.set_object(36); //axe
-//                        break;
-                      default:
+                    //case 1:
+                        //o.set_object(10); //sword
+                        //break;
+                    //case 2:
+                        //o.set_object(38); //spare
+                        //break;
+                    case 3:
+                        o.set_object(37); //boom
+                        //o.triger = 180 /(o.gameState.player.level + 1);
+                        o.triger = TRIG_WAIT;
+                        break;
+                    //case 4:
+                        //o.set_object(36); //axe
+                        //break;
+                    default://自動攻撃の武器使用時はショットボタンは画面内アイテム回収/玉消費
                         if ((powup > 0) || (o.config.shotfree)) {
-                            o.collect2();//wand 以外の武器使用時はショットボタンは画面内アイテム回収/玉消費
+                            o.collect2();
                             o.item[20]--;
                             if (o.item[20] < 0) o.item[20] = 0;
 
                             o.triger = TRIG_WAIT;
                         }
-                        break;   
+                    break;   
                 }
             }
         }
@@ -356,24 +316,23 @@ function sce_player() {
                 if (o.itemstack.length > 0) {
                     var w = o.itemstack.pop();
 
-                    if (w == 23) {
+                    if (w == 23) {　//BOMB
                         o.sound.effect(13);
                         o.bomb3(o.spec.INT*2);
                         o.set_object_ex(6, o.x, o.y, 0, 47); //Bomb爆発演出(赤)
                         o.item[23]--;
                     }
 
-                    if (w == 24) {
+                    if (w == 24) {　//SHIELD
                         o.sound.effect(10);
                         if (!o.gameState.player.barrier) o.before_hp = o.hp;
 
                         SHIELD_TIME = SHIELD_TIME_BASE + o.spec.VIT*30;
                         o.frame = 0;
                         o.item[24]--;
-                        //    o.set_object_ex(20, o.x, o.y, 0, 44, "Shield");
                     }
 
-                    if (w == 25) {
+                    if (w == 25) {　//LIFE
                         let rhp = 3 + o.spec.MND;
 
                         o.sound.effect(10);
@@ -387,7 +346,7 @@ function sce_player() {
                         } else {
                             let rhp = 3 + o.spec.MND;
 
-                            o.hp += rhp;//3;
+                            o.hp += rhp;//3+MND;
                             o.maxhp++;
 
                             if (o.hp > o.maxhp) o.hp = o.maxhp;
@@ -401,8 +360,6 @@ function sce_player() {
                     }
 
                     o.trigerSub = TRIG_WAIT;
-
-
                 }
             }
         }
@@ -444,7 +401,7 @@ function sce_player() {
 
         //AutoWeapon
         //o.vset(4);
-        if ((o.autoshot == 0) && (o.gameState.player.weapon !=0 )) {
+        if ((o.autoshot == 0) && (weaponlist[o.gameState.player.weapon].auto)) {
 //          if (o.gameState.player.weapon !=0 ) {
             o.autoshot = 1;
             //o.collect3();
@@ -464,8 +421,8 @@ function sce_player() {
                     break;
                 case 3:
                     o.set_object(37); //boom
-                    o.autotrig = 240 /(o.gameState.player.level + 1);
-                    //o.autotrig = 30;
+                    //o.autotrig = 240 /(o.gameState.player.level + 1);
+                    o.autotrig = 30;
                     break;
                 case 4:
                     o.set_object(36); //spare

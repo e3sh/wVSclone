@@ -467,7 +467,7 @@ function sce_enemy_move_std(){
 
 function sce_enemy_move_std2( intrvl, sdst ) {
     //　自機を追跡してくるパターン。
-    //　60F毎に向き変更。iteminv_view 2023/1/14
+    //　intrvl_F毎に向き変更。iteminv_view 2023/1/14
     //-----------------------------------------------------------------------
     const INTERVAL = intrvl; //向き変更のインターバルf
     const SEARCHDIST = sdst;   //240;//target距離..
@@ -627,7 +627,8 @@ function sce_enemy_move_std2( intrvl, sdst ) {
             }
         }
         
-        if (o.frame > INTERVAL) {
+        let decwait = INTERVAL*(o.mvkeytrig/37.5);//Interval*(0.0-0.8)
+        if (o.frame > INTERVAL - decwait) {
             //ロックオン中はINTERVAL毎に向き調整
             if (o.lockon_flag) {
                 o.target_rotate_r(12);//45);
