@@ -352,7 +352,9 @@ function gameScene(state){
 
 	    if (!dev.sound.running()) {
 	        if (mapsc.flame < 120000) {
-	            dev.sound.change(1);// normal bgm
+				let wsn = 1; //NormalBGM
+				if (state.Game.nowstage%15 == 0) wsn = 16;//BattleBGN
+	            dev.sound.change(wsn);
 	        } else {
 	            dev.sound.change(3);// timeover sound
 	        }

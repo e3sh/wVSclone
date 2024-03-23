@@ -348,29 +348,7 @@ function sceneConfig(state) {
         work2.setBackgroundcolor("navy");
         work2.reset();
         work2.clear("navy");
-/*
-        cl = {};
-        cl.w = work.cw;
-        cl.h = work.ch;
-        cl.draw = function (device) {
-            var max = this.h;
-            if (max < this.w) max = this.w;
 
-            device.beginPath();
-
-            for (var i = 0; i < max; i += 16) {
-                device.moveTo(i, 0);
-                device.lineTo(i, this.h);
-                device.moveTo(0, i);
-                device.lineTo(this.w, i);
-            }
-            device.strokeStyle = "lightgray";
-            device.lineWidth = "1";
-            device.stroke();
-        }
-        work2.putFunc(cl);
-        work2.draw();
-  */      
         for (i in w_number) {
             if (Boolean(w_number[i])) {
                 before_wn[i] = w_number[i];
@@ -564,7 +542,7 @@ function sceneConfig(state) {
         if (!Boolean(sndtst)) sndtst = w_number[4];
 
         if (sndtst != w_number[4]) {
-            if ((w_number[4] >= 0) && (w_number[4] <15)) {//
+            if ((w_number[4] >= 0) && (w_number[4] <17)) {//Sound No 
                 dev.sound.change(Math.floor(w_number[4]));
                 dev.sound.play(0);
             }

@@ -224,7 +224,7 @@ class GameTask_Load extends GameTask {
 
         var o = {}
             o.x = 0;
-            o.y = st.length*LINEH +32;
+            o.y = st.length*LINEH +16;
             o.w = 32 * 8;
             o.h = 8;
             let wc = Math.floor(Math.cos(((g.time()%3000)/3000)*6.28)*256)+256;
@@ -239,7 +239,7 @@ class GameTask_Load extends GameTask {
         this.scrn.putFunc(o);
 
 
-        pfunc("Push SPACE key or [START] button", 0, st.length*LINEH +32);
+        pfunc("Push SPACE key or [START] button", 0, st.length*LINEH +16);
 
         if (this.infoflg)
         {

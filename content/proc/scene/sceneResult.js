@@ -34,6 +34,8 @@ function sceneResult(state) {
     var diag;
     var dexef;
 
+    let soundf;
+
     var m = {
         title: "[   ok.  ]",
         x: 320-80 ,y: 280 ,w: 120 ,h: 16,
@@ -144,6 +146,8 @@ function sceneResult(state) {
 
         diag = new DialogControl(dpara);
         dexef = false;        
+
+        soundf = false;
     }
 
     function scene_step() {
@@ -181,6 +185,10 @@ function sceneResult(state) {
                         }
                     //return 2;
                     }
+                }
+                if (!soundf&&(state.Game.nowstage%15 == 0)) {
+                    dev.sound.effect(15);
+                    soundf = true;
                 }
             }
             if (esckey){//restart test
@@ -245,8 +253,11 @@ function sceneResult(state) {
 
         var stage = state.Game.nowstage;
         wtxt.push(" == Stage -" + stage + "- Clear ==");//+ ret_code);
-//      wtxt.push(" == Result Scene (Stage Clear) ==");
-//      wtxt.push("---------------");
+        if (state.Game.nowstage%15 == 0){
+            wtxt.push(" ");
+            wtxt.push(" == CONGRATULATIONS!& ==");
+        }
+        //      wtxt.push("---------------");
 //      wtxt.push("Push rMouse Button to Start");
 
 

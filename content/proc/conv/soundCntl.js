@@ -8,20 +8,20 @@ function soundCntl( asset ) {
     //alert("old rev sound control include.");
 
     //dummy
-    var dev_ready = false;
+    let dev_ready = false;
 
-    var mute = false;
+    let mute = false;
     let master_volume = 0.5;
   
     this.mute = mute;
     this.mastervolume = master_volume;
 
-    var ext = ".mp3";
+    let ext = ".mp3";
     if ((new Audio()).canPlayType("audio/ogg")=="probably"){ext=".ogg";}
     //if ((new Audio()).canPlayType("audio/mp3")=="probably"){ext=".mp3";}
     
 
-    var sd = [
+    let sd = [
         "00round_start",
         "01main",
         "02warnning",
@@ -36,93 +36,58 @@ function soundCntl( asset ) {
         "11hit",
         "12damage",
         "13bomb",
-        "14powup"
+        "14powup",
+        "15fanfare",
+        "16battle"
     ];
 
-    var snd = [];
-    var s_pos = [];
-    var s_stat = [];
+    let snd = [];
+    //var s_pos = [];
+    //var s_stat = [];
 
     for (var i in sd) {
         //snd[i] = new Audio("sound/" + sd[i] + ext);
         snd[i]  = asset[sd[i]].sound;//asset割り当て
-
         snd[i].pos = 0;
-
-
         snd[i].addEventListener("timeupdate", function (e) {
-
             this.pos = (pla.currentTime / pla.duration) * 100;
-
-            /*
-            if (this.pos > 99) {
-                if (nextplnum != -1) {
-
-                    soundchange(nextplnum);
-                    soundplay(nextplnum);
-
-                    nextplnum = -1;
-                }
-            }
-            */
         });
-
-        //s_stat[i] = false;
 
         snd[i].stat = false;
-
         snd[i].addEventListener("loadeddata", function (e) {
-
-            this.stat = true;
-
-        });
-/*
-        snd[i].addEventListener("load", function (e) {
-
             this.stat = true;
         });
-*/
+
         snd[i].addEventListener("ended", function (e) {
-
-            if (nextplnum != -1) {
-
+           if (nextplnum != -1) {
                 soundchange(nextplnum);
                 soundplay(nextplnum);
 
                 nextplnum = -1;
-
             }
-            //this.stat = true;
         });
-
-
     }
 
     this.loadCheck = function () {
 
-        var c = 0;
-
-        for (var i in snd) {
+        let c = 0;
+        for (let i in snd) {
 
             if (snd[i].stat) c++;
             //snd[i].volume = 0.1;
         }
-
         dev_ready = (c >= snd.length);
 
         return (dev_ready) ? "Ready" :  ext + ":"  + c;
     }
 
-    var plnum = 0;
-    var nextplnum = -1;
-    var nextloopf = false;
+    let plnum = 0;
+    let nextplnum = -1;
+    let nextloopf = false;
 
-    var pla = new Audio();
-
-    //pla.pause();
+    let pla = new Audio();
 
     this.change = soundchange;
-
     function soundchange(soundname, loopf) {
 
         if (!dev_ready) return;
@@ -151,7 +116,6 @@ function soundCntl( asset ) {
 
             plnum = soundname;
         }
-
     }
 
     this.play = soundplay;
@@ -159,13 +123,10 @@ function soundCntl( asset ) {
     function soundplay() {
 
         if (!dev_ready) return;
-
         if (pla.ended) pla.currentTime = 0;
-
         pla.play();
 
         nextplnum = -1;
-
     }
 
     this.effect = effectplay;
@@ -173,23 +134,11 @@ function soundCntl( asset ) {
     function effectplay(num) {
 
         if (!dev_ready) return;
-
         if (Boolean(sd[num])) {
-
             snd[num].currentTime = 0;
             snd[num].play();
         }
     }
-
-    /*
-    pla.addEventListener("timeupdate", function (e) {
-
-    plpar = (pla.currentTime / pla.duration) * 100;
-
-
-
-    });
-    */
 
     this.next = function (soundname, loopf) {
 
@@ -197,8 +146,6 @@ function soundCntl( asset ) {
             nextplnum = soundname;
             nextloopf = loopf;
         }
-
-
     }
 
     this.info = function () {
@@ -213,41 +160,23 @@ function soundCntl( asset ) {
         if (!dev_ready) return;
         //return (snd[plnum].pos < 99);//oggだとこれでうまくいったりいかなかったり・・
         return (!snd[plnum].ended);
-
     }
 
     this.restart = function () {
 
         if (!dev_ready) return;
-
         pla.currentTime = 0;
-
     }
 
     this.volume = function (vol) {
         //Volume 0.0- max1.0
         if (!dev_ready) return;
-
         if (mute) vol = 0.0;
 
         vol = (vol > this.mastervolume)?this.mastervolume: vol;
-
         for (var i in snd) {
             snd[i].volume = vol;
         }
         //snd[plnum].volume = vol;
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
