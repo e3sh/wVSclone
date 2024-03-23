@@ -118,6 +118,12 @@ function soundCntl( asset ) {
         }
     }
 
+    //audioの長さを取得（単位は？）
+    this.duration = duration;
+    function duration(soundname){
+        return snd[soundname].duration;
+    }
+
     this.play = soundplay;
 
     function soundplay() {

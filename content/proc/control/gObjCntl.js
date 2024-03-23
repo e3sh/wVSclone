@@ -646,11 +646,20 @@
             //this.ceilflag = true; //天井
             this.ceildelay = state.System.time()+1000;//部屋で死んだ場合の消灯時間延長
 
+            //if (!dev.sound.running()) dev.sound.volume(0.0);
+            if (restart_count > dev.sound.duration(5)*60) {//no:5 MUSIC_MISS 
+                dev.sound.volume(0.0);//MISS MUSICが鳴り終わったら、BGMが鳴らないように音量抑止。
+                //MISS_MUSICはplayer.jsで鳴らして、BGMはgameSceneで鳴らしているので
+                //まだこの時点ではgameSceneに死亡状態が伝わっていない為、ここで抑止している。
+            }
+
             if (restart_count > 180) {//3秒後
                 before_int = this.interrapt;
                 before_SIG = this.SIGNAL;
                 this.interrapt = true;
                 this.SIGNAL = 4649;
+
+                dev.sound.volume(1.0);//ボリューム戻し(戻さないと開始音が鳴らなくなる。)
                 //画面から自機がいなくなったらリスタートシグナルを上げる(数字は適当で仮）  
             }
         }
