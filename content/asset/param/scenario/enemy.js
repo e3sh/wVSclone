@@ -897,6 +897,7 @@ function sce_enemy_timeover() {
     //　自機を目標にしてのホーミング移動(時間切れ）
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
+        o.name = "timeover";
         o.vset(6);
         o.get_target(98);
         o.lifecount = 0;

@@ -25,6 +25,7 @@ function gObjectClass() {
     this.target = -1; //ターゲットにしているオブジェクト（ない場合は－）オブジェクトの参照渡しにしてもいいが、有無をどう判断するか？ステータスチェック？
     this.crash = -1; //衝突した相手のオブジェクトNO　/これも同様に↑に同じだが－
     this.id; 		// ID
+    this.name;      // 名前
     this.score = 0; 	//倒したときのスコア
     this.triger = 0; //トリガーの抑止間隔
     this.shot = 0; 	//ショットフラグ
@@ -82,6 +83,8 @@ function gObjectClass() {
     //this.dmgcheck = true; //false trueの場合　o.hp-o.attackする。アイテムの場合はセット時にattack0,かな
 
     this.setType = function(type){
+        this.name = "unknown";
+
         this.type = type;
         //type （98:自機、0:味方、1:自弾、2:敵機、3:敵弾、4:アイテム、5:只の絵）
         this.colcheck = !(type == 5);

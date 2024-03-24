@@ -325,7 +325,7 @@ function Stage1(stageno) {
             let hgt = (room[i].max.y - room[i].min.y + 2) * BLOCK_H;
 
 
-            w = [1,
+            w = [1,//chip.no１は、gameSceneで半透明の黒四角として表示処理されるようになっている。
                 x -32, //rlist,clist
                 y -32, //rlist,clist
                 wdt + 96 +32 +32,
@@ -340,8 +340,9 @@ function Stage1(stageno) {
              if (i == room_status.min) {
 
                 w = [14, //魔法陣画像
-                    x + (wdt/2)+32, y + (hgt/2)+32, 64, 64, false,//HitCheck有
-                    0, //(BG)
+                    x + (wdt/2)+32, y + (hgt/2)+32, 64, 64,
+                    true, //false,//HitCheck有
+                    4, //Home(BG)
                     true //visibility
                  ];
 

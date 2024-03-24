@@ -351,14 +351,16 @@ function gameScene(state){
 		state.Game.map =  !mapdisp; //現状の処理で使用時falseとなっているの為Not演算で反転
 
 	    if (!dev.sound.running()) {
-	        if (mapsc.flame < 120000) {
+//	        if (mapsc.flame < 120000) {
 				let wsn = 1; //NormalBGM
-				if (state.Game.nowstage%15 == 0) wsn = 16;//BattleBGN
+//				if (state.Game.nowstage%15 == 0) wsn = 16;//BattleBGM
+				if (obCtrl.rollcall("boss")) wsn = 16;//BattleBGM 
+				if (obCtrl.rollcall("timeover")) wsn = 3;//timeover sound 
 	            dev.sound.change(wsn);
-	        } else {
-	            dev.sound.change(3);// timeover sound
-	        }
-	        dev.sound.play();
+//	        } else {
+//	            dev.sound.change(3);// timeover sound
+//	        }
+	        if (obCtrl.rollcall("mayura")) dev.sound.play();//自機が居るときにBGM鳴らす
 	    }
 
 		if ((mapsc.flame >= (120000 - 2000)) && sndcf) {
@@ -538,76 +540,11 @@ function gameScene(state){
 						}
 					}
 				}
-				//weapons
+				//weaponチェックはplayer.jsでチェックしている。
 				//if (!wchk) wchk = getweapon.check(i);//1frameでは１個分の武器のみ取得チェック(重複すると消滅等発生する為)
 				//get_weapon_checksub( i );
 		}
 		}
-		/*	
-	        if (i == 15) {//wand
-	            if (obCtrl.item[15] > 0) {
-					if (state.Game.player.weapon == 0){
-						obCtrl.item[20] = obCtrl.item[20] + 7;//get ball
-					}
-		            obCtrl.item[15] = 0;
-	                state.Game.player.weapon = 0;
-	                //dev.sound.effect(9); //cursor音
-	            }
-	        }
-	        if (i == 16) {//sword
-	            if (obCtrl.item[16] > 0) {
-					if (state.Game.player.weapon == 1){
-						state.Game.player.level++;
-					}else state.Game.player.level = obCtrl.itemlv;
-					obCtrl.item[16] = 0;
-	                state.Game.player.weapon = 1;
-	                //dev.sound.effect(9); //cursor音
-	            }
-	        }
-	        if (i == 17) {//axe
-	            if (obCtrl.item[17] > 0) {
-					if (state.Game.player.weapon == 2){
-						state.Game.player.level++;
-					}else state.Game.player.level = obCtrl.itemlv;
-		            obCtrl.item[17] = 0;
-	                state.Game.player.weapon = 2;
-	                //dev.sound.effect(9); //cursor音
-	            }
-	        }
-	        if (i == 19) {//spare
-	            if (obCtrl.item[19] > 0) {
-					if (state.Game.player.weapon == 3){
-						state.Game.player.level++;
-					}else state.Game.player.level = obCtrl.itemlv;
-					obCtrl.item[19] = 0;
-	                state.Game.player.weapon = 3;
-	                //dev.sound.effect(9); //cursor音
-	            }
-	        }
-	        if (i == 18) {//boom
-	            if (obCtrl.item[18] > 0) {
-					if (state.Game.player.weapon == 4){
-						state.Game.player.level++;
-					}else state.Game.player.level = obCtrl.itemlv;
-		            obCtrl.item[18] = 0;
-	                state.Game.player.weapon = 4;
-	                //dev.sound.effect(9); //cursor音
-	            }
-	        }
-
-			if (i == 50) {//bow
-	            if (obCtrl.item[50] > 0) {
-					if (state.Game.player.weapon == 5){
-						state.Game.player.level++;
-					}else state.Game.player.level = obCtrl.itemlv;
-		            obCtrl.item[50] = 0;
-	                state.Game.player.weapon = 5;
-	                //dev.sound.effect(9); //cursor音
-	            }
-	        }
-			
-	    }
-		*/
 		obCtrl.move(mapsc);
 		mapsc.step(obCtrl, state.System.time());
 
@@ -615,52 +552,6 @@ function gameScene(state){
 
 	    return 0;
 	}
-
-
-	/*
-	function get_weapon_check( state ){
-
-		let obCtrl = state.obCtrl; 
-
-		let weaponlist = [
-			{no: 0,chr:15, name:"rod"  },
-			{no: 1,chr:16, name:"sword"},
-			{no: 2,chr:17, name:"axe"  },
-			{no: 3,chr:19, name:"spear"},
-			{no: 4,chr:18, name:"boom" },
-			{no: 5,chr:50, name:"bow"  }
-		];
-
-		let execute = false;
-
-		this.check = checksub;
-
-		function checksub( item ){
-			let execute = false;
-
-			for (let p of weaponlist){
-				if (item == p.chr) {
-					if (obCtrl.item[p.chr] > 0) {
-						obCtrl.item[p.chr]--;
-	
-						if (state.Game.player.weapon == p.no){
-							if ( p.name  == "rod" ) {obCtrl.item[20] = obCtrl.item[20] + 7;}//get ball
-							else {state.Game.player.level++;}
-						}else{
-							state.Game.player.level = obCtrl.itemlv;
-						}
-						state.Game.player.weapon = p.no;
-	
-						execute = true;
-					} else {
-						execute = false;
-					}
-				}
-			}
-			return execute;
-		}
-	}
-	*/
 
 	function game_draw() {
         
@@ -955,9 +846,10 @@ function gameScene(state){
 			//work3.putchr("Hi-Sc:" + ui.score[0], dev.layout.hiscore_x, dev.layout.hiscore_y);
 			//work3.putchr("Score:" + ui.score[1], dev.layout.score_x, dev.layout.score_y);
 
-			work3.putchr("Exp " + ui.score[1], dev.layout.hiscore_x, dev.layout.hiscore_y);
 			let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;
-			let Nextstr = "        Next " + NextLup;
+			let NextMkr = ( obCtrl.score >= NextLup) ? "#":" ";
+			let Nextstr = "       " + NextMkr + "Next." + NextLup;
+			work3.putchr("Exp." + ui.score[1], dev.layout.hiscore_x, dev.layout.hiscore_y);
 			Nextstr = Nextstr.substring(Nextstr.length-11);
 			work3.putchr(Nextstr, dev.layout.score_x, dev.layout.score_y);
 
@@ -1063,8 +955,8 @@ function gameScene(state){
 
 		wtxt.push("wx,wy:" + Math.floor(dev.gs.world_x) + "," + Math.floor(dev.gs.world_y));
 		wtxt.push("play:" + Math.floor(dev.sound.info()) + "." + dev.sound.running() );
-		wtxt.push("lv:" + spec.LV + " v"+ spec.VIT + ":m" + spec.MND + ":i" + spec.INT );
-		wtxt.push("");
+		//wtxt.push("lv:" + spec.LV + " v"+ spec.VIT + ":m" + spec.MND + ":i" + spec.INT );
+		wtxt.push("Living:" + obCtrl.rollcall("mayura"));
 
 		return wtxt;
 	}

@@ -83,6 +83,8 @@ function sce_player() {
     // 自機の移動　====
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
+        o.name = "mayura";
+
         o.triger = 10;//Zkey Lockwait Counter
         o.shot = 0; //Zkey trig ok:0 ng:1
         o.trigerSub = 10; //Xkey Lockwait Counter
@@ -123,6 +125,7 @@ function sce_player() {
         o.lighton = true;
 
         o.doorflag = false;
+        o.homeflag = false;
 
         o.repro = false;
 
@@ -570,14 +573,14 @@ function sce_player() {
         let total_st = o.spec.VIT + o.spec.INT + o.spec.MND; 
         */
         let lups = Math.pow(o.spec.ETC+1 , 2)* 100 ;//100, 400, 900, 1600, 2500,....
-        if ((o.score > lups)&& !lvupf){
+        if ((o.score > lups)&& !lvupf && o.homeflag){
             //o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
             o.spec.ETC++;
             o.sound.effect(14);
             delay_st = o.alive;
             //o.SIGNAL(1709);//LVUP
             lvupf = true;
-        }
+        } else o.homeflag = false;
 
         if (lvupf){ //↑のLvUp検出で音を鳴らしてから0.5秒後にLvUpMenuへ
             //スコア数値の表示演出完了待ち（数字じゃなくてゲージにするか？）
@@ -629,6 +632,8 @@ function sce_player() {
 
             o.sound.change(5);
             o.sound.play(5);
+
+            o.superviser.ceildelay += 1500;//死亡時に部屋の明かりが消える時間を遅延
 
             o.bomb4(33); //timeoverキャラのステータスを0にする。         
         }

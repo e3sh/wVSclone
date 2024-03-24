@@ -59,6 +59,14 @@
     var stockdisp_y = 96;
     */
 
+    this.rollcall = rollcall_attendance;
+    function rollcall_attendance( name ){
+
+        let flag = false;
+        if (Boolean(obj_namecheck_list[name])) flag = obj_namecheck_list[name];
+        return flag;
+    }
+
     function priorityBuffer(){
         // キャラクタ表示の個別重ね合わせ制御用
         // 画面全体表示のプライオリティ制御は画面別でシステムでやってる。
@@ -100,6 +108,8 @@
 
     // オブジェクトの情報をArrayで管理
     var obj = [];//これをState側に持たせれば全体から管理可能となるか。
+
+    let obj_namecheck_list = [];
 
     //当たり判定用マップ
 
@@ -238,6 +248,8 @@
 
         this.nonmove = 0;
         // 移動などの処理
+
+        obj_namecheck_list = [];
         for (var i in obj) {
             //for (var i = 0, loopend = obj.length; i < loopend; i++) {
             var o = obj[i];
@@ -247,6 +259,9 @@
             //o.vecfrm = 1;
             //o.colitem && o.colitem.remove();
             //o.alive--;
+
+            if (Boolean(o.name)) obj_namecheck_list[o.name] = true;
+
             //var onst = o.gt.in_stage_range(o.x - (o.hit_x / 2), o.y - (o.hit_y / 2), o.hit_x, o.hit_y);
             var onst = o.gt.in_view_range(o.x - (o.hit_x / 2), o.y - (o.hit_y / 2), o.hit_x, o.hit_y);
 
@@ -510,6 +525,15 @@
                             o.mapColY = bupColY;// || o.mapColY;
                         }
 
+                        if (w.type == 14) {//背景種類　魔法陣　
+
+                            if (o.type == 98) {//　obj.type　が　自機
+                                o.homeflag = true;
+                            }
+                            o.mapCollision = bupCol;// || o.mapCollision;
+                            o.mapColX = bupColX;// || o.mapColX;
+                            o.mapColY = bupColY;// || o.mapColY;
+                        }
                     }
                 }
                 //wall and wall
@@ -633,7 +657,7 @@
 
         //    if (delobj > 10){obj.sort(); delobj = 0;}//消した配列が10個超えたらソート
         //    if (!obj[obj.length-1]) {obj.pop();}//空の配列を削除します。
-
+        /*
         var f = 0;
         for (i in obj) {
             if (obj[i].type == 98) f++;
@@ -641,28 +665,31 @@
         }
 
         if (f == 0) {
+            */
+        if (!this.rollcall("mayura")){
+
             restart_count+= 60/(1000/state.System.deltaTime());//60fに対して現在のフレームレート補正値を加算
             //state.Game.player.hp = 0;
             //this.ceilflag = true; //天井
-            this.ceildelay = state.System.time()+1000;//部屋で死んだ場合の消灯時間延長
+            this.ceildelay = state.System.time()+1000;//部屋で死んだ場合の消灯時間延長　<-playerでも実施
 
             //if (!dev.sound.running()) dev.sound.volume(0.0);
-            if (restart_count > dev.sound.duration(5)*60) {//no:5 MUSIC_MISS 
-                dev.sound.volume(0.0);//MISS MUSICが鳴り終わったら、BGMが鳴らないように音量抑止。
+            if (restart_count > (dev.sound.duration(5)*60)- 60) {//no:5 MUSIC_MISS 
+                //dev.sound.volume(0.0);//MISS MUSICが鳴り終わったら、BGMが鳴らないように音量抑止。
                 //MISS_MUSICはplayer.jsで鳴らして、BGMはgameSceneで鳴らしているので
                 //まだこの時点ではgameSceneに死亡状態が伝わっていない為、ここで抑止している。
             }
 
-            if (restart_count > 180) {//3秒後
+            if (restart_count > 135) {//2.1秒後
                 before_int = this.interrapt;
                 before_SIG = this.SIGNAL;
                 this.interrapt = true;
                 this.SIGNAL = 4649;
 
-                dev.sound.volume(1.0);//ボリューム戻し(戻さないと開始音が鳴らなくなる。)
+                //dev.sound.volume(1.0);//ボリューム戻し(戻さないと開始音が鳴らなくなる。)
                 //画面から自機がいなくなったらリスタートシグナルを上げる(数字は適当で仮）  
             }
-        }
+        } 
 
         //restartFlag = false;
     }
@@ -869,6 +896,8 @@
         o.firstRunning = false;
 
         o.parent = parent;
+
+        o.superviser = this;//ObCtrl;
 
         //o.scrn = scrn;
         //o.graphicsLayer = dev.graphics;

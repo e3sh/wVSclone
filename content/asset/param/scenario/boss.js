@@ -7,6 +7,7 @@ function sce_boss_0() {
     // 5Way用母機　中ボス
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
+        //o.name = "boss";
         o.vset(8);
         o.get_target(98);
         o.w_cnt = 0;
@@ -59,6 +60,7 @@ function sce_boss_1(){
     //　弾を撒き散らす。ボス
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
+        o.name = "boss";
         o.vset(4);
         //o.mp = 12; //通常のキャラにする
         o.chr = 1;//鍵を出さないようにボスをはずす
@@ -107,10 +109,12 @@ function sce_boss_1(){
 }
 
 function sce_boss_2(){
+
     const GLOWTIME = 2000;//ms(waittime)
     // HLaser用母機
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
+        o.name = "boss";
         o.vset(1);
         o.get_target(98);
         o.w_cnt = 0;

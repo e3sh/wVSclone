@@ -177,7 +177,7 @@ class GameTask_Load extends GameTask {
     }
 
     draw(g){
-        const LINEH = 12;
+        const LINEH = 8;
         const DELAY = this.infodly;//1000;
         const LWAIT = 4;
 
