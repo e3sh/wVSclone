@@ -100,7 +100,7 @@ function sce_player() {
         o.shifty = 0;
 
         o.mvkeytrig = 0;        
-        o.maxspeed = 6;
+        o.maxspeed = 4;
         //o.int_shot = 0;
         //	        o.mp = 1;
         o.custom_draw_enable = true;
@@ -167,7 +167,20 @@ function sce_player() {
 
     this.move = function (scrn, o) {
 
+        let powup = 0;
+        let oneup = 0;
+        let keyget = 0;
+
+        for (let i in o.item) {
+            if (i == 20) powup  = o.item[i];
+            if (i == 21) oneup  = o.item[i];
+            if (i == 22) keyget = o.item[i];
+        }
+
         o.frame+= o.vecfrm;
+
+        let SPEC_SPEED = 4.0 + ((powup>40)?2.0:(powup/20));
+        o.maxspeed = SPEC_SPEED;//通常時の移動速度
 
         if (o.frame <= SHIELD_TIME) {
             o.hp = o.maxhp; //出現して5秒間は無敵(60fps)
@@ -175,7 +188,7 @@ function sce_player() {
             o.gameState.player.barrier = true;
             o.lighton = true;
             //    o.damageflag = false;
-            if (o.gameState.player.weapon !=0 ) o.maxspeed = 4.5;//SHIELD中はスピードダウン/RODでは減速無し
+            if (o.gameState.player.weapon !=0 ) o.maxspeed = SPEC_SPEED-1.5;//4.5;//SHIELD中はスピードダウン/RODでは減速無し
         }
         if ((o.frame > SHIELD_TIME) && o.gameState.player.barrier) {
             //無敵時間終わったら瞬間に元に戻す
@@ -184,8 +197,6 @@ function sce_player() {
             o.gameState.player.hp = o.before_hp;
             o.gameState.player.barrier = false;
             o.lighton = false;
-
-            o.maxspeed = 6;//通常時の移動速度
         }
 
         if (o.jump == 0) o.vset(0);
@@ -225,15 +236,6 @@ function sce_player() {
         }
 
         if (o.vector > 180) { o.mp = 2; } else { o.mp = 1; }
-
-        let powup = 0;
-        let oneup = 0;
-        let keyget = 0;
-        for (var i in o.item) {
-            if (i == 20) powup  = o.item[i];
-            if (i == 21) oneup  = o.item[i];
-            if (i == 22) keyget = o.item[i];
-        }
 
         let zkey = false;
         if (Boolean(o.key_state[90])) { if (o.key_state[90]) zkey = true; }
@@ -573,7 +575,7 @@ function sce_player() {
         let total_st = o.spec.VIT + o.spec.INT + o.spec.MND; 
         */
         let lups = Math.pow(o.spec.ETC+1 , 2)* 100 ;//100, 400, 900, 1600, 2500,....
-        if ((o.score > lups)&& !lvupf && o.homeflag){
+        if ((o.score >= lups)&& !lvupf && o.homeflag){
             //o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
             o.spec.ETC++;
             o.sound.effect(14);
@@ -644,47 +646,17 @@ function sce_player() {
     }
 
     //===以下表示用=============================================================================
-
     function damage_gr1(scrn, o) {
-        //自機のダメージゲージ表示
-        var barriref = false;
-        //Shield
-        //var tw = o.gt.worldtoView(o.x, o.y);
-        //scrn.putchr8("@"+o.mvkeytrig, tw.x, tw.y);
+        //次に使うITEMの表示
+        inv_gr(scrn, o);
+        //自機のダメージゲージ表示とSHIELDび￥の表示
+        shiled_lbar_gr(scrn, o);
+    }
+
+    function shiled_lbar_gr(scrn, o){   
         
-        /*
-        //Aura Display
-        if (o.gameState.player.level > 0){
-            var pw = {};
+        let barriref = false;
 
-            var w = o.gt.worldtoView(o.x, o.y);
-
-            pw.x = w.x -16;
-            pw.y = w.y +16;
-
-            pw.r = o.frame % 6;
-
-            var num = o.gameState.player.level * 96
-            pw.c = "rgb(" + num + "," + num + "," + 128 + ")"; 
-            pw.draw = function (device) {
-
-            device.beginPath();
-	        device.strokeStyle = this.c; 
-            //device.fillStyle = "white";
-	        device.lineWidth = 1;
-
-            for (var i=0; i < 1 + this.r; i++){
-                device.lineWidth = 1;
-                device.rect(this.x, this.y - i * 3 - 1, 32, 1);
-                device.stroke();
-            }
-            //device.fillRect(this.x- this.r , this.y, 1, 32);
-	        //device.stroke();
-            }
-            scrn.putFunc(pw);
-        }
-        */
-        
         //Shield Display
         if (o.frame <= SHIELD_TIME) {
 
@@ -781,6 +753,44 @@ function sce_player() {
             }
 
         }
+    }
+
+    function inv_gr(scrn, o){
+ 
+        if (o.itemstack.length != 0) {//アイテム持っていない場合、処理せず。
+            //chrno.23:(B) 24:(S) 25:(L)
+            let spname = ["BallB1", "BallS1", "BallL1"];
+
+            let f = o.itemstack[o.itemstack.length-1]-23; //next use item
+
+            if (!(f < 0 || f > 2)) {
+                let w = o.gt.worldtoView(o.x, o.y);
+
+                let tx = w.x + o.shiftx;
+                let ty = w.y + o.shifty;
+
+                tx = tx - o.Cos(o.vector) * 16;
+                ty = ty - o.Sin(o.vector) * 16;
+
+                //scrn.kprint(":" + f, tx, ty); 
+                scrn.put(spname[f], tx, ty);
+            }
+        }
+        if (o.gameState.player.weapon != 3) return;//Boomは分かりにくいので表示
+        
+        let wweapon = ["Wand", "Knife", "Axe", "BoomR", "Spear", "Bow"];
+
+		if (!Boolean(o.gameState.player.weapon)) o.gameState.player.weapon = 0;
+
+        let w = o.gt.worldtoView(o.x, o.y);
+
+        let tx = w.x + o.shiftx;
+        let ty = w.y + o.shifty;
+
+        tx = tx + o.Cos(o.vector) * 16;
+        ty = ty + o.Sin(o.vector) * 16;
+
+        scrn.put(wweapon[o.gameState.player.weapon], tx, ty);
     }
 }
 

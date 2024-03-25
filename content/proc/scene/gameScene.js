@@ -41,7 +41,7 @@ function gameScene(state){
 	//var scenechange = false;
 	//var ec_draw_count = 0;
 
-	//var sndcf = false;
+	let sndcf = false;
 
 	var mapdisp = false;
 	var lampf = false;
@@ -340,6 +340,7 @@ function gameScene(state){
 	function game_step() {
 
 		dev.gs.commit();
+
 		if (!this.reset_enable){
 			this.reset_enable = true; // reset無しで戻ってきたときにtrueに変更
 			mapsc.pauseOff(state.System.time());
@@ -363,9 +364,11 @@ function gameScene(state){
 	        if (obCtrl.rollcall("mayura")) dev.sound.play();//自機が居るときにBGM鳴らす
 	    }
 
-		if ((mapsc.flame >= (120000 - 2000)) && sndcf) {
-	        dev.sound.change(2); //Warning sound
-	        dev.sound.play();
+		//if ((mapsc.flame >= (120000 - 2000)) && sndcf && obCtrl.rollcall("timeover")) {
+		if ( sndcf && obCtrl.rollcall("warning")){
+			//dev.sound.effect(2);
+			dev.sound.change(2);//dev.sound.change(2); //Warning sound
+	        if (obCtrl.rollcall("mayura")) dev.sound.play();
 	        //dev.sound.next(3);
 
 	        sndcf = false;
@@ -436,6 +439,8 @@ function gameScene(state){
 
 	                dev.sound.change(4);//Stageclear
 	                dev.sound.play();
+
+
 
 	                return 5; //result
 	        }

@@ -26,9 +26,12 @@ function sceneLvUp(state) { //2024/03/06
 
     let stbar;
 
+    let guide_cursor;
+
     //処理部
     function scene_init() {
         //初期化処理
+        guide_cursor = new arrowGuideCursor();
     }
 
     function scene_reset() {
@@ -71,7 +74,7 @@ function sceneLvUp(state) { //2024/03/06
                     state.Game.player.spec.VIT++;
                     ret_code = p;
                 }, p:1},
-                x:-35, y:-25-55, w:70, h:50, keyon:false, select: false }//upkey
+                x:-35, y:-25-55, w:70, h:50, keyon:false, select: false, curpos: 1 }//upkey
                 /*
             ,{ keynum:40, text:"SELECT", icon:"Ball3", 
                 func: { call: function(p){
@@ -85,7 +88,7 @@ function sceneLvUp(state) { //2024/03/06
                     state.Game.player.spec.MND++;
                     ret_code = p;
                 }, p:1},
-                x:-35-80, y:-25, w:70, h:50, keyon:false, select: false }//left
+                x:-35-80, y:-25, w:70, h:50, keyon:false, select: false, curpos: 8 }//left
 
             ,{ keynum:39, text:["Damage+2", " " + (10 + state.Game.player.spec.INT*2) + "-> " + (10 + (state.Game.player.spec.INT+1)*2) ], 
                 icon:"BallB1", barcolor: "orangered",
@@ -93,7 +96,7 @@ function sceneLvUp(state) { //2024/03/06
                     state.Game.player.spec.INT++;
                     ret_code = p;
                 }, p:1},
-                x:-35+80, y:-25, w:70, h:50, keyon:false, select: false }//right
+                x:-35+80, y:-25, w:70, h:50, keyon:false, select: false, curpos: 2 }//right
         ];
 
         diag = new DialogControl(dpara);
@@ -102,6 +105,8 @@ function sceneLvUp(state) { //2024/03/06
         //stbar = new statusBarMeter(["cyan","orange","limegreen","white"]);
 
         keylock = false;
+
+        guide_cursor.param(1|2|0|8);
     }
 
     function scene_step() {
@@ -126,6 +131,8 @@ function sceneLvUp(state) { //2024/03/06
         work2.reset();
 
         wtxt.push("LevelUp#" + state.Game.player.spec.ETC);
+        wtxt.push("= SELECT =");
+
         //wtxt.push(" VIT=" + state.Game.player.spec.VIT);
         //wtxt.push(" INT=" + state.Game.player.spec.INT);
         //wtxt.push(" MND=" + state.Game.player.spec.MND); 
@@ -174,12 +181,17 @@ function sceneLvUp(state) { //2024/03/06
 
         let w = state.obCtrl.player_objv(work);
 
+        work.fill(w.x-120,w.y-100,240,200,0);
+
+        state.obCtrl.player_objv(work);
+
         diag.draw(work, w.x, w.y);
 
         for (var s in wtxt) {
             work.putchr8(wtxt[s], w.x -35, w.y + 16*s + 32 );
         }
         //stbar.draw(work, w.x -35, w.y + 48);
+        guide_cursor.draw(work, w.x, w.y, 32);
 
         //表示
     }
@@ -221,6 +233,8 @@ function sceneLvUp(state) { //2024/03/06
                     m.func.call(m.func.p);
                     menulist[i].text[1] = "GET_STAT";
                     menulist[i].select = true;
+
+                    guide_cursor.param(m.curpos);
                 }
             }
             //FLCOLOR = "Navy";
@@ -309,4 +323,31 @@ function sceneLvUp(state) { //2024/03/06
         }
     }
 
+    function arrowGuideCursor(){
+
+        let view = 0;
+
+        let vx = [  0, 1,  0, -1 ];
+        let vy = [ -1, 0,  1,  0 ];
+        let vr = [  0,90,180,270 ];
+        //let vr = [270,  0, 90,180 ];
+
+        this.param = function(num) {view = num;}
+
+        this.draw = function(device, x, y, r){
+            //view NESW bit:0123 bit on Draw
+            for (let i in vx){
+                let w = Math.trunc(state.System.time()/100)%5;
+                
+                if ((view&Math.pow(2,i)) != 0){
+                    device.put("cursorx",//"cursorx",
+                    x + vx[i] * (r+w),
+                    y + vy[i] * (r+w),
+                    0, 
+                    vr[i] 
+                    );
+                }
+            }
+        }
+    }
 }

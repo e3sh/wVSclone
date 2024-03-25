@@ -186,3 +186,28 @@ function sce_message_bosstriger() {
         return o.sc_move();
     }
 }
+
+function sce_message_signal(name) {
+    //イベントメッセージ
+    //-----------------------------------------------------------------------
+    this.init = function (scrn, o) {
+        o.name = name;
+
+        o.vset(0);
+        o.type = 5; //当たり判定の無い状態にする
+        this.normal_draw_enable = false;//表示しない
+
+        o.x = o.gt.world_x + 1; //画面外だと処理が止まるので
+        o.y = o.gt.world_y + 1; //常に画面内にあるようにする
+    }
+
+    this.move = function (scrn, o) {
+    
+        o.x = o.gt.world_x + 1; //画面外だと処理が止まるので
+        o.y = o.gt.world_y + 1; //常に画面内にあるようにする
+
+        o.status = 0;
+
+        return o.sc_move();
+    }
+}

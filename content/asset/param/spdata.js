@@ -64,6 +64,7 @@ function spdata(){
 	["Barn1", 0, 48, 16, 16],
 	["Barn2",16, 48, 16, 16],
 	["Barn3",32, 48, 16, 16],
+	["cursorx",64,128, 16, 16],
 
 	["Dummy",112,32,15,15]];
 
@@ -108,6 +109,8 @@ function spdata(){
 
 	//sp_ptn["Key"]   = sp_ptn["_item_61"];//60
 	//sp_ptn["sKey"]  = sp_ptn["_item_61"];
+
+	//sp_ptn["cursorx"]  = sp_ptn["_icon_19"];
 
 	return sp_ptn;
 

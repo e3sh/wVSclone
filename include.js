@@ -23,8 +23,8 @@ var w = [
     "system/proc/func/fontPrintControl.js",
     "system/proc/task/GameTaskClass.js",
     */
-    "https://e3sh.github.io/WebGameCoreSystem/coremin.js",
-    //"system/coremin.js",
+    //"https://e3sh.github.io/WebGameCoreSystem/coremin.js",
+    "system/coremin.js",
  //画面表示や入力関係処理部(compatible-convert)
  "content/proc/conv/deviceControl.js",
  "content/proc/conv/screen.js",

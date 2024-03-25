@@ -884,8 +884,18 @@ function scenario() {
     sc_init["exev_3way_exp"] = w.init;
     sc_move["exev_3way_exp"] = w.move;
 
+    //-----------------------------------------------------------------------
+    w = new sce_message_signal("warning");
+
+    //alias
+    sc_init["signal_warning"] = w.init;
+    sc_move["signal_warning"] = w.move;
+
     // No.106- empty
     //-----------------------------------------------------------------------
+
+
+
 
     //=============================================================================
 
