@@ -335,6 +335,8 @@ function gameScene(state){
 	    //mapdisp = false;
 		//^^^^^
 		obCtrl.messageconsole.write("==STAGE START==");
+
+		if (state.Game.nowstage%5==0) obCtrl.tutTable(6);//ボスについて説明
 	}
 
 	function game_step() {
@@ -366,6 +368,7 @@ function gameScene(state){
 
 		//if ((mapsc.flame >= (120000 - 2000)) && sndcf && obCtrl.rollcall("timeover")) {
 		if ( sndcf && obCtrl.rollcall("warning")){
+			obCtrl.tutTable(3);//TIMEついて説明
 			//dev.sound.effect(2);
 			dev.sound.change(2);//dev.sound.change(2); //Warning sound
 	        if (obCtrl.rollcall("mayura")) dev.sound.play();
@@ -603,9 +606,11 @@ function gameScene(state){
 			UIDraw( UI_force_reflash );
 
 	        //debug　true　の場合以下表示
- 	       if (state.Config.debug) {
 
-				let wtxt = read_debugStates();
+			let wtxt;
+ 	        if (state.Config.debug) {
+
+				wtxt = read_debugStates();
 				if (state.Config.viewlog) wtxt = wtxt.concat(obCtrl.messagelog.read()); 
     	        //var wtxt = read_debugStates().concat(obCtrl.messagelog.read());
 	    	    for (var s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.status_x, dev.layout.status_y + 8 * s);
@@ -620,6 +625,11 @@ function gameScene(state){
 				wtxt = obCtrl.messageconsole.read();
 				if (state.Config.viewlog) for (var s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 10 * s);
 				//if (state.Config.viewlog) for (var s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+			}
+			//tutorialDisplay 
+			if ( obCtrl.tutorialDisplayTime > state.System.time()){
+				wtxt = obCtrl.tutorialconsole.read();
+				for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.zanki_x + 80, dev.layout.zanki_y - 80 + 10 * s);
 			}
 			
 		}
@@ -968,7 +978,7 @@ function gameScene(state){
 	//==========
 	function UI_PlayerType(){
 
-				work3.putFunc(ButtomlineBackgroundDraw);
+		work3.putFunc(ButtomlineBackgroundDraw);
 
 		//残機表示
 		var zc = 2 - dead_cnt;
@@ -1059,8 +1069,8 @@ function gameScene(state){
 		HpbarDraw.mhp = state.Game.player.maxhp;
 		HpbarDraw.br = state.Game.player.barrier;
 		
-		let BaseLup = Math.pow(state.Game.player.spec.ETC   ,2)* 100;
-		let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;
+		//let BaseLup = Math.pow(state.Game.player.spec.ETC   ,2)* 100;
+		//let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;
 		//HpbarDraw.exp = Math.abs(Math.trunc((obCtrl.score-BaseLup)/(NextLup-BaseLup)*100));
 		work3.putFunc(HpbarDraw);
 	   

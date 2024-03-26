@@ -48,7 +48,6 @@ function ItemTable(){
         0, 0, 0, 0, 0, 0, "Dummy", "Dummy"],
     ]
 
-
     var item_list = [];
 
 	for (var j in it){
@@ -69,7 +68,17 @@ function ItemTable(){
     		ptn.id = w[15];
     		ptn.score = w[16];
     		item_list.add(ptn); 
-
 	}
+
+    let a = {ID:0, name:"", graph:"", type:""
+        , get: function(obj){obj.item[20]+this.param[0];}//getした時の処理とか
+        , equip: false  //装備デキル場合ハ動作用Function
+        , use: false    //使用デキル場合
+        , exrare: false //特殊効果
+        , inspect: false    //鑑定スルトカ？イル？
+        , param:[0] //functionで使用するパラメ－タ用数値
+        , unk_name:"未鑑定名",unk_graph:"", text:"HELPTEXT", info:"簡単な説明" 
+    }
+
     return item_list; 
 }

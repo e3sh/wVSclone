@@ -3,6 +3,18 @@
 //　各オブジェクトの行動を指定するリスト。
 //
 
+// 本シナリオ内にtutorialmessageを表示させる処理あり(202024/03/26)
+// 使ってないitem No.のアイテム取得をメッセージ表示のトリガーにしている。
+// get_item(0) 操作説明
+// get_item(1) 魔法陣について
+// get_item(2) 扉について
+// get_item(4) 武器の強化について
+// get_item(5) レベルアップについて
+// get_item(7) スピードアップについて
+// get_item(8) オプションについて
+// 定義ファイルはtutorialCommentTable.js
+// Item関係ないメッセージで使用可能IDは0-14
+
 // 自機の動作に関するシナリオ
 function sce_player() {
 
@@ -65,7 +77,13 @@ function sce_player() {
 
                         if (player.weapon == p.no){
                             if ( p.name  == "rod" ) {o.item[20] = o.item[20] + 7;}//get ball
-                            else {player.level++;}
+                            else {
+                                player.level++;
+                                if (!Boolean(o.item[4])){//<-tutorialCommentTable
+                                    //if (player.level > 0) 
+                                    o.get_item(4);//武器の強化の説明    
+                                }
+                            }
                         }else{
                             player.level = w.id;
                         }
@@ -160,6 +178,8 @@ function sce_player() {
         }
         o.set_object(100);//InformationCursorSetup
 
+        o.get_item(0);//オープニング説明実施
+
         o.frame = SHIELD_TIME;
     }
 
@@ -181,6 +201,9 @@ function sce_player() {
 
         let SPEC_SPEED = 4.0 + ((powup>40)?2.0:(powup/20));
         o.maxspeed = SPEC_SPEED;//通常時の移動速度
+        if (!Boolean(o.item[7])) {
+            if (SPEC_SPEED > 4.5) o.get_item(7);//オプションの説明
+        }
 
         if (o.frame <= SHIELD_TIME) {
             o.hp = o.maxhp; //出現して5秒間は無敵(60fps)
@@ -547,7 +570,9 @@ function sce_player() {
         o.vy = wvy;
 
         //Door in (StageClear)
-        if (o.doorflag && o.jump == 0) {
+        if (o.doorflag && o.jump == 0) {//
+            if (!Boolean(o.item[2])) o.get_item(2);//扉の説明実施
+
             if (keyget > 0) {
                 o.item[22] = 0;
         
@@ -576,6 +601,7 @@ function sce_player() {
         */
         let lups = Math.pow(o.spec.ETC+1 , 2)* 100 ;//100, 400, 900, 1600, 2500,....
         if ((o.score >= lups)&& !lvupf && o.homeflag){
+            if (!Boolean(o.item[1])) o.get_item(1);//魔法陣の説明
             //o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
             o.spec.ETC++;
             o.sound.effect(14);
@@ -590,6 +616,9 @@ function sce_player() {
                 lvupf = false;
                 o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
                 o.SIGNAL(1709);//LVUP
+                if (!Boolean(o.item[5])){//<-tutorialCommentTable
+                    if (o.spec.ETC > 2) o.get_item(5);//レベルアップの説明    
+                }
             }
         }
 
@@ -597,6 +626,7 @@ function sce_player() {
         if ((o.item[20] >= 10) && !o.repro){
             o.set_object_ex(0, o.x, o.y, o.vector, "sce_friend_option_0");
             o.repro = true;
+            if (!Boolean(o.item[8])) o.get_item(8);//オプションの説明
         }
         if (o.item[20] < 10) o.repro = false;
 

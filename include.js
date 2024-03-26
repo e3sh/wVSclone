@@ -56,6 +56,7 @@ var w = [
  "content/asset/param/scenario/effect.js",
  "content/asset/param/scenario/message.js",
  "content/asset/param/scenario/exevent.js",
+ "content/asset/param/tutorialCommentTable.js",
 //処理部
  "content/proc/control/gObjCntl.js",
  "content/proc/class/gObjClass.js",

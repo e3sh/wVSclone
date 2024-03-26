@@ -134,6 +134,9 @@
 
     var itemtable = {//表示用のアイテムリスト
     //  (ITEMLIST) 
+        0:"操作説明",
+        1:"魔法陣説明",
+        2:"扉説明",
         15:"杖"  ,  // MP38 Wand
         16:"剣"  , // MP15 Knife
         17:"戦斧",   // MP37 Axe
@@ -152,6 +155,32 @@
         50:"弓矢"    // MP43 Bow
     }
     this.itemTable = itemtable;
+
+    let tutcnsl = new textbufferControl(5);
+    this.tutorialconsole = tutcnsl;
+    let tutComment = tutorialCommentTable();//return comment [[],[],[]];
+    this.tutTable = tutCheck;
+    let tutDtime = 0;
+    this.tutorialDisplayTime = tutDtime;
+
+    let tutoDone = [];
+
+    function tutCheck(num){
+        let h = "> ";        
+        if (Boolean(tutComment[num])){
+            if (!Boolean(tutoDone[num])){
+                for (let m of tutComment[num]){
+                    this.tutorialconsole.write(h + m);
+                    h = "  ";
+                }
+                this.tutorialDisplayTime = state.System.time() + 10000;//10s
+                tutoDone[num] = true;//説明済みFlag 
+            }else {
+                //objc.tutorialconsole.write("> " + itemtable[num] + "is done.");
+                //if (num < 15) this.item[num] = 2;//説明済み
+            }
+        }
+    }
 
     function textbufferControl(num = 20){
 
@@ -209,6 +238,8 @@
             this.combo = [];
             this.item = [];
             this.itemstack = [];
+
+            tutoDone = [];//tutorialを見たフラグリセット
 
             msglog.write("ObjCtrl Init.");
         }
@@ -1308,50 +1339,62 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
              } else {
                  objc.item[msg.src] = 1;
              }
- 
-             objc.score += sobj.score;
- 
-             let x = sobj.x;
-             let y = sobj.y;
- 
-             let wid = "Get Item." + msg.src;
- 
-             if (msg.src == 35) {
-                 wid = sobj.score + "pts.";
-                 dev.sound.effect(11); //get音
-                 mapsc.add(x, y, 0, 20, 39, wid); //43green
+
+             if (msg.src > 14){ //説明文を出す処理では処理しない。(0-14説明用)
+                
+                objc.score += sobj.score;
+
+                let x = sobj.x;
+                let y = sobj.y;
+    
+                let wid = "Get Item." + msg.src;
+    
+                if (msg.src == 35) {
+                    wid = sobj.score + "pts.";
+                    dev.sound.effect(11); //get音
+                    mapsc.add(x, y, 0, 20, 39, wid); //43green
+                }
+    
+                if (msg.src == 21) {
+                    wid = "Extend!";
+                    mapsc.add(x, y, 0, 20, 39, wid);
+                }
+    
+                if (msg.src == 22) {
+                    wid = "GetKey!";
+                    dev.sound.effect(11); //get音
+                    mapsc.add(x, y, 0, 20, 39, wid);
+                }
+    
+                if (((msg.src >= 15) && (msg.src <= 19)) || (msg.src==50)){
+                    state.Game.player.stack.push({ch:msg.src, id:msg.dst});
+                    wid = "Weapon!"; 
+                    dev.sound.effect(11); //get音
+                    mapsc.add(x, y, 0, 20, 39, wid);
+                }
+    
+                var f = false;
+                if ((msg.src == 23) || (msg.src == 24) || (msg.src == 25)) {
+                    //dev.sound.effect(9); //cursor音
+                    f = true;
+                }
+    
+                if (f) { //useble items
+                    var w = msg.src;
+                    objc.itemstack.push(w);
+                }
+            
+                objc.messageconsole.write(objc.itemTable[msg.src] + ".GET");
+            }
+            objc.tutTable(msg.src);
+             /*
+             if (Boolean(objc.tutTable[msg.src])){
+                for (let m of objc.tutTable[msg.src]){
+                    objc.tutorialconsole.write(m);
+                }
+                objc.tutorialconsole.write("---");
              }
- 
-             if (msg.src == 21) {
-                 wid = "Extend!";
-                 mapsc.add(x, y, 0, 20, 39, wid);
-             }
- 
-             if (msg.src == 22) {
-                 wid = "GetKey!";
-                 dev.sound.effect(11); //get音
-                 mapsc.add(x, y, 0, 20, 39, wid);
-             }
- 
-             if (((msg.src >= 15) && (msg.src <= 19)) || (msg.src==50)){
-                 state.Game.player.stack.push({ch:msg.src, id:msg.dst});
-                 wid = "Weapon!"; 
-                 dev.sound.effect(11); //get音
-                 mapsc.add(x, y, 0, 20, 39, wid);
-             }
- 
-             var f = false;
-             if ((msg.src == 23) || (msg.src == 24) || (msg.src == 25)) {
-                 //dev.sound.effect(9); //cursor音
-                 f = true;
-             }
- 
-             if (f) { //useble items
-                 var w = msg.src;
-                 objc.itemstack.push(w);
-             }
- 
-             objc.messageconsole.write(objc.itemTable[msg.src] + ".GET");
+             */
              break;
  
          case "bomb":

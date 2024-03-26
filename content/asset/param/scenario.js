@@ -619,8 +619,16 @@ function scenario() {
 
     //メッセージ表示(Mission Complite)
     //-----------------------------------------------------------------------
-    w = new sce_message_billboard( ["Event Message Test",
-    		    "= Mission Complate.　="], 0);
+    w = new sce_message_billboard( [
+        "Event Message Test",
+    	"= Operation Manual. =",
+    	"= Z/(X) Attack/Collect =",
+    	"= X/(B) Use Item       =",
+    	"= C/(A) Jump           =",
+    	"========================",
+    	"= ESC/START Pause/Quit ="
+    
+    ], 0);
 
     sc_init[53] = w.init;
     sc_move[53] = w.move;

@@ -132,6 +132,7 @@ function Stage1(stageno) {
         var ms =
         //  開始フレーム,座標,,角度,シナリオ,キャラ
 	[
+    //[600, 0, 0, 0, "message_billboard_cp", 6],
     [118000, 240, 240, 180, "signal_warning", 6],
 	[119999, 240, 240, 180, "enemy_timeover", 33],
 	[119999, 240, 2000, 180, "enemy_timeover", 33],
