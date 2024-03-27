@@ -42,8 +42,7 @@ function tutorialCommentTable(){
 		,"10個以下になると消滅(最大4つ)"
 		]; //triger player.js
 
-	t[9] = ["「CONTINUE」:QUITで中断した状態のステータス/持ち物で"
-		,"中断ステージの最初から再開"
+	t[9] = ["「LOADGAME」:ステージの最初から開始される"
 		]; //triger player.js
 
 

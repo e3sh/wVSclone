@@ -744,6 +744,7 @@ function scenario() {
     //interval, grow_num, scenario, target_distance
     sc_init["enemy_generator"] = w.init;
     sc_move["enemy_generator"] = w.move;
+    sc_draw["enemy_generator"] = w.draw;//add.2024/3/26
 
     //--------------------------------
     w = new sce_enemy_trbox();
@@ -762,6 +763,7 @@ function scenario() {
 
     sc_init["enemy_timeover"] = w.init;
     sc_move["enemy_timeover"] = w.move;
+    sc_draw["enemy_timeover"] = w.draw;//add.2024/3/26
 
     // Dd追加分
     //-----------------------------------------------------------------------
@@ -780,6 +782,7 @@ function scenario() {
     //interval, grow_num, scenario, target_distance
     sc_init["enemy_generator_vst"] = w.init;
     sc_move["enemy_generator_vst"] = w.move;
+    sc_draw["enemy_generator_vst"] = w.draw;//add.2024/3/26
     
     //支援機動作　まっすぐのパターン
     //-----------------------------------------------------------------------

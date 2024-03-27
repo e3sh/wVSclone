@@ -264,7 +264,7 @@
 
         msglog.write("ObjCtrl Run.");
         msgcnsl.clear();
-
+        tutcnsl.clear();
     }
 
     //move ======================================

@@ -139,4 +139,119 @@ function stateGame() {
         //正常時:0 /異常時:any
         return ret_code;
     }
+
+    this.preload = function(){
+        // Load Data Check
+        let result = {ready: false, load: false, data:{}};
+
+        if (Boolean(localStorage)) {
+
+            let f = false;
+            if (Boolean(localStorage.getItem("savedata"))) {
+                f = true;
+                let s = JSON.parse(localStorage.getItem("savedata"));
+
+                result.data = s;
+                result.load = true;//FileLoad ok
+            }
+            result.ready = true;//LocalStorage ready
+        } else {
+            result.ready = false;//LocalStorage NG
+        }
+
+        //result 
+        //ready:false               dataEmpty
+        //ready:true load:false     ItemNotFound
+        //ready:true load:true data:[object] dataload 
+        //
+        //data.item
+        //data.itemstack
+        //data.nowstage;
+        //data.player
+        //.zanki
+        //.hp .maxhp .weapon .level
+        //.spec.VIT .MND .INT .ETC
+        //.
+        //.日時とか入れる？
+
+        return result;
+    }
+
+    this.dataview = function(result){
+        
+        let txt = [];
+
+        if (result.ready){
+            if (result.load){
+                let s = result.data;
+
+                let w = "";
+                for (let i in s.item){
+                    if (Boolean(s.item[i])) w = w + "[" + i + "]" + s.item[i] + ".";
+                }
+                txt.push("item:" + w);
+
+                w = "";
+                for (let i in s.itemstack){
+                    w = w + s.itemstack[i] + ",";
+                }
+                txt.push("itemstack:" + w);
+                txt.push("nowstage:" + s.stage);
+
+                txt.push("zanki:" + s.player.zanki);
+                txt.push("hp:" + s.player.hp);
+                txt.push("maxhp:" + s.player.maxhp);
+                txt.push("weapon:" + s.player.weapon);
+                txt.push("level:" + s.player.level);
+                txt.push("VIT:" + s.player.spec.VIT);
+                txt.push("MND:" + s.player.spec.MND);
+                txt.push("INT:" + s.player.spec.INT);
+                txt.push("ETC:" + s.player.spec.ETC);
+                txt.push("Load Ok.");
+            }else{
+                txt.push("Data Not Found.");
+            }
+            txt.push("Process end.");
+        }
+        return txt;
+    }
+
+    this.dataview2 = function(result){
+        
+        let weapon = ["Rod", "Sword", "Axe", "Boom", "Spear", "Bow"];
+        let items = [];
+
+        items[20] = "①"; //玉
+        items[23] = "②"; //B
+        items[24] = "③"; //S
+        items[25] = "④"; //L
+
+        let txt = [];
+        txt.push("[SAVEDATA]");
+
+        if (result.ready){
+            if (result.load){
+                let s = result.data;
+
+                let w = "";
+                for (let i in items){
+                    if (Boolean(s.item[i])) w = w + items[i] + ":" + s.item[i] + " ";
+                }
+                txt.push("ITEM:" + w);
+
+                txt.push("STAGE:" + s.stage);
+
+                txt.push("⑦:" + s.player.zanki);
+                txt.push("HP :" + s.player.hp + " / " + s.player.maxhp);
+                txt.push("WEAPON :" + weapon[s.player.weapon] + " +" + s.player.level);
+                txt.push("VIT:" + s.player.spec.VIT);
+                txt.push("MND:" + s.player.spec.MND);
+                txt.push("INT:" + s.player.spec.INT);
+            }else{
+                txt.push("NOT FOUND.");
+            }
+        }
+        return txt;
+    }
+
 }

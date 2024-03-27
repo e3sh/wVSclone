@@ -737,7 +737,12 @@ function sce_enemy_generator(gr_intv, gr_num, gr_sce, gr_sdst) {
 
         o.get_target(98);
         o.hp = 18;
+        o.maxhp = o.hp;
+
+        o.custom_draw_enable = true;
     }
+
+    this.draw = sce_enemy_inv_gr;   
 
     this.move = function (scrn, o) {
         o.frame+= o.vecfrm;
@@ -911,8 +916,12 @@ function sce_enemy_timeover() {
 
         o.attack = 10; //攻撃力
 
-        o.pick_enable = false;
+        o.pick_enable = false;//物は拾わんといて
+    
+        o.custom_draw_enable = true;
     }
+
+    this.draw = sce_enemy_inv_gr;
 
     this.move = function (scrn, o) {
 

@@ -35,7 +35,7 @@ function sceneTitle(state) {
     const DSP_Y = 112;
 
     var menu = [];
-    var mttl = ["GameStart.", "Continue", "Config"];
+    var mttl = ["NewGame", "LoadGame", "Config"];
 	var mjmp = [1, 11, 4];
 
 	for (var i=0; i < mttl.length;i++){
@@ -152,7 +152,7 @@ function sceneTitle(state) {
         work2.draw();
 
         if (state.Game.load() == 0) {
-            menu[1].title = "Continue";
+            menu[1].title = "LoadGame";
             menu[1].jp = 11;
         } else {
             menu[1].title = "";
@@ -167,6 +167,16 @@ function sceneTitle(state) {
         menusel = 0;
 
         psel = { mode:0, x:0 };
+
+        //savedata check
+        let res = state.Game.preload();
+        if (res.load){
+        let t = state.Game.dataview2(res);
+            for (let i in t){
+                work2.kprint(t[i],8, i*8 + 8);
+            }
+            work2.draw();
+        }
         //cnt = 0;
 
         //dev.sound.change(0);
