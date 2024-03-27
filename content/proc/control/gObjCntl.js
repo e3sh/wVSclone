@@ -249,10 +249,11 @@
             this.SIGNAL = 0;
 
             obj = [];
-
             state.Config.cold = true;
             //    this.item = [];
+
             msglog.write("ObjCtrl Reset.");
+
         }
 
         if (state.Config.fullpower) {

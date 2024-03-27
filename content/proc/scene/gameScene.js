@@ -92,13 +92,17 @@ function gameScene(state){
 		//device.globalAlpha = 1.0;
 	}
     //hpbar
-	var HpbarDraw = { hp: 0, mhp: 0, br: true, exp: 0 }
+	var HpbarDraw = { hp: 0, mhp: 0, br: true, bbw:0, exp: 0, }
 	HpbarDraw.draw = function (device) {
 
-		let cbar =  (this.br) ? "skyblue" : (this.hp/this.mhp>0.5)?"limegreen":(this.hp/this.mhp>0.3)?"yellowgreen":"red"; 
+		let cbar =  (this.br) ? "skyblue" : (this.hp/this.mhp>0.5)?"limegreen":"yellowgreen";//(this.hp/this.mhp>0.3)?"yellowgreen":"red"; 
 		let cborder = (this.hp/this.mhp>0.5)?"white":(this.hp/this.mhp>0.3)?"yellow":"orange"; 
 
 	    device.beginPath();
+
+	    device.fillStyle = "red";//effect 
+	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, this.bbw, 14-1);
+
 	    device.fillStyle = cbar; 
 		//device.lineWidth = 1;
 	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, (this.hp/this.mhp)*100, 14-1);
@@ -251,7 +255,7 @@ function gameScene(state){
 		drawexecute = false;
 		mmrefle = true;
 		
-	    if (!Boolean(contflg)) { contflg = false; }
+	    if (!Boolean(contflg)) { contflg = false; }//default: Coldstart /true:continue false:newgame
 	    //scenechange = false;
 
 	    if (state.Game.cold) {//タイトル画面から始めた場合
@@ -265,18 +269,11 @@ function gameScene(state){
 	            obCtrl.item = state.Game.item;
 	            obCtrl.itemstack = state.Game.itemstack;
 
-	            //state.Game.nowstage = state.Config.startstage;
 
-	            //state.Game.player.maxhp = 10;
-	            //state.Game.player.hp = state.Game.player.maxhp;
+
 	        } else {//InitialStart
 	            dead_cnt = 0;
 	            state.Game.nowstage = state.Config.startstage;
-
-	            //state.Game.player.maxhp = 100;
-	            //state.Game.player.hp = state.Game.player.maxhp;
-
-	            //state.Game.player.weapon = 0; //wand
 
 				state.Game.reset();//↑3行も含む処理(2024/03/10)
 	        }
@@ -291,11 +288,12 @@ function gameScene(state){
 
 	    ec_draw_count = 0;
 
-	    if ((contflg = true) && (!state.Game.cold)) {//result画面から戻ってきた場合
+	    if (contflg && (!state.Game.cold)) {//result画面から戻ってきた場合
 	        //stage推移
 	        w = mapsc.stage;
 	        w++;
-	        //if ( w > 5 ) w = 1;//ステージ最終面だった場合最初に戻る。エンディングがある場合は変更
+
+			if ( w > 30 ) w = 1;//ステージ最終面だった場合最初に戻る。エンディングがある場合は変更
 	        mapsc.change(w);
 	        mapsc.stage = w;
 	        state.Game.nowstage = w;
@@ -335,6 +333,8 @@ function gameScene(state){
 	    //mapdisp = false;
 		//^^^^^
 		obCtrl.messageconsole.write("==STAGE START==");
+
+		if (state.Game.cold && contflg) obCtrl.tutTable(9);//CONTINUEについて説明
 
 		if (state.Game.nowstage%5==0) obCtrl.tutTable(6);//ボスについて説明
 	}
@@ -602,7 +602,7 @@ function gameScene(state){
 			}
 
 			//work3.putFunc(ButtomlineBackgroundDraw);
-			
+			playerHPber.draw();
 			UIDraw( UI_force_reflash );
 
 	        //debug　true　の場合以下表示
@@ -794,6 +794,37 @@ function gameScene(state){
 	}
 
 	var ui = { cnt: 0,state:[], score:[], time: 0};
+
+	let playerHPber = new effect_tlHPbar();
+
+	function effect_tlHPbar(){
+		let before_barwidth = 0;
+		let device = dev.graphics[4];
+
+		this.draw = function(){
+			let w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
+			let now_bw = Math.trunc((w_hp / state.Game.player.maxhp)*100);
+
+			HpbarDraw.hp = w_hp; 
+			HpbarDraw.mhp = state.Game.player.maxhp;
+			HpbarDraw.br = state.Game.player.barrier;
+
+			HpbarDraw.bbw = before_barwidth;
+
+			device.putFunc(HpbarDraw);
+		   
+			var wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;// + "." + before_barwidth;
+	
+			if (state.Game.player.barrier) {
+				wst = "HP:" + w_hp +"/SHIELD";       
+			}
+			device.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
+
+			if (before_barwidth > now_bw) before_barwidth = before_barwidth - 1;
+			if (before_barwidth <= now_bw) before_barwidth = now_bw;
+
+		}
+	}
 
 	//UI表示は都度更新と随時更新では負荷減効果あり、必要時都度更新で処理する。
 	//(ミニマップのレーダー(点)は常時なのでここでは処理しない)
@@ -1062,12 +1093,13 @@ function gameScene(state){
 				work3.putchr8(wt, dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y + 8);
 			}
 		work3.putchr("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y);
-
+		
 		var w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
 
 		HpbarDraw.hp = w_hp; 
 		HpbarDraw.mhp = state.Game.player.maxhp;
 		HpbarDraw.br = state.Game.player.barrier;
+		HpbarDraw.bbw = w_hp;
 		
 		//let BaseLup = Math.pow(state.Game.player.spec.ETC   ,2)* 100;
 		//let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;

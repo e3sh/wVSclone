@@ -221,6 +221,7 @@ function sce_boss_damage_gr(scrn, o) {
 */
 function sce_boss_damage_gr(scrn, o) {
     //Bossのダメージゲージ表示
+    if (!Boolean(o.hpbbw)) o.hpbbw = Math.trunc((o.hp / o.maxhp)*100);
 
     cl = {};
     var w = o.gt.worldtoView(o.x, o.y);
@@ -229,14 +230,30 @@ function sce_boss_damage_gr(scrn, o) {
     //cl.sr = ((360 * ((o.maxhp - o.hp) / o.maxhp) - 90) * (Math.PI / 180));
     cl.sr = (o.hp / o.maxhp) * 0.5 * Math.PI;
 
-    cl.cbar = (o.hp / o.maxhp>0.5)?"limegreen":(o.hp / o.maxhp>0.3)?"yellowgreen":"red"; 
+    cl.bbw = (o.hpbbw/100) * 0.5 * Math.PI;
+
+    let now_bw = Math.trunc((o.hp / o.maxhp)*100);
+    if (o.hpbbw > now_bw) o.hpbbw = o.hpbbw - 1;
+    if (o.hpbbw <= now_bw) o.hpbbw = now_bw;
+
+    cl.cbar = (o.hp / o.maxhp>0.5)?"limegreen":"yellowgreen";//(o.hp / o.maxhp>0.3)?"yellowgreen":"red"; 
     cl.cborder = (o.hp / o.maxhp>0.5)?"white":(o.hp / o.maxhp>0.3)?"yellow":"orange"; 
 
     cl.colf = (o.hp/o.maxhp>0.3)?true :false ;
     cl.draw = function (device) {
+
         var st = (1.25 -0.5) * Math.PI;
         var ed = (0.75 -0.5) * Math.PI;
         var v = st - this.sr;
+
+        let bv = st - this.bbw;
+
+        device.beginPath();
+        device.strokeStyle = "red";
+        device.lineWidth = "5";
+        device.beginPath();
+        device.arc(this.x, this.y, 32 + 10, st, bv, true);
+        device.stroke();
 
         device.beginPath();
         device.strokeStyle = this.cbar;

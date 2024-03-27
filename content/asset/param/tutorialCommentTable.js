@@ -9,7 +9,7 @@ function tutorialCommentTable(){
 	t[0] = ["「操作」: 移動:キーボード WASD/矢印 (GAMEPAD) ⑩レバー"
 		,"Z ⑬ 攻撃/回収 X ⑫ アイテム使用 C ⑪ ジャンプ"
 		,"ESC(START) PAUSE(一時停止)/ F:フルスクリーン "
-		,"ゲームの目的:時間内に鍵を入手して扉へ向かいステージクリアする"
+	//	,"ゲームの目的:時間内に鍵を入手して扉へ向かいステージクリアする"
 		]; //triger player.js
 	//施設の説明
 	t[1] = ["「魔法陣」：出現地点の部屋にあり、接触時レベルアップチェック"
@@ -41,6 +41,11 @@ function tutorialCommentTable(){
 	t[8] = ["「オプション」:①が10個毎にオプションが1つ付く"
 		,"10個以下になると消滅(最大4つ)"
 		]; //triger player.js
+
+	t[9] = ["「CONTINUE」:QUITで中断した状態のステータス/持ち物で"
+		,"中断ステージの最初から再開"
+		]; //triger player.js
+
 
 	//triger gObjClass.js get_item();
 	//武器の説明

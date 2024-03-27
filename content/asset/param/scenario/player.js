@@ -98,6 +98,8 @@ function sce_player() {
 		}
 	}
 
+    let hpbbw; //hp bar before width
+
     // 自機の移動　====
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
@@ -167,6 +169,7 @@ function sce_player() {
         //o.spec.MND = 0, //ShieldTime+: init 300flame(5s) +
 
         lvupf = false;
+        hpbbw = Math.trunc((o.gameState.player.hp / o.gameState.player.maxhp)*32);
 
         op.ptr = 0;
         op.x.fill(o.x);
@@ -725,10 +728,22 @@ function sce_player() {
         lbar.y = w.y + o.shifty + o.hit_y + 3;
         //lbar.br = barriref ? "skyblue" : (lbar.hp/lbar.mhp>0.3)?"limegreen":"red";
 
-        lbar.cbar = (barriref)?"skyblue" : (lbar.hp/lbar.mhp>0.5)?"limegreen":(lbar.hp/lbar.mhp>0.3)?"yellowgreen":"red"; 
+        lbar.bbw = hpbbw;
+
+        let now_bw = Math.trunc((o.gameState.player.hp / o.gameState.player.maxhp)*32);
+        if (hpbbw > now_bw) hpbbw = hpbbw - 0.32;
+        if (hpbbw <= now_bw) hpbbw = now_bw;
+
+        lbar.cbar = (barriref)?"skyblue" : (lbar.hp/lbar.mhp>0.5)?"limegreen":"yellowgreen";//(lbar.hp/lbar.mhp>0.3)?"yellowgreen":"red"; 
 		lbar.cborder = (lbar.hp/lbar.mhp>0.5)?"white":(lbar.hp/lbar.mhp>0.3)?"yellow":"orange"; 
 
         lbar.draw = function(device){
+            device.beginPath();
+	        device.fillStyle = "red";
+	        device.lineWidth = 1;
+	        device.fillRect(this.x -16, this.y +3, this.bbw, 2);
+	        device.stroke();
+
             device.beginPath();
 	        device.fillStyle = this.cbar;
 	        device.lineWidth = 1;
@@ -743,7 +758,7 @@ function sce_player() {
         }
         if (o.hp != o.maxhp) scrn.putFunc(lbar);
 
-        for (let i=0; i < op.x.length; i++){
+        for (let i=0; i < op.x.length - 5; i++){
             let w = o.gt.worldtoView(
                 op.x[(op.ptr + i) % op.x.length],
                 op.y[(op.ptr + i) % op.x.length]
@@ -763,15 +778,18 @@ function sce_player() {
                         } );
                 }else{
                     */
-                    scrn.fill(w.x, w.y, 2, 2,"white");
+                    scrn.fill(w.x, w.y, 2, 2,"gray");
                 }
             /*
             }else{
                 //scrn.fill(w.x, w.y, 2, 2,"gray");
             }
-            */            
+            */     
+                  
             if (i > op.x.length - o.itemstack.length){    
                 if (Boolean(o.itemstack[op.x.length - i])){
+                    scrn.fill(w.x, w.y, 2, 2,"white");
+                    /*
                     if (o.itemstack[op.x.length - i] == 23){
                         scrn.fill(w.x, w.y, 3, 3,"Orange");
                     }else if (o.itemstack[op.x.length - i] == 24){
@@ -779,9 +797,10 @@ function sce_player() {
                     }else if (o.itemstack[op.x.length - i] == 25){
                         scrn.fill(w.x, w.y, 3, 3,"Green");
                     }
+                    */
                 }
             }
-
+            
         }
     }
 

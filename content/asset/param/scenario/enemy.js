@@ -1050,6 +1050,7 @@ function sce_enemy_inv_gr(scrn, o){
     }
 
     function lbar_draw(){
+        if (!Boolean(o.hpbbw)) o.hpbbw = Math.trunc((o.hp / o.maxhp)*32);
     
         var w = o.gt.worldtoView(o.x, o.y);
 
@@ -1060,13 +1061,24 @@ function sce_enemy_inv_gr(scrn, o){
 
         lbar.x = w.x + o.shiftx;
         lbar.y = w.y + o.shifty + o.hit_y + 3*o.display_size;
+        //scrn.putchr8(o.hp + "/" +o.maxhp+"."+o.hpbbw,w.x,w.y);
 
-        //scrn.putchr8(o.hp + "/" +o.maxhp,w.x,w.y);
+        lbar.bbw = o.hpbbw;
 
-        lbar.cbar = (lbar.hp/lbar.mhp>0.5)?"limegreen":(lbar.hp/lbar.mhp>0.3)?"yellowgreen":"red"; 
+        let now_bw = Math.trunc((o.hp / o.maxhp)*32);
+        if (o.hpbbw > now_bw) o.hpbbw = o.hpbbw - 0.32;
+        if (o.hpbbw <= now_bw) o.hpbbw = now_bw;
+
+        lbar.cbar = (lbar.hp/lbar.mhp>0.5)?"limegreen":"yellowgreen";//(lbar.hp/lbar.mhp>0.3)?"yellowgreen":"red"; 
 		lbar.cborder = (lbar.hp/lbar.mhp>0.5)?"white":(lbar.hp/lbar.mhp>0.3)?"yellow":"orange"; 
 
         lbar.draw = function(device){
+            device.beginPath();
+	        device.fillStyle = "red";
+	        device.lineWidth = 1;
+	        device.fillRect(this.x -16, this.y +3, this.bbw, 2);
+	        device.stroke();
+
             device.beginPath();
 	        device.fillStyle = this.cbar;
 	        device.lineWidth = 1;
