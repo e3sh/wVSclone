@@ -99,7 +99,7 @@ function sce_player() {
 	}
 
     let hpbbw; //hp bar before width
-    let portalwarp = { vx:0, vy:0 };
+    let portalwarp = { vx:0, vy:0, cnt:0 };
 
     // 自機の移動　====
     //-----------------------------------------------------------------------
@@ -622,7 +622,7 @@ function sce_player() {
 
         if (lvupf){ //↑のLvUp検出で音を鳴らしてから0.5秒後にLvUpMenuへ
             //スコア数値の表示演出完了待ち（数字じゃなくてゲージにするか？）
-            if (o.alive > delay_st +500){
+            if (o.alive > delay_st +250){//0.25s
                 lvupf = false;
                 o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
                 o.SIGNAL(1709);//LVUP
@@ -636,9 +636,10 @@ function sce_player() {
         if ((o.warptime < o.alive)&&o.portalflag){
             if (!Boolean(o.item[10])) o.get_item(10);//Portalの説明実施
             if (o.item[35] >= 10){
-                o.item[35] = o.item[35] - 10;
+                //o.item[35] = o.item[35] - 10;
+                o.item[35]--;
 
-                o.warptime = o.alive + 1000;
+                o.warptime = o.alive + 1000;//ms
                 o.portalflag = false;
 
                 //o.x = o.startx;
@@ -660,10 +661,13 @@ function sce_player() {
             }
         }
 
-        if (o.warptime > o.alive){
+        if (o.warptime >= o.alive){
             let n = o.warptime - o.alive;
             //if (o.item[35] > 0) o.item[35] = o.item[35] - 0.1;
             //o.item[35] = n/10;
+
+            if ( portalwarp.cnt == 0 ) o.item[35]--;
+            portalwarp.cnt = (portalwarp.cnt++ > 5)?0 :portalwarp.cnt;            
 
             o.jump = 1;
             o.vx = portalwarp.vx;

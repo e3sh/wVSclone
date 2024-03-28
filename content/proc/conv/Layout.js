@@ -25,7 +25,7 @@ function gameLayout() {
     this.itemchain_x = DSP_SP_X;
     this.itemchain_y = DSP_SP_Y + 24;
 
-    this.zanki_x = DSP_SP_X + 20;
+    this.zanki_x = DSP_SP_X + 160;//20;
     this.zanki_y = DSP_SP_Y + GS_SIZE_Y - 16;
 
     this.time_x = DSP_SP_X + GS_SIZE_X - (12 * 10);
@@ -37,10 +37,10 @@ function gameLayout() {
     this.map_x = DSP_SP_X;// 640 - 150;
     this.map_y = DSP_SP_Y; // 480 - 48 - 150;
 
-    this.hp_x = DSP_SP_X + 168;
+    this.hp_x = DSP_SP_X + 160+148;//168;
     this.hp_y = DSP_SP_Y + GS_SIZE_Y -32;
 
-    this.clip_x = DSP_SP_X;
+    this.clip_x = DSP_SP_X + 140;
     this.clip_y = DSP_SP_Y + GS_SIZE_Y -36;
 
 /*

@@ -629,7 +629,7 @@ function gameScene(state){
 			//tutorialDisplay 
 			if ( obCtrl.tutorialDisplayTime > state.System.time()){
 				wtxt = obCtrl.tutorialconsole.read();
-				for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.zanki_x + 80, dev.layout.zanki_y - 80 + 10 * s);
+				for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.zanki_x, dev.layout.zanki_y - 80 + 10 * s);
 			}
 			
 		}
@@ -1043,15 +1043,19 @@ function gameScene(state){
 			}
 		}
 		//Coin表示
-		if (!Boolean(obCtrl.item[35])) {
-			obCtrl.item[35] = 0;
-		} else {
+		if (Boolean(obCtrl.item[35])) {
 			let n = obCtrl.item[35];
-			work3.put("Coin1",
-			dev.layout.zanki_x + 288, dev.layout.zanki_y + 8);
-			work3.putchr8("x" + n, dev.layout.zanki_x + 288 + 10, dev.layout.zanki_y + 8);
+			if (n <= 6) {
+				for (let i = 0; i < n; i++) {
+					work3.put("Coin1",
+					dev.layout.zanki_x + i * 8 + 288, dev.layout.zanki_y + 8);
+				}
+			} else {
+				work3.put("Coin1",
+				dev.layout.zanki_x + 288, dev.layout.zanki_y + 8);
+				work3.putchr8("x" + n, dev.layout.zanki_x + 288 + 10, dev.layout.zanki_y + 8);
+			}
 		}
-
 		//取得アイテム表示
 		if (Boolean(obCtrl.itemstack)) {
 
