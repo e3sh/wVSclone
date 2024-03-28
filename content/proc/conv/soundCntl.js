@@ -39,6 +39,7 @@ function soundCntl( asset ) {
         "14powup",
         "15fanfare",
         "16battle"
+        ,"17jump"
     ];
 
     let snd = [];

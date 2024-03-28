@@ -45,6 +45,11 @@ function tutorialCommentTable(){
 	t[9] = ["「LOADGAME」:ステージの最初から開始される"
 		]; //triger player.js
 
+	t[10] = ["「石碑」:⑤が10枚消費して"
+		,"ステージの開始位置に戻ることができる"
+		]; //triger player.js
+
+
 
 	//triger gObjClass.js get_item();
 	//武器の説明

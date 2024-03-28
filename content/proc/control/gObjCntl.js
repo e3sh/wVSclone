@@ -260,7 +260,7 @@
             //this.item[7] = 10;
         }
 
-        this.item[35] = 0; //coinclear;
+        //this.item[35] = 0; //coinclear;
 
         msglog.write("ObjCtrl Run.");
         msgcnsl.clear();
@@ -525,7 +525,6 @@
                         //}
 
                         if (w.type == 12) {//背景種類　扉　
-
                             if (o.type == 98) {//　obj.type　が　自機
                                 o.doorflag = true;
                             }
@@ -535,7 +534,6 @@
                         }
 
                         if (w.type == 13) {//背景種類　天井　
-
                             if (o.type == 98) {//　obj.type　が　自機
                                 this.ceilflag = true; //天井
                                 this.ceildelay = state.System.time();//最後に消した基準タイム
@@ -543,24 +541,27 @@
                                 //alert("c");
                             }
                             if ((o.type == 2)||(o.type == 3)) {//　obj.type　が　敵/敵弾
-                                
                                 if (mapsc.startroom_id() == w.index){ //開始部屋に入れない処理
-                                    bupCol  = o.mapCollision;
-                                    bupColX = o.mapColX;
-                                    bupColY = o.mapColY;
-                                    //console.log("rc"+w.index + ":" + mapsc.startroom_id());
+                                    bupCol  = o.mapCollision; bupColX = o.mapColX; bupColY = o.mapColY;
                                 } 
                             }
-
                             o.mapCollision = bupCol;// || o.mapCollision;
                             o.mapColX = bupColX;// || o.mapColX;
                             o.mapColY = bupColY;// || o.mapColY;
                         }
-
                         if (w.type == 14) {//背景種類　魔法陣　
-
                             if (o.type == 98) {//　obj.type　が　自機
                                 o.homeflag = true;
+                            }
+                            o.mapCollision = bupCol;// || o.mapCollision;
+                            o.mapColX = bupColX;// || o.mapColX;
+                            o.mapColY = bupColY;// || o.mapColY;
+                        }
+                        if (w.type == 16) {//背景種類　Portal　
+                            if (o.type == 98) {//　obj.type　が　自機
+                                //o.x = o.startx;
+                                //o.y = o.starty;
+                                o.portalflag = true;
                             }
                             o.mapCollision = bupCol;// || o.mapCollision;
                             o.mapColX = bupColX;// || o.mapColX;
@@ -902,12 +903,13 @@
 
                         var ww = o.center_x * o.display_size + (o.shifty/8);//shiftyはJUMP時に
                         var wh = o.center_y * o.display_size + (o.shifty/8);//影を小さくする補正処理の為
- 
-                        device.beginPath();
-                        device.fillStyle = "rgba(0,0,0,0.6)";
-                        device.ellipse(w.x, w.y + wh, ww, wh/4, 0,  0, Math.PI*2, true );
 
-                        device.fill();
+                        if (ww>0 && wh>0){
+                            device.beginPath();
+                            device.fillStyle = "rgba(0,0,0,0.6)";
+                            device.ellipse(w.x, w.y + wh, ww, wh/4, 0,  0, Math.PI*2, true );
+                            device.fill();
+                        }
                     }
                 }
             }

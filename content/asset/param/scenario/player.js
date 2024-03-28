@@ -99,6 +99,7 @@ function sce_player() {
 	}
 
     let hpbbw; //hp bar before width
+    let portalwarp = { vx:0, vy:0 };
 
     // 自機の移動　====
     //-----------------------------------------------------------------------
@@ -146,6 +147,11 @@ function sce_player() {
 
         o.doorflag = false;
         o.homeflag = false;
+        o.portalflag = false;
+        o.warptime = o.alive;
+
+        o.startx = o.x;
+        o.starty = o.y;
 
         o.repro = false;
 
@@ -526,6 +532,7 @@ function sce_player() {
 
         o.damageflag = false;
 
+        if (o.warptime > o.alive) o.mapCollision = false;
 
         // 移動処理
         if (o.mapCollision != true) {
@@ -623,6 +630,44 @@ function sce_player() {
                     if (o.spec.ETC > 2) o.get_item(5);//レベルアップの説明    
                 }
             }
+        }
+
+        //PortalWarp
+        if ((o.warptime < o.alive)&&o.portalflag){
+            if (!Boolean(o.item[10])) o.get_item(10);//Portalの説明実施
+            if (o.item[35] >= 10){
+                o.item[35] = o.item[35] - 10;
+
+                o.warptime = o.alive + 1000;
+                o.portalflag = false;
+
+                //o.x = o.startx;
+                //o.y = o.starty;
+
+                o.jump = 1;
+                o.jpcount = 60;
+                o.jpvec = -10;
+                o.colcheck = false;
+
+                o.triger = TRIG_WAIT;
+
+                portalwarp.vx =  ((o.startx - o.x)/60);
+                portalwarp.vy =  ((o.starty - o.y)/60);
+
+                o.sound.effect(17);//jump音
+            }else{
+                o.portalflag = false;
+            }
+        }
+
+        if (o.warptime > o.alive){
+            let n = o.warptime - o.alive;
+            //if (o.item[35] > 0) o.item[35] = o.item[35] - 0.1;
+            //o.item[35] = n/10;
+
+            o.jump = 1;
+            o.vx = portalwarp.vx;
+            o.vy = portalwarp.vy;
         }
 
         //option

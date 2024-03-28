@@ -88,7 +88,7 @@ function gameScene(state){
 	ButtomlineBackgroundDraw.draw = function (device) {
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.5)";
-	    device.fillRect(dev.layout.clip_x, dev.layout.clip_y, 640 - 13 * 13, 36);
+	    device.fillRect(dev.layout.clip_x, dev.layout.clip_y, 360, 36);
 		//device.globalAlpha = 1.0;
 	}
     //hpbar
@@ -844,6 +844,7 @@ function gameScene(state){
 			lampf,
 			obCtrl.item[20],//ball
 			obCtrl.item[22],//key
+			obCtrl.item[35],//coin
 			obCtrl.itemstack.length,
 			state.Game.player.weapon,
 			state.Game.player.level,
@@ -1029,9 +1030,7 @@ function gameScene(state){
 		//ball表示
 		if (Boolean(obCtrl.item[20])) {
 			var n = obCtrl.item[20];
-			if (n <= 8) {
-				//n = 16;
-
+			if (n <= 3) {
 				for (var i = 0; i < n; i++) {
 					work3.put("Ball1",
 					dev.layout.zanki_x + i * 20 + 288, dev.layout.zanki_y - 8);
@@ -1042,6 +1041,15 @@ function gameScene(state){
 
 				work3.putchr8("x" + n, dev.layout.zanki_x + 288 + 10, dev.layout.zanki_y - 12);
 			}
+		}
+		//Coin表示
+		if (!Boolean(obCtrl.item[35])) {
+			obCtrl.item[35] = 0;
+		} else {
+			let n = obCtrl.item[35];
+			work3.put("Coin1",
+			dev.layout.zanki_x + 288, dev.layout.zanki_y + 8);
+			work3.putchr8("x" + n, dev.layout.zanki_x + 288 + 10, dev.layout.zanki_y + 8);
 		}
 
 		//取得アイテム表示
@@ -1058,11 +1066,10 @@ function gameScene(state){
 			work3.putchr8("[X]", dev.layout.zanki_x + 132 - 16, dev.layout.zanki_y - 16);
 			n = witem.length;
 
-			if (n >= 17) {n = 15; work3.putchr8("...", dev.layout.zanki_x + n * 20 + 128, dev.layout.zanki_y + 8);}
+			if (n >= 8) {n = 6; work3.putchr8("...", dev.layout.zanki_x + n * 20 + 128, dev.layout.zanki_y + 8);}
 			//if (n >= 7) n = 7;
 
 			for (var i = 0; i < n; i++) {
-
 				if (i == 0) {
 					work3.put(wchr[witem[witem.length - 1 - i]],
 					dev.layout.zanki_x + i * 20 + 132, dev.layout.zanki_y);

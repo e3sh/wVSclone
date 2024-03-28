@@ -79,6 +79,7 @@ function GameAssetSetup(game){
 	game.asset.soundLoad( "14powup",	asset_path_cts + 	"sound/14powup"		);
 	game.asset.soundLoad( "15fanfare",	asset_path_cts + 	"sound/15fanfarre"  );
 	game.asset.soundLoad( "16battle",	asset_path_cts + 	"sound/16maou_game_battle16");
+	game.asset.soundLoad( "17jump",		asset_path_cts + 	"sound/17jump"		);
 
     //Game Device Setup
 	game.setSpFont({ name: "stfont",   id: "FontGraph", pattern: FontPtnCutArray(  0,   0,12,16) });
