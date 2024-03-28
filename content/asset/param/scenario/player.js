@@ -633,7 +633,7 @@ function sce_player() {
         }
 
         //PortalWarp
-        if ((o.warptime < o.alive)&&o.portalflag){
+        if ((o.warptime <= o.alive)&&o.portalflag){
             if (!Boolean(o.item[10])) o.get_item(10);//Portalの説明実施
             if (o.item[35] >= 10){
                 //o.item[35] = o.item[35] - 10;
@@ -656,12 +656,14 @@ function sce_player() {
                 portalwarp.vy =  ((o.starty - o.y)/60);
 
                 o.sound.effect(17);//jump音
+
+                o.portalflag = false;
             }else{
                 o.portalflag = false;
             }
         }
 
-        if (o.warptime >= o.alive){
+        if (o.warptime > o.alive){
             let n = o.warptime - o.alive;
             //if (o.item[35] > 0) o.item[35] = o.item[35] - 0.1;
             //o.item[35] = n/10;
@@ -669,9 +671,18 @@ function sce_player() {
             if ( portalwarp.cnt == 0 ) o.item[35]--;
             portalwarp.cnt = (portalwarp.cnt++ > 5)?0 :portalwarp.cnt;            
 
-            o.jump = 1;
-            o.vx = portalwarp.vx;
-            o.vy = portalwarp.vy;
+            //到着チェック
+            let u = Math.abs(o.x - o.startx);
+            let h = Math.abs(o.y - o.startx);
+            if ( Math.sqrt(u * u + h * h) < 48) {
+                o.warptime = o.alive;
+                o.portalflag = false;
+                o.jump = 0;
+            }else{
+                o.vx = portalwarp.vx;
+                o.vy = portalwarp.vy;
+                o.jump = 1;
+            }
         }
 
         //option
