@@ -92,24 +92,35 @@ function gameScene(state){
 		//device.globalAlpha = 1.0;
 	}
     //hpbar
-	var HpbarDraw = { hp: 0, mhp: 0, br: true, bbw:0, exp: 0, }
+	let HpbarDraw = { hp: 0, mhp: 0, br: true, shw:0, bbw:0, exp: 0, }
+	//br:SHIELD展開中 shw: SHIELD width(シールドゲージの幅0-100 
+	//bbw:beforehp bar width exp:notUse.
 	HpbarDraw.draw = function (device) {
 
-		let cbar =  (this.br) ? "skyblue" : (this.hp/this.mhp>0.5)?"limegreen":"yellowgreen";//(this.hp/this.mhp>0.3)?"yellowgreen":"red"; 
+		let cbar = (this.hp/this.mhp>0.5)?"limegreen":"yellowgreen";//(this.hp/this.mhp>0.3)?"yellowgreen":"red"; 
 		let cborder = (this.hp/this.mhp>0.5)?"white":(this.hp/this.mhp>0.3)?"yellow":"orange"; 
 
 	    device.beginPath();
+	    device.fillStyle = "black";//clear 
+	    device.fillRect(dev.layout.hp_x, dev.layout.hp_y, 102, 15);
 
-	    device.fillStyle = "red";//effect 
+		device.fillStyle = "red";//effect 
 	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, this.bbw, 14-1);
-
-	    device.fillStyle = cbar; 
-		//device.lineWidth = 1;
+	    device.fillStyle = cbar;//hpbar 
 	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, (this.hp/this.mhp)*100, 14-1);
-	    //device.stroke();
-	    //device.beginPath();
-	    device.strokeStyle = cborder; 
-	    device.lineWidth = 2;
+		if (this.br){//shieldbar
+	    	device.fillStyle = "cyan"; 
+	    	device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 3, this.shw, 14-3);
+
+			let c = (this.shw%10)*5 + 205;
+	    	device.fillStyle = "rgb(0," + c + "," + c + ")";
+			//(this.shw > 50)?"rgb(0," + c + "," + c + ")": 
+			//(this.shw < 25)?"rgb(" + c + ",128, 128)":"rgb(" + c + "," + c + ",160)"; //"skyblue"; 
+	    	device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 4, this.shw-1, 14-4);
+		}
+		//border
+		device.strokeStyle = cborder; 
+		device.lineWidth = 2;
 	    device.rect(dev.layout.hp_x, dev.layout.hp_y, 102, 15);
 	    device.stroke();
 		/*
@@ -808,7 +819,7 @@ function gameScene(state){
 			HpbarDraw.hp = w_hp; 
 			HpbarDraw.mhp = state.Game.player.maxhp;
 			HpbarDraw.br = state.Game.player.barrier;
-
+			HpbarDraw.shw = state.Game.player.shieldtime;
 			HpbarDraw.bbw = before_barwidth;
 
 			device.putFunc(HpbarDraw);
@@ -816,7 +827,7 @@ function gameScene(state){
 			var wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;// + "." + before_barwidth;
 	
 			if (state.Game.player.barrier) {
-				wst = "HP:" + w_hp +"/SHIELD";       
+				//wst = "HP:" + w_hp +"/SHIELD";       
 			}
 			device.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
 
@@ -1110,6 +1121,7 @@ function gameScene(state){
 		HpbarDraw.hp = w_hp; 
 		HpbarDraw.mhp = state.Game.player.maxhp;
 		HpbarDraw.br = state.Game.player.barrier;
+		HpbarDraw.shw = state.Game.player.shieldtime;
 		HpbarDraw.bbw = w_hp;
 		
 		//let BaseLup = Math.pow(state.Game.player.spec.ETC   ,2)* 100;
@@ -1120,7 +1132,7 @@ function gameScene(state){
 		var wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
 
 		if (state.Game.player.barrier) {
-			wst = "HP:" + w_hp +"/SHIELD";       
+			//wst = "HP:" + w_hp +"/SHIELD";       
 		}
 		work3.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
 

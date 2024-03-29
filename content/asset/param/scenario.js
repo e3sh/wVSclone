@@ -2,7 +2,7 @@
 //　scenario processor version Javascript
 //　各オブジェクトの行動を指定するリスト。
 //
-function scenario() {
+function scenario( gObjc) {
 
     var sc = {};
 
@@ -28,7 +28,7 @@ function scenario() {
 
     // 自機の移動　====
     //-----------------------------------------------------------------------
-    w = new sce_player();
+    w = new sce_player( gObjc);
 
     sc_init[1] = w.init;
     sc_move[1] = w.move;

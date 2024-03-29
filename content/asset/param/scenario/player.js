@@ -16,7 +16,7 @@
 // Item関係ないメッセージで使用可能IDは0-14
 
 // 自機の動作に関するシナリオ
-function sce_player() {
+function sce_player( gObjc ) {
 
     const SHIELD_TIME_BASE = 300;
     let SHIELD_TIME = SHIELD_TIME_BASE;
@@ -218,6 +218,7 @@ function sce_player() {
             o.hp = o.maxhp; //出現して5秒間は無敵(60fps)
             o.attack = 10;
             o.gameState.player.barrier = true;
+            o.gameState.player.shieldtime = Math.trunc(((SHIELD_TIME - o.frame)/SHIELD_TIME)*100);
             o.lighton = true;
             //    o.damageflag = false;
             if (o.gameState.player.weapon !=0 ) o.maxspeed = SPEC_SPEED-1.5;//4.5;//SHIELD中はスピードダウン/RODでは減速無し
@@ -228,6 +229,7 @@ function sce_player() {
             o.attack = 1;
             o.gameState.player.hp = o.before_hp;
             o.gameState.player.barrier = false;
+            o.gameState.player.shieldtime = 0;
             o.lighton = false;
         }
 
@@ -280,6 +282,9 @@ function sce_player() {
         
         let ckey = false;
         if (Boolean(o.key_state[67])) { if (o.key_state[67]) ckey = true; }
+        
+        let hkey = false;//Debug Help action test 
+        if (Boolean(o.key_state[72])) { if (o.key_state[72]) hkey = true; }
 
         let esckey = false;
         if (Boolean(o.key_state[27])) { if (o.key_state[27]) esckey = true; }
@@ -403,6 +408,7 @@ function sce_player() {
         
         if (ckey) { //Jump
             if (o.shot == 0 && o.jump == 0) {
+                o.shot = 1;
 
                 o.jump = 1;
                 o.jpcount = 40;
@@ -413,7 +419,22 @@ function sce_player() {
             }
             
         }
+        
+        if (hkey) {
+            if (o.shot == 0){
+                o.shot = 1;
 
+                if (!gObjc.ceilflag){//inTheWall HELP mode
+                    if (o.item[35]<10) o.item[35] += 10;
+                    o.portalflag = true;
+                }else{
+                    o.set_object_ex(20, o.x, o.y, 0, 43, "Hi!" );
+                    //helomode none
+                }
+                o.triger = TRIG_WAIT;
+            }
+        }
+        
         if (esckey) {
             if (o.shot == 0) {
                 o.shot = 1;
@@ -535,7 +556,7 @@ function sce_player() {
         if (o.warptime > o.alive) o.mapCollision = false;
 
         // 移動処理
-        if (o.mapCollision != true) {
+        if (!o.mapCollision) {
             o.old_x = o.x;
             o.old_y = o.y;
             //o.x += o.vx;  o.y += o.vy;
@@ -647,13 +668,15 @@ function sce_player() {
 
                 o.jump = 1;
                 o.jpcount = 60;
-                o.jpvec = -10;
+                o.jpvec = -14.6;
                 o.colcheck = false;
 
                 o.triger = TRIG_WAIT;
 
-                portalwarp.vx =  ((o.startx - o.x)/60);
-                portalwarp.vy =  ((o.starty - o.y)/60);
+                //portal distance
+                portalwarp.vx =  o.startx - o.x;
+                portalwarp.vy =  o.starty - o.y;
+                portalwarp.cnt = 0;
 
                 o.sound.effect(17);//jump音
 
@@ -668,19 +691,37 @@ function sce_player() {
             //if (o.item[35] > 0) o.item[35] = o.item[35] - 0.1;
             //o.item[35] = n/10;
 
-            if ( portalwarp.cnt == 0 ) o.item[35]--;
-            portalwarp.cnt = (portalwarp.cnt++ > 5)?0 :portalwarp.cnt;            
+            if ( portalwarp.cnt%5 == 0 ) o.item[35]--;
+            portalwarp.cnt++;            
 
             //到着チェック
             let u = Math.abs(o.x - o.startx);
             let h = Math.abs(o.y - o.startx);
-            if ( Math.sqrt(u * u + h * h) < 48) {
+            if ( Math.sqrt(u * u + h * h) < 48){
                 o.warptime = o.alive;
                 o.portalflag = false;
-                o.jump = 0;
+                //o.jump = 0;
+
+                o.vx = 0;
+                o.vy = 0;
+                /*
+                o.shifty = 0;
+                o.prioritySurface = false;
+                o.colcheck = true;
+                */
             }else{
-                o.vx = portalwarp.vx;
-                o.vy = portalwarp.vy;
+                let d = 60 - portalwarp.cnt; 
+                if (d > 1){
+                    o.vx = portalwarp.vx/d;
+                    o.vy = portalwarp.vy/d;
+                }else{
+                    o.vx = (o.startx - o.x)/2;
+                    o.vy = (o.starty - o.y)/2;
+                }
+
+                portalwarp.vx -= o.vx; 
+                portalwarp.vy -= o.vy;
+                //o.warptime = o.alive + 100;
                 o.jump = 1;
             }
         }

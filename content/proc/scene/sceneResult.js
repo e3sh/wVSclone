@@ -175,7 +175,7 @@ function sceneResult(state) {
                     for (var i in menu) {
 
                         if (menu[i].sel) {
-                            var n = menu[i].func();
+                            let n = menu[i].func();
                             if (n != 0) {
                                 //wipef = true;
                                 if (!dexef) {diag.exec(); dexef=true;}
@@ -187,7 +187,7 @@ function sceneResult(state) {
                     }
                 }
                 if (!soundf&&(state.Game.nowstage%15 == 0)) {
-                    dev.sound.effect(15);
+                    dev.sound.effect(15);//Fanfare
                     soundf = true;
                 }
             }
@@ -199,7 +199,7 @@ function sceneResult(state) {
         }
 
         if ( !zkey ) keylock = false;
-
+        if (dev.sound.running()) keylock = true;
 
         if (wipef) {
 
@@ -240,15 +240,8 @@ function sceneResult(state) {
         }
 
         for (i in menu) {
-        
-        //    if ((mstate.x >= menu[i].x) && (mstate.x <= menu[i].x + menu[i].w)
-          //      && (mstate.y >= menu[i].y) && (mstate.y <= menu[i].y + menu[i].h)) {
-
-                if (!keylock) menu[i].sel = true;
-            //} else {
-              //  menu[i].sel = false;
-            //}
-
+                if (!keylock) menu[i].sel = true; //ButtunLampOn
+                if (ret_code != 0) menu[i].sel = false; //ButtunLampOff
         }
 
         var stage = state.Game.nowstage;
@@ -267,7 +260,11 @@ function sceneResult(state) {
 
     function scene_draw() {
 
-        for (var i in menu) {
+        let w = state.obCtrl.player_objv(work);
+        work.fill(w.x-16,w.y-16,32,32,0);
+        state.obCtrl.player_objv(work);
+
+        for (let i in menu) {
 
             if (menu[i].sel) {
                 var o = {}
@@ -275,9 +272,13 @@ function sceneResult(state) {
                 o.y = menu[i].y;
                 o.w = menu[i].w;
                 o.h = menu[i].h;
+                //o.c = "orange";
+                let t = Math.sin(Math.PI*((state.System.time()%1500)/1500));
+                o.c = "rgb(" + Math.trunc(255*t) + "," + Math.trunc(165*t) + ",0)";//
+
                 o.draw = function (device) {
                     device.beginPath();
-                    device.fillStyle = "orange";
+                    device.fillStyle = this.c;
                     device.fillRect(this.x, this.y, this.w, this.h);
                 }
                 work.putFunc(o);

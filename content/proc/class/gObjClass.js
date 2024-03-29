@@ -347,12 +347,14 @@ gObjectClass.prototype = {
 
     sc_move : function()
     {
-        var f = 0;
+        let onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
+
+        let f = 0;
         if (this.status == 2) {//状態が衝突の場合
             switch (this.type) {//自身のタイプが...
             case 1: //自弾
             case 3: //敵弾
-                this.sound.effect(12); //hit音
+                if (onst) this.sound.effect(12); //hit音
                 this.change_sce("effect_vanish"); 
                 this.damageflag = false;
                 //↑ここで弾を消しているので削除すると弾が消えなくなる。2023/01/20消してしまってbugったので記録。
@@ -360,7 +362,7 @@ gObjectClass.prototype = {
             case 2: //敵
                 //this.display_size *= 2; //爆発を大きくする
                 this.change_sce("effect_bomb_x");//7
-                this.sound.effect(8); //爆発音
+                if (onst) this.sound.effect(8); //爆発音 
                 
                 //this.pick[35] = Math.floor(Math.random() * 3) + 1;
                 for (var i = 0, loopend = Math.floor(Math.random() * 3) + 1; i < loopend; i++) {//Coin
@@ -407,7 +409,7 @@ gObjectClass.prototype = {
 
         if (this.damageflag){
             this.damage.count = 30;
-            var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
+            //var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
             if (onst) {
                 this.set_object_ex(6, this.x, this.y, this.vector, "effect_hit");
                 //this.sound.effect(12); //hit音

@@ -49,8 +49,6 @@ function tutorialCommentTable(){
 		,"ステージの開始位置に戻ることができる"
 		]; //triger player.js
 
-
-
 	//triger gObjClass.js get_item();
 	//武器の説明
 	t[15] = ["「武器:杖」:操作:Z ⑬ 攻撃 ①-消費"

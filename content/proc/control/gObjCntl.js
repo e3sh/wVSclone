@@ -104,7 +104,7 @@
     var ch_ptn = character();
     var motion_ptn = motionPattern();
 
-    var sce = scenario()
+    var sce = scenario(this);
 
     // オブジェクトの情報をArrayで管理
     var obj = [];//これをState側に持たせれば全体から管理可能となるか。

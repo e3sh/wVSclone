@@ -106,7 +106,7 @@ function sceneGover(state) {
         keylock = true;
         keywait = 30;
 
-        menusel = 0;
+        menusel = 1;
 
         //reset処理を記述予定
     }
@@ -272,9 +272,10 @@ function sceneGover(state) {
                 o.y = menu[i].y;
                 o.w = menu[i].w;
                 o.h = menu[i].h;
+                o.c = "orange";
                 o.draw = function (device) {
                     device.beginPath();
-                    device.fillStyle = "orange";
+                    device.fillStyle = this.c;
                     device.fillRect(this.x, this.y, this.w, this.h);
                 }
                 work.putFunc(o);
