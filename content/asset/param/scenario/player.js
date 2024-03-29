@@ -37,7 +37,7 @@ function sce_player( gObjc ) {
         5:{ch:46,sce:"common_vset10"          } //arrow
     }
     */
-    let weaponlist = [
+    const weaponlist = [
         {no: 0,chr:15, name:"rod"  ,auto: false },
         {no: 1,chr:16, name:"sword",auto: true },
         {no: 2,chr:17, name:"axe"  ,auto: true },
@@ -45,6 +45,97 @@ function sce_player( gObjc ) {
         {no: 4,chr:18, name:"boom" ,auto: true },
         {no: 5,chr:50, name:"bow"  ,auto: true }
     ];
+
+    function turlet_vec_check(SEP){
+        //separate 分割数
+        if (!Boolean(SEP)) SEP = 16;
+        //turlet check
+        /*
+        let turVector = [];
+        for (let i=0; i<16; i++){
+            turVector[i] = 22.5*i;
+        }
+        */
+        let turlet = 0;
+        let now = 0;
+
+        let D0 = SEP*0;
+        let D3 = SEP*0.25;
+        let D6 = SEP*0.5;
+        let D9 = SEP*0.75;
+
+        this.check = function(key){
+
+            //now++;
+            //if (now%6!=0) return;
+
+            if (key.up){
+                if (turlet != D0){
+                        if ((turlet > D3) && (turlet < D9) && (turlet != D0)) {
+                            turlet = D0;
+                    }else{
+                        if (turlet >= D9) turlet++;
+                        if (turlet <= D3) turlet--;
+                        turlet = turlet%SEP;
+                    }
+                } 
+            }
+            if (key.right){
+                if (turlet != D3){
+                    if (turlet > D6) {
+                        turlet= D3;
+                    } else {
+                        if ((turlet <= D6) && (turlet >D3)) turlet--;
+                        if (turlet < D3)  turlet++;
+                    }
+                }
+            }  
+            if (key.down){
+                if (turlet != D6){
+                    if (turlet > D9 || turlet < D3) {
+                        turlet= D6;
+                    }else{
+                        if ((turlet >= D3) && (turlet < D6)) turlet++;
+                        if ((turlet > D6) && (turlet <=D9 ))  turlet--;
+                    }
+                }
+            } 
+            if (key.left){
+                if (turlet != D9){
+                    if ((turlet < D6) && (turlet !=D0)) {
+                        turlet= D9;
+                    } else {
+                        if ((turlet >= D6) && (turlet <D9)) turlet++;
+                        if ((turlet > D9) || (turlet == D0)) {
+                            if (turlet == D0) turlet = SEP;
+                            turlet--;
+                        }
+                    }
+                }
+            }
+            /*
+            if (Math.abs(turlet - now)>3) {
+                turlet = now%16;
+            } else {
+                if (turlet > now){
+                    turlet = turlet -1;
+                    if (turlet < 0) turlet = 15;
+                }
+                if (turlet < now) turlet = turlet +1;
+                turlet = turlet%16;
+            }
+            */
+        }
+        this.vector = function(){
+            return turlet * (360/SEP);//turVector[turlet];
+        }
+        this.num = function(){
+            let w = "S:" + SEP + ".0:" + D0 + ".3:" + D3 + ".6:" + D6 + ".9:" + D9;    
+            
+            
+            return turlet + "." + w;}//debug
+
+    }
 
     let delay_st;
     let lvupf;
@@ -152,6 +243,8 @@ function sce_player( gObjc ) {
 
         o.startx = o.x;
         o.starty = o.y;
+
+        o.turlet = new turlet_vec_check(120);
 
         o.repro = false;
 
@@ -264,6 +357,7 @@ function sce_player( gObjc ) {
             
             //speed = o.maxspeed;
             if (o.jump == 0) o.vset(speed);
+            o.turlet.check(o.entrypadaxis);
         }else{
             o.mvkeytrig-= o.vecfrm;
             o.mvkeytrig = (o.mvkeytrig-o.vecfrm < 0)?0 : o.mvkeytrig;
@@ -314,6 +408,8 @@ function sce_player( gObjc ) {
 
                 o.sound.effect(7); //スイング音
                 o.triger = 15;
+                let t = o.vector;
+                o.vector = o.turlet.vector(); 
                 switch (o.gameState.player.weapon) {
                     case 0:
                         o.set_object(39); //wand
@@ -332,7 +428,10 @@ function sce_player( gObjc ) {
                         //o.set_object(38); //spare
                         //break;
                     case 3:
+                        //let t = o.vector;
+                        //o.vector = o.turlet.vector(); 
                         o.set_object(37); //boom
+                        //t = o.vector;
                         //o.triger = 180 /(o.gameState.player.level + 1);
                         o.triger = TRIG_WAIT;
                         break;
@@ -349,6 +448,7 @@ function sce_player( gObjc ) {
                         }
                     break;   
                 }
+                t = o.vector;
             }
         }
 
@@ -468,6 +568,8 @@ function sce_player( gObjc ) {
             // lv.0 20 0.3s /lv.1 16 0.25s /lv.2 12 0.2s /lv.3 08 0.12s(Max)
             o.autotrig = 20 -wdelay;//20 0.3s
             //o.set_object_ex(20, o.x, o.y, 0, 43, o.gameState.player.weapon + "_");
+            let t = o.vector;
+            o.vector = o.turlet.vector();
             switch (o.gameState.player.weapon) {
                 case 1:
                     o.set_object(10); //sword
@@ -487,17 +589,21 @@ function sce_player( gObjc ) {
                     //o.autotrig = 30;
                     break;
                 case 5:
+                    //let t = o.vector;
+                    //o.vector = o.turlet.vector();
                     o.set_object_ex(46, o.x, o.y + o.shifty , o.vector - 10, "common_vset10");
                     o.set_object_ex(46, o.x, o.y + o.shifty , o.vector, "common_vset10");
                     o.set_object_ex(46, o.x, o.y + o.shifty , o.vector + 10, "common_vset10");
                     //o.set_object(46)
                     o.set_object(47); //Bow and Arrow
+                    //o.vector = t;
                     //o.autotrig = 30;
                     break;
                 default:
 //                    o.set_object(39); //wand
                     break;
             }
+            o.vector = t;
         }
         
         //武器取得チェック(武器用スタックに何かあるか)
@@ -910,8 +1016,8 @@ function sce_player( gObjc ) {
         if (o.itemstack.length != 0) {//アイテム持っていない場合、処理せず。
             //chrno.23:(B) 24:(S) 25:(L)
             let spname = ["BallB1", "BallS1", "BallL1"];
-
             let f = o.itemstack[o.itemstack.length-1]-23; //next use item
+            let v = o.turlet.vector();//o.vector;
 
             if (!(f < 0 || f > 2)) {
                 let w = o.gt.worldtoView(o.x, o.y);
@@ -919,11 +1025,12 @@ function sce_player( gObjc ) {
                 let tx = w.x + o.shiftx;
                 let ty = w.y + o.shifty;
 
-                tx = tx - o.Cos(o.vector) * 16;
-                ty = ty - o.Sin(o.vector) * 16;
+                tx = tx - o.Cos(v) * 16;
+                ty = ty - o.Sin(v) * 16;
 
-                //scrn.kprint(":" + f, tx, ty); 
                 scrn.put(spname[f], tx, ty);
+                //scrn.putchr8("_" + o.turlet.num(), tx, ty); 
+
             }
         }
         if (o.gameState.player.weapon != 3) return;//Boomは分かりにくいので表示
@@ -937,8 +1044,9 @@ function sce_player( gObjc ) {
         let tx = w.x + o.shiftx;
         let ty = w.y + o.shifty;
 
-        tx = tx + o.Cos(o.vector) * 16;
-        ty = ty + o.Sin(o.vector) * 16;
+        let v = o.turlet.vector();//o.vector;
+        tx = tx + o.Cos(v) * 16;
+        ty = ty + o.Sin(v) * 16;
 
         scrn.put(wweapon[o.gameState.player.weapon], tx, ty);
     }

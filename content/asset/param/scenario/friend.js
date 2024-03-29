@@ -245,10 +245,16 @@ function sce_friend_straight() {
 
             o.damageflag = false;
         }
-
+        
         o.shotcount+= o.vecfrm;
         if (o.shotcount > 10) {
-            o.vector = (o.parent.vector + 315) % 360;
+            let v
+            if (o.parent.type == 98){
+                v = o.parent.turlet.vector();
+            }else{
+                v = o.parent.vector;    
+            }
+            o.vector = (v + 315) % 360;
             o.shotcount = 0;
             o.status = 0;
         }
@@ -471,6 +477,11 @@ function sce_friend_front() {
         o.vset(0);
         o.startflag = true;
 
+        if (o.parent.type == 98){
+            o.vector = o.parent.turlet.vector();
+        }else{
+            o.vector = o.parent.vector;    
+        }
         o.x += o.Cos(o.vector) * 35;
         o.y += o.Sin(o.vector) * 35;
 
@@ -493,6 +504,12 @@ function sce_friend_front() {
         if (o.shotcount > 20) {
             o.shotcount = 0;
             o.status = 0;
+        }
+
+        if (o.parent.type == 98){
+            o.vector = o.parent.turlet.vector();
+        }else{
+            o.vector = o.parent.vector;    
         }
 
         o.x = o.parent.x + o.Cos(o.vector) * (35 - o.shotcount/2);

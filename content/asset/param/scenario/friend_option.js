@@ -112,7 +112,12 @@ function sce_friend_option(mode) {
         }else{
             op.x[op.ptr] = p.x;
             op.y[op.ptr] = p.y + p.shifty;
-            op.r[op.ptr] = p.vector;
+            if (o.parent.type == 98){
+                v = o.parent.turlet.vector();
+            }else{
+                v = o.parent.vector;    
+            }
+            op.r[op.ptr] = v;//p.vector;
             op.ptr++;
             op.ptr = op.ptr % op.x.length; 
         }
