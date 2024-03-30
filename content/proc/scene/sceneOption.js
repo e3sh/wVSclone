@@ -23,6 +23,8 @@ function sceneOption(state) {
 
     let sel = 0;
 
+    let cmapdf = false;
+
     //処理部
     function scene_init() {
         //初期化処理
@@ -125,6 +127,7 @@ function sceneOption(state) {
         }
 
         if (ikey) {
+            cmapdf = (cmapdf)?false:true;
             //IMPORT
         }
         if (ekey) {
@@ -184,6 +187,7 @@ function sceneOption(state) {
 
         mapDraw();
         charDraw(sel);
+        if (cmapdf) cmapDraw();
 
         work.draw();
 
@@ -280,7 +284,18 @@ function sceneOption(state) {
                 }
             }
         }
-        
+        //colmap 表示
+       function cmapDraw(){
+            let cmap = state.mapsc.cmap();
+
+            for (let i in cmap){ // xline
+                for (let j in cmap[i]){ //yline
+                    work.fill(150 + 12 + i*4, 12 + j*4, 3, 3, (cmap[i][j])?"blue":"darkblue");
+                }
+            }
+       } 
+
+       //export file
         function exportFile(filename = "sample.json", obj){
 
             const json = JSON.stringify(obj, null, 2);
@@ -291,10 +306,12 @@ function sceneOption(state) {
             a.download = filename;
             a.click();
             URL.revokeObjectURL(url);
-          }
+        }
 
-
-
+        //import file
+        function importFile(){
+            //
+        }
 }
 
 

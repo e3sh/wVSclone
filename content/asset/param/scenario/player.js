@@ -74,9 +74,11 @@ function sce_player( gObjc ) {
                         if ((turlet > D3) && (turlet < D9) && (turlet != D0)) {
                             turlet = D0;
                     }else{
-                        if (turlet >= D9) turlet++;
-                        if (turlet <= D3) turlet--;
-                        turlet = turlet%SEP;
+                        if (turlet >= D9) {
+                            if (turlet < SEP) turlet++;}
+                        if (turlet <= D3) { 
+                            if (turlet > D0) turlet--;}
+                        //turlet = turlet%SEP;
                     }
                 } 
             }
@@ -113,6 +115,11 @@ function sce_player( gObjc ) {
                     }
                 }
             }
+
+            if ((key.up)&&(key.right))  { turlet = SEP*(  0+0.125);} 
+            if ((key.up)&&(key.left))   { turlet = SEP*(  1-0.125);}
+            if ((key.down)&&(key.right)){ turlet = SEP*(0.5-0.125);}
+            if ((key.down)&&(key.left)) { turlet = SEP*(0.5+0.125);}
             /*
             if (Math.abs(turlet - now)>3) {
                 turlet = now%16;
@@ -244,7 +251,7 @@ function sce_player( gObjc ) {
         o.startx = o.x;
         o.starty = o.y;
 
-        o.turlet = new turlet_vec_check(120);
+        o.turlet = new turlet_vec_check(180);
 
         o.repro = false;
 
@@ -740,7 +747,7 @@ function sce_player( gObjc ) {
         if ((o.score >= lups)&& !lvupf && o.homeflag){
             if (!Boolean(o.item[1])) o.get_item(1);//魔法陣の説明
             //o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
-            o.spec.ETC++;
+            //o.spec.ETC++;
             o.sound.effect(14);
             delay_st = o.alive;
             //o.SIGNAL(1709);//LVUP
@@ -749,6 +756,7 @@ function sce_player( gObjc ) {
 
         if (lvupf){ //↑のLvUp検出で音を鳴らしてから0.5秒後にLvUpMenuへ
             //スコア数値の表示演出完了待ち（数字じゃなくてゲージにするか？）
+            o.spec.ETC++; 
             if (o.alive > delay_st +250){//0.25s
                 lvupf = false;
                 o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");

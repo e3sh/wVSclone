@@ -106,7 +106,7 @@ function sceneGover(state) {
         keylock = true;
         keywait = 30;
 
-        menusel = 1;
+        menusel = 0;
 
         //reset処理を記述予定
     }

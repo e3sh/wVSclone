@@ -46,15 +46,18 @@ function spdata(){
 	["Coin2", 176, 96, 16, 16],
 	["Coin3", 192,  96, 16, 16],
 	["Coin4", 208,  96, 16, 16],
-	["Knife", 128, 96, 32, 32],
+	["Knife", 32, 192, 32, 32],//128, 96, 32, 32],
+	["Spear", 96, 192, 32, 32],
+	["Boom", 128, 192, 32, 32],
+	["Bow", 160, 192, 32, 32],
 	["Lamp", 224, 0, 24, 24],
 	["Map", 224, 24, 24, 24],
 	["lance", 224, 48, 16, 48],
 	["BoomR", 224, 96, 16, 16],
-	["Axe", 176, 112, 16, 16],
-	["Wand", 160, 112, 16, 16],
+	["Axe", 64, 192, 32, 32],// 176, 112, 16, 16],
+	["Wand", 0, 192, 32, 32],//160, 112, 16, 16],
 	["Sword",240, 48, 16, 48],
-	["Rod",240, 96, 16, 32],
+	["Rod", 240, 192, 16, 32],//,240, 96, 16, 32],
 	["Baxe",192, 112, 32, 16],
 	["LBow",128, 32, 48, 16],
 	["Arrow",224,112, 16, 16],
@@ -86,8 +89,9 @@ function spdata(){
 
 	let ptn = { pict: "TitleLogo",x: 0, y: 0, w: 406, h: 68 };
 	sp_ptn["TitleLogo"] = ptn; 
-
-	sp_ptn["Wand"]  = sp_ptn["_equip_26"];//24
+	
+	
+	//sp_ptn["Wand"]  = sp_ptn["_equip_26"];//24
 	//sp_ptn["Rod"]  = sp_ptn["_equip_26"];
 
 	sp_ptn["Knife"] = sp_ptn[ "_equip_6"];//4
@@ -99,12 +103,13 @@ function spdata(){
 	sp_ptn["Bow"]   = sp_ptn["_equip_39"];//36
 	//sp_ptn["LBow"]  = sp_ptn["_equip_39"];
 	
-	sp_ptn["Spear"] = sp_ptn["_equip_18"];//16
+	//sp_ptn["Spear"] = sp_ptn["_equip_18"];//16
 	//sp_ptn["lance"]  = sp_ptn["_equip_19"];
 	
-	sp_ptn["Boom"]  = sp_ptn["_equip_61"];//34
+	//sp_ptn["Boom"]  = sp_ptn["_equip_61"];//34
 	//sp_ptn["BoomR"] = sp_ptn["_equip_61"];//34
 	
+
 	//sp_ptn["TrBox"] = sp_ptn["_item_42"];
 
 	//sp_ptn["Key"]   = sp_ptn["_item_61"];//60
