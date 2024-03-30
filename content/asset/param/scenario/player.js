@@ -150,6 +150,8 @@ function sce_player( gObjc ) {
 	function get_weapon_check( o ){
 
         let player = o.gameState.player;
+        let wtut = [];//武器チュートリアル実施回数チェックwork
+        let wtuc=0;
         /*
 		let weaponlist = [
 			{no: 0,chr:15, name:"rod"  },
@@ -163,6 +165,10 @@ function sce_player( gObjc ) {
 		this.check = checksub;
 
 		function checksub(){
+
+            if (wtut.length > 5) wtuc++;
+            if (wtuc>3) {gObjc.tutTable(11); wtuc=0; wtut=[];}//Ctrlキーの説明
+
 			let execute = false;
 
             if (!Boolean(player.stack)) return execute;
@@ -174,12 +180,14 @@ function sce_player( gObjc ) {
                         if (o.item[p.chr] > 0) o.item[p.chr]--;
 
                         if (player.weapon == p.no){
+                            wtut[p.no] = true;
                             if ( p.name  == "rod" ) {o.item[20] = o.item[20] + 7;}//get ball
                             else {
                                 player.level++;
                                 if (!Boolean(o.item[4])){//<-tutorialCommentTable
                                     //if (player.level > 0) 
-                                    o.get_item(4);//武器の強化の説明    
+                                    o.get_item(4);//武器の強化の説明
+                                    wtut[4] = true;
                                 }
                             }
                         }else{
@@ -364,7 +372,11 @@ function sce_player( gObjc ) {
             
             //speed = o.maxspeed;
             if (o.jump == 0) o.vset(speed);
-            o.turlet.check(o.entrypadaxis);
+
+            let ctrlkey = false;
+            if (Boolean(o.key_state[17])) { if (o.key_state[17]) ctrlkey = true; gObjc.tutTable(11);} //ctrlkey
+
+            if (!ctrlkey) o.turlet.check(o.entrypadaxis);//Ctrl入力中はターレット固定
         }else{
             o.mvkeytrig-= o.vecfrm;
             o.mvkeytrig = (o.mvkeytrig-o.vecfrm < 0)?0 : o.mvkeytrig;
@@ -377,9 +389,10 @@ function sce_player( gObjc ) {
         if (Boolean(o.key_state[32])) { if (o.key_state[32]) zkey = true; } //spacebar
 
         let xkey = false;
-
         if (Boolean(o.key_state[88])) { if (o.key_state[88]) xkey = true; }
-        if (Boolean(o.key_state[17])) { if (o.key_state[17]) xkey = true; } //ctrlkey
+
+        //let ctrlkey = false;
+        //if (Boolean(o.key_state[17])) { if (o.key_state[17]) ctrlkey = true; } //ctrlkey
         
         let ckey = false;
         if (Boolean(o.key_state[67])) { if (o.key_state[67]) ckey = true; }
@@ -539,6 +552,7 @@ function sce_player( gObjc ) {
                     //helomode none
                 }
                 o.triger = TRIG_WAIT;
+                gObjc.tutTable(12);//当キーの説明
             }
         }
         
@@ -744,7 +758,7 @@ function sce_player( gObjc ) {
         let total_st = o.spec.VIT + o.spec.INT + o.spec.MND; 
         */
         let lups = Math.pow(o.spec.ETC+1 , 2)* 100 ;//100, 400, 900, 1600, 2500,....
-        if ((o.score >= lups)&& !lvupf && o.homeflag){
+        if ((o.score >= lups)&& !lvupf && o.homeflag && o.jump==0 ){
             if (!Boolean(o.item[1])) o.get_item(1);//魔法陣の説明
             //o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
             //o.spec.ETC++;
@@ -756,8 +770,8 @@ function sce_player( gObjc ) {
 
         if (lvupf){ //↑のLvUp検出で音を鳴らしてから0.5秒後にLvUpMenuへ
             //スコア数値の表示演出完了待ち（数字じゃなくてゲージにするか？）
-            o.spec.ETC++; 
             if (o.alive > delay_st +250){//0.25s
+                o.spec.ETC++; 
                 lvupf = false;
                 o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
                 o.SIGNAL(1709);//LVUP
@@ -768,7 +782,7 @@ function sce_player( gObjc ) {
         }
 
         //PortalWarp
-        if ((o.warptime <= o.alive)&&o.portalflag){
+        if ((o.warptime <= o.alive)&&o.portalflag && o.jump==0){
             if (!Boolean(o.item[10])) o.get_item(10);//Portalの説明実施
             if (o.item[35] >= 10){
                 //o.item[35] = o.item[35] - 10;
@@ -809,6 +823,7 @@ function sce_player( gObjc ) {
             portalwarp.cnt++;            
 
             //到着チェック
+            /*
             let u = Math.abs(o.x - o.startx);
             let h = Math.abs(o.y - o.startx);
             if ( Math.sqrt(u * u + h * h) < 48){
@@ -823,7 +838,8 @@ function sce_player( gObjc ) {
                 o.prioritySurface = false;
                 o.colcheck = true;
                 */
-            }else{
+            //}else{
+                
                 let d = 60 - portalwarp.cnt; 
                 if (d > 1){
                     o.vx = portalwarp.vx/d;
@@ -837,7 +853,8 @@ function sce_player( gObjc ) {
                 portalwarp.vy -= o.vy;
                 //o.warptime = o.alive + 100;
                 o.jump = 1;
-            }
+                o.colcheck = false;
+            //}
         }
 
         //option

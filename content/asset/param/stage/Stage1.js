@@ -236,12 +236,18 @@ function Stage1(stageno) {
 
         cmap = [];
 
-        for (var i = 1; i <= dgn.mw - 1; i++) {
+        //array initialize
+        for (let i=0; i<(dgn.mw+1)*3; i++) {
+            cmap[i] = new Array(dgn.mh*3);
+            cmap[i].fill(true);
+        }
+
+        for (let i = 1; i <= dgn.mw - 1; i++) {
             // 0,1,2 * 3
-            cmap[i * 3 - 3] = [];
-            cmap[i * 3 - 2] = [];
-            cmap[i * 3 - 1] = [];
-            for (var j = 1; j <= dgn.mh - 1; j++) {
+            //cmap[i * 3 - 3] = [];
+            //cmap[i * 3 - 2] = [];
+            //cmap[i * 3 - 1] = [];
+            for (let j = 1; j <= dgn.mh - 1; j++) {
 
                 if (mp[i][j]) {
                     var cr = bit_check(dgn.type[i][j]);
@@ -256,11 +262,12 @@ function Stage1(stageno) {
                             true
                         ];
                         mc.push(w);
-                        cmap[(i * 3 - 2) + vx[k]][(j * 3 - 2) + vy[k]] = cr[k];
+                        if (!cr[k]) cmap[(i * 3 - 2) + vx[k]][(j * 3 - 2) + vy[k]] = cr[k];
+                        //cmap[(i * 3 - 2) + vx[k]][(j * 3 - 2) + vy[k]] = cr[k];
                     }
                 } else {
                     for (var k in vx) {
-                        cmap[(i * 3 - 2) + vx[k]][(j * 3 - 2) + vy[k]] = null;//要素が無くてエラーにならないようにする。
+                        //cmap[(i * 3 - 2) + vx[k]][(j * 3 - 2) + vy[k]] = false;//要素が無くてエラーにならないようにする。
                     }
                 }
 
@@ -276,8 +283,8 @@ function Stage1(stageno) {
                             true
                         ];
                     mc.push(w);
-                    cmap[i * 3 - 2][j * 3 - 2] = true;
-                };              
+                    //cmap[i * 3 - 2][j * 3 - 2] = false;
+                };
             }
         }
 
@@ -293,6 +300,11 @@ function Stage1(stageno) {
                 true
                 ];
             mc.push(w);
+
+            for(let k in vx){
+                cmap[(hlist[i].x*3-2)+ vx[k]][(hlist[i].y*3-2) + vy[k]] = false;
+            }
+            cmap[hlist[i].x*3-2][hlist[i].y*3-2] = false;
         }
 
         let room_status = roomSizeCheck(rlist);
@@ -435,16 +447,16 @@ function Stage1(stageno) {
         var ms = [];
         //  開始フレーム,座標,,角度,シナリオ,キャラ
 
-        let r = startroom[0];　//自機の開始位置は一番小さい部屋内（敵は配置しない）2024/03/17
+        let r = startroom[0]; //自機の開始位置は一番小さい部屋内（敵は配置しない）2024/03/17
         ms.push([false, rlist[r].x * BLOCK_W + 10, rlist[r].y * BLOCK_H + 10, 0, "player", 0]);
         //ms.push([false, rlist[r].x * BLOCK_W + 10, rlist[r].y * BLOCK_H + 10, 0, "effect_informationCursor", 0]);
         //ms.push([false, rlist[r].x * 96 + 10, rlist[r].y * 96 + 10, 0, "friend_rotate", 10]);
     
-        let itl = [20, 20, 20, 20, 23, 24, 25];
+        let itl = [20, 20, 20, 20, 23, 24, 25]; //スタート地点に設置される初期装備/ITEM
         for (let i=1; i < 7; i++){
             let r = startroom[i%startroom.length];
             ms.push([
-                true
+                false //面展開時に(false: 毎回,　true:１度のみ)設置される。基本は自機用
                 , rlist[r].x * BLOCK_W + BLOCK_W/2
                 , rlist[r].y * BLOCK_H + BLOCK_W/2
                 , 0, "common_vset0", itl[i]

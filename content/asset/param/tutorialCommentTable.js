@@ -49,6 +49,15 @@ function tutorialCommentTable(){
 		,"ステージの開始位置に戻ることができる"
 		]; //triger player.js
 
+	t[11] = ["「操作」:攻撃方向の固定(キーボードのみ)"
+		,"[Ctrl]キー(押しながら移動)[可否は武器による]"
+		];//triger player.js
+
+	t[12] = ["「操作」:「石の中にいる！」場合の緊急脱出用"
+		,"[H]キー(部屋の中では使用できません）"
+		];//triger player.js
+
+
 	//triger gObjClass.js get_item();
 	//武器の説明
 	t[15] = ["「武器:杖」:操作:Z ⑬ 攻撃 ①-消費"
