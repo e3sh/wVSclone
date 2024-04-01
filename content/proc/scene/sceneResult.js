@@ -301,8 +301,10 @@ function sceneResult(state) {
 
     function DialogControl(mlist){
 
-        var FLCOLOR = "White";
-        var menulist = mlist;
+        let FLCOLOR = "White";
+        let menulist = mlist;
+        let getflag = new Array(mlist.length);
+        getflag.fill(false);
 
         this.step = function(keystate){
 
@@ -330,6 +332,7 @@ function sceneResult(state) {
                 if (m.keyon) {
                     m.func.call(m.func.p);
                     menulist[i].text = "GET " + m.text;
+                    getflag[i] = true;
                 }
             }
             FLCOLOR = "Navy";
@@ -338,8 +341,8 @@ function sceneResult(state) {
         this.effect = function(){
             for (let i in menulist) {
                 if (menulist[i].keyon) {
-                    if (menulist[i].w >0) menulist[i].w--;
-                    if (menulist[i].h >0) menulist[i].h--;
+                    //if (menulist[i].w >0) menulist[i].w--;
+                    //if (menulist[i].h >0) menulist[i].h--;
                 }
             }
         }
@@ -351,18 +354,22 @@ function sceneResult(state) {
                 let m = menulist[i];
 
                 //if (m.keyon) {
-                    var o = {x: m.x, y: m.y, w: m.w, h:m.h };                    
+                    let o = {x: m.x, y: m.y, w: m.w, h:m.h, c:(getflag[i])?(m.keyon)?"darkorange":"Navy":(m.keyon)?"Blue":"Navy" };                    
                     o.draw = function (device) {
                         device.beginPath();
-                        device.fillStyle = (m.keyon)?"orange":"blue";
+                        device.fillStyle = this.c;
                         device.fillRect(this.x, this.y, this.w, this.h);
                     }
                     device.putFunc(o);
-                //}
-                var o = {x: m.x, y: m.y, w: m.w, h:m.h };                    
+
+                //let t = Math.trunc( 128*Math.sin(Math.PI*((state.System.time()%1500)/1500)) )+127;
+                //let cl = (getflag[i])?"rgb(" + t + "," + t + "," + t + ")":FLCOLOR;//
+                let t = Math.trunc(Math.sin(Math.PI*((state.System.time()%1500)/1500))*255);
+                let cl = (getflag[i])?"rgb(" + t + "," + t + ",0)":FLCOLOR;//
+                o = {x: m.x, y: m.y, w: m.w, h:m.h, c: cl };
                 o.draw = function (device) {
                     device.beginPath();
-                    device.strokeStyle = FLCOLOR;
+                    device.strokeStyle = this.c;
                     device.strokeRect(this.x, this.y, this.w, this.h);
                 }
                 device.putFunc(o);

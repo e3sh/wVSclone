@@ -527,6 +527,15 @@
                         if (w.type == 12) {//背景種類　扉　
                             if (o.type == 98) {//　obj.type　が　自機
                                 o.doorflag = true;
+                                if (o.turndoorkey){ 
+                                    w.no = "OpDoor";
+                                    o.startx = w.x + w.w/2;
+                                    o.starty = w.y + w.h/2;
+                                }  else {
+                                    w.no = "Door";
+                                } 
+                                //13:DoorGraphics
+                                //14:PortalGraphics
                             }
                             o.mapCollision = bupCol;// || o.mapCollision;
                             o.mapColX = bupColX;// || o.mapColX;
@@ -552,6 +561,7 @@
                         if (w.type == 14) {//背景種類　魔法陣　
                             if (o.type == 98) {//　obj.type　が　自機
                                 o.homeflag = true;
+                                if (o.lighton){ w.no = "LPortal";}  else {w.no = "Portal";} 
                             }
                             o.mapCollision = bupCol;// || o.mapCollision;
                             o.mapColX = bupColX;// || o.mapColX;

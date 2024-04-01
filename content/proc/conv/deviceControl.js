@@ -115,11 +115,11 @@ function deviceControl( g ){
 
         //mix input Keyboard and Gamepad 
         this.r = -1; //進行方法のr
-        this.a = false;
-        this.b = false;
-        this.c = false;
-        this.d = false;
-        this.e = false;
+        this.a = false; //exmpl. accept
+        this.b = false; //   ... cancal
+        this.c = false; //    .. action1 
+        this.d = false; //    .. action2
+        this.e = false; //    .. pause 
 
         this.check = function(){
 

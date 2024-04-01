@@ -818,7 +818,7 @@ function scenario( gObjc) {
 
     sc_init["effect_informationCursor"] = w.init;
     sc_move["effect_informationCursor"] = w.move;
-    //sc_draw["effect_informationCursor"] = w.draw;
+    sc_draw["effect_informationCursor"] = w.draw;
     //-----------------------------------------------------------------------
     w = new sce_friend_option(0);
 

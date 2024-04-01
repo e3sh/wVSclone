@@ -146,6 +146,7 @@ function sce_player( gObjc ) {
 
     let delay_st;
     let lvupf;
+    let stageclrf;
 
 	function get_weapon_check( o ){
 
@@ -249,9 +250,10 @@ function sce_player( gObjc ) {
 
         if (!Boolean(o.gameState.player.stack)) o.gameState.player.stack = [];
 
-        o.lighton = true;
+        o.lighton = false;//true;
 
         o.doorflag = false;
+        o.turndoorkey = false;
         o.homeflag = false;
         o.portalflag = false;
         o.warptime = o.alive;
@@ -283,6 +285,7 @@ function sce_player( gObjc ) {
         //o.spec.MND = 0, //ShieldTime+: init 300flame(5s) +
 
         lvupf = false;
+        stageclrf = false;
         hpbbw = Math.trunc((o.gameState.player.hp / o.gameState.player.maxhp)*32);
 
         op.ptr = 0;
@@ -728,14 +731,37 @@ function sce_player( gObjc ) {
         o.vy = wvy;
 
         //Door in (StageClear)
-        if (o.doorflag && o.jump == 0) {//
+        if (!stageclrf && o.doorflag && o.jump == 0) {//
             if (!Boolean(o.item[2])) o.get_item(2);//扉の説明実施
-
             if (keyget > 0) {
                 o.item[22] = 0;
-        
-                //o.gt.viewpos(o.x - o.gt.viewwidth/2, o.y - o.gt.viewheight/2);
+                o.turndoorkey = true;//ドア開けた連絡用
 
+                delay_st = o.alive;
+            }
+        }
+
+        if (!stageclrf && o.turndoorkey && (o.alive > delay_st +100)){//0.1s wait
+            //ドア開けて0.1s後にステージクリアフラグをオンにしてジャンプ
+            stageclrf = true;
+
+            o.jump = 1;
+            o.jpcount = 40;
+            o.jpvec = -5.6 - 0.4 * o.vecfrm;;
+            o.colcheck = false;
+
+            o.triger = TRIG_WAIT;
+
+            delay_st = o.alive;
+        }
+
+        if (stageclrf){//DoorOpenFlag
+
+            o.vx = Math.sign(o.startx - o.x);
+            o.vy = Math.sign(o.starty - o.y);
+
+            if (o.alive > delay_st +250 && o.doorflag && o.jump == 0){//0.25s
+                //o.item[22] = 0;
                 o.gameState.player.hp = o.hp;
 
                 o.gameState.player.spec.VIT = o.spec.VIT;
@@ -744,11 +770,9 @@ function sce_player( gObjc ) {
                 o.gameState.player.spec.ETC = o.spec.ETC;
 
                 o.SIGNAL(835);//STAGE CLEAR
-                //    o.hp = 10;
             }
-            o.doorflag = false;
-        }else{ o.doorflag = false; }
-
+        }
+        o.doorflag = false;
         //LvUp (score > o.spec.MIN,VIT,INT)
         /*
         o.spec.VIT = o.gameState.player.spec.VIT;
@@ -766,6 +790,7 @@ function sce_player( gObjc ) {
             delay_st = o.alive;
             //o.SIGNAL(1709);//LVUP
             lvupf = true;
+            o.lighton = true;
         } else o.homeflag = false;
 
         if (lvupf){ //↑のLvUp検出で音を鳴らしてから0.5秒後にLvUpMenuへ
@@ -773,6 +798,7 @@ function sce_player( gObjc ) {
             if (o.alive > delay_st +250){//0.25s
                 o.spec.ETC++; 
                 lvupf = false;
+                o.lighton = false;
                 o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
                 o.SIGNAL(1709);//LVUP
                 if (!Boolean(o.item[5])){//<-tutorialCommentTable
@@ -849,11 +875,15 @@ function sce_player( gObjc ) {
                     o.vy = (o.starty - o.y)/2;
                 }
 
-                portalwarp.vx -= o.vx; 
-                portalwarp.vy -= o.vy;
+                //portalwarp.vx -= o.vx; 
+                //portalwarp.vy -= o.vy;
+                portalwarp.vx =  o.startx - o.x;
+                portalwarp.vy =  o.starty - o.y;
                 //o.warptime = o.alive + 100;
-                o.jump = 1;
-                o.colcheck = false;
+                if (portalwarp.vx >16 && portalwarp.vy>16){
+                    o.jump = 1;
+                    o.colcheck = false;
+                }
             //}
         }
 

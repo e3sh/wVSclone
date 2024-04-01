@@ -364,7 +364,7 @@ function sce_effect_informationCursor() {
         o.display_size = 1.0;
 
         o.normal_draw_enable = false;
-        //o.custom_draw_enable = true;
+        o.custom_draw_enable = false;
 
         o.prioritySurface = true;//UI Surfaceに表示したい。
 
@@ -388,19 +388,32 @@ function sce_effect_informationCursor() {
         //}
 
         if (!o.gt.in_view(o.gameState.key_x, o.gameState.key_y)){
-            if (o.gameState.keyon) o.normal_draw_enable = o.gameState.lamp; //
-
+            if (o.gameState.keyon){
+                o.normal_draw_enable = o.gameState.lamp; //
+                o.custom_draw_enable = o.gameState.lamp;
+            }
             if (o.normal_draw_enable){
                 o.search_target_item(22);
                 o.vector = o.target_r(o.gameState.key_x,o.gameState.key_y);
             }
         }else{
             o.normal_draw_enable = false;
-            if (o.frame%30 == 0) o.search_target_item(22);
+            o.custom_draw_enable = false;
+            if (o.frame%30 == 0){
+                o.search_target_item(22);
+            }
         }
 
         o.frame++;
 
         return o.sc_move();
+    }
+
+    this.draw = function(scrn, o){
+        let w = o.gt.worldtoView(o.x, o.y);
+
+        if (o.alive%1000>500){
+            scrn.put("sKey", w.x - o.Cos(o.vector)*16 ,w.y - o.Sin(o.vector)*16);
+        }
     }
 }
