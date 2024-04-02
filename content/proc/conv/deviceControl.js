@@ -160,7 +160,8 @@ function deviceControl( g ){
                 state[67] = gpd.btn_a;// || Boolean(state[67]) ;C JUMP 
                 state[88] = gpd.btn_b;// || Boolean(state[88]) ;X BOMB
                 state[81] = gpd.btn_y;// || Boolean(state[81]) ;Q QUIT
-                state[27] = gpd.btn_start;// || Boolean(state[27]) ;ESC 
+                state[27] = gpd.btn_start;// || Boolean(state[27]) ;ESC
+                state[17] = gpd.btn_rb;//Controlkey 
             }
 
             var vstate = vpd.check(); 

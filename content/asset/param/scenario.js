@@ -843,6 +843,12 @@ function scenario( gObjc) {
     sc_init["sce_friend_option_3"] = w.init;
     sc_move["sce_friend_option_3"] = w.move;
     sc_draw["sce_friend_option_3"] = w.draw;
+    //-----------------------------------------------------------------------
+    w = new sce_pl_bullet_rotate_circle();
+
+    sc_init["pl_bullet_rotate_circle"] = w.init;
+    sc_move["pl_bullet_rotate_circle"] = w.move;
+
     //=============================================================================
     //ExEvent処理用シナリオ
     //-----------------------------------------------------------------------

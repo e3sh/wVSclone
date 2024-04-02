@@ -41,7 +41,7 @@ function sce_player( gObjc ) {
         {no: 0,chr:15, name:"rod"  ,auto: false },
         {no: 1,chr:16, name:"sword",auto: true },
         {no: 2,chr:17, name:"axe"  ,auto: true },
-        {no: 3,chr:19, name:"spear",auto: false },
+        {no: 3,chr:19, name:"spear",auto: true },
         {no: 4,chr:18, name:"boom" ,auto: true },
         {no: 5,chr:50, name:"bow"  ,auto: true }
     ];
@@ -222,10 +222,10 @@ function sce_player( gObjc ) {
 
         o.jump = 0;
         o.jpcount = 40;
-        o.jpvec = -8;
+        o.jpvec = -8;//-8;
 
         o.shiftx = 0;
-        o.shifty = 0;
+        o.shifty = 0;//-200;
 
         o.mvkeytrig = 0;        
         o.maxspeed = 4;
@@ -263,7 +263,8 @@ function sce_player( gObjc ) {
 
         o.turlet = new turlet_vec_check(180);
 
-        o.repro = false;
+        o.repro = false;//Option出力済みf
+        o.w_repro = false;//Wand用
 
         o.getweapon = new get_weapon_check( o );
 
@@ -287,6 +288,9 @@ function sce_player( gObjc ) {
         lvupf = false;
         stageclrf = false;
         hpbbw = Math.trunc((o.gameState.player.hp / o.gameState.player.maxhp)*32);
+
+        ws_charge_t = o.alive;
+        ws_charge_c = -2; 
 
         op.ptr = 0;
         op.x.fill(o.x);
@@ -433,31 +437,34 @@ function sce_player( gObjc ) {
                 o.triger = 15;
                 let t = o.vector;
                 o.vector = o.turlet.vector(); 
+
                 switch (o.gameState.player.weapon) {
                     case 0:
                         o.set_object(39); //wand
                         if ((powup > 0) || (o.config.shotfree)) {
-                            o.set_object(6);
+                            o.set_object(6);//直進弾
+                            o.set_object(7);//回転弾
                             o.item[20]--;
                             if (o.item[20] < 0) o.item[20] = 0;
 
                             o.triger = TRIG_WAIT;
                         }
-                        break;
+                        //break;
+                        
                     //case 1:
                         //o.set_object(10); //sword
                         //break;
                     //case 2:
                         //o.set_object(38); //spare
                         //break;
-                    case 3:
+                    //case 3:
                         //let t = o.vector;
                         //o.vector = o.turlet.vector(); 
-                        o.set_object(37); //boom
+                        //o.set_object(37); //boom
                         //t = o.vector;
                         //o.triger = 180 /(o.gameState.player.level + 1);
-                        o.triger = TRIG_WAIT;
-                        break;
+                        //o.triger = TRIG_WAIT;
+                        //break;
                     //case 4:
                         //o.set_object(36); //axe
                         //break;
@@ -605,8 +612,8 @@ function sce_player( gObjc ) {
                     break;
                 case 3:
                     o.set_object(37); //boom
-                    //o.autotrig = 240 /(o.gameState.player.level + 1);
-                    o.autotrig = 30;
+                    o.autotrig = 240 /(o.gameState.player.level + 1);
+                    //o.autotrig = 30;
                     break;
                 case 4:
                     o.set_object(36); //spare
@@ -624,10 +631,31 @@ function sce_player( gObjc ) {
                     //o.autotrig = 30;
                     break;
                 default:
-//                    o.set_object(39); //wand
+                    //if (o.alive > ws_charge_t){
+                    //    ws_charge_t = o.alive + 5000; //5s;
+                    //    if (ws_charge_c < 3) ws_charge_c++;
+                    //}
+                    /*
+                    if ((powup > 0) || (o.config.shotfree)) {
+                        if ((ws_charge_c>0)&&(!o.w_repro)){
+                            o.set_object(6);//pl_bullet_rotate_circle"
+                            o.item[20]--;
+                            if (o.item[20] < 0) o.item[20] = 0;
+                            //o.w_repro = true;
+                            ws_charge_c--;
+                            o.set_object(39); //wand
+                        }
+                    }
+                    */
                     break;
             }
             o.vector = t;
+            /*
+            if (o.alive > ws_charge_t){
+                ws_charge_t = o.alive + 5000; //5s;
+                if (ws_charge_c < 3) ws_charge_c++;
+            }
+            */
         }
         
         //武器取得チェック(武器用スタックに何かあるか)
@@ -935,6 +963,11 @@ function sce_player( gObjc ) {
             o.bomb4(33); //timeoverキャラのステータスを0にする。         
         }
 
+        if (o.alive < 1400) {
+        //    o.normal_draw_enable = (o.normal_draw_enable)?false:true;
+        //    o.vset(0);
+        }
+
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 
         return f;
@@ -1110,37 +1143,52 @@ function sce_player( gObjc ) {
 function sce_player_start() {
     //　自機の発進の動き
     //-----------------------------------------------------------------------
+    let cnt;
+
     this.init = function (scrn, o) {
         o.type = 98;
         //      o.mp = 1;
         o.vector = 0;
-        o.vset(8);
+        o.vset(0);
 
-        o.gt.viewpos(o.x - 210, o.y - 240);
+        cnt = 0;
     }
 
     this.move = function (scrn, o) {
 
-        o.hp = 10;
+        //視点変更処理（自機以外では基本的に発生しない）(演出では使えるかもしれない）
+        let w = o.gt.worldtoView(o.x, o.y);
 
+        // view shift
+        let sx = o.gt.world_x;
+        let sy = o.gt.world_y;
+
+        if ((o.gt.viewwidth/2) - (w.x - w.sx) > 120 ){ sx = o.x  - (o.gt.viewwidth/2) + 120;}
+        if ((o.gt.viewwidth/2) - (w.x - w.sx) < -120){ sx = o.x  - (o.gt.viewwidth/2) - 120;}
+        if ((o.gt.viewheight/2) - (w.y - w.sy) > 50){ sy = o.y  - (o.gt.viewheight/2) + 50;}
+        if ((o.gt.viewheight/2) - (w.y - w.sy) < -50){sy = o.y  - (o.gt.viewheight/2)  - 50;}
+
+        if (!o.gt.in_view(o.x, o.y)){
+            if (o.x != o.old_x) sx = o.x - o.gt.viewwidth/2;
+            if (o.y != o.old_y) sy = o.y - o.gt.viewheight/2;
+        }
+        o.gt.viewpos(sx, sy);
+
+        cnt++;
+        if (cnt%3==0) o.normal_draw_enable = (o.normal_draw_enable)?false:true;
+        
+        if (o.alive > 1500) o.change_sce("player"); 
+        //o.shitfy = -5*o.frame;
+        /*
         switch (o.frame) {
-            case 30:
-                o.vector = 180;
-                o.vset(4);
-                break;
-            case 58:
-                //	            o.type = 98;
-            case 60:
-                //			o.status = 1;
-                o.vset(3);
-                o.hp = 10;
-                //	            o.bomb();
-                o.change_sce(1);
+            case 90:
+                o.change_sce("player");
                 break;
             default:
                 break;
         };
         o.frame++;
+        */
         return o.sc_move();
     }
 }

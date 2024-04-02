@@ -523,55 +523,49 @@
                         //if ((w.type == 10) && ((o.type == 98) || (o.type == 98))) {
                         //    delete mapchip[m];
                         //}
-
-                        if (w.type == 12) {//背景種類　扉　
-                            if (o.type == 98) {//　obj.type　が　自機
-                                o.doorflag = true;
-                                if (o.turndoorkey){ 
-                                    w.no = "OpDoor";
-                                    o.startx = w.x + w.w/2;
-                                    o.starty = w.y + w.h/2;
-                                }  else {
-                                    w.no = "Door";
-                                } 
-                                //13:DoorGraphics
-                                //14:PortalGraphics
-                            }
-                            o.mapCollision = bupCol;// || o.mapCollision;
-                            o.mapColX = bupColX;// || o.mapColX;
-                            o.mapColY = bupColY;// || o.mapColY;
-                        }
-
-                        if (w.type == 13) {//背景種類　天井　
-                            if (o.type == 98) {//　obj.type　が　自機
-                                this.ceilflag = true; //天井
-                                this.ceildelay = state.System.time();//最後に消した基準タイム
-                                this.ceilindex = w.index;
-                                //alert("c");
-                            }
-                            if ((o.type == 2)||(o.type == 3)) {//　obj.type　が　敵/敵弾
-                                if (mapsc.startroom_id() == w.index){ //開始部屋に入れない処理
-                                    bupCol  = o.mapCollision; bupColX = o.mapColX; bupColY = o.mapColY;
-                                } 
-                            }
-                            o.mapCollision = bupCol;// || o.mapCollision;
-                            o.mapColX = bupColX;// || o.mapColX;
-                            o.mapColY = bupColY;// || o.mapColY;
-                        }
-                        if (w.type == 14) {//背景種類　魔法陣　
-                            if (o.type == 98) {//　obj.type　が　自機
-                                o.homeflag = true;
-                                if (o.lighton){ w.no = "LPortal";}  else {w.no = "Portal";} 
-                            }
-                            o.mapCollision = bupCol;// || o.mapCollision;
-                            o.mapColX = bupColX;// || o.mapColX;
-                            o.mapColY = bupColY;// || o.mapColY;
-                        }
-                        if (w.type == 16) {//背景種類　Portal　
-                            if (o.type == 98) {//　obj.type　が　自機
-                                //o.x = o.startx;
-                                //o.y = o.starty;
-                                o.portalflag = true;
+                        if ([12, 13, 14, 16].includes(w.type)) {
+                        //12:Door 13:Ciel 14:Circle 16:StoneB                            
+                            if (o.type ==98){
+                                switch(w.type){
+                                    case 12:
+                                        o.doorflag = true;
+                                        if (o.turndoorkey){ 
+                                            w.no = "OpDoor";
+                                            o.startx = w.x + w.w/2;
+                                            o.starty = w.y + w.h/2;
+                                        }  else {
+                                            w.no = "Door";
+                                        } 
+                                        //13:DoorGraphics
+                                        //14:PortalGraphics
+                                        break;
+                                    case 13:
+                                        this.ceilflag = true; //天井
+                                        this.ceildelay = state.System.time();//最後に消した基準タイム
+                                        this.ceilindex = w.index;
+                                        break;
+                                    case 14:
+                                        o.homeflag = true;
+                                        if (o.lighton){ w.no = "LPortal";}  else {w.no = "Portal";} 
+                                        break;
+                                    case 16:
+                                        o.portalflag = true;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            } else {
+                                if ((o.type == 2)||(o.type == 3)){
+                                    switch(w.type){
+                                        case 13:
+                                            if (mapsc.startroom_id() == w.index){ //開始部屋に入れない処理
+                                                bupCol  = o.mapCollision; bupColX = o.mapColX; bupColY = o.mapColY;
+                                            } 
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
                             }
                             o.mapCollision = bupCol;// || o.mapCollision;
                             o.mapColX = bupColX;// || o.mapColX;

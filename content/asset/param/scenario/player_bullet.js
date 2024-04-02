@@ -190,3 +190,72 @@ function sce_pl_bullet_laser_tail() {
         return o.sc_move();
     }
 }
+
+function sce_pl_bullet_rotate_circle(){
+    //　自機弾を纏う(rotation) 回転(Ball用）
+    //-----------------------------------------------------------------------
+    RSPEED = 5;
+    this.init = function (scrn, o) {
+        o.vset(0);
+
+        o.x += o.Cos(o.vector) * 30;
+        o.y += o.Sin(o.vector) * 30;
+
+        o.rotatecount = 0;
+        o.hr = 0;
+
+        o.startv = o.vector;
+        o.leftrotate = (o.vector > 179)? true : false;
+    }
+    this.move = function (scrn, o) {
+        let f = 0;
+
+        if (!Boolean(o.parent)) {
+            o.change_sce(7);
+            return 1;
+        }
+
+        o.vector = o.parent.vector;
+        o.leftrotate = (o.vector > 179)? true : false;
+
+        if (o.damageflag) {
+            //o.damageflag = false;
+        }
+        o.rotatecount+= o.vecfrm;
+        o.rotatecount = o.rotatecount%(360/RSPEED);
+
+        if (o.leftrotate) {
+            o.vector = (o.startv + (360 - (o.rotatecount * RSPEED)))%360;
+        } else {
+            o.vector = (o.startv + (o.rotatecount * RSPEED))%360;
+        }
+
+        o.hr = (o.alive%500 > 250)? o.hr +1:o.hr -1; 
+        let r = 50 + o.hr; 
+
+        o.x = o.parent.x + o.Cos(o.vector) * r;
+        o.y = o.parent.y + o.parent.shifty + o.Sin(o.vector) * r;
+         
+        o.vset(1);
+
+        if (o.status == 0){
+            f = 1; //未使用ステータスの場合は削除  
+        } 
+        return o.sc_move();
+        //return f;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

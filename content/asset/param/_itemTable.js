@@ -75,7 +75,7 @@ function ItemTable(){
         , equip: false  //装備デキル場合ハ動作用Function
         , use: false    //使用デキル場合
         , exrare: false //特殊効果
-        , inspect: false    //鑑定スルトカ？イル？
+        , inspect: false    //鑑定スルトカ？イル？Status表示とか
         , param:[0] //functionで使用するパラメ－タ用数値
         , unk_name:"未鑑定名",unk_graph:"", text:"HELPTEXT", info:"簡単な説明" 
     }

@@ -39,7 +39,8 @@ function character(){
 	[ 0, 1, 10, PLAYER	, 16, 16,  24,  16, 0, 0,24,15,15,24, 0, 0],//自機
 
 //自弾
-	[6, 26,  8, BULLET_P, 16, 16, 16, 16, "common_vset8", 13, 5, 5, 5, 5, 0, 0],//自弾
+	[6, 26,  8, BULLET_P, 16, 16, 16, 16, "common_vset6", 13, 5, 5, 5, 5, 0, 0],//自弾
+	[7, 26,  8, BULLET_P, 16, 16, 16, 16, "pl_bullet_rotate_circle", 13, 5, 5, 5, 5, 0, 0],//自弾
 //誘爆用ダメージ（敵機のダメージ用）
 	[11, 7,  8, BULLET_P, 16, 16, 32, 32, 18, 18, 5, 5, 5, 5, 0, 0],//誘爆用ダメージ（敵機のダメージ用）
 
@@ -195,10 +196,19 @@ function character(){
 
 //アイテムについては上記
 
-
-
-
 	}
+/*
+	let f = true;
+	for (let i =0; i<105; i++){
+		if (Boolean(chr_ptn[i]) == f) {
+			//console.log(i + ":" + ((f)?"busy":"free"));
+		}else{
+			console.log("-" + (i-1) + ":" + ((f)?"use":"free"));
+			f = f?false:true;
+			console.log(i + ":" + ((f)?"use":"free"));
+		}
+	}
+*/
 	return chr_ptn;
 }
  

@@ -529,4 +529,56 @@ function sce_friend_front() {
 
         return f;
     }
+
+    function sce_friend_rotate_circle() {
+        //　味方（支援機）の動作(rotation) 回転(Ball用）(player_bulletに同様のものを作るため未使用)2024/4/2
+        //-----------------------------------------------------------------------
+        RSPEED = 5;
+
+        this.init = function (scrn, o) {
+            o.vset(0);
+    
+            o.x += o.Cos(o.vector) * 20;
+            o.y += o.Sin(o.vector) * 20;
+    
+            o.rotatecount = 0;
+    
+            o.startv = o.vector;
+            o.leftrotate = (o.vector > 179)? true : false;
+        }
+    
+        this.move = function (scrn, o) {
+    
+            let f = 0;
+    
+            if (!Boolean(o.parent)) {
+                o.change_sce(7);
+                return 1;
+            }
+    
+            if (o.damageflag) {
+                o.damageflag = false;
+            }
+    
+            o.rotatecount+= o.vecfrm;
+            o.rotatecount = o.rotatecount%(360/RSPEED);
+
+            if (o.leftrotate) {
+                o.vector = (o.startv + (360 - (o.rotatecount * RSPEED)))%360;
+            } else {
+                o.vector = (o.startv + (o.rotatecount * RSPEED))%360;
+            }
+    
+            o.x = o.parent.x + o.Cos(o.vector) * 20;
+            o.y = o.parent.y + o.parent.shifty + o.Sin(o.vector) * 20;
+    
+            if (o.status == 0){
+                o.parent.w_repro = false;//親の使用中フラグをリセット
+                f = 1; //未使用ステータスの場合は削除  
+            } 
+    
+            return f;
+        }
+    }
+      
 }

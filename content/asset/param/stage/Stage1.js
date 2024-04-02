@@ -29,8 +29,10 @@ function Stage1(stageno) {
 
     var cmap = [];
     this.colmap = cmap;
-
+    
     this.startroom_id; 
+
+    let startx, starty;
 
     //rlistで各部屋にID付与
     rlist = roomDivision(rlist);
@@ -331,6 +333,9 @@ function Stage1(stageno) {
             mc.push(w);
 
             if (i == room_status.min) {
+                startx = x + (wdt/2)+32;
+                starty = y + (hgt/2)+32;
+
                 w = [14, //魔法陣画像（拡大）
                     x + (wdt/2)+32, y + (hgt/2)+32, 64, 64,
                     true, //false,//HitCheck有
@@ -338,6 +343,7 @@ function Stage1(stageno) {
                     true //visibility
                 ];
                 sid = mc.length - 1;
+
                 //console.log("r:"+sid);
             }else{
             //portal
@@ -447,13 +453,14 @@ function Stage1(stageno) {
         var ms = [];
         //  開始フレーム,座標,,角度,シナリオ,キャラ
 
-        let r = startroom[0]; //自機の開始位置は一番小さい部屋内（敵は配置しない）2024/03/17
-        ms.push([false, rlist[r].x * BLOCK_W + 10, rlist[r].y * BLOCK_H + 10, 0, "player", 0]);
+        ms.push([false, startx,  starty, 0, "player", 0]);
+        //let r = startroom[0]; //自機の開始位置は一番小さい部屋内（敵は配置しない）2024/03/17
+        //ms.push([false, rlist[r].x * BLOCK_W + 10, rlist[r].y * BLOCK_H + 10, 0, "player", 0]);
         //ms.push([false, rlist[r].x * BLOCK_W + 10, rlist[r].y * BLOCK_H + 10, 0, "effect_informationCursor", 0]);
         //ms.push([false, rlist[r].x * 96 + 10, rlist[r].y * 96 + 10, 0, "friend_rotate", 10]);
     
         let itl = [20, 20, 20, 20, 23, 24, 25]; //スタート地点に設置される初期装備/ITEM
-        for (let i=1; i < 7; i++){
+        for (let i=0; i < 7; i++){
             let r = startroom[i%startroom.length];
             ms.push([
                 false //面展開時に(false: 毎回,　true:１度のみ)設置される。基本は自機用
