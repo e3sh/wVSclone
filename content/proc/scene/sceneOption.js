@@ -24,6 +24,8 @@ function sceneOption(state) {
     let sel = 0;
 
     let cmapdf = false;
+    
+    let nowstage = state.Game.nowstage;
 
     //処理部
     function scene_init() {
@@ -36,6 +38,12 @@ function sceneOption(state) {
 		dev.graphics[2].setInterval(0);//FG
     
         work.setInterval(0);//UI
+
+        sel = 0;
+        nowstage = state.Game.nowstage;
+
+        ret_code = 6; //scenePause
+        retmf = false; //return mode false:pause true:gameS
     }
 
     function scene_step() {
@@ -132,20 +140,22 @@ function sceneOption(state) {
         }
         if (ekey) {
             //EXPORT
-            if (retmf){
-            let obj1 = state.mapsc.ini_sc();
-            let obj2 = state.mapsc.mapChip();
-
-            exportFile("inisc.json",obj1);
-            exportFile("mapChip.json",obj2);
-            }
+            //if (retmf){
+            //let obj1 = state.mapsc.ini_sc();
+            //let obj2 = state.mapsc.mapChip();
+             //let obj1 = state.mapsc.StageChache();
+             //   exportFile("stage.json",state.mapsc.StageChache());
+            //exportFile("mapChip.json",obj2);
+            //}
         }
 
         if (rkey) {
+            /*
             mapsc.change(state.Game.nowstage);
 	        mapsc.reset(state.System.time()); //初期マップ展開
             retmf = true;
             ret_code = 2;// TITLE;
+            */
         }
 
         if (numkey) {}
@@ -153,16 +163,32 @@ function sceneOption(state) {
             let s = sel;
             for (let i in kstate){
                 if (Boolean(kstate[i])){
-                    s = s + ((i == 37)? -40 :0)//leftkey 
+                    s = s // + ((i == 37)? -40 :0)//leftkey 
                     + ((i == 38)? -1 :0) //upkey
-                    + ((i == 39)? +40 :0) //rightkey
+                    //((i == 39)? +40 :0) //rightkey
                     + ((i == 40)? +1 :0);//downkey
                 }
+
             }
             if (s < 0) s = 0;
-            //if (s > maxpage) s = maxpage;
-
             sel = s;
+
+            s = nowstage;
+            for (let i in kstate){
+                if (Boolean(kstate[i])){
+                    s = s + ((i == 37)? -1 :0)//leftkey 
+                    //+ ((i == 38)? -1 :0) //upkey
+                    + ((i == 39)? +1 :0) //rightkey
+                    //+ ((i == 40)? +1 :0);//downkey
+                    ;
+                }
+            }
+            retmf = true;
+            ret_code = 2;// TITLE;
+
+            if (s < 0) s = 0;
+            nowstage = s;
+            state.mapsc.change(s);//
         }
 
         let s = "";
@@ -178,8 +204,8 @@ function sceneOption(state) {
         st.push("Z: " + (retmf?"RETURN TITLE":"EXIT"));
         st.push("C: CLEAR_SCREEN");
         st.push("I: MAP_IMPORT（"+(ikey?"?":"未実装")+"）" );
-        st.push("E:" + (retmf?" MAP_EXPORT":" _"));
-        st.push("R: MAP_RESET"  );
+        //st.push("E: MAP_EXPORT");
+        //st.push("R: -//MAP_RESET" );
 
         for (let i in st){
             work.kprint(st[i] ,0 ,0 + i*8 );
@@ -188,6 +214,8 @@ function sceneOption(state) {
         mapDraw();
         charDraw(sel);
         if (cmapdf) cmapDraw();
+        work.kprint("Stage:" + state.mapsc.chacheUseStatus() ,150 ,0);
+        work.kprint("Stage:" + nowstage ,150 ,8);
 
         work.draw();
 
@@ -277,6 +305,9 @@ function sceneOption(state) {
             for (let i = 0, loopend = mcp.length; i < loopend; i++) {
 
                 let mc = mcp[i];
+
+                //mc.colitem && mc.colitem.remove();//EXPORTに支障が出るため
+                //mc.colitem = null;//一律リセット
 
                 if (mc.visible) {
                 //    let c = ["dimgray", "steelblue", "orange"];

@@ -334,16 +334,16 @@ function sce_friend_boom() {
 
         
         o.shotcount+= o.vecfrm;
-        if (o.shotcount > 30) {
+        if (o.shotcount > 20) {
             //o.vset(3)
-            if (o.shotcount < 90) o.target_rotate_r(4);
+            if (o.shotcount < 120) o.target_rotate_r(8);
             //o.vector = o.target_v(o.parent.x, o.parent.y);
             //o.vector = o.target_v(o.parent.x, o.parent.y);
 
         }
         
-        o.vset(3);
-        if (o.shotcount < 20) o.vset(7);
+        o.vset(6);
+        //if (o.shotcount < 20) o.vset(7);
 
         o.bup_vector = o.vector;
 

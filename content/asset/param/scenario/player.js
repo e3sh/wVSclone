@@ -774,7 +774,7 @@ function sce_player( gObjc ) {
             stageclrf = true;
 
             o.jump = 1;
-            o.jpcount = 40;
+            o.jpcount = 20;
             o.jpvec = -5.6 - 0.4 * o.vecfrm;;
             o.colcheck = false;
 
@@ -785,8 +785,8 @@ function sce_player( gObjc ) {
 
         if (stageclrf){//DoorOpenFlag
 
-            o.vx = Math.sign(o.startx - o.x);
-            o.vy = Math.sign(o.starty - o.y);
+            o.vx = Math.sign(o.startx - o.x)*2;
+            o.vy = Math.sign(o.starty - o.y)*2;
 
             if (o.alive > delay_st +250 && o.doorflag && o.jump == 0){//0.25s
                 //o.item[22] = 0;

@@ -195,6 +195,17 @@ function scenePause(state) {
                 for (var i in arr){
                     work.putchr8(arr[i], 0, 248 + i * 8);
                 }
+
+                //savedata check
+                let res = {load: true, ready:true, data:state.Game, title:"STAT/INV"};
+                if (res.load){
+                    let t = state.Game.dataview2(res);
+                    for (let i in t){
+                        work.kprint(t[i],8, i*8 + 8);
+                }
+                    work.draw();
+                }
+
             }
             work.draw();
             keywait = 10;

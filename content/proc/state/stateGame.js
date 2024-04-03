@@ -227,7 +227,7 @@ function stateGame() {
         items[25] = "④"; //L
 
         let txt = [];
-        txt.push("[SAVEDATA]");
+        if (!Boolean(result.title)) {txt.push("[SAVEDATA]");} else {txt.push(result.title);}
 
         if (result.ready){
             if (result.load){
