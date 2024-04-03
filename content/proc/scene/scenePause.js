@@ -21,6 +21,9 @@ function scenePause(state) {
     //let keywait = 0;
 
     let ret_code = 0;
+    
+    let tutCn = 0;
+    const tutCtable = tutorialCommentTable();
 
     const DSP_X = 320;
     const DSP_Y = 160;
@@ -42,11 +45,18 @@ function scenePause(state) {
 
         ret_code = 0;
 
+        //work.fill(DSP_X - 100, DSP_Y, 272, 100, "rgb(32,0,0)");
+
         work.putchr(" == PAUSE ==", DSP_X - 50, DSP_Y);
         work.putchr("Push <Z>key or [Space] ", DSP_X - 100, DSP_Y + 20);
-        work.putchr(" Return game.", DSP_X - 50, DSP_Y + 40);
+        //work.fill(DSP_X - 50, DSP_Y + 40, 8*18, 18, "rgb(0,0,0)");
+        work.putchr8("   Return game.", DSP_X - 50, DSP_Y + 40);
+        work.kprint("　　　ゲームに戻る", DSP_X - 50, DSP_Y + 50);
+
         work.putchr("Push <Q>key /", DSP_X - 100, DSP_Y + 60);
-        work.putchr("Save and Quit.", DSP_X - 50, DSP_Y + 80); 
+        //work.fill(DSP_X - 50, DSP_Y + 80, 8*18, 18, "rgba(0,0,0)"); 
+        work.putchr8(" Save and Quit.", DSP_X - 50, DSP_Y + 80);
+        work.kprint("セーブしてタイトルに戻る", DSP_X - 50, DSP_Y + 90); 
 
         work.draw();
         //work.reset();
@@ -60,44 +70,28 @@ function scenePause(state) {
 
     function scene_step() {
 
-        //let kstate = keys.check();
-
         keywait--;
         if (keywait > 0) return 0;
-
         let kstate = dev.key_state.check();
 
-        let zkey = false;
-        if (Boolean(kstate[90])) {//[z]
-            if (kstate[90]) zkey = true;
-        }
-	    if (Boolean(kstate[32])) {//[space]
-	        if (kstate[32]) zkey = true;
-        }
-
-        let qkey = false;
-	    if (Boolean(kstate[81])) {
-	        if (kstate[81]) {//[q]
-	            qkey = true;
-	            delete(kstate[81]);// = false;//押しっぱなし検出する為、予防
-	        }
-	    }
-
-        let numkey = false;
-        for (let i in kstate){ //Fullkey[0]-[9]
-            if (Boolean(kstate[i]) && (i >= 48) && (i <= 57)){
-                numkey = true;
+        let zkey     = false;
+        let qkey     = false;
+        let numkey   = false; //menu select num
+        let arrowkey = false; //list select 
+        for (let i in kstate){
+            if (Boolean(kstate[i])){
+                if (i == 90 || i == 32 ) zkey = true;// [z] or [space]
+                if (i == 81) {//[q]
+                    qkey = true;
+                    delete(kstate[81]);// = false;//押しっぱなし検出する為、予防
+                }
+                numkey = ((i >= 48) && (i <= 57))? true: false; //Fullkey[0]-[9]
+                arrowkey = ((i >= 37) && (i <= 40))? true: false; //Arrowkey
             }
         }
 
 	    if (qkey) {
-            /*
-	        state.Game.item = obCtrl.item;
-	        state.Game.itemstack = obCtrl.itemstack;
-	        state.Game.player.zanki = 2 - dead_cnt;
-            */
-
-	        if (state.Game.save() == 0) {
+            if (state.Game.save() == 0) {
 	            //alert("ゲーム中断セーブ実施しました。\nタイトルに戻ります。");
                 dev.sound.volume(1.0);
                 dev.sound.change(9);
@@ -106,7 +100,6 @@ function scenePause(state) {
                 return 2;//Title
             } else {
                 alert("ローカルストレージが使えません。\n中断セーブ出来なかったので、\nゲーム継続します。");
-
                 zkey = true;
             }
         }
@@ -128,8 +121,23 @@ function scenePause(state) {
             return 1;//GameScene
         }
 
+        if (arrowkey){
+            let s = tutCn;
+            for (let i in kstate){
+                if (Boolean(kstate[i])){
+                    s = s //+ ((i == 37)? -40 :0)//leftkey 
+                    + ((i == 38)? -1 :0) //upkey
+                    //((i == 39)? +40 :0) //rightkey
+                    + ((i == 40)? +1 :0);//downkey
+                }
+            }
+            if (s < 0) s = 0;
+            tutCn = s;
+            //HELPMESSAGE
+        }
+
+        let inp = -1;
         if (numkey) {
-            let inp = -1;
             for (let i in kstate){
                 if (Boolean(kstate[i])){
                     inp = i-48;
@@ -172,10 +180,23 @@ function scenePause(state) {
                 default:
                     break;
             }
+        }
 
+        if (numkey || arrowkey){
             work.reset();
+
+            work.fill(0, 264, 400, 30);
             work.fill(0, 240, 8 * 22, 8 * 11);//, "navy");
 
+            if (Boolean(tutCtable[tutCn])){
+                for (let i in tutCtable[tutCn]){
+                    work.kprint(tutCn + "." + i + ":" + tutCtable[tutCn][i], 0, 264 + 10 * i);
+                }
+            }else{
+                work.kprint(tutCn + ".: Message Empty.", 0, 264);
+            }
+
+            //work.fill(0, 240, 8 * 22, 8 * 11);//, "navy");
             if (menuvf){
                 let arr = [];
                 work.fill(0, 240, 8 * 22, 8 * 11, "navy");
