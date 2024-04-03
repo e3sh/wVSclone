@@ -3,8 +3,8 @@
 function Stage1_brm() {
 
     //stageno = 0;
-    var BLOCK_W = 96;
-    var BLOCK_H = 96;
+    let BLOCK_W = 96;
+    let BLOCK_H = 96;
 
     this.scenario = mapScenro;
     this.bgImage = mapBgImage;
@@ -12,7 +12,7 @@ function Stage1_brm() {
     this.initial = mapInitial;
     this.bgPtn = mapBgPattern;
 
-    //var cmap = [];
+    //let cmap = [];
     //this.colmap = cmap;
 
     function mapScenro() {
@@ -29,13 +29,13 @@ function Stage1_brm() {
 
     function mapBgLayout() {
 
-        var mc = [];
+        let mc = [];
         
-        var w = [];
+        let w = [];
 
         //Floor
-        for (var i = 13; i <= 17 ;i++) {
-            for (var j = 8; j <= 25 ;j++) {
+        for (let i = 13; i <= 17 ;i++) {
+            for (let j = 8; j <= 25 ;j++) {
 
                 w = [0,
                     i * BLOCK_W,
@@ -90,12 +90,12 @@ function Stage1_brm() {
         ];
         mc.push(w);
         
-        var map_cp = []; //　マップチップ
+        let map_cp = []; //　マップチップ
 
-        for (var j in mc) {
-            var w = mc[j];
+        for (let j in mc) {
+            let w = mc[j];
 
-            var chip = {};
+            let chip = {};
 
             chip.no = w[0];
             chip.x = w[1];
@@ -137,10 +137,10 @@ function Stage1_brm() {
 
         let map_sc = []; //　出現パターン
 
-        for (var j in ms) {
-            var w = ms[j];
+        for (let j in ms) {
+            let w = ms[j];
 
-            var ptn = {};
+            let ptn = {};
 
             ptn.s = w[0];
             ptn.x = w[1] * BLOCK_W + 32
@@ -154,10 +154,10 @@ function Stage1_brm() {
 
         //鍵の設定
         //5の倍数面は敵(ボス/中ボス)に鍵を持たせるために同じ座標に鍵を設定する。
-        var key_idx = -1;
+        let key_idx = -1;
 
-        for (var i in map_sc){
-            var w = map_sc[i];
+        for (let i in map_sc){
+            let w = map_sc[i];
 
             if (w.ch == 22){ //Key
                 key_idx = i;
@@ -166,8 +166,8 @@ function Stage1_brm() {
         }
         if (key_idx < 0) alert("KEY not Found!");
 
-        for (var i in map_sc){
-            var w = map_sc[i];
+        for (let i in map_sc){
+            let w = map_sc[i];
 
             if (w.ch == 14){ //BOSS の位置に鍵を移動する。
                 map_sc[key_idx].x = w.x ;
@@ -182,7 +182,7 @@ function Stage1_brm() {
 
     function mapBgPattern() {
 
-        var sp = 
+        let sp = 
         // SP NO.","X","Y","ADDX","ADDY"
     	[
             [0, 128 - 96, 128 - 128, 95, 95], //0,32,0 床96,96
@@ -209,12 +209,12 @@ function Stage1_brm() {
             ["LPortal", 64, 96, 32, 32], //--, 0,96 点灯魔法陣64，96
         ];
 
-        var bg_ptn = []; // BGパターン
+        let bg_ptn = []; // BGパターン
 
-        for (var j in sp) {
-            var w = sp[j];
+        for (let j in sp) {
+            let w = sp[j];
 
-            var ptn = {};
+            let ptn = {};
 
             ptn.x = w[1];
             ptn.y = w[2];

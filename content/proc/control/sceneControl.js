@@ -1,13 +1,13 @@
 ﻿// sceneControl
 function sceneControl(state) {
 //sceneが増えてきてmainがすっきりとしなくなったので分離の為作成。2011/05/04
-    //var fcnt = 0;
+    //let fcnt = 0;
 
-    var scrn = state.System.dev.graphics[4];//Wipescreen
+    let scrn = state.System.dev.graphics[4];//Wipescreen
 
-    var titleSce = [];
+    let titleSce = [];
 
-    var sceneList = [];
+    let sceneList = [];
 
     sceneList[1] = new gameScene(state);       titleSce[1] = "Main";//state.Result.load()はここ//hiscoreをlocalstorageから復帰
     sceneList[2] = new sceneTitle(state);      titleSce[2] = "Title";
@@ -19,24 +19,24 @@ function sceneControl(state) {
     sceneList[8] = new sceneOption(state);     titleSce[8] = "Option";
     sceneList[9] = new sceneLvUp(state);       titleSce[9] = "LvUp";
 
-    var wipeEffectCount; 
+    let wipeEffectCount; 
 
-    var menuvf = false;
+    let menuvf = false;
 
-    //var clRect = function(x,y,w,h){this.draw = function(device){ device.clearRect(x,y,w,h);}}
+    //let clRect = function(x,y,w,h){this.draw = function(device){ device.clearRect(x,y,w,h);}}
 
-    for (var i in sceneList) {
+    for (let i in sceneList) {
         sceneList[i].init();
     }
-    //var scene = sceneList[2];
+    //let scene = sceneList[2];
 
     const TITLERC = 2;
 
-    var rc = TITLERC; // 最初のSceneはTitle
-    var runscene = rc;
+    let rc = TITLERC; // 最初のSceneはTitle
+    let runscene = rc;
 
     function reset(){
-        for (var i in sceneList){
+        for (let i in sceneList){
             sceneList[i].reset_enable = true; 
         } 
         //fcnt = 0;       
@@ -49,7 +49,7 @@ function sceneControl(state) {
             //Sceneの切り替えが発生している。
             //wipeEffectCount = scrn.cw/2;
 
-            var fg = false; // continue flag
+            let fg = false; // continue flag
             if (rc >= 10) { //resultからGameSceneへ戻るときは+10(としてContinueであることを知らせている。過去の名残。returnを
                 //状態ステータスのオブジェクト参照とかにすればスマートなのでよいが、困ってないので何か都合が悪い状況になったら修正する。)
                 rc = rc % 10;
@@ -76,10 +76,10 @@ function sceneControl(state) {
             wipeEffectCount-(3 * 60/(1000/state.System.deltaTime())) :
             0;
         /*
-        var kstate = dev.key_state.check();
+        let kstate = dev.key_state.check();
 
-        var numkey = false;
-        for (var i in kstate){ //Fullkey[0]-[9]
+        let numkey = false;
+        for (let i in kstate){ //Fullkey[0]-[9]
             if (Boolean(kstate[i]) && (i >= 48) && (i <= 57)){
                 numkey = true;
             }
@@ -102,7 +102,7 @@ function sceneControl(state) {
         if (state.Config.debug) {
             //if (fcnt%90 > 30){
             if (state.System.blink()){    
-                var st = titleSce[runscene];
+                let st = titleSce[runscene];
 
                 bar = {}
 
@@ -126,7 +126,7 @@ function sceneControl(state) {
 
           //  EffectWipeFrame(scrn.cw/2-wipeEffectCount);
             /*
-            var w = wipeEffectCount;
+            let w = wipeEffectCount;
             scrn.fill(0, 0, scrn.cw, scrn.ch, "black");
             scrn.fill(scrn.cw/2 +w, scrn.ch/2 +w, scrn.ch/2-w, scrn.cw/2-w ,"green");
             scrn.putchr8("wec:"+ wipeEffectCount,  320,200)
@@ -136,10 +136,10 @@ function sceneControl(state) {
     }
 
     function EffectWipeFrame(size){
-        var cw = scrn.cw;
-        var ch = scrn.ch;
+        let cw = scrn.cw;
+        let ch = scrn.ch;
 
-        var c = "black";//rgba(0,0,0,"+ ((cw-size*2) /cw) +")";
+        let c = "black";//rgba(0,0,0,"+ ((cw-size*2) /cw) +")";
 
         scrn.fill(0, 0, cw, ch/2 - size, c);
         scrn.fill(0, ch/2 + size, cw, ch/2 - size, c);
@@ -151,7 +151,7 @@ function sceneControl(state) {
         //scrn.fill(cw/2 - size, ch/2 - size, size*2, size*2);
 
         /*
-        var fl = {}
+        let fl = {}
         fl.x = cw/2 - size;
         fl.y = ch/2 - size;
         fl.s = size *2;
@@ -171,18 +171,18 @@ function sceneControl(state) {
     }
     /*
     function submenuCheck(){
-        var kstate = dev.key_state.check();
+        let kstate = dev.key_state.check();
 
-        var numkey = false;
-        for (var i in kstate){ //Fullkey[0]-[9]
+        let numkey = false;
+        for (let i in kstate){ //Fullkey[0]-[9]
             if (Boolean(kstate[i]) && (i >= 48) && (i <= 57)){
                 numkey = true;
             }
         }
 
         if (numkey) {
-            var inp = -1;
-            for (var i in kstate){
+            let inp = -1;
+            for (let i in kstate){
                 if (Boolean(kstate[i])){
                     inp = i-48;
                     break;

@@ -13,9 +13,9 @@
 //
 function motionPattern(){
 
-	var mp = [];
+	let mp = [];
 
-	var no = 0;
+	let no = 0;
 	
 	mp[no] = {};
 

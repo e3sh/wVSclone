@@ -4,7 +4,7 @@
 
 function ObjCmdDecode(msg, sobj, obj, state, sce){
    /*
-    var command = {
+    let command = {
         "set_object",
         "set_object_ex",
         "get_target",
@@ -60,10 +60,10 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
             sobj.target = null; //o; //{}; 見つからなかった場合
     
             for (let i in obj) {
-                var wo = obj[i];
+                let wo = obj[i];
                 if (wo.type != msg.src) continue;
     
-                var d = wo.target_d(sobj.x, sobj.y);
+                let d = wo.target_d(sobj.x, sobj.y);
                 if (d < wdist) {
                     sobj.target = wo;
                     wdist = d;
@@ -122,14 +122,14 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                 mapsc.add(x, y, 0, 20, 39, wid);
             }
 
-            var f = false;
+            let f = false;
             if ((msg.src == 23) || (msg.src == 24) || (msg.src == 25)) {
                 //dev.sound.effect(9); //cursor音
                 f = true;
             }
 
             if (f) {
-                var w = msg.src;
+                let w = msg.src;
                 objc.itemstack.push(w);
             }
 
@@ -158,7 +158,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                     o.score = 8;
                      //test用
                     if (o.chr != 7) {
-                        var witem = [18, 22, 26, 27, 29, 30];
+                        let witem = [18, 22, 26, 27, 29, 30];
     
                         o.mp = witem[Math.floor(Math.random() * witem.length)];
                     }
@@ -173,7 +173,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
             }
             for (let i in obj) {
                 //画面内にいる敵のみ
-                var onst = sobj.gt.in_view_range(
+                let onst = sobj.gt.in_view_range(
                     obj[i].x - (obj[i].hit_x / 2),
                     obj[i].y - (obj[i].hit_y / 2), obj[i].hit_x, obj[i].hit_y);
     
@@ -260,15 +260,15 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
             //無かったら、敵の持ち物をチェックする。
             //ない場合はkeyon=false;//自分の持ち物にある場合はこれでチェックしない。
             //戻り値はState.game.keyon,key_x,key_yに入れる。
-            var onflag = false;
-            var wx = 0;
-            var wy = 0;
+            let onflag = false;
+            let wx = 0;
+            let wy = 0;
 
-            for (var i in obj) {
-                var wo = obj[i];
+            for (let i in obj) {
+                let wo = obj[i];
                 if (wo.type == 2){//enemy
                     //wo.lighton = true;                
-                    for (var j of wo.pick){
+                    for (let j of wo.pick){
                         if (j == msg.src){
                             onflag = true;
                             wx = wo.x;
@@ -304,7 +304,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
             break;
     }
     
-    var result = {exec: execute, log:wlog};
+    let result = {exec: execute, log:wlog};
 
     return result;
 }

@@ -27,7 +27,7 @@ function sce_item_direct_homing() {
                 o.vector = o.target_v();
             case 4:
                 if (Boolean(this.target)) {
-                    var d = o.target_d(o.target.x, o.target.y);
+                    let d = o.target_d(o.target.x, o.target.y);
                     d = (d < 15) ? d + 1 : 16;
                     o.vset(d);
                 }
@@ -60,7 +60,7 @@ function sce_item_near_homing() {
         }
 
         if (Boolean(this.target)) {
-            var d = o.target_d(o.target.x, o.target.y);
+            let d = o.target_d(o.target.x, o.target.y);
 
             if (d < 40) {
                 //            d = (d < 15) ? d + 1 : 16;

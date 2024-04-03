@@ -93,7 +93,7 @@ function GameAssetSetup(game){
 
 	function FontPtnCutArray(sx, sy, sw, sh){
 		//sx:開始左端 sy:開始上端 sw:Font幅 sh:Font高さ
-		var sp = [];
+		let sp = [];
 
 		for (i = 0; i < 7; i++) {
 	    	for (j = 0; j < 16; j++) {

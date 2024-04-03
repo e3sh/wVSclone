@@ -40,14 +40,14 @@ function sceneLvUp(state) { //2024/03/06
 
         work2.clear();
 
-        var o = {};
+        let o = {};
 
         o.cw = work2.cw;
         o.ch = work2.ch;
 
         o.draw = function (device) {
 
-            for (var i = 0; i < this.ch; i += 4) {
+            for (let i = 0; i < this.ch; i += 4) {
                 device.beginPath();
                 device.lineWidth = 1;
                 device.moveTo(0, i);
@@ -113,13 +113,13 @@ function sceneLvUp(state) { //2024/03/06
         //進行
         wtxt = [];
 
- //       var mstate = inp.check_last();
-        var kstate = keys.check();
+ //       let mstate = inp.check_last();
+        let kstate = keys.check();
 
 
-        var zkey = false; if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
-        var xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
-        var ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
+        let zkey = false; if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
+        let xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
+        let ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
 
         let esckey = false; if (Boolean(kstate[27])) { if (kstate[27]) esckey = true; }
 
@@ -187,7 +187,7 @@ function sceneLvUp(state) { //2024/03/06
 
         diag.draw(work, w.x, w.y);
 
-        for (var s in wtxt) {
+        for (let s in wtxt) {
             work.putchr8(wtxt[s], w.x -35, w.y + 16*s + 32 );
         }
         //stbar.draw(work, w.x -35, w.y + 48);

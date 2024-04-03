@@ -4,17 +4,17 @@
 //=============================================================
 function Screen(g,num) {//g.screen（DisplayControll）[num]
 
-    var scrn = g.screen[num];
+    let scrn = g.screen[num];
     //document.getElementById("console").innerHTML = g.asset.Image;
     //キャラクタパターンテクスチャー
-    //var tex_p = g.asset.image["SPGraph"].img;
+    //let tex_p = g.asset.image["SPGraph"].img;
 
     this.cw = scrn.cw;
     this.ch = scrn.ch;
     
-    var fcolor = ["8x8white", "8x8red", "8x8green", "8x8blue", "stfont"];
+    let fcolor = ["8x8white", "8x8red", "8x8green", "8x8blue", "stfont"];
 
-    var sp_ptn = spdata();
+    let sp_ptn = spdata();
 
     this.view = scrn.view;
     this.flip = scrn.flip;
@@ -53,26 +53,26 @@ function Screen(g,num) {//g.screen（DisplayControll）[num]
         if (!Boolean(alpha)) { alpha = 255; }
         if (!Boolean(z)) { z = 1.0; }
 
-        var simple = ((m == 0) && (r == 0) && (alpha == 255));
+        let simple = ((m == 0) && (r == 0) && (alpha == 255));
 
         if (simple) {
 
-            var dx = x + (-d.w / 2) * z;
-            var dy = y + (-d.h / 2) * z;
-            var dw = d.w * z;
-            var dh = d.h * z;
+            let dx = x + (-d.w / 2) * z;
+            let dy = y + (-d.h / 2) * z;
+            let dw = d.w * z;
+            let dh = d.h * z;
         
             scrn.putPattern(tex_p, d, dx, dy, dw, dh );
 
         } else {
 
-            var dx = (-d.w / 2) * z;
-            var dy = (-d.h / 2) * z;
-            var dw = d.w * z;
-            var dh = d.h * z;
+            let dx = (-d.w / 2) * z;
+            let dy = (-d.h / 2) * z;
+            let dw = d.w * z;
+            let dh = d.h * z;
 
-            var FlipV = 1.0;
-            var FlipH = 1.0;
+            let FlipV = 1.0;
+            let FlipH = 1.0;
 
             switch (m) {
                 case 0:

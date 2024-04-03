@@ -19,9 +19,9 @@ function itemClass(ID, itemTable){
 //　unk_name:   unknownName    未鑑定時の表示名 空白時または無しの場合は表示名と同じにする？(処理による）
 //　info    :   information    説明文
 //
-    var id, name, graph, type, getfunc, equipfunc, usefunc, exrarefunc, inspectfunc
-    var param = [];
-    var unk_name, info;
+    let id, name, graph, type, getfunc, equipfunc, usefunc, exrarefunc, inspectfunc
+    let param = [];
+    let unk_name, info;
 
     this.getitem;
     this.equip;
@@ -31,9 +31,9 @@ function itemClass(ID, itemTable){
 
     this.enable = true; //false = item dispose;
 
-    var sce = new itemScenario();
+    let sce = new itemScenario();
 
-    for (var i of itemTalble){
+    for (let i of itemTalble){
         if (i.ID == ID){
 
             name = i.name;

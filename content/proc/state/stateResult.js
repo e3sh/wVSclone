@@ -9,13 +9,13 @@ function stateResult() {
     this.combo;
     //現在gameSceneでここに色々登録されている。
 
-    var ret_code = 0;
+    let ret_code = 0;
     //ローカルストレージからのロード（今のところハイスコアのみ）
     this.load = function () {
 
         if (Boolean(localStorage)) {
 
-            var f = false;
+            let f = false;
 
             if (Boolean(localStorage.getItem("highscore"))) {
                 f = true;
@@ -32,7 +32,7 @@ function stateResult() {
     //ローカルストレージへのセーブ
     this.save = function () {
 
-        var ret_code = 0;
+        let ret_code = 0;
 
         if (Boolean(localStorage)) { //ローカルストレージ使えたらハイスコア記録しとく
             localStorage.setItem("highscore", new String(this.result.highscore));

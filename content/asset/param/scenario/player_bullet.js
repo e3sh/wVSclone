@@ -47,7 +47,7 @@ function sce_pl_bullet_homing() {
 
         if (!Boolean(o.target)) return;
 
-        var cl = {};
+        let cl = {};
         cl.sx = o.x;
         cl.sy = o.y;
         cl.ex = o.target.x;

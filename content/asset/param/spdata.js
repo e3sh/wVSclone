@@ -1,6 +1,6 @@
 function spdata(){
 	
-	var sp = [
+	let sp = [
 	// SP PATTERN DATA",,,,
 	// SP NO.","X","Y","ADDX","ADDY"
 

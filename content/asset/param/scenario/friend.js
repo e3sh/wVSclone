@@ -30,7 +30,7 @@ function sce_friend_rotate() {
 
         //if (!o.config.option) o.status = 0;
 
-        var f = 0;
+        let f = 0;
 
         if (o.startflag) {
             o.get_target(98);
@@ -133,7 +133,7 @@ function sce_friend_sidearm() {
 
         if (!o.config.option) o.status = 0;
 
-        var wr = o.vector;
+        let wr = o.vector;
 //        wr = (wr > 180) ? wr + 70 : wr - 70;
         o.triger--;
         if (o.triger <= 0) {
@@ -141,8 +141,8 @@ function sce_friend_sidearm() {
             o.triger = 0;
         }
 
-        var powup = 0;
-        for (var i in o.item) {
+        let powup = 0;
+        for (let i in o.item) {
             if (i == 7) {
                 powup = o.item[i];
             }
@@ -179,7 +179,7 @@ function sce_friend_sidearm() {
             wr = o.vector
         }
 
-        var f = 0;
+        let f = 0;
 
         if (o.target.type != 98) {//ターゲットが自機じゃなくなった場合
             o.change_sce(7);
@@ -226,7 +226,7 @@ function sce_friend_straight() {
 
     this.move = function (scrn, o) {
 
-        var f = 0;
+        let f = 0;
         /*
         if (o.startflag) {
             o.get_target(98);
@@ -302,7 +302,7 @@ function sce_friend_boom() {
 
         o.vector = o.bup_vector;
 
-        var f = 0;
+        let f = 0;
         /*
         if (o.startflag) {
             //o.get_target(98);
@@ -388,7 +388,7 @@ function sce_friend_rotate_full() {
 
     this.move = function (scrn, o) {
 
-        var f = 0;
+        let f = 0;
 
         if (!Boolean(o.parent)) {
             o.change_sce(7);
@@ -447,7 +447,7 @@ function sce_friend_rotate() {
 
         //if (!o.config.option) o.status = 0;
 
-        var f = 0;
+        let f = 0;
 
         if (!Boolean(o.parent)) {
             o.change_sce(7);
@@ -500,7 +500,7 @@ function sce_friend_front() {
 
     this.move = function (scrn, o) {
 
-        var f = 0;
+        let f = 0;
         if (!Boolean(o.parent)) {
             o.change_sce(6);
             return 1;

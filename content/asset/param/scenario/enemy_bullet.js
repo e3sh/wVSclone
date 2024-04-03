@@ -48,7 +48,7 @@ function sce_en_bullet_random() {
     //　ランダムでのばら撒き弾(出現後ランダム左右50度に角度を変える。
     //-----------------------------------------------------------------------
     this.init = function (scrn, o) {
-        var num = Math.floor(Math.random() * 50) - 25;
+        let num = Math.floor(Math.random() * 50) - 25;
         o.vector = (o.vector + num + 360) % 360;
         o.vset(4);
     }
@@ -181,7 +181,7 @@ function sce_en_bullet_infolaser() {
         };
 
         if (o.msf) {
-            //for (var i = 1; i <= 5; i++) {
+            //for (let i = 1; i <= 5; i++) {
                 //o.vset(12);
                 
                 //o.vset(12 * i);
@@ -197,8 +197,8 @@ function sce_en_bullet_infolaser() {
 
         //    scrn.putchr8c("47s", o.x, o.y, 3);
 
-        var cl = {};
-        var w = o.gt.worldtoView(o.x, o.y);
+        let cl = {};
+        let w = o.gt.worldtoView(o.x, o.y);
         
         cl.x = w.x;
         cl.y = w.y;

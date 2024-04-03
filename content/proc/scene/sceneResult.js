@@ -2,15 +2,15 @@
 //
 function sceneResult(state) {
     
-    var dev = state.System.dev;
+    let dev = state.System.dev;
     //宣言部
-    var work = dev.graphics[3];//メニュー(最上面)
-    var work2 = dev.graphics[2];//メイン描画面(FG)
-	//var text = dev.text;
-    //var text = dev.graphics[3];//文字表示面
+    let work = dev.graphics[3];//メニュー(最上面)
+    let work2 = dev.graphics[2];//メイン描画面(FG)
+	//let text = dev.text;
+    //let text = dev.graphics[3];//文字表示面
 
-    //var inp = dev.mouse_state;
-    var keys = dev.key_state;
+    //let inp = dev.mouse_state;
+    let keys = dev.key_state;
 
     this.init = scene_init;
     this.reset = scene_reset;
@@ -19,24 +19,24 @@ function sceneResult(state) {
 
     this.reset_enable = true;
 
-    var keylock;
+    let keylock;
 
-    var wtxt;
+    let wtxt;
 
-    var wipef;
-    var wipecnt;
+    let wipef;
+    let wipecnt;
 
-    var ret_code;
+    let ret_code;
 
-    var counter = 0;
+    let counter = 0;
 
-    var menu = [];
-    var diag;
-    var dexef;
+    let menu = [];
+    let diag;
+    let dexef;
 
     let soundf;
 
-    var m = {
+    let m = {
         title: "[   ok.  ]",
         x: 320-80 ,y: 280 ,w: 120 ,h: 16,
         sel: false,
@@ -87,7 +87,7 @@ function sceneResult(state) {
 
     function scene_reset() {
 
-        for (var i in menu) {
+        for (let i in menu) {
             menu[i].sel = false;
         }
 
@@ -99,14 +99,14 @@ function sceneResult(state) {
 
         //        work2.clear();
 
-        var o = {};
+        let o = {};
 
         o.cw = work2.cw;
         o.ch = work2.ch;
 
         o.draw = function (device) {
 
-            for (var i = 0; i < this.ch; i += 4) {
+            for (let i = 0; i < this.ch; i += 4) {
                 device.beginPath();
                 device.lineWidth = 1;
                 device.moveTo(0, i);
@@ -154,12 +154,12 @@ function sceneResult(state) {
         //進行
         wtxt = [];
 
- //       var mstate = inp.check_last();
-        var kstate = keys.check();
+ //       let mstate = inp.check_last();
+        let kstate = keys.check();
 
-        var zkey = false; if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
-        var xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
-        var ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
+        let zkey = false; if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
+        let xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
+        let ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
 
         let esckey = false; if (Boolean(kstate[27])) { if (kstate[27]) esckey = true; }
 
@@ -172,7 +172,7 @@ function sceneResult(state) {
         if (counter > 30) {
             if (!dev.sound.running()){
                 if ((zkey)&&(!keylock)) {
-                    for (var i in menu) {
+                    for (let i in menu) {
 
                         if (menu[i].sel) {
                             let n = menu[i].func();
@@ -203,7 +203,7 @@ function sceneResult(state) {
 
         if (wipef) {
 
-            var o = {};
+            let o = {};
 
             o.cw = work2.cw;
             o.ch = work2.ch;
@@ -244,7 +244,7 @@ function sceneResult(state) {
                 if (ret_code != 0) menu[i].sel = false; //ButtunLampOff
         }
 
-        var stage = state.Game.nowstage;
+        let stage = state.Game.nowstage;
         wtxt.push(" == Stage -" + stage + "- Clear ==");//+ ret_code);
         if (state.Game.nowstage%15 == 0){
             wtxt.push(" ");
@@ -267,7 +267,7 @@ function sceneResult(state) {
         for (let i in menu) {
 
             if (menu[i].sel) {
-                var o = {}
+                let o = {}
                 o.x = menu[i].x;
                 o.y = menu[i].y;
                 o.w = menu[i].w;
@@ -288,7 +288,7 @@ function sceneResult(state) {
 
         }
 
-        for (var s in wtxt) {
+        for (let s in wtxt) {
             work.putchr(wtxt[s], 320-150, 120 + 16 * s );// + (150 - counter) );
             //			work.putchr8(wtxt[s],0,0 + 8*s);
             //		        work.print(wtxt[s],0,0 + 16*s +200);	

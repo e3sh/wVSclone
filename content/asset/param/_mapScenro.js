@@ -23,7 +23,7 @@
 //　開始フレームカウント、オブジェクトの割り当て・・
 function mapScenro(){
 
-	var ms = 
+	let ms = 
 //  開始フレーム,座標,,角度,シナリオ,キャラ
 	[[ -1,240,608,  0,8,0 ],
 	[  -1,208,608,  0,17,10],
@@ -65,12 +65,12 @@ function mapScenro(){
 //
 // フレームカウントでソートされていること。
 
-	var map_sc = []; //　出現パターン
+	let map_sc = []; //　出現パターン
 
-	for (var j in ms){
-		var w = ms[j];
+	for (let j in ms){
+		let w = ms[j];
     	
-    		var ptn = {};
+    		let ptn = {};
     	
     		ptn.count = w[0];
     		ptn.x = w[1] * 0.875;
@@ -87,7 +87,7 @@ return map_sc;
 
 function mapBgImage() {
 
-    var tex_bg = new Image();
+    let tex_bg = new Image();
     tex_bg.src = "pict/sky.jpg";
 
     return tex_bg;
@@ -99,18 +99,18 @@ function mapBgLayout() {
 //スクロール時のbg調整用
     //mapImageNo, world ltx, world lty
 
-    var mc = [
+    let mc = [
     [0,0,0],
     [0,0,480],
     [0, 0, 960],
     ];
 
-    var map_cp = []; //　マップチップ
+    let map_cp = []; //　マップチップ
 
-    for (var j in mc) {
-        var w = mc[j];
+    for (let j in mc) {
+        let w = mc[j];
 
-        var chip = {};
+        let chip = {};
 
         chip.no = w[0];
         chip.x = w[1];

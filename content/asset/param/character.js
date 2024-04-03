@@ -33,7 +33,7 @@ function character(){
 	const ITEM = 4;
 	const ETC = 5;
 
-	var ch = [
+	let ch = [
 //	CHNO,mp,Hp,Type,cex,cey,sizx,sizy,s0,s1,s2,s3,s4,s5,id,sc
 //自機
 	[ 0, 1, 10, PLAYER	, 16, 16,  24,  16, 0, 0,24,15,15,24, 0, 0],//自機
@@ -146,12 +146,12 @@ function character(){
 
 //	CHNO,mp,Hp,Type,cex,cey,sizx,sizy,s0,s1,s2,s3,s4,s5,id,sc
 
-	var chr_ptn = []; //　キャラパターン
+	let chr_ptn = []; //　キャラパターン
 
-	for (var j in ch){
-		var w = ch[j];
+	for (let j in ch){
+		let w = ch[j];
     	
-    		var ptn = {};
+    		let ptn = {};
     	
     		ptn.mp = w[1];
     		ptn.hp = w[2];

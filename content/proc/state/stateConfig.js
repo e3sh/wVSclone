@@ -22,15 +22,15 @@ function stateConfig(){
     //ローカルストレージからのロード
     this.load = function () {
 
-        var ret_code = 0;
+        let ret_code = 0;
 
         if (Boolean(localStorage)) {
 
-            var t = ["lamp_use", "map_use", "itemreset", "shotfree", "debug", "viewlog", "bulletmode", "startstage"];
+            let t = ["lamp_use", "map_use", "itemreset", "shotfree", "debug", "viewlog", "bulletmode", "startstage"];
 
-            var f = false;
+            let f = false;
 
-            for (var i = 0; i <= 5; i++) {
+            for (let i = 0; i <= 5; i++) {
                 if (Boolean(localStorage.getItem(t[i]))) {
                     f = true;
                     this[t[i]] = (localStorage.getItem(t[i]) == "on") ? true : false;
@@ -59,7 +59,7 @@ function stateConfig(){
     //ローカルストレージへのセーブ
     this.save = function () {
 
-        var ret_code = 0;
+        let ret_code = 0;
 
         if (Boolean(localStorage)) {
 

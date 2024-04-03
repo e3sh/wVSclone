@@ -29,8 +29,8 @@ class GameTask_FPScount extends GameTask {
         this.log_cnt++;
         if (this.log_cnt > 59) this.log_cnt = 0;
 
-        var w = 0;
-        for (var i = 0; i <= this.log_max; i++) {
+        let w = 0;
+        for (let i = 0; i <= this.log_max; i++) {
             w += this.fps_log[i];
         }
 
@@ -66,32 +66,32 @@ class GameTask_Debug extends GameTask {
     draw(g){
         const SC_NUM = g.screen.length;
         
-        var st;  
-        var r = g.fpsload.result();
+        let st;  
+        let r = g.fpsload.result();
 
         if (g.state.Config.debug){
-            var sl = [];
-            var r = g.fpsload.result();
+            let sl = [];
+            let r = g.fpsload.result();
             sl.push("fps:" +  Math.trunc(r.fps));
             sl.push("ave :load/intv/" ); 
             sl.push("    :" + String(r.workload.ave).substring(0,4) +
                 "/" + String(r.interval.ave).substring(0,4) +  "ms");
             sl.push("workload :"+ String((r.workload.ave / r.interval.ave)*100).substring(0,5) + "%");
-            var ws = String(g.deltaTime()).substring(0, 5);
+            let ws = String(g.deltaTime()).substring(0, 5);
             sl.push("deltaTime:"+ ws + "ms");
             ws = String(g.time()).substring(0, 10);
             sl.push("run(ms):" + ws);   
 
             this.fontsc.useScreen(4);
-            for(var i=0; i < sl.length; i++){
+            for(let i=0; i < sl.length; i++){
                 this.fontsc.putchr(sl[i], 320, 320+ i*8);
             }
 
-            var sl = [];
+            sl = [];
             sl.push("sc(intv)bgcolor");  
 
             st = "";
-            for (var i=0 ; i < SC_NUM ;i++){
+            for (let i=0 ; i < SC_NUM ;i++){
             //st = "sc[" + i + "]" 
             st = " " + i + "(" 
             + g.screen[i].getInterval() + ")" 
@@ -101,7 +101,7 @@ class GameTask_Debug extends GameTask {
             sl.push(st);
             }
 
-            for(var i=0; i < sl.length; i++){
+            for(let i=0; i < sl.length; i++){
                 this.fontsc.putchr(sl[i], 480, 320+ i*8);
             }
         }
@@ -131,14 +131,14 @@ class GameTask_Load extends GameTask {
     }
 
     step(g) {
-        var kstate = g.keyboard.check();
-        var mstate = g.mouse.check();
-        var tstate = g.touchpad.check();
+        let kstate = g.keyboard.check();
+        let mstate = g.mouse.check();
+        let tstate = g.touchpad.check();
 
         if (typeof g.state.Config.debug !== 'undefined') g.state.Config.debug = true;
         g.state.Config.debug = this.infoflg;
 
-        var startflag = false; 
+        let startflag = false; 
         if (Boolean(kstate[32])||g.gamepad.btn_start||mstate.button==0) {
             if (kstate[32]||g.gamepad.btn_start||mstate.button==0) {//spacebar↓
                 startflag = true;
@@ -156,7 +156,7 @@ class GameTask_Load extends GameTask {
         }
 
         if (startflag) {
-            var maintask = g.task.read("main");
+            let maintask = g.task.read("main");
 
             g.state.Config.debug = false;
 
@@ -194,14 +194,14 @@ class GameTask_Load extends GameTask {
             st.push("vvvvvvvvvvvvvvvvvvvvvv");
         }
 
-        //var pfunc = g.asset.image["FontGraph"].ready ? this.fontsc.putchr :this.scrn.print ;  
+        //let pfunc = g.asset.image["FontGraph"].ready ? this.fontsc.putchr :this.scrn.print ;  
         const pfunc = g.asset.image["KanjiHw"].ready ? this.fontsc.putchr :this.scrn.print ;  
 
         let c = 0 + DELAY/LWAIT;
         //let t = Math.tranc(g.time()/LWAIT);
         let t = g.time()/LWAIT;
 
-        for (var i in st){
+        for (let i in st){
             //pfunc(i + " " + st[i], 0, i*16 +16);
             let wl = c - t
 
@@ -222,7 +222,7 @@ class GameTask_Load extends GameTask {
             c += st[i].length;
         }
 
-        var o = {}
+        let o = {}
             o.x = 0;
             o.y = st.length*LINEH +16;
             o.w = 32 * 8;
@@ -245,16 +245,16 @@ class GameTask_Load extends GameTask {
         {
             pfunc(g.task.namelist(), 0, this.scrn.ch-8);
 
-            for (var i in this.str){
+            for (let i in this.str){
                 pfunc(this.str[i], 320, i*8 + 8);
             }
 
-            var ks = g.keyboard.state();
-            var ms = g.mouse.check_last();
-            var ts = g.touchpad.check();
+            let ks = g.keyboard.state();
+            let ms = g.mouse.check_last();
+            let ts = g.touchpad.check();
 
             st = "";
-            for (var i in ks){
+            for (let i in ks){
                 //if (ks[i]) st += "[" + String.fromCharCode(i) + ":" + i + "]"; 
                 if (ks[i]) st += "[" + i + "]"; 
             }
@@ -265,9 +265,9 @@ class GameTask_Load extends GameTask {
             pfunc("[Mouse]", 320, this.str.length*8 +40);
             pfunc("State:" + st, 320, this.str.length*8 +48);
 
-            var vy = 0;
+            let vy = 0;
             pfunc("[TouchPad]" + navigator.maxTouchPoints, 320, this.str.length*8 +64);
-            for (var i in ts.pos){
+            for (let i in ts.pos){
                 pfunc("State:" + "[" + i + "]" + ts.pos[i].x + "," + ts.pos[i].y + "," + ts.pos[i].id
                 , 320, this.str.length*8 +72 + vy);
                 vy+=8;
@@ -303,7 +303,7 @@ class GameTask_Device extends GameTask {
     }
 
     step(g) {
-        var ks = g.keyboard.state();
+        let ks = g.keyboard.state();
 
         if (Boolean(ks[70])) {//[f]key
             if (ks[70]){

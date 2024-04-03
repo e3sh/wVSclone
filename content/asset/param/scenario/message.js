@@ -59,11 +59,11 @@ function sce_message_billboard( msg, wait) {
 
     this.draw = function (scrn, o) {
 
-        for (var i = 0; i <= o.mes_line; i++) {
+        for (let i = 0; i <= o.mes_line; i++) {
             if (i < o.mes_line) {
                 scrn.putchr(o.p_st[i], msg_x, msg_y + 16 * i);
             } else {
-                var wst = o.p_st[i].slice(0, o.mes_col + 1);
+                let wst = o.p_st[i].slice(0, o.mes_col + 1);
                 scrn.putchr(wst, msg_x, msg_y + 16 * i);
             }
         }
@@ -100,10 +100,10 @@ function sce_message_small(colno) {
 
     this.draw = function (scrn, o) {
 
-        var w = o.gt.worldtoView(o.x, o.y);
+        let w = o.gt.worldtoView(o.x, o.y);
         /*
         if (colno == 0) {
-            var cl = {}
+            let cl = {}
             cl.x = w.x;
             cl.y = w.y - 4;
             cl.w = o.w_st.length * 8;
@@ -155,7 +155,7 @@ function sce_message_normal( wait ) {
     this.draw = function (scrn, o) {
 
 
-        var w = o.gt.worldtoView(o.x, o.y);
+        let w = o.gt.worldtoView(o.x, o.y);
 
         scrn.putchr(o.w_st, w.x, w.y, o.display_size);
     }

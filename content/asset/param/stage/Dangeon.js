@@ -11,7 +11,7 @@
             COUPLE_HORIZONAL = 1
 
             stageno = Math.floor(Math.random() * 1000000);
-            var rnd = new myrnd(stageno); //seed);
+            let rnd = new myrnd(stageno); //seed);
 
         function _room(){
                 this.lx = 0;
@@ -37,18 +37,18 @@
                 this.rect1 = new _rect();
         }
 
-        var rect_list = [];
-        var room_list = [];
-        var couple_list = [];
+        let rect_list = [];
+        let room_list = [];
+        let couple_list = [];
 
-        var map = [[]];
-        var roomcmap = [[]];
-        var bcmap = [[]];
-        var typemap = [[]];
+        let map = [[]];
+        let roomcmap = [[]];
+        let bcmap = [[]];
+        let typemap = [[]];
 
-        var mlist = [];//通路
-        var rlist = [];//部屋
-        var ilist = [];//部屋の内、壁のない場所
+        let mlist = [];//通路
+        let rlist = [];//部屋
+        let ilist = [];//部屋の内、壁のない場所
 
         this.create = Create;
 //        this.change = map_change;
@@ -71,10 +71,10 @@
         {
             // document.getElementById("cnsl").value = "start.";
             //alert("!");
-                for (var j = 0; j < MAP_W; j++)
+                for (let j = 0; j < MAP_W; j++)
                 {
                     map[j] = [];
-                    for (var i = 0; i < MAP_H; i++)
+                    for (let i = 0; i < MAP_H; i++)
                     {
                         map[j][i] = false;
                     }
@@ -109,28 +109,28 @@
 
         function map_change1() {
 
-            for (var j = 0; j < MAP_W; j++) {
-                for (var i = 0; i < MAP_H; i++) {
+            for (let j = 0; j < MAP_W; j++) {
+                for (let i = 0; i < MAP_H; i++) {
                     if (map[j][i]) map[j][i] = false; else map[j][i] = true;
                 }
             }
 
 
-            var vx = [-1, 0, 1, -1, 1, -1, 0, 1];
-            var vy = [-1, -1, -1, 0, 0, 1, 1, 1];
+            let vx = [-1, 0, 1, -1, 1, -1, 0, 1];
+            let vy = [-1, -1, -1, 0, 0, 1, 1, 1];
 
-            var w = [];
+            let w = [];
 
-            var eracemap = [[]];
+            let eracemap = [[]];
 
-            for (var i = 0; i < MAP_W; i++) {
+            for (let i = 0; i < MAP_W; i++) {
                 roomcmap[i] = [];
                 eracemap[i] = [];
 
-                for (var j = 0; j < MAP_H; j++) {
-                    var f = true;
-                    var b = 0;
-                    var typ = 0;
+                for (let j = 0; j < MAP_H; j++) {
+                    let f = true;
+                    let b = 0;
+                    let typ = 0;
 
                     if ((i == 0) || (i == MAP_H - 1) || (j == 0) || (j == MAP_W - 1)) {
 
@@ -139,7 +139,7 @@
                         continue; 
                     }
 
-                    for (var k in vx) {
+                    for (let k in vx) {
                         if (!map[i + vx[k]][j + vy[k]]) {
                             b++;
                         }
@@ -147,7 +147,7 @@
                     roomcmap[i][j] = b;
 
                     if (map[i][j]) {
-                        for (var k in vx) {
+                        for (let k in vx) {
                             if (!map[i + vx[k]][j + vy[k]]) {
                                 f = false;
                             }
@@ -157,26 +157,26 @@
                 }
             }
 
-            for (var i = 0; i < MAP_W; i++) {
+            for (let i = 0; i < MAP_W; i++) {
                 typemap[i] = [];
-                for (var j = 0; j < MAP_H; j++) {
+                for (let j = 0; j < MAP_H; j++) {
 
                     if (!map[i][j]) {
 
-                        var w = {};
+                        let w = {};
                         w.x = i;
                         w.y = j;
 
                         mlist.push(w);
                     }
 
-                    var typ = 0;
+                    let typ = 0;
 
                     if ((i == 0) || (i == MAP_H - 1) || (j == 0) || (j == MAP_W - 1)) {
                         //
                     } else {
-                        var c = 0;
-                        for (var k in vx) {
+                        let c = 0;
+                        for (let k in vx) {
                             if (map[i + vx[k]][j + vy[k]]) {
                                 typ += Math.pow(2, c);
                             }
@@ -257,12 +257,12 @@
                 }
             }
 
-            for (var i = 0; i < MAP_W; i++) {
+            for (let i = 0; i < MAP_W; i++) {
                 bcmap[i] = [];
  //               typemap[i] = [];
 
-                for (var j = 0; j < MAP_H; j++) {
-//                    var typ = 0;
+                for (let j = 0; j < MAP_H; j++) {
+//                    let typ = 0;
 
                     if (!map[i][j] && (roomcmap[i][j] >= 8)) bcmap[i][j] = true; else bcmap[i][j] = false;
                     //if (!map[i][j] && (roomcmap[i][j] >= 6)) bcmap[i][j] = true; else bcmap[i][j] = false;
@@ -273,8 +273,8 @@
                     if ((i == 0) || (i == MAP_H - 1) || (j == 0) || (j == MAP_W - 1)) {
                         //
                     }else{
-                        var c = 0;
-                        for (var k in vx) {
+                        let c = 0;
+                        for (let k in vx) {
                             if (map[i + vx[k]][j + vy[k]]) {
                                 typ += Math.pow(2, c);
                             }
@@ -288,12 +288,12 @@
 
             //room_check
 
-            for (var i = 0; i < MAP_W; i++) {
-                for (var j = 0; j < MAP_H; j++) {
+            for (let i = 0; i < MAP_W; i++) {
+                for (let j = 0; j < MAP_H; j++) {
 
                     if (roomcmap[i][j]) {
 
-                        var w = {};
+                        let w = {};
                         w.x = i;
                         w.y = j;
 
@@ -302,12 +302,12 @@
                 }
             }
 
-            for (var i = 0; i < MAP_W; i++) {
-                for (var j = 0; j < MAP_H; j++) {
+            for (let i = 0; i < MAP_W; i++) {
+                for (let j = 0; j < MAP_H; j++) {
 
                     if (bcmap[i][j]) {
 
-                        var w = {};
+                        let w = {};
                         w.x = i;
                         w.y = j;
 
@@ -320,12 +320,12 @@
 
         function map_print()
         {
-            var c0x, c0y, c1x, c1y;
+            let c0x, c0y, c1x, c1y;
 
             /*
-            foreach (var c in rect_list)
+            foreach (let c in rect_list)
             {
-                var rect = rect_list[ c ];
+                let rect = rect_list[ c ];
 
                 break;
                 for (i = rect.lx, j = rect.ly; i <= rect.hx; i++) map[i, j] = true;
@@ -335,12 +335,12 @@
             }
             */
 
-            for(var c in room_list)
+            for(let c in room_list)
             {
-                var room = room_list[ c ];
-                for (var i = room.lx; i <= room.hx; i++)
+                let room = room_list[ c ];
+                for (let i = room.lx; i <= room.hx; i++)
                 {
-                    for (var j = room.ly; j <= room.hy; j++)
+                    for (let j = room.ly; j <= room.hy; j++)
                     {
                         map[i][j] = true;
                     }
@@ -349,7 +349,7 @@
 
             for( c in couple_list)
             {
-                var couple = couple_list[c];
+                let couple = couple_list[c];
 
 //                alert(couple.rect0 + "\n" + couple.rect1);
 
@@ -392,15 +392,15 @@
 
 
         function Draw(screen) {
-            var st = "";
-            var wst = "";
-            for (var j = 0; j < MAP_H; j++) {
+            let st = "";
+            let wst = "";
+            for (let j = 0; j < MAP_H; j++) {
 
-                for (var i = 0; i < MAP_W; i++) {
+                for (let i = 0; i < MAP_W; i++) {
                     //if (map[i][j]) {
                     //  st += "[]";
                     //} else {
-                    var wst = "__";
+                    let wst = "__";
                     if (map[i][j]) wst = "[]";
                     if (roomcmap[i][j]) wst = "@@";
                     if (bcmap[i][j]) wst = "Bb";
@@ -409,7 +409,7 @@
                     //}
                 }
                 /*            
-                for (var i = 0; i < MAP_W; i++) {
+                for (let i = 0; i < MAP_W; i++) {
 
                 if (roomcmap[i][j]) st += "@@"; else st += "._";
                 
@@ -417,20 +417,20 @@
                 st += "\n";
             }
                         
-             for (var j = 0; j < MAP_H; j++) {
+             for (let j = 0; j < MAP_H; j++) {
 
-                 for (var i = 0; i < MAP_W; i++) {
+                 for (let i = 0; i < MAP_W; i++) {
 
-                     var wst = "__";
+                     let wst = "__";
 
-                     for (var k in mlist) {
+                     for (let k in mlist) {
                          if ((mlist[k].x == i) && (mlist[k].y == j)) wst = "[]";
                      }
 
-                     for (var k in rlist) {
+                     for (let k in rlist) {
                          if ((rlist[k].x == i) && (rlist[k].y == j)) wst = "@@";
                      }
-                     for (var k in ilist) {
+                     for (let k in ilist) {
                          if ((ilist[k].x == i) && (ilist[k].y == j)) wst = "Bb";
                      }
                      st += wst;
@@ -443,7 +443,7 @@
 
         function line(x0, y0, x1, y1)
         {
-            var min_x, max_x, min_y, max_y, i, j;
+            let min_x, max_x, min_y, max_y, i, j;
 
             min_x = Math.min(x0, x1);
             max_x = Math.max(x0, x1);
@@ -478,7 +478,7 @@
 
         function rect_split(rect_parent)
         {
-            var rect_child = new _rect();
+            let rect_child = new _rect();
             if (rect_parent.hy - rect_parent.ly <= MINIMUM_RECT_SIZE * 2)
             {
                 rect_parent.done_split_v = true;
@@ -497,7 +497,7 @@
 
             if (rect_parent.done_split_v == false)
             {
-                var split_coord_y;
+                let split_coord_y;
                 split_coord_y = g_random_int_range(
                     rect_parent.ly + MINIMUM_RECT_SIZE
                     , rect_parent.hy - MINIMUM_RECT_SIZE
@@ -515,7 +515,7 @@
 
             if (rect_parent.done_split_h == false)
             {
-                var split_coord_x;
+                let split_coord_x;
                 split_coord_x = g_random_int_range(
                     rect_parent.lx + MINIMUM_RECT_SIZE
                     , rect_parent.hx - MINIMUM_RECT_SIZE
@@ -534,11 +534,11 @@
 
         function room_make()
         {
-            var x, y, w, h;
+            let x, y, w, h;
 
-            for(var c in rect_list)
+            for(let c in rect_list)
             {
-                var rect = rect_list[ c ];
+                let rect = rect_list[ c ];
 
                 w = g_random_int_range(
                     MINIMUM_ROOM_SIZE
@@ -569,18 +569,18 @@
         function couple_more()
         {
             rectmap = [[]];
-            var i, j;
+            let i, j;
 
-            for (var j = 0; j < MAP_W; j++) {
+            for (let j = 0; j < MAP_W; j++) {
                 rectmap[j] = [];
-                for (var i = 0; i < MAP_H; i++) {
+                for (let i = 0; i < MAP_H; i++) {
                     rectmap[j][i] = null;
                 }
             }
 
-            for(var c in rect_list)
+            for(let c in rect_list)
             {
-                var rect = rect_list[c];
+                let rect = rect_list[c];
 
                 for (i = rect.lx; i < rect.hx; i++)
                 {
@@ -617,7 +617,7 @@
 
         function rect_add(lx, ly, hx, hy)
         {
-            var rect = new _rect();
+            let rect = new _rect();
             rect.lx = lx;
             rect.ly = ly;
             rect.hx = hx;
@@ -628,7 +628,7 @@
 
         function room_add(lx, ly, hx, hy)
         {
-            var room = new _room();
+            let room = new _room();
             room.lx = lx;
             room.ly = ly;
             room.hx = hx;
@@ -639,7 +639,7 @@
 
         function couple_add(v_or_h, rect0, rect1)
         {
-            var couple = new _couple();
+            let couple = new _couple();
             couple.v_or_h = v_or_h;
             couple.rect0 = rect0;
             couple.rect1 = rect1;
@@ -655,12 +655,12 @@
 
         function myrnd(num) {
 
-            var seed = num;
+            let seed = num;
 
             this.next = readnum;
 
             function readnum() {
-                var rndnum = (1103515245 * seed + 12345) % 32768;
+                let rndnum = (1103515245 * seed + 12345) % 32768;
 
                 seed = rndnum;
 

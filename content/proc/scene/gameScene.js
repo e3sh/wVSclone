@@ -8,12 +8,12 @@ function gameScene(state){
 //dev deviceControlClass 
 
     //宣言部
-    var dev = state.System.dev;
+    let dev = state.System.dev;
 
-	var work = dev.graphics[1];//1 SP
-    var work2 = dev.graphics[0];//0 BG
-    var work3 = dev.graphics[3];//3 UI
-    var forgroundBG = dev.graphics[2];//2 FG
+	let work = dev.graphics[1];//1 SP
+    let work2 = dev.graphics[0];//0 BG
+    let work3 = dev.graphics[3];//3 UI
+    let forgroundBG = dev.graphics[2];//2 FG
 
 	work2.backgroundcolor = "black";
 
@@ -25,35 +25,35 @@ function gameScene(state){
 	this.reset_enable = true;
 	this.score = 0;
 
-	var obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
-	var mapsc  = state.mapsc; //= new mapSceControl();
+	let obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
+	let mapsc  = state.mapsc; //= new mapSceControl();
 
-	var escore;
+	let escore;
 
-	//var scr_cnt = 0;
-	var dead_cnt = 0;
+	//let scr_cnt = 0;
+	let dead_cnt = 0;
 
-	var tex_bg = [];
-	var mapChip = [];
-	var bgData = [];
+	let tex_bg = [];
+	let mapChip = [];
+	let bgData = [];
 
-	//var ldflg = false;
-	//var scenechange = false;
-	//var ec_draw_count = 0;
+	//let ldflg = false;
+	//let scenechange = false;
+	//let ec_draw_count = 0;
 
 	let sndcf = false;
 
-	var mapdisp = false;
-	var lampf = false;
+	let mapdisp = false;
+	let lampf = false;
 
-	//var mapv = false;
+	//let mapv = false;
 
-	var fdrawcnt = 0;
-	var drawexecute = false;
+	let fdrawcnt = 0;
+	let drawexecute = false;
 
-	var mmrefle = true; //mini map reflash
+	let mmrefle = true; //mini map reflash
 
-	var useosc = false;  //Use Off Screen Canvas
+	let useosc = false;  //Use Off Screen Canvas
 
 	let UI_force_reflash = false;
 
@@ -69,7 +69,7 @@ function gameScene(state){
 	}
 	
 	//縮小マップ枠
-	var SubmapframeDraw = {}
+	let SubmapframeDraw = {}
 	SubmapframeDraw.draw = function (device) {
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.3)";
@@ -84,7 +84,7 @@ function gameScene(state){
 	}
 
 	//一番下の行消す(clipすんのがいいかも
-	var ButtomlineBackgroundDraw = {}
+	let ButtomlineBackgroundDraw = {}
 	ButtomlineBackgroundDraw.draw = function (device) {
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.5)";
@@ -133,7 +133,7 @@ function gameScene(state){
 		*/
 	}
 	//縮小マップ表示
-	var SubmapDraw = new smd(mmdevice, mmcanvas); 
+	let SubmapDraw = new smd(mmdevice, mmcanvas); 
 	function smd(ctx, elm) { 
 		this. mcp = mapChip;
 		let osc = false;
@@ -146,13 +146,13 @@ function gameScene(state){
 		this.y = dev.layout.map_y;
 		/*
 		this.draw = function (device) {
-			//for (var i = 0, loopend = this.mcp.length; i < loopend; i++) {
-			for (var i in this.mcp){
-				var mc = this.mcp[i];
+			//for (let i = 0, loopend = this.mcp.length; i < loopend; i++) {
+			for (let i in this.mcp){
+				let mc = this.mcp[i];
 				if (mc.lookf){
 					//if ((mc.visible) && ((mc.type == 11) || (mc.type == 12))) {
 					if (mc.visible) {
-						var c = ["dimgray", "steelblue", "orange"];
+						let c = ["dimgray", "steelblue", "orange"];
 
 						device.beginPath();
 						//device.strokeStyle = (mc.type == 12) ? "orange" : "blue";
@@ -168,9 +168,9 @@ function gameScene(state){
 		this.create = function(){
 		//	ondr(this.d);
 			this.d.clearRect(0, 0, 150, 150);
-			for (var i = 0, loopend = this.mcp.length; i < loopend; i++) {
-			//	for (var i in this.mcp){
-					var mc = this.mcp[i];
+			for (let i = 0, loopend = this.mcp.length; i < loopend; i++) {
+			//	for (let i in this.mcp){
+					let mc = this.mcp[i];
 					//if (mc.lookf){
 						//if ((mc.visible) && ((mc.type == 11) || (mc.type == 12))) {
 						if (mc.visible) {
@@ -308,7 +308,7 @@ function gameScene(state){
 	        mapsc.change(w);
 	        mapsc.stage = w;
 	        state.Game.nowstage = w;
-	        var wsc = obCtrl.score;
+	        let wsc = obCtrl.score;
 	        obCtrl.reset(false); //continueflag無しでリセットするとスコアも消されてしまうため、事前に取っておく
 	        obCtrl.score = wsc;
 	        mapsc.reset(state.System.time()); //初期マップ展開 今回はこれでいいと思われる
@@ -585,14 +585,14 @@ function gameScene(state){
 	    //==　ここから文字表示画面（出来るだけ書き換えを少なくする）
 	    //プライオリティ最前面の画面追加したので
 	    
-		var scdispview = false;
+		let scdispview = false;
         
 	    fdrawcnt++;
 	    if ((fdrawcnt % 6) == 0) {
 	        fdrawcnt = 0;
 	        scdispview = true;
 	    }
-		var scdispview = true;//debug
+		scdispview = true;//debug
 	    
 		if (scdispview){
 			
@@ -623,19 +623,19 @@ function gameScene(state){
 
 				wtxt = read_debugStates();
 				if (state.Config.viewlog) wtxt = wtxt.concat(obCtrl.messagelog.read()); 
-    	        //var wtxt = read_debugStates().concat(obCtrl.messagelog.read());
-	    	    for (var s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.status_x, dev.layout.status_y + 8 * s);
+    	        //let wtxt = read_debugStates().concat(obCtrl.messagelog.read());
+	    	    for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.status_x, dev.layout.status_y + 8 * s);
 
 				//wtxt = obCtrl.messagelog.read();
-	    	    //for (var s in wtxt) work3.putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+	    	    //for (let s in wtxt) work3.putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 
 				wtxt = obCtrl.messageview.read();
-	    	    if (state.Config.viewlog) for (var s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
-	    	    //if (state.Config.viewlog) for (var s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+	    	    if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+	    	    //if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 	    	}else{
 				wtxt = obCtrl.messageconsole.read();
-				if (state.Config.viewlog) for (var s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 10 * s);
-				//if (state.Config.viewlog) for (var s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+				if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 10 * s);
+				//if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 			}
 			//tutorialDisplay 
 			if ( obCtrl.tutorialDisplayTime > state.System.time()){
@@ -661,17 +661,17 @@ function gameScene(state){
 		dev.graphics[2].clear();
 		*/
 
-		for (var i in mapChip) {
-			var mc = mapChip[i];
+		for (let i in mapChip) {
+			let mc = mapChip[i];
 
 			if (dev.gs.in_stage_range(mc.x, mc.y, mc.w, mc.h)) {
 				mc.view = true;//視界に入っている（当たり判定有効扱いの為のフラグ）
-				var w = dev.gs.worldtoView(mc.x, mc.y);
+				let w = dev.gs.worldtoView(mc.x, mc.y);
 
 				if (mc.visible) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
 					if (mc.lookf != drawexecute) mmrefle = true;
 					mc.lookf = drawexecute;//true;　//画面内に入ったことがあるフラグ
-					var wfg = false; //with forground?
+					let wfg = false; //with forground?
 					if (mc.type%2 == 1) wfg = true; //Forground表示のパターン(壁):type偶数はBG/奇数がFG
 					let ceilview = true;
 					if (obCtrl.ceilflag && mc.type == 13 && obCtrl.ceilindex == i) ceilview = false;//天井を表示しない 
@@ -679,8 +679,8 @@ function gameScene(state){
 					if (Boolean(bgData[mc.no])){
 						if (ceilview){
 						if (wfg) {
-							var shiftx = 0;
-							var shifty = -24;
+							let shiftx = 0;
+							let shifty = -24;
 
 							shiftx = Math.trunc((w.x - w.sx - dev.gs.viewwidth/2) /24);
 							shifty = Math.trunc((w.y - w.sy - dev.gs.viewheight/2) /24);
@@ -714,7 +714,7 @@ function gameScene(state){
 						}
 						//work2.putchr(Number(mc.no).toString(), w.x, w.y);
 					} else {
-						var cl = {}
+						let cl = {}
 						cl.x = w.x;
 						cl.y = w.y;
 						cl.w = mc.w;
@@ -737,7 +737,7 @@ function gameScene(state){
 				//壁の当たり判定有無確認用のデバックコード
 				if (state.Config.debug){
 					if (mc.c) {
-						var cl = {}
+						let cl = {}
 						cl.x = w.x;
 						cl.y = w.y;
 						cl.w = mc.w;
@@ -765,24 +765,24 @@ function gameScene(state){
 
 	function BGShadowDraw() {
 	
-		for (var i in mapChip) {
-			var mc = mapChip[i];
+		for (let i in mapChip) {
+			let mc = mapChip[i];
 			if (dev.gs.in_stage_range(mc.x, mc.y, mc.w, mc.h)) {
 				mc.view = true;//視界に入っている（当たり判定有効扱いの為のフラグ）
-				var w = dev.gs.worldtoView(mc.x, mc.y);
+				let w = dev.gs.worldtoView(mc.x, mc.y);
 	
 				if (mc.visible) {//表示するマップチップ（当たり判定用で表示しないものもあるため）
 					let alpha = 0.6;
 					if ( obCtrl.ceilflag && mc.type == 13 && obCtrl.ceilindex == i) alpha = 0.15;
 					if (mc.type%2 == 1) {//Forground表示のパターン(壁)に影をつける
 	
-						var shiftx = 0;
-						var shifty = -24;
+						let shiftx = 0;
+						let shifty = -24;
 	
 						shiftx = Math.trunc((w.x - w.sx - dev.gs.viewwidth/2) /24) + 4;
 						shifty = Math.trunc((w.y - w.sy - dev.gs.viewheight/2) /24) + 4;
 
-						var cl = {}
+						let cl = {}
 						cl.x = w.x - shiftx;
 						cl.y = w.y - shifty;
 						cl.w = mc.w -1;
@@ -804,7 +804,7 @@ function gameScene(state){
 		}
 	}
 
-	var ui = { cnt: 0,state:[], score:[], time: 0};
+	let ui = { cnt: 0,state:[], score:[], time: 0};
 
 	let playerHPber = new effect_tlHPbar();
 
@@ -824,7 +824,7 @@ function gameScene(state){
 
 			device.putFunc(HpbarDraw);
 		   
-			var wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;// + "." + before_barwidth;
+			let wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;// + "." + before_barwidth;
 	
 			if (state.Game.player.barrier) {
 				//wst = "HP:" + w_hp +"/SHIELD";       
@@ -949,7 +949,7 @@ function gameScene(state){
 	//==========
 	function gs_score_effect( sc ){
 
-		var wscore = sc;
+		let wscore = sc;
 	
 		this.read = function (score) {
 	
@@ -957,18 +957,18 @@ function gameScene(state){
 				wscore = score;
 			} else {
 	
-				var num = Math.ceil((score - wscore) / 5);
+				let num = Math.ceil((score - wscore) / 5);
 	
 				wscore += num;
 			}
 	
-			var sc = wscore;
+			let sc = wscore;
 	
-			var wd = [];
-			var wt = "";
+			let wd = [];
+			let wt = "";
 	
 			for (i = 0; i < 7; i++) {
-				var num = sc % 10;
+				let num = sc % 10;
 				wd[7 - i] = num;
 				sc = (sc - num) / 10;
 			}
@@ -999,12 +999,12 @@ function gameScene(state){
 			if (Boolean(obCtrl.item[i])) wtxt.push("item[" + i + "]:" + obCtrl.item[i]);
 		}
 
-		var n1 = 0;
+		let n1 = 0;
 		for (i in obCtrl.total) {
 			if (i == 2) n1 = obCtrl.total[i];
 		}
 
-		var n2 = 1;
+		let n2 = 1;
 		for (i in obCtrl.obCount) {
 			if (i == 2) n2 = obCtrl.obCount[i];
 		}
@@ -1024,9 +1024,9 @@ function gameScene(state){
 		work3.putFunc(ButtomlineBackgroundDraw);
 
 		//残機表示
-		var zc = 2 - dead_cnt;
+		let zc = 2 - dead_cnt;
 		if (zc < 3) {
-			for (var i = 0; i < 2 - dead_cnt; i++) {
+			for (let i = 0; i < 2 - dead_cnt; i++) {
 				work3.put("Mayura1", dev.layout.zanki_x + i * 32, dev.layout.zanki_y);
 			}
 		} else {
@@ -1040,9 +1040,9 @@ function gameScene(state){
 
 		//ball表示
 		if (Boolean(obCtrl.item[20])) {
-			var n = obCtrl.item[20];
+			let n = obCtrl.item[20];
 			if (n <= 3) {
-				for (var i = 0; i < n; i++) {
+				for (let i = 0; i < n; i++) {
 					work3.put("Ball1",
 					dev.layout.zanki_x + i * 20 + 288, dev.layout.zanki_y - 8);
 				}
@@ -1070,11 +1070,11 @@ function gameScene(state){
 		//取得アイテム表示
 		if (Boolean(obCtrl.itemstack)) {
 
-			var wchr = { 20: "Ball1", 23: "BallB1", 24: "BallS1", 25: "BallL1" }
-			var witem = [];
+			let wchr = { 20: "Ball1", 23: "BallB1", 24: "BallS1", 25: "BallL1" }
+			let witem = [];
 
-			for (var i in obCtrl.itemstack) {
-				var w = obCtrl.itemstack[i];
+			for (let i in obCtrl.itemstack) {
+				let w = obCtrl.itemstack[i];
 				witem.push(w);
 			}
 
@@ -1084,7 +1084,7 @@ function gameScene(state){
 			if (n >= 8) {n = 6; work3.putchr8("...", dev.layout.zanki_x + n * 20 + 128, dev.layout.zanki_y + 8);}
 			//if (n >= 7) n = 7;
 
-			for (var i = 0; i < n; i++) {
+			for (let i = 0; i < n; i++) {
 				if (i == 0) {
 					work3.put(wchr[witem[witem.length - 1 - i]],
 					dev.layout.zanki_x + i * 20 + 132, dev.layout.zanki_y);
@@ -1102,7 +1102,7 @@ function gameScene(state){
 		}
 		if (n > 0) work3.put("Key", dev.layout.zanki_x + 64, dev.layout.zanki_y);
 
-		var wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Bow"];
+		let wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Bow"];
 
 		if (!Boolean(state.Game.player.weapon)) state.Game.player.weapon = 0;
 		if (!Boolean(state.Game.player.level)) state.Game.player.level = 0;
@@ -1110,13 +1110,13 @@ function gameScene(state){
 		work3.putchr8("[Z]", dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y - 16);
 		work3.put(wweapon[state.Game.player.weapon], dev.layout.zanki_x + 96, dev.layout.zanki_y);
 		if (state.Game.player.level > 0){
-			var wt = "+" + state.Game.player.level + 
+			let wt = "+" + state.Game.player.level + 
 				((state.Game.player.level > 2 )?" Max":"");
 				work3.putchr8(wt, dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y + 8);
 			}
 		work3.putchr("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y);
 		
-		var w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
+		let w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
 
 		HpbarDraw.hp = w_hp; 
 		HpbarDraw.mhp = state.Game.player.maxhp;
@@ -1129,7 +1129,7 @@ function gameScene(state){
 		//HpbarDraw.exp = Math.abs(Math.trunc((obCtrl.score-BaseLup)/(NextLup-BaseLup)*100));
 		work3.putFunc(HpbarDraw);
 	   
-		var wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
+		let wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
 
 		if (state.Game.player.barrier) {
 			//wst = "HP:" + w_hp +"/SHIELD";       
@@ -1152,10 +1152,10 @@ function gameScene(state){
 		//work3.putFunc(ButtomlineBackgroundDraw);
 
 		//残機表示
-		var zc = 2 - dead_cnt;
+		let zc = 2 - dead_cnt;
 
 		if (zc < 3) {
-			for (var i = 0; i < 2 - dead_cnt; i++) {
+			for (let i = 0; i < 2 - dead_cnt; i++) {
 				work3.put("Unyuu3", dev.layout.zanki_x + i * 32, dev.layout.zanki_y);
 			}
 		} else {
@@ -1169,7 +1169,7 @@ function gameScene(state){
 
 		//ball表示
 		if (Boolean(obCtrl.item[20])) {
-			var n = obCtrl.item[20];
+			let n = obCtrl.item[20];
 
 			work3.kprint("球:" + n,
 			dev.layout.zanki_x + 256, dev.layout.zanki_y - 12);
@@ -1178,16 +1178,16 @@ function gameScene(state){
 		//取得アイテム表示
 		if (Boolean(obCtrl.itemstack)) {
 
-			var wchr = { 20: "..", 23: "爆弾.", 24: "ｼｰﾙﾄﾞ.", 25: "薬." }
-			var witem = [];
+			let wchr = { 20: "..", 23: "爆弾.", 24: "ｼｰﾙﾄﾞ.", 25: "薬." }
+			let witem = [];
 
-			for (var i in obCtrl.itemstack) {
-				var w = obCtrl.itemstack[i];
+			for (let i in obCtrl.itemstack) {
+				let w = obCtrl.itemstack[i];
 				witem.push(w);
 			}
 			//n = witem.length;
 			w = "";
-			for  (var i = 0; i < witem.length; i++)
+			for  (let i = 0; i < witem.length; i++)
 				w += wchr[witem[i]];
 			work3.kprint(w + "<-", dev.layout.zanki_x + 136, dev.layout.zanki_y);
 		}
@@ -1198,7 +1198,7 @@ function gameScene(state){
 		}
 		if (n > 0) work3.put("sKey", dev.layout.zanki_x + 64, dev.layout.zanki_y);
 
-		var wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Bow"];
+		let wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Bow"];
 
 		if (!Boolean(state.Game.player.weapon)) state.Game.player.weapon = 0;
 		if (!Boolean(state.Game.player.level)) state.Game.player.level = 0;
@@ -1206,20 +1206,20 @@ function gameScene(state){
 		work3.kprint("武器", dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y - 16);
 		work3.put(wweapon[state.Game.player.weapon], dev.layout.zanki_x + 96, dev.layout.zanki_y);
 		if (state.Game.player.level > 0){
-			var wt = "+" + state.Game.player.level + 
+			let wt = "+" + state.Game.player.level + 
 			((state.Game.player.level > 2 )?" Max":"");
 			work3.kprint(wt, dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y + 8);
 		}
 		work3.kprint("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y +40);
 
-		var w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
+		let w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
 
 		HpbarDraw.hp = w_hp; 
 		HpbarDraw.mhp = state.Game.player.maxhp;
 		HpbarDraw.br = state.Game.player.barrier;
 		work3.putFunc(HpbarDraw);
 
-		var wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
+		let wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
 
 		if (state.Game.player.barrier) {
 			wst = "HP:" + w_hp +"/SHIELD";       

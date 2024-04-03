@@ -27,7 +27,7 @@ function stateControl( g ){
 	this.mapsc = new mapSceControl();
 }
 /*
-var stateControl = {
+let stateControl = {
 
 	Config : new stateConfig(),
 

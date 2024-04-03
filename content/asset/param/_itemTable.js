@@ -20,10 +20,10 @@
 //
 function ItemTable(){
 
-    var it = [];
+    let it = [];
 	const EQUIPMENT = 1, ITEM = 2, EXRARE = 3, POINT = 4;
 
-	var it = [
+	let it = [
 //	ID, name, graph, type, get, equip, use, exrare, inspect, p0, p1, p2, p3, p4, p5, unk_name, info
 
 	[ 1, "Ball", "Ball1",ITEM, 
@@ -48,12 +48,12 @@ function ItemTable(){
         0, 0, 0, 0, 0, 0, "Dummy", "Dummy"],
     ]
 
-    var item_list = [];
+    let item_list = [];
 
-	for (var j in it){
-		var w = it[j];
+	for (let j in it){
+		let w = it[j];
     	
-    		var ptn = {};
+    		let ptn = {};
     	
     		ptn.ID = w[0];
     		ptn.name = w[1];

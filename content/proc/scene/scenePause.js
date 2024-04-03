@@ -2,11 +2,11 @@
 //
 function scenePause(state) {
 
-    var dev = state.System.dev;
+    let dev = state.System.dev;
     //宣言部
-    var work = dev.graphics[3];
+    let work = dev.graphics[3];
  
-    //var keys = dev.key_state;
+    //let keys = dev.key_state;
 
     this.init = scene_init;
     this.reset = scene_reset;
@@ -15,12 +15,12 @@ function scenePause(state) {
 
     this.reset_enable = true;
 
-    var menuvf = false;
-    var keywait = 10;
-    //var keylock;
-    //var keywait = 0;
+    let menuvf = false;
+    let keywait = 10;
+    //let keylock;
+    //let keywait = 0;
 
-    var ret_code = 0;
+    let ret_code = 0;
 
     const DSP_X = 320;
     const DSP_Y = 160;
@@ -60,14 +60,14 @@ function scenePause(state) {
 
     function scene_step() {
 
-        //var kstate = keys.check();
+        //let kstate = keys.check();
 
         keywait--;
         if (keywait > 0) return 0;
 
-        var kstate = dev.key_state.check();
+        let kstate = dev.key_state.check();
 
-        var zkey = false;
+        let zkey = false;
         if (Boolean(kstate[90])) {//[z]
             if (kstate[90]) zkey = true;
         }
@@ -75,7 +75,7 @@ function scenePause(state) {
 	        if (kstate[32]) zkey = true;
         }
 
-        var qkey = false;
+        let qkey = false;
 	    if (Boolean(kstate[81])) {
 	        if (kstate[81]) {//[q]
 	            qkey = true;
@@ -83,8 +83,8 @@ function scenePause(state) {
 	        }
 	    }
 
-        var numkey = false;
-        for (var i in kstate){ //Fullkey[0]-[9]
+        let numkey = false;
+        for (let i in kstate){ //Fullkey[0]-[9]
             if (Boolean(kstate[i]) && (i >= 48) && (i <= 57)){
                 numkey = true;
             }
@@ -129,8 +129,8 @@ function scenePause(state) {
         }
 
         if (numkey) {
-            var inp = -1;
-            for (var i in kstate){
+            let inp = -1;
+            for (let i in kstate){
                 if (Boolean(kstate[i])){
                     inp = i-48;
                     break;
@@ -177,7 +177,7 @@ function scenePause(state) {
             work.fill(0, 240, 8 * 22, 8 * 11);//, "navy");
 
             if (menuvf){
-                var arr = [];
+                let arr = [];
                 work.fill(0, 240, 8 * 22, 8 * 11, "navy");
                 work.putchr8("Input ["+ inp +"]", 16, 240);
 
@@ -192,7 +192,7 @@ function scenePause(state) {
                 arr.push("9: (Debug)Log View:" + (state.Config.viewlog?"ON":"OFF"));
                 arr.push("0: Menu Display   :" + (menuvf?"ON":"OFF"));
 
-                for (var i in arr){
+                for (let i in arr){
                     work.putchr8(arr[i], 0, 248 + i * 8);
                 }
 

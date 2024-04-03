@@ -6,11 +6,11 @@
 //**************************************************************
 function deviceControl( g ){
     //document.getElementById("console").innerHTML = image(g.asset.image["BG1"]);
-    var SCREEN_PAGES = g.screen.length; //alert("g:"+ g.screen.length);
+    let SCREEN_PAGES = g.screen.length; //alert("g:"+ g.screen.length);
 
-    var dsp = [];
+    let dsp = [];
 
-    for (var i = 0; i < SCREEN_PAGES; i++) {
+    for (let i = 0; i < SCREEN_PAGES; i++) {
         dsp[i] = new Screen(g, i);
     }
 
@@ -47,7 +47,7 @@ function deviceControl( g ){
     this.layout = new gameLayout();
 
     this.mouse_state = g.mouse;
-    var keys = g.keyboard;
+    let keys = g.keyboard;
 
     //this.key_state = keys;  //keys;
 
@@ -57,7 +57,7 @@ function deviceControl( g ){
 
     this.game = g;
     /*
-    var img = [];
+    let img = [];
     img["FontGraph"] = g.asset.image["FontGraph"].img;
     img["SPGraph"]  = g.asset.image["SPGraph"].img;
     img["bg1"]      = g.asset.image["bg1"].img;
@@ -67,7 +67,7 @@ function deviceControl( g ){
 	//this.images = new loadingImages();
 	this.images = img;
     */
-    var userinput = new mixuserinput(g);
+    let userinput = new mixuserinput(g);
     this.key_state = userinput;
 
     this.directionM = function( keystate ){
@@ -95,10 +95,10 @@ function deviceControl( g ){
     //this.keyptn = [];
     
     //this.start = function(){
-    //    var w =["keycode_attack", "keycode_bomb", "keycode_jump", "keycode_quit", "keycode_pause",
+    //    let w =["keycode_attack", "keycode_bomb", "keycode_jump", "keycode_quit", "keycode_pause",
     //    "btn_num_attack", "btn_num_bomb", "btn_num_jump", "btn_num_quit", "btn_num_pause"];
 
-    //    for (var i = 0; i <10; i++){
+    //    for (let i = 0; i <10; i++){
     //        this.keyptn[w[i]] = g.state.Config.keyAn[i];  
     //    }    
     //}
@@ -108,10 +108,10 @@ function deviceControl( g ){
  
     function mixuserinput(g){
 
-        var key = g.keyboard;
-        var gpd = g.gamepad;
-        var tpd = g.touchpad;
-        var vpd = g.vgamepad;
+        let key = g.keyboard;
+        let gpd = g.gamepad;
+        let tpd = g.touchpad;
+        let vpd = g.vgamepad;
 
         //mix input Keyboard and Gamepad 
         this.r = -1; //進行方法のr
@@ -123,7 +123,7 @@ function deviceControl( g ){
 
         this.check = function(){
 
-            var k = g.state.Config.keyAn //使えてない
+            let k = g.state.Config.keyAn //使えてない
  
             //各プロパティの更新
             //a_button  Attack z,space  btn_a
@@ -131,7 +131,7 @@ function deviceControl( g ){
             //c         Bomb   x,ctrl   btn_x   
             //d         Q               btn_y
             //e         Esc             btn_start
-            var state = [];
+            let state = [];
 
             if (gpd.check()){
                 this.r = gpd.r; //進行方法のr
@@ -164,7 +164,7 @@ function deviceControl( g ){
                 state[17] = gpd.btn_rb;//Controlkey 
             }
 
-            var vstate = vpd.check(); 
+            let vstate = vpd.check(); 
             if (vstate.distance > 0){
                 //touchpad操作されているので方向処理
                 //0  330-360,0-30 u 38 30-60 300 330
@@ -175,7 +175,7 @@ function deviceControl( g ){
                 //225 210-240 dr 39 40 
                 //270 240-300 r 39 210-240 300-330
                 //315 300-330 ur 38 39
-                var d = vstate.deg;
+                let d = vstate.deg;
                 if ((d >=300) || (d <  60)) state[38] = true;//u
                 if ((d >= 30) && (d < 150)) state[39] = true;//r
                 if ((d >=120) && (d < 240)) state[40] = true;//d
@@ -188,8 +188,8 @@ function deviceControl( g ){
             //if (vstate.button[2]) state[27] = vstate.button[2];//pause?
             if (vstate.button[3]) state[67] = vstate.button[3];
 
-            var wstate = key.check();
-            for (var i in wstate){
+            let wstate = key.check();
+            for (let i in wstate){
                 state[i] = state[i] || wstate[i];
             }
             

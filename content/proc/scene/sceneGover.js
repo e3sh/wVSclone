@@ -1,14 +1,14 @@
 ﻿//Scene(gameover)
 //
 function sceneGover(state) {
-    var dev = state.System.dev;
+    let dev = state.System.dev;
 
     //宣言部
-    var work = dev.graphics[3]; //文字表示面で使用
-    var work2 = dev.graphics[2]; //メイン画面
+    let work = dev.graphics[3]; //文字表示面で使用
+    let work2 = dev.graphics[2]; //メイン画面
 
-    var inp = dev.mouse_state;
-    var keys = dev.key_state;
+    let inp = dev.mouse_state;
+    let keys = dev.key_state;
 
 
     this.init = scene_init;
@@ -18,21 +18,21 @@ function sceneGover(state) {
 
     this.reset_enable = true;
 
-    var keylock;
-    var keywait = 0;
+    let keylock;
+    let keywait = 0;
 
-    var wtxt;
+    let wtxt;
 
-    var wipef;
-    var wipecnt;
+    let wipef;
+    let wipecnt;
 
-    var ret_code;
+    let ret_code;
 
-    var menusel;
+    let menusel;
 
-    var menu = [];
+    let menu = [];
     
-    var m = {};
+    let m = {};
     /*
     m.title = "Continue.";
     m.x = 320-50;
@@ -65,7 +65,7 @@ function sceneGover(state) {
 
     function scene_reset() {
 
-        for (var i in menu) {
+        for (let i in menu) {
             menu[i].sel = false;
         }
 
@@ -75,14 +75,14 @@ function sceneGover(state) {
 
 //        work2.clear();
 
-        var o = {};
+        let o = {};
 
         o.cw = work2.cw;
         o.ch = work2.ch;
 
         o.draw = function (device) {
 
-            for (var i = 0; i < this.ch; i += 4) {
+            for (let i = 0; i < this.ch; i += 4) {
                 device.beginPath();
                 device.lineWidth = 1;
                 device.moveTo(0, i);
@@ -115,10 +115,10 @@ function sceneGover(state) {
         //進行
         wtxt = [];
 
-        //var mstate = inp.check_last();
-        var kstate = keys.check();
+        //let mstate = inp.check_last();
+        let kstate = keys.check();
 
-        var zkey = false;
+        let zkey = false;
 
         if (!keylock) {
             if (Boolean(kstate[38])) {
@@ -139,7 +139,7 @@ function sceneGover(state) {
                 }
             }
 
-            var zkey = false;
+            //let zkey = false;
             /*
             if (Boolean(kstate[90])) {
                 if (kstate[90]) {//↓
@@ -153,9 +153,9 @@ function sceneGover(state) {
                 }
             }
 
-            var zkey = false; if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
-            var xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
-            var ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
+                              if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
+            let xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
+            let ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
     
             zkey = zkey || xkey || ckey; //any key
 
@@ -165,10 +165,10 @@ function sceneGover(state) {
         }
 //        if ((mstate.button == 0) && (!keylock)) {
         if ((zkey)&&(!keylock)) {
-            for (var i in menu) {
+            for (let i in menu) {
 
                 if (menu[i].sel) {
-                    var n = menu[i].func();
+                    let n = menu[i].func();
                     if (n != 0) {
                         //wipef = true;
                         ret_code = n;
@@ -186,7 +186,7 @@ function sceneGover(state) {
 
         if (wipef) {
 
-            var o = {};
+            let o = {};
 
             o.cw = work2.cw;
             o.ch = work2.ch;
@@ -240,12 +240,12 @@ function sceneGover(state) {
             */                
         }
 /*
-        var wsc = this.score;
-        var wd = [];
-        var wt = "";
+        let wsc = this.score;
+        let wd = [];
+        let wt = "";
 
         for (i = 0; i < 7; i++) {
-            var num = wsc % 10;
+            let num = wsc % 10;
             wd[7 - i] = num;
             wsc = (wsc - num) / 10;
         }
@@ -264,10 +264,10 @@ function sceneGover(state) {
 
     function scene_draw() {
 
-        for (var i in menu) {
+        for (let i in menu) {
 
             if (menu[i].sel) {
-                var o = {}
+                let o = {}
                 o.x = menu[i].x;
                 o.y = menu[i].y;
                 o.w = menu[i].w;
@@ -285,8 +285,8 @@ function sceneGover(state) {
 
         }
 
-        for (var s in wtxt) {
-            var o = {}
+        for (let s in wtxt) {
+            let o = {}
             o.x = 320-72;
             o.y = 132 + 16 * s;
             o.w = 12 * wtxt[i].length;

@@ -2,17 +2,17 @@
 //
 function sceneConfig(state) {
 
-    var dev = state.System.dev;
+    let dev = state.System.dev;
 
     //宣言部
-    var work = dev.graphics[3];
-    var work2 = dev.graphics[0];
+    let work = dev.graphics[3];
+    let work2 = dev.graphics[0];
 
-    //var text = dev.text;
-    var text = dev.graphics[2]; 
+    //let text = dev.text;
+    let text = dev.graphics[2]; 
 
-    //var inp = dev.mouse_state;
-    var keys = dev.key_state;
+    //let inp = dev.mouse_state;
+    let keys = dev.key_state;
 
     this.init = scene_init;
     this.reset = scene_reset;
@@ -23,24 +23,24 @@ function sceneConfig(state) {
     this.score = 0;
     this.config = state.Config;
 
-    var keylock;
-    var keywait = 0;
+    let keylock;
+    let keywait = 0;
 
-    var w_config = [];
-    var w_number = [];
-    var before_wn = [];
+    let w_config = [];
+    let w_number = [];
+    let before_wn = [];
 
-    var wtxt;
+    let wtxt;
 
-    var save_on = false;
-    var reset_on = false;
+    let save_on = false;
+    let reset_on = false;
 
-    var menusel = 0;
+    let menusel = 0;
 
-    var wipef;
-    var wipecnt;
+    let wipef;
+    let wipecnt;
 
-    var sndtst;
+    let sndtst;
     //
     function btn() {
 
@@ -78,13 +78,13 @@ function sceneConfig(state) {
 
     function sel_menu() {
 
-        var res;
-        var bl = [];
+        let res;
+        let bl = [];
         this.button = bl;
 
-        var tmes;
-        var tmsx;
-        var tmsy;
+        let tmes;
+        let tmsx;
+        let tmsy;
 
         this.setup = function (num, s, msg, x, y, msx, msy) {
 
@@ -101,7 +101,7 @@ function sceneConfig(state) {
             menu.push(m);
             bl.push(m);
 
-            for (var j = 0; j < 2; j++) {
+            for (let j = 0; j < 2; j++) {
                 m = new btn();
                 m.setup(
                     (j == 0) ? " Enable" : " Disable",
@@ -139,7 +139,7 @@ function sceneConfig(state) {
                     bl[2].click = false;
                 }
 
-                var restxt =  (bl[1].select || bl[2].select) ?"-":((res) ? "有効" : "無効");
+                let restxt =  (bl[1].select || bl[2].select) ?"-":((res) ? "有効" : "無効");
 
                 text.reset();    
                 text.clear();
@@ -167,14 +167,14 @@ function sceneConfig(state) {
 
     function sel_number() {
 
-            var res;
-            var bl = [];
+            let res;
+            let bl = [];
             this.button = bl;
 
-            var tmes;
-            var tmsx;
-            var tmsy;
-            var ts;
+            let tmes;
+            let tmsx;
+            let tmsy;
+            let ts;
 
             this.setup = function (num, s, msg, x, y, msx, msy) {
 
@@ -192,7 +192,7 @@ function sceneConfig(state) {
                 menu.push(m);
                 bl.push(m);
 
-                for (var j = 0; j < 2; j++) {
+                for (let j = 0; j < 2; j++) {
                     m = new btn();
                     m.setup((j == 0) ? "  -1" : "  +1",
                 x + 160 + 80 * j, y, 80, 16);
@@ -215,7 +215,7 @@ function sceneConfig(state) {
 
             this.result = function () {
 
-                var o_res = res;
+                let o_res = res;
 
                 if ((bl[0].select) || (bl[1].select) || (bl[2].select)) {
 
@@ -256,29 +256,29 @@ function sceneConfig(state) {
             }
     }
 
-    var menu = []
-    var mttl = ["LampUse.", "MapUse.", "ItemReset.", "ShotFree.", "SoundTest.", "StartStage.", "DebugStatus", "BulletErace"];
-    var w_message = ["面の開始からランプを所持する:", "面の開始から地図を所持する:",
+    let menu = []
+    let mttl = ["LampUse.", "MapUse.", "ItemReset.", "ShotFree.", "SoundTest.", "StartStage.", "DebugStatus", "BulletErace"];
+    let w_message = ["面の開始からランプを所持する:", "面の開始から地図を所持する:",
 	"死んだときにアイテム放出する:", "弾を消費しない。:", "サウンドテスト : ", "開始面 : ", "デバッグステータス表示:", "画面外からの弾を消す:"];
-    var mtyp = [0, 0, 0, 0, 1, 1, 0, 0];//menu type 0:select 1:number
+    let mtyp = [0, 0, 0, 0, 1, 1, 0, 0];//menu type 0:select 1:number
 
     w_number[5] = 1; //開始面初期値
 
-    var confmenu = [];
+    let confmenu = [];
 
-    var menu_x = 60;
-    var menu_y = 108;
+    let menu_x = 60;
+    let menu_y = 108;
 
-    for (var i = 0; i < mttl.length ; i++) {
+    for (let i = 0; i < mttl.length ; i++) {
 
+        let wcm;
         if (mtyp[i] == 0) {
-            var wcm = new sel_menu();
+            wcm = new sel_menu();
             wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 20, menu_y + i * 20 + 8);
         } else {
-            var wcm = new sel_number();
+            wcm = new sel_number();
             wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, menu_x, menu_y + i * 20 + 8);
         }
-
         confmenu.push(wcm);
     }
 
@@ -336,7 +336,7 @@ function sceneConfig(state) {
 		dev.graphics[1].setInterval(0);//SPRITE
 		dev.graphics[2].setInterval(0);//FG
 
-        for (var i in menu) {
+        for (let i in menu) {
             menu[i].sel = false;
             menu[i].lamp = false;
         }
@@ -355,13 +355,13 @@ function sceneConfig(state) {
             }
         }
 
-        for (var i = 0; i < mtyp.length; i++) {
+        for (let i = 0; i < mtyp.length; i++) {
 
             if (mtyp[i] == 0) {
                 
                 confmenu[i].set(w_config[i]);
             } else {
-                //var wcm = new sel_number();
+                //let wcm = new sel_number();
                 confmenu[i].set(w_number[i]);
             }
         }
@@ -380,15 +380,15 @@ function sceneConfig(state) {
 
         wtxt = [];
 
-        //var mstate = inp.check_last();
-        var kstate = keys.check();
+        //let mstate = inp.check_last();
+        let kstate = keys.check();
 
-        //var x = mstate.x;
-        //var y = mstate.y;
+        //let x = mstate.x;
+        //let y = mstate.y;
 
-        var zkey = false;
-        var lkey = false;
-        var rkey = false;
+        let zkey = false;
+        let lkey = false;
+        let rkey = false;
 
         const c = dev.directionM( kstate );
 
@@ -444,7 +444,7 @@ function sceneConfig(state) {
                 }
             //}
 
-            var zkey = false;
+            //zkey = false;
             if (Boolean(kstate[90])) {
                 if (kstate[90]) {//↓
                     zkey = true;
@@ -463,13 +463,13 @@ function sceneConfig(state) {
 
         if ((zkey||(lkey || rkey)) && (!keylock)) {
 //        if ((mstate.button == 0) && (!keylock)) {
-            for (var i in menu) {
+            for (let i in menu) {
                 menu[i].click = false;
 
                 if (menu[i].select) {
                     menu[i].click = true;
 
-                    var n = menu[i].func();
+                    let n = menu[i].func();
                     if (n != 0) {
                         work2.setBackgroundcolor("black");
                         return n;
@@ -477,7 +477,7 @@ function sceneConfig(state) {
                 }
             }
         } else {
-            for (i in w_number) {
+            for (let i in w_number) {
                 if (Boolean(w_number[i])) {
                     before_wn[i] = w_number[i];
                 }
@@ -490,15 +490,15 @@ function sceneConfig(state) {
 
         //if (mstate.button == -1) keylock = false;
 
-        var wi = -1;
-        var wmesel = menusel;
+        let wi = -1;
+        let wmesel = menusel;
 
         if (menusel < mttl.length * 3) {
             wmesel = Math.floor(menusel / 3) * 3;
 
         }
 
-        for (i in menu) {
+        for (let i in menu) {
             if (i == wmesel) {
                 menu[i].select = true;
                 wi = i;
@@ -510,7 +510,7 @@ function sceneConfig(state) {
         if ((lkey || rkey) && (!keylock)) {
             if (menusel < mttl.length * 3) {
 
-                var n = menusel;
+                let n = menusel;
                 if (lkey) n = n + 1;
                 if (rkey) n = n + 2;
 
@@ -521,7 +521,7 @@ function sceneConfig(state) {
         wtxt.push("== Configration ==");
         wtxt.push("-----------------%");
 
-        for (i in confmenu) {
+        for (let i in confmenu) {
             w_config[i] = confmenu[i].result();
 
             if (mtyp[i] == 1) {
@@ -590,13 +590,13 @@ function sceneConfig(state) {
             text.draw();
             //text.reset();
 
-            for (var i = 0; i < mtyp.length; i++) {
+            for (let i = 0; i < mtyp.length; i++) {
 
                 if (mtyp[i] == 0) {
 
                     confmenu[i].set(w_config[i]);
                 } else {
-                    var wcm = new sel_number();
+                    //let wcm = new sel_number();
                     confmenu[i].set(w_number[i]);
                 }
             }
@@ -668,16 +668,16 @@ function sceneConfig(state) {
 
     function scene_draw() {
 
-        for (var s in wtxt) {
+        for (let s in wtxt) {
             //work.putchr(wtxt[s], 0, 60 + 16 * s);
             work.kprint(wtxt[s], 0, 60 + 16 * s);
         }
 
-        for (var i in menu) {
+        for (let i in menu) {
             if (menu[i].lamp) {
                 work.fill(menu[i].x, menu[i].y, menu[i].w, menu[i].h,"orange" );
                 /*
-                var o = {}
+                let o = {}
                 o.x = menu[i].x;
                 o.y = menu[i].y;
                 o.w = menu[i].w;

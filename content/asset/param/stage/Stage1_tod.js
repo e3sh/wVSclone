@@ -1,21 +1,21 @@
 ﻿//　ステージの設定(用語が混乱してるけど　マップ、マップシナリオ、マップチップの統合）
 function Stage1_tod( seed, keyuse ) {
 
-    var dgn;
+    let dgn;
 
     dgn = new Dangeon_tod( seed );
     dgn.create();
 
-    var rnd = new myrnd(seed);
-    var mp = dgn.map;
+    let rnd = new myrnd(seed);
+    let mp = dgn.map;
     this.scenario = mapScenro;
     this.bgImage = mapBgImage;
     this.bgLayout = mapBgLayout;
     this.initial = mapInitial;
     this.bgPtn = mapBgPattern;
-    var gamemode = keyuse; //鍵があるかないか
+    let gamemode = keyuse; //鍵があるかないか
 
-    //var cmap = [];
+    //let cmap = [];
     //this.colmap = cmap;
 
 //    alert(keyuse);
@@ -33,10 +33,10 @@ function Stage1_tod( seed, keyuse ) {
     //  フレームカウントがマイナスの場合は最初のみ実行
     function mapScenro() {
 
-        var ms = []; 
+        let ms = []; 
 
-        for (var i = 0; i < dgn.mw - 1; i+=2) {
-            for (var j = 0; j < dgn.mh - 1; j+=2) {
+        for (let i = 0; i < dgn.mw - 1; i+=2) {
+            for (let j = 0; j < dgn.mh - 1; j+=2) {
                 ms.push([7000, i * 80 + 32, j * 80 + 32, 180, "common_vset0", 4]);
             }
         }
@@ -44,12 +44,12 @@ function Stage1_tod( seed, keyuse ) {
     
         // フレームカウントでソートされていること。
 
-        var map_sc = []; //　出現パターン
+        let map_sc = []; //　出現パターン
 
-        for (var j in ms) {
-            var w = ms[j];
+        for (let j in ms) {
+            let w = ms[j];
 
-            var ptn = {};
+            let ptn = {};
 
             ptn.count = w[0];
             ptn.x = w[1];
@@ -66,7 +66,7 @@ function Stage1_tod( seed, keyuse ) {
 
     function mapBgImage() {
 
-        var tex_bg = new Image();
+        let tex_bg = new Image();
         tex_bg.src = "pict/cha.png";
         //return tex_bg;
         return "bg3";
@@ -78,24 +78,24 @@ function Stage1_tod( seed, keyuse ) {
         //スクロール時のbg調整用
         //mapImageNo, world ltx, world lty
 
-        var mc = [];
-        var mp = dgn.map;
+        let mc = [];
+        let mp = dgn.map;
 
-        var w = [];
+        let w = [];
 
-        var sz = 128; var pw = 16;//64+16
+        let sz = 128; let pw = 16;//64+16
 
-                var sx = 0;  
-                var sy = 0;
+                let sx = 0;  
+                let sy = 0;
 
 
-        for (var i = 0; i < dgn.mw - 1; i++) {
+        for (let i = 0; i < dgn.mw - 1; i++) {
             sy = 0;
-            var sz_w = ((i % 2) == 1) ? pw : sz;
+            let sz_w = ((i % 2) == 1) ? pw : sz;
 
-            for (var j = 0; j < dgn.mh - 1; j++) {
+            for (let j = 0; j < dgn.mh - 1; j++) {
 
-                var sz_h = ((j % 2) == 1) ? pw : sz;
+                let sz_h = ((j % 2) == 1) ? pw : sz;
 
                 if (((j % 2) == 0) && ((i % 2) == 0)) {//床の場合
 
@@ -170,32 +170,32 @@ function Stage1_tod( seed, keyuse ) {
 
         //枠の当たり判定
         blsz = sz + pw;
-        var w = [11, 0, 0, blsz * 10 + blsz, pw, true,
+        w = [11, 0, 0, blsz * 10 + blsz, pw, true,
                         1, true
                         ];
         mc.push(w);
 
-        var w = [11, 0, blsz * 10 + blsz , blsz * 10 + blsz, pw, true,
+        w = [11, 0, blsz * 10 + blsz , blsz * 10 + blsz, pw, true,
                         1, true 
                         ];
         mc.push(w);
 
-        var w = [11, 0, 0, pw, blsz * 10 + blsz, true,
+        w = [11, 0, 0, pw, blsz * 10 + blsz, true,
                         1, true
                         ];
         mc.push(w);
 
-        var w = [11, blsz*10 + blsz, 0, pw, blsz*10 + blsz, true,
+        w = [11, blsz*10 + blsz, 0, pw, blsz*10 + blsz, true,
                         1, true
                         ];
         mc.push(w);
 
-        var map_cp = []; //　マップチップ
+        let map_cp = []; //　マップチップ
 
-        for (var j in mc) {
-            var w = mc[j];
+        for (let j in mc) {
+            let w = mc[j];
 
-            var chip = {};
+            let chip = {};
 
             chip.no = w[0];
             chip.x = w[1];
@@ -215,13 +215,13 @@ function Stage1_tod( seed, keyuse ) {
 
     function mapInitial(stageno) { //flag = true 初期マップ展開有り　false 自機リスタート
 
-        var smap = [];
-        var shuffled = [];
+        let smap = [];
+        let shuffled = [];
 
-        var cnt = 0; 
+        let cnt = 0; 
     
-        for (var i = 0; i < dgn.mw - 1; i++) {
-            for (var j = 0; j < dgn.mh - 1; j++) {
+        for (let i = 0; i < dgn.mw - 1; i++) {
+            for (let j = 0; j < dgn.mh - 1; j++) {
                 if (((j % 2) == 0) && ((i % 2) == 0)) {//床の場合
 
                     shuffled[cnt] = cnt;
@@ -238,19 +238,19 @@ function Stage1_tod( seed, keyuse ) {
 
         for (i = 0; i < 1000 ; i++){
 
-            var snum = Math.floor(rnd.next()*shuffled.length);
-            var dnum = Math.floor(rnd.next()*shuffled.length);
+            let snum = Math.floor(rnd.next()*shuffled.length);
+            let dnum = Math.floor(rnd.next()*shuffled.length);
 
-            var w = shuffled[snum];
+            let w = shuffled[snum];
             shuffled[snum]=shuffled[dnum];
             shuffled[dnum]=w;
         }
 
 
-        var SW = 64;
-        var SZ = SW;
+        let SW = 64;
+        let SZ = SW;
 
-        var ms = [];
+        let ms = [];
         //  開始フレーム,座標,,角度,シナリオ,キャラ
         ms.push([false,
        smap[shuffled[0]].x * SW + SZ,
@@ -259,15 +259,15 @@ function Stage1_tod( seed, keyuse ) {
 
 
         //alert(stageno);
-        var n_ene = 3 + Math.floor(stageno/3); //6;
-        var h_ene = Math.floor(stageno/5); //2;
-        var b_ene = Math.floor(stageno/7); //1;
+        let n_ene = 3 + Math.floor(stageno/3); //6;
+        let h_ene = Math.floor(stageno/5); //2;
+        let b_ene = Math.floor(stageno/7); //1;
 
-        var lst = 1;
-        var led = lst + n_ene;
+        let lst = 1;
+        let led = lst + n_ene;
 
         for (i = lst; i < led; i++) {
-            var nm = shuffled[i];
+            let nm = shuffled[i];
 
             w = [true,
                     smap[nm].x * SW + SZ,
@@ -285,7 +285,7 @@ function Stage1_tod( seed, keyuse ) {
         led += h_ene;
  
         for (i =lst; i < led; i++) {
-            var nm = shuffled[i];
+            let nm = shuffled[i];
 
             w = [true,
                     smap[nm].x * SW + SZ,
@@ -303,7 +303,7 @@ function Stage1_tod( seed, keyuse ) {
         led += b_ene;
 
         for (i = lst; i < led; i++) {
-            var nm = shuffled[i];
+            let nm = shuffled[i];
 
             w = [true,
                     smap[nm].x * SW + SZ,
@@ -321,7 +321,7 @@ function Stage1_tod( seed, keyuse ) {
         led += 5;
 //
         for (i = lst; i < led; i++) {
-            var nm = shuffled[i];
+            let nm = shuffled[i];
 
             w = [true,
                     smap[nm].x * SW + SZ,
@@ -366,12 +366,12 @@ function Stage1_tod( seed, keyuse ) {
             ms.push(w);
         }       
 
-        var map_sc = []; //　出現パターン
+        let map_sc = []; //　出現パターン
 
-        for (var j in ms) {
-            var w = ms[j];
+        for (let j in ms) {
+            let w = ms[j];
 
-            var ptn = {};
+            let ptn = {};
 
             ptn.s = w[0];
             ptn.x = w[1];
@@ -391,7 +391,7 @@ function Stage1_tod( seed, keyuse ) {
 
     function mapBgPattern() {
 
-        var sp =
+        let sp =
         // SP NO.","X","Y","ADDX","ADDY"
            // SP NO.","X","Y","ADDX","ADDY"
         [[0, 128 - 96, 128 - 128, 95, 95],
@@ -411,12 +411,12 @@ function Stage1_tod( seed, keyuse ) {
            [13,  0, 0, 32, 32],
         ];
 
-        var bg_ptn = []; // BGパターン
+        let bg_ptn = []; // BGパターン
 
-        for (var j in sp) {
-            var w = sp[j];
+        for (let j in sp) {
+            let w = sp[j];
 
-            var ptn = {};
+            let ptn = {};
 
             ptn.x = w[1];
             ptn.y = w[2];
@@ -432,12 +432,12 @@ function Stage1_tod( seed, keyuse ) {
 
     function myrnd(num) {
 
-        var seed = num;
+        let seed = num;
 
         this.next = readnum;
 
         function readnum() {
-            var rndnum = (1103515245 * seed + 12345) % 32768;
+            let rndnum = (1103515245 * seed + 12345) % 32768;
 
             seed = rndnum;
 

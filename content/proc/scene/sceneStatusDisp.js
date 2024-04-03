@@ -2,11 +2,11 @@
 //
 function sceneStatusDisp(state) {
 
-    var dev = state.System.dev;
+    let dev = state.System.dev;
     //宣言部
-    var work = dev.graphics[3];
+    let work = dev.graphics[3];
  
-    //var keys = dev.key_state;
+    //let keys = dev.key_state;
 
     this.init = scene_init;
     this.reset = scene_reset;
@@ -15,27 +15,27 @@ function sceneStatusDisp(state) {
 
     this.reset_enable = true;
 
-    var menuvf = false;
-    var keywait = 10;
+    let menuvf = false;
+    let keywait = 10;
 
-    var sel = 0;
-    var inp = 1;
-    var maxpage = 1;
+    let sel = 0;
+    let inp = 1;
+    let maxpage = 1;
     
     function list_draw(page, invt){//page, invtentry_mode = 持ち物表示
         if (page < 1) page = 1;
 
-        var st = state.obCtrl.list(); 
+        let st = state.obCtrl.list(); 
 
         maxpage = Math.floor(st.length/200) + 1;
-        //var s = "Tp,objX,objY,s,Mp / Num:" + st.length;
+        //let s = "Tp,objX,objY,s,Mp / Num:" + st.length;
 
         if (page > maxpage) page = maxpage;
 
         sel = ((page-1)*200) + (sel%200);        
         if (sel > st.length) sel = st.length - 1;
 
-        var s = "No:Type,view,hp,status,Mp,chr / Num:" + st.length
+        let s = "No:Type,view,hp,status,Mp,chr / Num:" + st.length
              + " PAGE:[" + page + "]/" + maxpage
              + ":SELECT:[" + sel + "] ";
              if (invt) {
@@ -44,18 +44,18 @@ function sceneStatusDisp(state) {
                 s = s + "Propaty";
             };
         //type, inview, inworld, status,mp,chr
-        var c = 0;
+        let c = 0;
 
         work.reset();
         work.clear();
 
         work.putchr8(s, 0,0 );
-        for (var i in st){
+        for (let i in st){
 
             if (i >= (page-1)*200){
-                var s = st[(page-1)*200 + i%200];
-                var x = Math.floor(c/50)*160;
-                var y = (c%50)*8+8;
+                let s = st[(page-1)*200 + i%200];
+                let x = Math.floor(c/50)*160;
+                let y = (c%50)*8+8;
                 //work.putchr8(s ,x ,y );
                 if (invt) {
                     if (state.obCtrl.lookpick(work, i, x + 48+8, y)){
@@ -101,17 +101,17 @@ function sceneStatusDisp(state) {
 
         const COL=49; 
 
-        var c=0;
+        let c=0;
 
         work.reset();
         work.clear();
 
-        var s = "== ObjectNo.[" + num +"] =="; 
+        let s = "== ObjectNo.[" + num +"] =="; 
         work.putchr8(s, 0,0 );
 
-        var st = state.obCtrl.lookObj(num);
-        for (var i in st){
-            var s = String(st[i]);
+        let st = state.obCtrl.lookObj(num);
+        for (let i in st){
+            let s = String(st[i]);
 
             if (!s.includes("object") && !s.includes("function")){
                 work.putchr8(String(st[i]).substring(0, 39),Math.floor(c/COL)*320,(c%COL)*8+8 );
@@ -153,9 +153,9 @@ function sceneStatusDisp(state) {
         if (keywait > 0) return 0;
 
         // input key section
-        var kstate = dev.key_state.check();
+        let kstate = dev.key_state.check();
 
-        var zkey = false; //exit button
+        let zkey = false; //exit button
         if (Boolean(kstate[90])) {//[z]
             if (kstate[90]) zkey = true;
         }
@@ -163,23 +163,23 @@ function sceneStatusDisp(state) {
 	        if (kstate[32]) zkey = true;
         }
 
-        var ckey = false; //dispalyclear
+        let ckey = false; //dispalyclear
         if (Boolean(kstate[67])) {
             if (kstate[67]) {//ckey↓
                 ckey = true;
             }
         }
 
-        var vkey = false; //inventry_view
+        let vkey = false; //inventry_view
         if (Boolean(kstate[86])) {
             if (kstate[86]) {//vkey↓
                 vkey = true;
             }
         }
 
-        var numkey = false; //menu select num
-        var arrowkey = false; //list select 
-        for (var i in kstate){
+        let numkey = false; //menu select num
+        let arrowkey = false; //list select 
+        for (let i in kstate){
             if (Boolean(kstate[i])){
                 numkey = ((i >= 48) && (i <= 57))? true: false; //Fullkey[0]-[9]
                 arrowkey = ((i >= 37) && (i <= 40))? true: false; //Arrowkey
@@ -203,7 +203,7 @@ function sceneStatusDisp(state) {
         }
 
         if (ckey) {
-            for (var i=0; i<3; i++){
+            for (let i=0; i<3; i++){
                 dev.graphics[i].reset();
                 dev.graphics[i].clear();
                 dev.graphics[i].draw();
@@ -219,7 +219,7 @@ function sceneStatusDisp(state) {
 
         if (numkey) {
             inp = -1;
-            for (var i in kstate){
+            for (let i in kstate){
                 if (Boolean(kstate[i])){
                     inp = i-48;
                     break;
@@ -232,8 +232,8 @@ function sceneStatusDisp(state) {
         }
 
         if (arrowkey) {
-            var s = sel;
-            for (var i in kstate){
+            let s = sel;
+            for (let i in kstate){
                 if (Boolean(kstate[i])){
                     s = s + ((i == 37)? -50 :0)//leftkey 
                     + ((i == 38)? -1 :0) //upkey

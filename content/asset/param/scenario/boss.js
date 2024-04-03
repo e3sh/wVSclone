@@ -150,7 +150,7 @@ function sce_boss_2(){
             o.vector = o.target_v();
             o.vset(1);
 
-            var tc = Math.trunc((o.alive-GLOWTIME)/100)%100;//0.1s:100 count loop
+            let tc = Math.trunc((o.alive-GLOWTIME)/100)%100;//0.1s:100 count loop
             if (tc <= 1) {
                 o.smode = 1;
                 o.get_target(98);
@@ -171,8 +171,8 @@ function sce_boss_2(){
             if ((tc > 50)&&(tc < 90)) o.vset(0);
 
             if ((tc > 55)&&(o.smode == 2)){
-                var larm = (o.vector + 90) % 360;
-                var rarm = (o.vector + 270) % 360;
+                let larm = (o.vector + 90) % 360;
+                let rarm = (o.vector + 270) % 360;
 
                 o.set_object_ex(32, o.x + o.Cos(larm)*32, o.y + o.Sin(larm)*32, o.vector, 51);
                 o.set_object_ex(32, o.x, o.y, o.vector, 51);
@@ -193,7 +193,7 @@ function sce_boss_damage_gr(scrn, o) {
     //Bossのダメージゲージ表示
 
     cl = {};
-    var w = o.gt.worldtoView(o.x, o.y);
+    let w = o.gt.worldtoView(o.x, o.y);
     cl.x = w.x;
     cl.y = w.y;
     cl.sr = ((360 * ((o.maxhp - o.hp) / o.maxhp) - 90) * (Math.PI / 180));
@@ -224,7 +224,7 @@ function sce_boss_damage_gr(scrn, o) {
     if (!Boolean(o.hpbbw)) o.hpbbw = Math.trunc((o.hp / o.maxhp)*100);
 
     cl = {};
-    var w = o.gt.worldtoView(o.x, o.y);
+    let w = o.gt.worldtoView(o.x, o.y);
     cl.x = w.x;
     cl.y = w.y + 3 * o.display_size;
     //cl.sr = ((360 * ((o.maxhp - o.hp) / o.maxhp) - 90) * (Math.PI / 180));
@@ -242,9 +242,9 @@ function sce_boss_damage_gr(scrn, o) {
     cl.colf = (o.hp/o.maxhp>0.3)?true :false ;
     cl.draw = function (device) {
 
-        var st = (1.25 -0.5) * Math.PI;
-        var ed = (0.75 -0.5) * Math.PI;
-        var v = st - this.sr;
+        let st = (1.25 -0.5) * Math.PI;
+        let ed = (0.75 -0.5) * Math.PI;
+        let v = st - this.sr;
 
         let bv = st - this.bbw;
 

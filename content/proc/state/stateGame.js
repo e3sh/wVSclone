@@ -96,11 +96,11 @@ function stateGame() {
 
         if (Boolean(localStorage)) {
 
-            var f = false;
+            let f = false;
 
             if (Boolean(localStorage.getItem("savedata"))) {
                 f = true;
-                var s = JSON.parse(localStorage.getItem("savedata"));
+                let s = JSON.parse(localStorage.getItem("savedata"));
 
                 //alert(s);
 
@@ -119,17 +119,17 @@ function stateGame() {
 
     this.save = function () {
         //中断セーブ
-        var s = {}
+        let s = {}
         s.item = this.item;
         s.itemstack = this.itemstack;
         s.stage = this.nowstage;
         s.player = this.player;
 
-        var jsontext = JSON.stringify(s);
+        let jsontext = JSON.stringify(s);
 
         //alert(jsontext);
 
-        var ret_code = 0;
+        let ret_code = 0;
         
         if (Boolean(localStorage)) { //ローカルストレージ使えたらセーブ実施
             localStorage.setItem("savedata", jsontext);

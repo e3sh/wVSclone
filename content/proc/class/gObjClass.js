@@ -151,7 +151,7 @@ gObjectClass.prototype = {
         //o.x += o.vx; o.y += o.vy;
         o.x += (o.vx * o.vecfrm);  o.y += (o.vy * o.vecfrm);
 
-        var f = 0;
+        let f = 0;
         if (o.x < 0 || o.x > scrn.cw) { f = 1; }
         if (o.y < 0 || o.y > scrn.ch) { f = 1; }
 
@@ -173,15 +173,15 @@ gObjectClass.prototype = {
 
     //外部メッセージ送信コマンドsubroutine
     set_object : function (src, dst) { //src:ch dst:dummy
-        var msg = {}; msg.cmd = "set_object";
+        let msg = {}; msg.cmd = "set_object";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
 
     set_object_ex : function (src, tx, ty, tv, tsce, id) {
     //src:ch tx,ty,tv,tsce =x,y,vector,scenario_no
-        var msg = {};
+        let msg = {};
 
-        var dst = {};
+        let dst = {};
         dst.x = tx;
         dst.y = ty;
         dst.vector = tv;
@@ -193,12 +193,12 @@ gObjectClass.prototype = {
     },
 
     get_target : function (src, dst) { //src:ch type dst:dummy
-        var msg = {}; msg.cmd = "get_target";
+        let msg = {}; msg.cmd = "get_target";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
 
     change_sce : function (src, dst) { //src:scenario_no dst:dummy
-        var msg = {}; msg.cmd = "change_sce";
+        let msg = {}; msg.cmd = "change_sce";
 
         this.frame = 0;
         this.normal_draw_enable = true;
@@ -208,79 +208,79 @@ gObjectClass.prototype = {
     },
 
     add_score : function (src, dst) { //src:score dst:dummy
-        var msg = {}; msg.cmd = "add_score";
+        let msg = {}; msg.cmd = "add_score";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
 
     get_item : function (src, dst) { //src:chr dst:id
-        var msg = {}; msg.cmd = "get_item";
+        let msg = {}; msg.cmd = "get_item";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
 
     //ここらへんからは外に出してしまってもいいかも
     //bomb系コマンド群（全体に影響を与える）
     bomb : function (src, dst) { //src,dst:dummy
-        var msg = {}; msg.cmd = "bomb"; 
+        let msg = {}; msg.cmd = "bomb"; 
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
 
     bomb2 : function (src, dst) { //src,dst:dummy
-        var msg = {}; msg.cmd = "bomb2";
+        let msg = {}; msg.cmd = "bomb2";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
 
     bomb3 : function (src, dst) { //src,dst:dummy
-        var msg = {}; msg.cmd = "bomb3";
+        let msg = {}; msg.cmd = "bomb3";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
 
     bomb4 : function (src, dst) { //src,dst:dummy
-        var msg = {}; msg.cmd = "bomb4";
+        let msg = {}; msg.cmd = "bomb4";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
 
     collect : function (src, dst) { //src,dst:dummy
-        var msg = {}; msg.cmd = "collect";
+        let msg = {}; msg.cmd = "collect";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
 
     collect2 : function (src, dst) { //src,dst:dummy　add_2023/1/12　
-        var msg = {}; msg.cmd = "collect2";
+        let msg = {}; msg.cmd = "collect2";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
 
     collect3 : function (src, dst) { //src,dst:dummy　add_2023/1/12　
-        var msg = {}; msg.cmd = "collect3";
+        let msg = {}; msg.cmd = "collect3";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
 
     //System系コマンド（ゲームの推移に対しての指示）
     SIGNAL : function (src, dst) { //src:SIGNAL_no:処理は受け入れ側で考える,dst:dummy
-        var msg = {}; msg.cmd = "SIGNAL";
+        let msg = {}; msg.cmd = "SIGNAL";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
     //itemCombo処理用
     reset_combo : function (src, dst) { //src:Combo_id,dst:dummy
-        var msg = {}; msg.cmd = "reset_combo";
+        let msg = {}; msg.cmd = "reset_combo";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
     //itemのchrでフィールドに存在するか調べる。（KeyInformationCursor実装用）
     //SIGNALだとGameSceneに指示なのでコマンド追加。2023/01/29
     search_target_item : function (src, dst) { //src:chr番号,dst:dummy
-        var msg = {}; msg.cmd = "search_target_item";
+        let msg = {}; msg.cmd = "search_target_item";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
 
     //自分から目標( tx, ty )の
     //	方向角度を調べる(上が角度0の0-359)
     target_r : function (tx, ty) {
-        var x = this.x;
-        var y = this.y;
+        let x = this.x;
+        let y = this.y;
 
-        var r;
+        let r;
 
-        var wx = tx - x;
-        var wy = ty - y;
+        let wx = tx - x;
+        let wy = ty - y;
 
         if (wx == 0) {
             if (wy >= 0) r = 180; else r = 0;
@@ -305,8 +305,8 @@ gObjectClass.prototype = {
     target_rotate_r : function (add) {
         if (!Boolean(this.target)) return;
 
-        var r = this.target_r(this.target.x, this.target.y);
-        var d = r; 			//目標角
+        let r = this.target_r(this.target.x, this.target.y);
+        let d = r; 			//目標角
         if (d > 179) d = -360 + d;
 
         w = this.vector; //現在の角度
@@ -327,8 +327,8 @@ gObjectClass.prototype = {
     },
     //距離を求める。
     target_d : function (tx, ty) {
-        var x = this.x;
-        var y = this.y;
+        let x = this.x;
+        let y = this.y;
 
         return Math.sqrt((Math.abs(tx - x) * Math.abs(tx - x)) + (Math.abs(ty - y) * Math.abs(ty - y)));
     },
@@ -365,23 +365,23 @@ gObjectClass.prototype = {
                 if (onst) this.sound.effect(8); //爆発音 
                 
                 //this.pick[35] = Math.floor(Math.random() * 3) + 1;
-                for (var i = 0, loopend = Math.floor(Math.random() * 3) + 1; i < loopend; i++) {//Coin
+                for (let i = 0, loopend = Math.floor(Math.random() * 3) + 1; i < loopend; i++) {//Coin
                     //this.set_object_ex(35, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
                     this.pick.push(35);//Coin
                 }
                 //敵が拾ったアイテムを落とす。
-                var itemf = false;
-                var num = 0; 
-                //for (var i = 0, loopend = this.pick.length; i < loopend; i++) {
-                for (var i of this.pick) if ( i != 35 ) num = num + i;
+                let itemf = false;
+                let num = 0; 
+                //for (let i = 0, loopend = this.pick.length; i < loopend; i++) {
+                for (let i of this.pick) if ( i != 35 ) num = num + i;
                     //this.set_object_ex(num, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
                 if (num > 0) itemf = true;//敵がCoin以外の何かを拾っていた場合true(宝箱を出すようにする）
                 
                 if (itemf) {
                     this.set_object_ex(40, this.x, this.y, 0, "enemy_trbox");//宝箱
                 }else{
-                    //for (var i = 0; i < this.pick[35]; i++) {//Coin
-                    for (var i in this.pick) {
+                    //for (let i = 0; i < this.pick[35]; i++) {//Coin
+                    for (let i in this.pick) {
                         this.set_object_ex(35, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
                     }
                 }
@@ -409,15 +409,15 @@ gObjectClass.prototype = {
 
         if (this.damageflag){
             this.damage.count = 30;
-            //var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
+            //let onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
             if (onst) {
                 this.set_object_ex(6, this.x, this.y, this.vector, "effect_hit");
                 //this.sound.effect(12); //hit音
             }
         }
         //ここから移動処理
-        var wvec = this.vector;
-        var wvx = this.vx; var wvy = this.vy;
+        let wvec = this.vector;
+        let wvx = this.vx; let wvy = this.vy;
 
         if (this.damage.count > 0) {
             this.damage.count--;

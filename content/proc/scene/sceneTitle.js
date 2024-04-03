@@ -2,14 +2,14 @@
 //
 function sceneTitle(state) {
 
-    var dev = state.System.dev;
+    let dev = state.System.dev;
     //宣言部
-    var work = dev.graphics[3];
-    var work2 = dev.graphics[0];
-    //var ForgroundBG = dev.graphics[2];
+    let work = dev.graphics[3];
+    let work2 = dev.graphics[0];
+    //let ForgroundBG = dev.graphics[2];
 
-    //var inp = dev.mouse_state;
-    var keys = dev.key_state;
+    //let inp = dev.mouse_state;
+    let keys = dev.key_state;
 
     this.init = scene_init;
     this.reset = scene_reset;
@@ -18,27 +18,27 @@ function sceneTitle(state) {
 
     this.reset_enable = true;
 
-    var keylock;
-    var keywait = 0;
+    let keylock;
+    let keywait = 0;
 
-    var wtxt;
+    let wtxt;
 
-    var wipef;
-    var wipecnt;
+    let wipef;
+    let wipecnt;
 
-    var ret_code = 0;
+    let ret_code = 0;
 
-    var menusel = 0;
-    var psel = {};
+    let menusel = 0;
+    let psel = {};
 
     const DSP_X = 320;
     const DSP_Y = 112;
 
-    var menu = [];
-    var mttl = ["NewGame", "LoadGame", "Config"];
-	var mjmp = [1, 11, 4];
+    let menu = [];
+    let mttl = ["NewGame", "LoadGame", "Config"];
+	let mjmp = [1, 11, 4];
 
-	for (var i=0; i < mttl.length;i++){
+	for (let i=0; i < mttl.length;i++){
 	    m = {};
 	    m.title = mttl[ i ];
 	    m.x = 320 - 50;
@@ -54,9 +54,9 @@ function sceneTitle(state) {
 	    menu.push(m);
 	}	
 
-    //var cnt;
+    //let cnt;
 
-    var tsel = new Number(0.0);
+    let tsel = new Number(0.0);
     //処理部
 
     function scene_init() {
@@ -85,7 +85,7 @@ function sceneTitle(state) {
         //document.getElementById("manual_1").style.visibility =  'visible';
         //document.getElementById("manual_2").style.visibility =  'visible';
 
-        for (var i in menu) {
+        for (let i in menu) {
             menu[i].sel=false;
         }
 
@@ -145,7 +145,7 @@ function sceneTitle(state) {
 
         //work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
         
-        for (var s in wtxt) {
+        for (let s in wtxt) {
             //work2.putchr(wtxt[s], 0, DSP_Y  - 80 + 16 * s);        
         }
 
@@ -189,9 +189,9 @@ function sceneTitle(state) {
 
         wtxt = [];
 
-        var kstate = keys.check();
+        let kstate = keys.check();
 
-        var zkey = false;
+        let zkey = false;
 
         if (!keylock) {
 
@@ -260,7 +260,7 @@ function sceneTitle(state) {
                 keywait = 10
             }
 
-            var zkey = false;
+            zkey = false;
             if (Boolean(kstate[90])) {
                 if (kstate[90]) {//↓
                     zkey = true;
@@ -280,10 +280,10 @@ function sceneTitle(state) {
 
         if ((zkey)&&(!keylock)) {
 
-            for (var i in menu) {
+            for (let i in menu) {
 
                 if (menu[i].sel) {
-                    var n = menu[i].func();
+                    let n = menu[i].func();
                     //dev.sound.change(0);
                     //dev.sound.play(0);
                     if (n != 0) {
@@ -305,7 +305,7 @@ function sceneTitle(state) {
         if (wipef) {
             return ret_code;
             /*
-            var o = {};
+            let o = {};
 
             o.cw = work2.cw;
             o.ch = work2.ch;
@@ -350,7 +350,7 @@ function sceneTitle(state) {
     }
 
     function scene_draw() {
-        //var bvf = false; //blinkViewFlag 
+        //let bvf = false; //blinkViewFlag 
         //cnt++;
 
         //if (cnt > 30){
@@ -358,11 +358,11 @@ function sceneTitle(state) {
         //    cnt = (cnt > 90)? 0 : cnt;
        // }
 
-        for (var i in menu) {
+        for (let i in menu) {
 
             if (menu[i].sel) {
 
-                var o = {}
+                let o = {}
                 o.x = menu[i].x -6;
                 o.y = menu[i].y;
                 o.w = menu[i].w;

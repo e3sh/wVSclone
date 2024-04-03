@@ -486,7 +486,7 @@ function sce_player( gObjc ) {
             if (o.shotSub == 0) {
                 o.shotSub = 1;
                 if (o.itemstack.length > 0) {
-                    var w = o.itemstack.pop();
+                    let w = o.itemstack.pop();
 
                     if (w == 23) {　//BOMB
                         o.sound.effect(13);
@@ -664,10 +664,10 @@ function sce_player( gObjc ) {
         //武器持ち替え
         if (o.gameState.player.weapon != o.before_weapon) {
 
-            var ww = [15, 16, 17, 19, 18, 50];
+            let ww = [15, 16, 17, 19, 18, 50];
 
-            var w = ww[o.before_weapon];
-            var wv = (o.vector + 180) % 360;
+            let w = ww[o.before_weapon];
+            let wv = (o.vector + 180) % 360;
 
             this.set_object_ex(w,
                     o.x + o.Cos(wv) * 40,
@@ -698,9 +698,9 @@ function sce_player( gObjc ) {
             //o.gameState.player.hp = o.hp;
         }
 
-        var wvec = this.vector;
-        var wvx = this.vx;
-        var wvy = this.vy;
+        let wvec = this.vector;
+        let wvx = this.vx;
+        let wvy = this.vy;
 
         if (o.damage.count > 0) {
             o.damage.count--;
@@ -726,7 +726,7 @@ function sce_player( gObjc ) {
                 op.ptr++;
                 op.ptr = op.ptr % op.x.length; 
             }
-            //var w = o.gt.worldtoWorld(o.x, o.y);
+            //let w = o.gt.worldtoWorld(o.x, o.y);
             //o.x = w.x;  o.y = w.y;
 
         } else {
@@ -735,11 +735,11 @@ function sce_player( gObjc ) {
         }
 
         //視点変更処理（自機以外では基本的に発生しない）(演出では使えるかもしれない）
-        var w = o.gt.worldtoView(o.x, o.y);
+        let w = o.gt.worldtoView(o.x, o.y);
 
         // view shift
-        var sx = o.gt.world_x;
-        var sy = o.gt.world_y;
+        let sx = o.gt.world_x;
+        let sy = o.gt.world_y;
 
         if ((o.gt.viewwidth/2) - (w.x - w.sx) > 120 ){ sx = o.x  - (o.gt.viewwidth/2) + 120;}
         if ((o.gt.viewwidth/2) - (w.x - w.sx) < -120){ sx = o.x  - (o.gt.viewwidth/2) - 120;}
@@ -923,7 +923,7 @@ function sce_player( gObjc ) {
         }
         if (o.item[20] < 10) o.repro = false;
 
-        var f = 0;
+        let f = 0;
 
         if (o.status == 2) {//状態が衝突の場合
 
@@ -931,19 +931,19 @@ function sce_player( gObjc ) {
 
                 //if (powup == 0) powup = 1;
                 //ball
-                var bn = (powup > 10) ? 10 : powup;
+                let bn = (powup > 10) ? 10 : powup;
                 for (i = 1; i <= bn; i++) {
 
                     this.set_object_ex(20, o.x, o.y, Math.floor(Math.random() * 360), 38);
                 }
 
                 //items
-                var n = o.itemstack.length;
+                let n = o.itemstack.length;
 
                 if (n > 10) n = 10;
 
                 for (i = 0; i < n; i++) {
-                    var dropitem = o.itemstack.pop();
+                    let dropitem = o.itemstack.pop();
                     this.set_object_ex(dropitem, o.x, o.y, Math.floor(Math.random() * 360), 38);
                 }
 
@@ -988,8 +988,8 @@ function sce_player( gObjc ) {
         //Shield Display
         if (o.frame <= SHIELD_TIME) {
 
-            var cl = {};
-            var w = o.gt.worldtoView(o.x, o.y);
+            let cl = {};
+            let w = o.gt.worldtoView(o.x, o.y);
 
             cl.x = w.x + o.shiftx;
             cl.y = w.y + o.shifty;
@@ -1017,7 +1017,7 @@ function sce_player( gObjc ) {
 
         lbar.hp = o.hp;
         lbar.mhp = o.maxhp;
-        var w = o.gt.worldtoView(o.x, o.y);
+        let w = o.gt.worldtoView(o.x, o.y);
 
         lbar.x = w.x + o.shiftx;
         lbar.y = w.y + o.shifty + o.hit_y + 3;

@@ -25,7 +25,7 @@ try {
 
 function CLinear4TreeManager() {
     // private members
-    var objectNum = 0;
+    let objectNum = 0;
 
     // public members
     this.level = 0;
@@ -42,7 +42,7 @@ function CLinear4TreeManager() {
 
     this.pow = new Array(9 + 1);
     this.pow[0] = 1;
-    for (var i = 1; i < 9 + 1; i++) {
+    for (let i = 1; i < 9 + 1; i++) {
         this.pow[i] = this.pow[i - 1] * 4;
     }
 
@@ -93,7 +93,7 @@ function CLinear4TreeManager() {
 
     // collision list class
     function CollisionList() {
-        var result = new Array();
+        let result = new Array();
         result.wright = function (obj1, obj2) {
             //if (obj1.type != obj2.type){
 			//	obj1.visible && obj2.visible){
@@ -109,27 +109,27 @@ function CLinear4TreeManager() {
 
     // private functions
     function getCollisionList(elem, colStack) {
-        var oft1 = this.cellAry[elem].getFirstObj();
+        let oft1 = this.cellAry[elem].getFirstObj();
 
         // 1
         while (oft1) {
-            var oft2 = oft1.next;
+            let oft2 = oft1.next;
             while (oft2) {
                 this.colList.wright(oft1.obj, oft2.obj);
                 oft2 = oft2.next;
             }
             // 2
-            for (var i = 0, goal = colStack.length; i < goal; i++) {
+            for (let i = 0, goal = colStack.length; i < goal; i++) {
                 this.colList.wright(oft1.obj, colStack[i]);
             }
             oft1 = oft1.next;
         }
 
         // 3
-        var childFlag = false;
-        var objNum = 0;
-        for (var i = 0; i < 4; i++) {
-            var nextElem = elem * 4 + 1 + i;
+        let childFlag = false;
+        let objNum = 0;
+        for (let i = 0; i < 4; i++) {
+            let nextElem = elem * 4 + 1 + i;
             if (nextElem < this.cellNum && this.cellAry[nextElem]) {
                 if (!childFlag) {
                     // 4
@@ -147,7 +147,7 @@ function CLinear4TreeManager() {
 
         // 5
         if (childFlag) {
-            for (var i = 0; i < objNum; i++) {
+            for (let i = 0; i < objNum; i++) {
                 colStack.pop();
             }
         }
@@ -167,8 +167,8 @@ function CLinear4TreeManager() {
     }
 
     function getMortonNumber(left, top, right, bottom) {
-        var rightEdge = this.l + this.w - 1;
-        var bottomEdge = this.t + this.h - 1;
+        let rightEdge = this.l + this.w - 1;
+        let bottomEdge = this.t + this.h - 1;
 
         if (left > rightEdge || right < this.l || top > bottomEdge || bottom < this.t) { return 0x7fffffff; }
         if (left < this.l) { left = this.l; }
@@ -176,20 +176,20 @@ function CLinear4TreeManager() {
         if (top < this.t) { top = this.t; }
         if (bottom > bottomEdge) { bottom = bottomEdge; }
 
-        var LT = getPointElem.call(this, left, top);
-        var RB = getPointElem.call(this, right, bottom);
+        let LT = getPointElem.call(this, left, top);
+        let RB = getPointElem.call(this, right, bottom);
 
-        var def = RB ^ LT;
-        var hiLevel = 0;
-        for (var i = 0; i < this.level; i++) {
-            var check = (def >> (i * 2)) & 0x3;
+        let def = RB ^ LT;
+        let hiLevel = 0;
+        for (let i = 0; i < this.level; i++) {
+            let check = (def >> (i * 2)) & 0x3;
 
             if (check != 0) {
                 hiLevel = i + 1;
             }
         }
-        var spaceNum = RB >> (hiLevel * 2);
-        var addNum = (this.pow[this.level - hiLevel] - 1) / 3;
+        let spaceNum = RB >> (hiLevel * 2);
+        let addNum = (this.pow[this.level - hiLevel] - 1) / 3;
         spaceNum += addNum;
         if (spaceNum > this.cellNum) {
             return 0x7fffffff;
@@ -235,7 +235,7 @@ function CLinear4TreeManager() {
     };
 
     this.register = function (left, top, right, bottom, oft) {
-        var elem = getMortonNumber.call(this, left, top, right, bottom);
+        let elem = getMortonNumber.call(this, left, top, right, bottom);
         if (elem < this.cellNum) {
             !this.cellAry[elem] && createNewCell.call(this, elem);
             return this.cellAry[elem].push(oft);
@@ -244,9 +244,9 @@ function CLinear4TreeManager() {
     };
 
     this.getAllCollisionList = function () {
-        var result = false;
+        let result = false;
         if (this.cellAry[0]) {
-            var colStack = [];
+            let colStack = [];
             getCollisionList.call(this, 0, colStack);
             result = this.colList;
             this.colList = new CollisionList();

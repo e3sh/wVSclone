@@ -160,10 +160,10 @@ function sce_effect_hit_shield() {
 
     this.draw = function (scrn, o) {
 
-        //var w = o.gt.worldtoView(o.x, o.y);
-        var w = o.gt.worldtoView(o.x, o.y);
+        //let w = o.gt.worldtoView(o.x, o.y);
+        let w = o.gt.worldtoView(o.x, o.y);
 
-        var cl = {};
+        let cl = {};
         cl.x = w.x; 
         cl.y = w.y; 
         cl.r = o.frame % 15;
@@ -226,9 +226,9 @@ function sce_effect_bombcircle(col) {
     }
     this.draw = function (scrn, o) {
 
-        var cl = {};
+        let cl = {};
 
-        var w = o.gt.worldtoView(o.x, o.y);
+        let w = o.gt.worldtoView(o.x, o.y);
 
         cl.x = w.x;
         cl.y = w.y;
@@ -325,10 +325,10 @@ function sce_effect_bombExp() {
 
     this.draw = function (scrn, o) {
 
-        var w = o.gt.worldtoView(o.x, o.y);
+        let w = o.gt.worldtoView(o.x, o.y);
 
 
-        var cl = {};
+        let cl = {};
         cl.x = w.x; // o.move_target_x; // * (256 / 640); //o.mouse_state.x;
         cl.y = w.y; // o.move_target_y; // * (192 / 480); //o.mouse_state.y;
         cl.r = ((o.frame < 16) ? o.frame : 30 - o.frame) * 3;

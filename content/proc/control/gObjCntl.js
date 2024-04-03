@@ -1,13 +1,13 @@
 ﻿function gObjectControl(scrn, state) {
 
     //メイン
-    var cdt;// = new CLinear4TreeManager();
+    let cdt;// = new CLinear4TreeManager();
     //if (!cdt.init(5, 0, 0, 3000, 3000)) { alert("!"); }
 
-    var debug_colnum;
-    var debug_cflag;
+    let debug_colnum;
+    let debug_cflag;
 
-    var dev = state.System.dev;
+    let dev = state.System.dev;
 
     delobj = 0;//使ってない
 
@@ -22,9 +22,9 @@
     //以下はコンティニューでもリセット
     //ここらへんもStateGameに持たせるべきか？
 
-    var item_ = [];
-    var itemstack_ = [];
-    var itemlv_= 0;
+    let item_ = [];
+    let itemstack_ = [];
+    let itemlv_= 0;
 
     this.item = item_; //現在取得しているアイテム(リセットオンだとやられると0）(消す処理自体はgameSceneで処理）
 
@@ -52,11 +52,11 @@
     this.nonmove = 0;
 
     /*
-    var stockscore = 0;
-    var stockcount = 0;
-    var stockrate = 1;
-    var stockdisp_x = 128;
-    var stockdisp_y = 96;
+    let stockscore = 0;
+    let stockcount = 0;
+    let stockrate = 1;
+    let stockdisp_x = 128;
+    let stockdisp_y = 96;
     */
 
     this.rollcall = rollcall_attendance;
@@ -95,25 +95,25 @@
 
     const pbuf = new priorityBuffer();
     
-    var restart_count = 0;
-    var map_sc;
+    let restart_count = 0;
+    let map_sc;
 
-    var before_int;
-    var before_SIG;
-    //  var map_sc = mapScenro();
-    var ch_ptn = character();
-    var motion_ptn = motionPattern();
+    let before_int;
+    let before_SIG;
+    //  let map_sc = mapScenro();
+    let ch_ptn = character();
+    let motion_ptn = motionPattern();
 
-    var sce = scenario(this);
+    let sce = scenario(this);
 
     // オブジェクトの情報をArrayで管理
-    var obj = [];//これをState側に持たせれば全体から管理可能となるか。
+    let obj = [];//これをState側に持たせれば全体から管理可能となるか。
 
     let obj_namecheck_list = [];
 
     //当たり判定用マップ
 
-    var csmap = []; //collisonmap　0:当たり判定なし 1:当たり判定/ダメージ判定 2:当たり判定のみ　//2は機能していない(0かnot0のみ)
+    let csmap = []; //collisonmap　0:当たり判定なし 1:当たり判定/ダメージ判定 2:当たり判定のみ　//2は機能していない(0かnot0のみ)
     //         自･弾･敵･弾･物･他
     csmap[0] = [0, 0, 2, 1, 1, 0]; //自機味方
     csmap[1] = [0, 0, 1, 0, 0, 0]; //自弾
@@ -122,17 +122,17 @@
     csmap[4] = [1, 0, 1, 0, 0, 0]; //アイテム
     csmap[5] = [0, 0, 0, 0, 0, 0]; //その他
 
-    var restartFlag = true;
+    let restartFlag = true;
 
-    var msglog = new textbufferControl(25);
-    var msgview = new textbufferControl(26);
-    var msgcnsl = new textbufferControl(21);
+    let msglog = new textbufferControl(25);
+    let msgview = new textbufferControl(26);
+    let msgcnsl = new textbufferControl(21);
 
     this.messagelog = msglog;
     this.messageview = msgview;
     this.messageconsole = msgcnsl;
 
-    var itemtable = {//表示用のアイテムリスト
+    let itemtable = {//表示用のアイテムリスト
     //  (ITEMLIST) 
         0:"操作説明",
         1:"魔法陣説明",
@@ -213,8 +213,8 @@
             buffer =[];
         }
     }
-    var cmdlog = "-----";
-    var cmdcnt = 0;
+    let cmdlog = "-----";
+    let cmdcnt = 0;
 
     //再読み込み無しの再起動
     this.reset = function (cont_flag) {
@@ -274,17 +274,17 @@
 
         map_sc = mapsc;
 
-        //    var mstate = dev.mouse_state.check();
-        //var mstate = dev.mouse_state.check_last();
-        var kstate = dev.key_state.check();
+        //    let mstate = dev.mouse_state.check();
+        //let mstate = dev.mouse_state.check_last();
+        let kstate = dev.key_state.check();
 
         this.nonmove = 0;
         // 移動などの処理
 
         obj_namecheck_list = [];
-        for (var i in obj) {
-            //for (var i = 0, loopend = obj.length; i < loopend; i++) {
-            var o = obj[i];
+        for (let i in obj) {
+            //for (let i = 0, loopend = obj.length; i < loopend; i++) {
+            let o = obj[i];
 
             o.vecfrm = 60/(1000/state.System.deltaTime()); o.vecfrm = (o.vecfrm >3)?3:o.vecfrm;//フレームレート低下弊害抑止(20f/s<は処理落ち)
             o.alive =  state.System.time() - o.barthTime;
@@ -294,8 +294,8 @@
 
             if (Boolean(o.name)) obj_namecheck_list[o.name] = true;
 
-            //var onst = o.gt.in_stage_range(o.x - (o.hit_x / 2), o.y - (o.hit_y / 2), o.hit_x, o.hit_y);
-            var onst = o.gt.in_view_range(o.x - (o.hit_x / 2), o.y - (o.hit_y / 2), o.hit_x, o.hit_y);
+            //let onst = o.gt.in_stage_range(o.x - (o.hit_x / 2), o.y - (o.hit_y / 2), o.hit_x, o.hit_y);
+            let onst = o.gt.in_view_range(o.x - (o.hit_x / 2), o.y - (o.hit_y / 2), o.hit_x, o.hit_y);
 
             if (!onst) {
                 if ((o.type == 1) || (o.type == 3)) {
@@ -304,9 +304,9 @@
                     if (!o.gt.in_world(o.x, o.y))o.status = 0; //画面外に出ている弾を消す。
                 }
             }
-            //var instage = o.gt.in_stage(o.x , o.y);
+            //let instage = o.gt.in_stage(o.x , o.y);
 
-            //var wgs = dev.gs.nowstagepos();
+            //let wgs = dev.gs.nowstagepos();
             //if ((o.x < wgs.x) || (o.x > wgs.x + wgs.w) || (o.y < wgs.y) || (o.y > wgs.y + wgs.h)) {
 
             if (state.Game.outviewCollision) onst = true; //画面外も処理な為強制的にon
@@ -332,7 +332,7 @@
                 o.score = this.score;
             }
 
-            //var w = o.gt.worldtoWorld(o.x, o.y);
+            //let w = o.gt.worldtoWorld(o.x, o.y);
             //o.x = w.x;  o.y = w.y;
             if (o.move(scrn, o, mapsc) != 0) {//戻り値0がNormalEnd‗/Normal以外はコリジョンリストに載せない。
                 o.colitem && o.colitem.remove();
@@ -377,9 +377,9 @@
 
             //messageの処理
 
-            for (var mcnt = 0, loopend = o.message.length; mcnt < loopend; mcnt++) {
+            for (let mcnt = 0, loopend = o.message.length; mcnt < loopend; mcnt++) {
 
-                var ms = o.message[mcnt];
+                let ms = o.message[mcnt];
 
                 let r = ObjCmdDecode(ms, o, obj, state, sce);
 
@@ -415,7 +415,7 @@
 
                 this.score += stockscore;
 
-                var wid = stockscore + "pts";
+                let wid = stockscore + "pts";
                 if (stockrate != 1) {
                     wid += "(" + stockrate + "coin)";
                 }
@@ -432,12 +432,12 @@
 
         //restartFlag = false;
         if (restartFlag) {
-            var mapchip = map_sc.mapChip();
+            let mapchip = map_sc.mapChip();
 
             //mapchipのtypeの変更は元でされています。10: 床　11: 壁　12: 扉
 
-            for (var k = 0, loopend = mapchip.length; k < loopend; k++) {
-                var w = mapchip[k];
+            for (let k = 0, loopend = mapchip.length; k < loopend; k++) {
+                let w = mapchip[k];
 
                 //w.colitem && w.colitem.remove();
                 //if ((w.c) && (w.view)) { //画面外は当たり判定を行わない
@@ -457,27 +457,27 @@
             restartFlag = false;
         }
         //
-        var res = cdt.getAllCollisionList();
+        let res = cdt.getAllCollisionList();
 
         debug_colnum = res.length;
         this.collisioncount = debug_colnum/2;
 
         if (state.System.time() > this.ceildelay+300) this.ceilflag = false;//再表示までの遅延
 
-        for (var i = 0, loopend = res.length; i < loopend; i += 2) {
+        for (let i = 0, loopend = res.length; i < loopend; i += 2) {
 
-            var o = res[i];
-            var e = res[i + 1];
+            let o = res[i];
+            let e = res[i + 1];
 
-            var type_w1 = (o.type == 98) ? 0 : o.type;
-            var type_w2 = (e.type == 98) ? 0 : e.type;
+            let type_w1 = (o.type == 98) ? 0 : o.type;
+            let type_w2 = (e.type == 98) ? 0 : e.type;
 
             if ((type_w1 >= 10) && (type_w2 >= 10)) continue;
 
             // mob and mob
             if ((type_w1 < 10) && (type_w2 < 10)) {
 
-                var flag = csmap[type_w1][type_w2];
+                let flag = csmap[type_w1][type_w2];
 
                 if (flag == 0) continue;
 
@@ -497,14 +497,14 @@
                     e = res[i];
                 }
 
-                var w = e;
-                //            for (var m in colchip) {
-                //              var w = colchip[m];
-                var c = false; //カベ壊しフラグ
+                let w = e;
+                //            for (let m in colchip) {
+                //              let w = colchip[m];
+                let c = false; //カベ壊しフラグ
 
-                var bupCol = o.mapCollision;
-                var bupColX = o.mapColX;
-                var bupColY = o.mapColY;
+                let bupCol = o.mapCollision;
+                let bupColX = o.mapColX;
+                let bupColY = o.mapColY;
 
                 if (w.c) { //((w.c) && (w.view)) {
                     if ((Math.abs((o.x + o.vx) - (w.x + w.w / 2)) < (o.hit_x + w.w) / 2) && (Math.abs((o.y + o.vy) - (w.y + w.h / 2)) < (o.hit_y + w.h) / 2)) {
@@ -577,7 +577,7 @@
             }
         }
 
-        var cmap = mapsc.cmap();
+        let cmap = mapsc.cmap();
 
         for (i in obj) {
             o = obj[i];
@@ -587,8 +587,8 @@
             ///*2023/01/22 debug(動作忘れたため)
             //地形との当たり判定（MAP配列）
             if (Boolean(cmap)){ //cmap有効の場合cmapで当たり判定
-                var lt = {};
-                var rb = {};
+                let lt = {};
+                let rb = {};
 
                 lt.x = o.x - o.hit_x / 2;
                 lt.y = o.y - o.hit_y / 2;
@@ -630,7 +630,7 @@
             }
             //*/
             //
-            var onst = o.gt.in_stage_range(o.x - (o.hit_x / 2), o.y - (o.hit_y / 2), o.hit_x, o.hit_y);
+            let onst = o.gt.in_stage_range(o.x - (o.hit_x / 2), o.y - (o.hit_y / 2), o.hit_x, o.hit_y);
             //画面外？
             //if ((o.x < wgs.x) || (o.x > wgs.x + wgs.w) || (o.y < wgs.y) || (o.y > wgs.y + wgs.h)) {
 
@@ -641,18 +641,18 @@
 
             if (o.crash) {
 
-                var wo_stat = 0;
-                var wo_crst = 0;
-                var wo_vect = 0;
+                let wo_stat = 0;
+                let wo_crst = 0;
+                let wo_vect = 0;
 
                 if ((o.type == 1) || (o.type == 3)) {
                     //弾の場合はそのまま消滅
                 } else {
-                    var bf = true;
+                    let bf = true;
 
                     if (bf) { //衝突でのhp/damegeflag処理　(バトルシステムを入れる場合はここになる）
 
-                        var whp = o.hp;
+                        let whp = o.hp;
 
                         //if (o.type == 4) o.hp = 0; //item取得の場合はhp減少が発生しないようにする。
                         //(アイテムに当たり判定があるのは自分と友軍なので取得の判定はアイテムが衝突死したところで行う)
@@ -695,7 +695,7 @@
         //    if (delobj > 10){obj.sort(); delobj = 0;}//消した配列が10個超えたらソート
         //    if (!obj[obj.length-1]) {obj.pop();}//空の配列を削除します。
         /*
-        var f = 0;
+        let f = 0;
         for (i in obj) {
             if (obj[i].type == 98) f++;
             //if (obj[i].type == 4) and 
@@ -775,8 +775,8 @@
         //SPprioritycontroll-Y
         pbuf.reset();
 
-        for (var i in obj) {
-            var o = obj[i];
+        for (let i in obj) {
+            let o = obj[i];
 
             if (o.visible && (o.prioritySurface == mode)) {
                 if (o.normal_draw_enable || o.custom_draw_enable) {
@@ -790,15 +790,15 @@
         pbuf.sort();
         let wo = pbuf.buffer();
 
-        for (var i in wo) {
-            var o = wo[i];
+        for (let i in wo) {
+            let o = wo[i];
 
             if (o.normal_draw_enable) {
                 o.draw(wscreen, o);
 
                 if (state.Config.debug) {
-                    var w = o.gt.worldtoView(o.x, o.y);
-                    var cl = {}
+                    let w = o.gt.worldtoView(o.x, o.y);
+                    let cl = {}
                     cl.x = w.x - o.hit_x/2 ;
                     cl.y = w.y - o.hit_y/2 ;
                     cl.w = o.hit_x;
@@ -835,21 +835,21 @@
 
     this.drawPoint = function (wscreen, flag) {
         //flag true: lamp on false:lamp off
-        var col = ["skyblue", "skyblue", "red", "orange", "yellow", "yellow"];
+        let col = ["skyblue", "skyblue", "red", "orange", "yellow", "yellow"];
         col[98] = "white";
 
         if (!Boolean(wscreen)) wscreen = scrn;
 
-        var nt = Date.now();
+        let nt = Date.now();
 
-        var cl = {};
+        let cl = {};
 
         cl.obj = obj;
         cl.col = col;
         cl.draw = function (device) {
 
-            for (var i in this.obj) {
-                var o = this.obj[i];
+            for (let i in this.obj) {
+                let o = this.obj[i];
 
                 if (o.visible) {
 
@@ -890,11 +890,11 @@
 
         if (!Boolean(wscreen)) wscreen = scrn;
 
-        var cl = {};
+        let cl = {};
         cl.obj = obj;
         cl.draw = function (device) {
-            for (var i in this.obj) {
-                var o = this.obj[i];
+            for (let i in this.obj) {
+                let o = this.obj[i];
                 
                 if (!o.visible) continue;
                 //shadow 
@@ -903,10 +903,10 @@
                 if (!o.gt.in_view(o.x,o.y)) continue;
                 if (o.normal_draw_enable) {
                     if (dev.gs.in_stage(o.x, o.y)){
-                        var w = o.gt.worldtoView(o.x, o.y);
+                        let w = o.gt.worldtoView(o.x, o.y);
 
-                        var ww = o.center_x * o.display_size + (o.shifty/8);//shiftyはJUMP時に
-                        var wh = o.center_y * o.display_size + (o.shifty/8);//影を小さくする補正処理の為
+                        let ww = o.center_x * o.display_size + (o.shifty/8);//shiftyはJUMP時に
+                        let wh = o.center_y * o.display_size + (o.shifty/8);//影を小さくする補正処理の為
 
                         if (ww>0 && wh>0){
                             device.beginPath();
@@ -927,7 +927,7 @@
 
     function set_sce(x, y, r, ch, sc, id, parent) {
 
-        var o = new gObjectClass();
+        let o = new gObjectClass();
 
         o.reset();
 
@@ -993,9 +993,9 @@
 
         o.init(scrn, o);
 
-        var epty = -1;
+        let epty = -1;
 
-        for (var i = 0,loopend = obj.length; i < loopend; i++) {
+        for (let i = 0,loopend = obj.length; i < loopend; i++) {
             if (!obj[i]) {//空の配列を探す。
                 epty = i;
                 break;
@@ -1025,9 +1025,9 @@
 
     this.cnt = function () {
 
-        var c = 0;
+        let c = 0;
 
-        for (var i in obj) {
+        for (let i in obj) {
             c++;
         }
         return c;
@@ -1044,7 +1044,7 @@
             }
         }
 
-        var w = o.gt.worldtoView(o.x, o.y);
+        let w = o.gt.worldtoView(o.x, o.y);
 
         mtnptn_put(scrn, 
             w.x + o.shiftx,
@@ -1061,16 +1061,17 @@
         if (!Boolean(alpha)) alpha = 0;
         if (!Boolean(size)) size = 0;
         
+        let ptn;
         try {
-            var ptn = motion_ptn[mp].pattern[mpcnt][0];
+            ptn = motion_ptn[mp].pattern[mpcnt][0];
         }
         catch (e) {
             mpcnt = 0;
             ptn = motion_ptn[mp].pattern[mpcnt][0];
         }
 
-        var wvh = motion_ptn[mp].pattern[mpcnt][1];
-        var wr = motion_ptn[mp].pattern[mpcnt][2];
+        let wvh = motion_ptn[mp].pattern[mpcnt][1];
+        let wr = motion_ptn[mp].pattern[mpcnt][2];
 
         if ((wvh == -1) && (wr == -1)) {
             wvh = 0;
@@ -1082,22 +1083,22 @@
     }
 
     this.list = function(){
-        var st = [];
+        let st = [];
 
-        for (var j=0; j < obj.length; j++){
-            var n = "   "+String(j);
+        for (let j=0; j < obj.length; j++){
+            let n = "   "+String(j);
             st[j] =  n.substring(n.length-3) +".No.Object";
         }
 
         // type ,x ,y ,status, mp
-        for (var i in obj) {
-            var o = obj[i];
-            var inv = o.gt.in_view(o.x, o.y)?"v":"-"; 
-            //var inw = o.gt.in_world(o.x, o.y)?"wo":"w-";
-            //var s = "" + o.type + "," + Math.trunc(o.x) + "," + Math.trunc(o.y) + ","  + o.status + "," + o.mp;
+        for (let i in obj) {
+            let o = obj[i];
+            let inv = o.gt.in_view(o.x, o.y)?"v":"-"; 
+            //let inw = o.gt.in_world(o.x, o.y)?"wo":"w-";
+            //let s = "" + o.type + "," + Math.trunc(o.x) + "," + Math.trunc(o.y) + ","  + o.status + "," + o.mp;
             //type, inview, hp, status,mp,chr
-            var n = "   "+String(i);
-            var s = n.substring(n.length-3) + ":" + o.type + "," + inv + "," + o.hp + ","  + o.status + "," + o.mp + "," +o.chr;
+            let n = "   "+String(i);
+            let s = n.substring(n.length-3) + ":" + o.type + "," + inv + "," + o.hp + ","  + o.status + "," + o.mp + "," +o.chr;
             
             st[i] = s;
             //st.push(s);
@@ -1107,7 +1108,7 @@
 
     this.lookObj = function(num){
 
-        var st = [];
+        let st = [];
 
         if (obj[num] instanceof Object){
 
@@ -1115,9 +1116,9 @@
 
             o.forEach(function(element){
                 let w = String(element).split(",");
-                //var w = element.split(",");
+                //let w = element.split(",");
                 //st.push(element);
-                var s = w[0];
+                let s = w[0];
                 if (s.length < 13){
                     s = s + " ".repeat(13);
                     s = s.substring(0, 13);
@@ -1143,7 +1144,7 @@
 
     this.lookObjv = function(scrn, num, x, y){
 
-        var result = false;
+        let result = false;
 
         if (obj[num] instanceof Object){
 
@@ -1182,11 +1183,11 @@
 
     this.lookpick = function(scrn, num, x, y){
 
-        var result = false;
+        let result = false;
 
         if (obj[num] instanceof Object){
             /*
-            var spname = [];
+            let spname = [];
             spname[15] = "Wand";
             spname[16] = "Knife";
             spname[17] = "Axe";
@@ -1207,7 +1208,7 @@
 
             if (o.type == 2){
                 if (o.pick.length > 0){
-                    for (var i of o.pick){
+                    for (let i of o.pick){
                         //scrn.put(spname[i], x, y);
                         mtnptn_put(scrn, x, y, ch_ptn[i].mp);
                         x = x + 16;
@@ -1259,7 +1260,7 @@
 
 function ObjCmdDecode(msg, sobj, obj, state, sce){
     /*
-     var command = {
+     let command = {
          "set_object",
          "set_object_ex",
          "get_target",
@@ -1315,10 +1316,10 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
              sobj.target = null; //o; //{}; 見つからなかった場合
      
              for (let i in obj) {
-                 var wo = obj[i];
+                 let wo = obj[i];
                  if (wo.type != msg.src) continue;
      
-                 var d = wo.target_d(sobj.x, sobj.y);
+                 let d = wo.target_d(sobj.x, sobj.y);
                  if (d < wdist) {
                      sobj.target = wo;
                      wdist = d;
@@ -1380,14 +1381,14 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                     mapsc.add(x, y, 0, 20, 39, wid);
                 }
     
-                var f = false;
+                let f = false;
                 if ((msg.src == 23) || (msg.src == 24) || (msg.src == 25)) {
                     //dev.sound.effect(9); //cursor音
                     f = true;
                 }
     
                 if (f) { //useble items
-                    var w = msg.src;
+                    let w = msg.src;
                     objc.itemstack.push(w);
                 }
             
@@ -1423,7 +1424,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                      o.score = 8;
                       //test用
                      if (o.chr != 7) {
-                         var witem = [18, 22, 26, 27, 29, 30];
+                         let witem = [18, 22, 26, 27, 29, 30];
      
                          o.mp = witem[Math.floor(Math.random() * witem.length)];
                      }
@@ -1438,7 +1439,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
 
              for (let i in obj) {
                  //画面内にいる敵のみ
-                 var onst = sobj.gt.in_view_range(
+                 let onst = sobj.gt.in_view_range(
                      obj[i].x - (obj[i].hit_x / 2),
                      obj[i].y - (obj[i].hit_y / 2), obj[i].hit_x, obj[i].hit_y);
      
@@ -1525,15 +1526,15 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
              //無かったら、敵の持ち物をチェックする。
              //ない場合はkeyon=false;//自分の持ち物にある場合はこれでチェックしない。
              //戻り値はState.game.keyon,key_x,key_yに入れる。
-             var onflag = false;
-             var wx = 0;
-             var wy = 0;
+             let onflag = false;
+             let wx = 0;
+             let wy = 0;
  
-             for (var i in obj) {
-                 var wo = obj[i];
+             for (let i in obj) {
+                 let wo = obj[i];
                  if (wo.type == 2){//enemy
                      //wo.lighton = true;                
-                     for (var j of wo.pick){
+                     for (let j of wo.pick){
                          if (j == msg.src){
                              onflag = true;
                              wx = wo.x;
@@ -1569,7 +1570,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
              break;
      }
      
-     var result = {exec: execute, log:wlog};
+     let result = {exec: execute, log:wlog};
  
      return result;
  }

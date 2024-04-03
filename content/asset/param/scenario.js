@@ -4,13 +4,13 @@
 //
 function scenario( gObjc) {
 
-    var sc = {};
+    let sc = {};
 
-    var sc_init = [];
-    var sc_draw = [];
-    var sc_move = [];
+    let sc_init = [];
+    let sc_draw = [];
+    let sc_move = [];
 
-    for (var i = 0; i <= 37; i++) {
+    for (let i = 0; i <= 37; i++) {
 
         sc_init[i] = function (scrn, o) {
             o.vset(5);
@@ -771,14 +771,14 @@ function scenario( gObjc) {
     // Vs追加分
     //-----------------------------------------------------------------------
     
-    var w = new sce_enemy_move_std2(1, 1240);//240
+    w = new sce_enemy_move_std2(1, 1240);//240
     //turn_interval,target_distance
     sc_init["enemy_move_vst"] = w.init;
     sc_move["enemy_move_vst"] = w.move;
     sc_draw["enemy_move_vst"] = w.draw;//add.2023/1/14
 
     //--------------------------------
-    var w = new sce_enemy_generator(0, 50, "enemy_move_vst", 1280 );
+    w = new sce_enemy_generator(0, 50, "enemy_move_vst", 1280 );
     //interval, grow_num, scenario, target_distance
     sc_init["enemy_generator_vst"] = w.init;
     sc_move["enemy_generator_vst"] = w.move;

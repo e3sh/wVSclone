@@ -43,7 +43,7 @@ function sce_enemy_move_n(num1, num2) {
                 break;
             case 140:
                 //inventry check
-                var f = sce_enemy_inv_check(o.pick);
+                let f = sce_enemy_inv_check(o.pick);
                 if (f != 0 ){
                     o.pickgetf = true;
                     o.pickviewitem = f;
@@ -142,7 +142,7 @@ function sce_enemy_turn( num ){
             case 45:
                 o.frame = 1;
                 //inventry check
-                var f = sce_enemy_inv_check(o.pick);
+                let f = sce_enemy_inv_check(o.pick);
                 if (f != 0 ){
                     o.pickgetf = true;
                     o.pickviewitem = f;
@@ -236,7 +236,7 @@ function sce_enemy_moveshot() {
 
         if (o.frame % 50 == 5) {
             //inventry check
-            var f = sce_enemy_inv_check(o.pick);
+            let f = sce_enemy_inv_check(o.pick);
             if (f != 0 ){
                 o.pickgetf = true;
                 o.pickviewitem = f;
@@ -341,7 +341,7 @@ function sce_enemy_randomshot() {
             o.frame = 0;
 
             //inventry check
-            var f = sce_enemy_inv_check(o.pick);
+            let f = sce_enemy_inv_check(o.pick);
             if (f != 0 ){
                 o.pickgetf = true;
                 o.pickviewitem = f;
@@ -423,7 +423,7 @@ function sce_enemy_move_std(){
         }
 
         if (o.wmapc) {
-            var v = (Math.floor(Math.random() * 2) == 0) ? 1 : 3;
+            let v = (Math.floor(Math.random() * 2) == 0) ? 1 : 3;
             //o.vector = v;
 
             o.wmapc = false;
@@ -526,7 +526,7 @@ function sce_enemy_move_std2( intrvl, sdst ) {
             return o.sc_move();
         }
 
-        var speed = 0;
+        let speed = 0;
 
         //if (o.growf) {
         //    if (o.mapCollision) o.mapCollision = false; ;
@@ -549,11 +549,11 @@ function sce_enemy_move_std2( intrvl, sdst ) {
 
         if ((o.wmapc) && (o.lockon_flag)) {
 
-            var v = o.target_v();
+            let v = o.target_v();
 
-            var nv = 0;
+            let nv = 0;
 
-            for (var i = 45; i < 320; i += 45) {
+            for (let i = 45; i < 320; i += 45) {
 
                 if ((v > i - 22.5) && (v <= i + 22.5)) {
                     nv = i;
@@ -639,12 +639,12 @@ function sce_enemy_move_std2( intrvl, sdst ) {
             o.get_target(98);
             
             //inventry check
-            var f = sce_enemy_inv_check(o.pick);
+            let f = sce_enemy_inv_check(o.pick);
             if (f != 0 ){
                 o.pickgetf = true;
                 o.pickviewitem = f;
 
-                var wt = sce_enemy_weapon_check(f);
+                let wt = sce_enemy_weapon_check(f);
                 if (wt != 0){
                     o.weapongetf = true;
                     o.weapontype = wt;
@@ -667,7 +667,7 @@ function sce_enemy_move_std2( intrvl, sdst ) {
 
 function sce_enemy_weapon_check( item ){//アイテムリストが武器かどうかをチェック
 
-    var ITEMLIST = [];
+    let ITEMLIST = [];
 
     ITEMLIST[1] = 16; //SWORD
     ITEMLIST[2] = 17; //AXE
@@ -680,9 +680,9 @@ function sce_enemy_weapon_check( item ){//アイテムリストが武器かど�
     //　item: 15 WAND, 16 SWORD, 17 AXE, 18 SPEAR, 19 BOOM 50:BOw
     //  rc 0 NONE, 1 SWORD, 2 SPARE, 3 BOOM, 4 AXE, 5 WAND, 6 BOW 99 Dummy
 
-    var rc = 0; //nonitem
+    let rc = 0; //nonitem
     
-    for (var i of ITEMLIST){ //武器リストと突き合わせ
+    for (let i of ITEMLIST){ //武器リストと突き合わせ
         if (i == item ){
             rc = ITEMLIST.indexOf(i);
             return rc;
@@ -766,7 +766,7 @@ function sce_enemy_generator(gr_intv, gr_num, gr_sce, gr_sdst) {
             }
 
             if ((o.lockon_flag) && (o.gencnt < GROW_NUM)) {
-                var v = o.target_v();
+                let v = o.target_v();
 
                 o.set_object_ex(1, o.x, o.y, v, 
                     GROW_TYPESCE);
@@ -801,7 +801,7 @@ function sce_enemy_trbox() {
     }
 
     this.move = function (scrn, o) {
-        var f = 0;
+        let f = 0;
 
         o.frame++;
 
@@ -812,7 +812,7 @@ function sce_enemy_trbox() {
             //this.sound.effect(8); //爆発音
 
             //入ってるアイテムを出す。
-            for (var i = 0; i < this.pick.length; i++) {
+            for (let i = 0; i < this.pick.length; i++) {
                 //this.set_object_ex(1, this.x, this.y, Math.floor(Math.random() * 360), 39, "p:" + this.pick[i]);
 
                 this.set_object_ex(this.pick[i], this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
@@ -821,7 +821,7 @@ function sce_enemy_trbox() {
         }
 
         //if (this.damageflag) {
-        //    var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
+        //    let onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
         //    if (onst) {
                 //this.sound.effect(12); //hit音
         //    }
@@ -857,7 +857,7 @@ function sce_enemy_trbox_mimic() {
     }
 
     this.move = function (scrn, o) {
-        var f = 0;
+        let f = 0;
 
         o.frame++;
 
@@ -869,9 +869,9 @@ function sce_enemy_trbox_mimic() {
             //this.sound.effect(8); //爆発音
 
             //敵を出す処理
-            var num = Math.floor(Math.random() * 4) + 3;//3～6
-            for (var i = 0; i < num; i++) {
-                var v = (360/num) * i;
+            let num = Math.floor(Math.random() * 4) + 3;//3～6
+            for (let i = 0; i < num; i++) {
+                let v = (360/num) * i;
                 o.set_object_ex(1, o.x + o.Cos(v) * 16, o.y + o.Sin(v) * 16, v, 
                 //    "enemy_move_gen_grow");    
                     "enemy_move_std2");    
@@ -880,7 +880,7 @@ function sce_enemy_trbox_mimic() {
         }
 
         //if (this.damageflag) {
-        //    var onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
+        //    let onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
         //    if (onst) {
                 //this.sound.effect(12); //hit音
         //    }
@@ -955,7 +955,7 @@ function sce_enemy_timeover() {
 
 function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリストのうち1つを返す
 
-    var ITEMLIST = [
+    let ITEMLIST = [
         22, 27, 26, 21, //KEY,MAP,LAMP,1UP　
         15, 16, 17, 18, 19, 50, //WEAPONS
         23, 24, 25, //COLORBALLS
@@ -964,9 +964,9 @@ function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリスト
         0
     ];
 
-    var rc = 0; //nonitem
-    for (var i of ITEMLIST){ //持っているもののうち、優先順位が高いものを選択
-        for (var j of pick) {
+    let rc = 0; //nonitem
+    for (let i of ITEMLIST){ //持っているもののうち、優先順位が高いものを選択
+        for (let j of pick) {
             if (i == j ){
                rc = j;
                return rc;
@@ -1002,7 +1002,7 @@ function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリスト
 }
 
 function sce_enemy_inv_gr(scrn, o){
-    var spname = [];
+    let spname = [];
 
     if (o.hp < o.maxhp) lbar_draw();
 
@@ -1025,17 +1025,17 @@ function sce_enemy_inv_gr(scrn, o){
     spname[35] = "Coin1";
     spname[50] = "Bow";
 
-    var w = o.gt.worldtoView(o.x, o.y);
+    let w = o.gt.worldtoView(o.x, o.y);
 
     if ((w.x >= 0) && (w.x <= scrn.cw) && (w.y >= 0) && (w.y <= scrn.ch)) {
         //scrn.putchr8("@", w.x, w.y);
-        var tx = w.x + o.shiftx;
-        var ty = w.y + o.shifty;
+        let tx = w.x + o.shiftx;
+        let ty = w.y + o.shifty;
 
         w.x = w.x + o.Cos(o.vector) * 16;
         w.y = w.y + o.Sin(o.vector) * 16;
 
-        var f = o.pickviewitem; //sce_enemy_inv_check(o.pick);
+        let f = o.pickviewitem; //sce_enemy_inv_check(o.pick);
         //if (f != 0 ){
             // o.vector = (o.startv + (o.rotatecount * 12))%360;
             //w.x = w.x + o.Cos(o.vector) * 16;
@@ -1044,7 +1044,7 @@ function sce_enemy_inv_gr(scrn, o){
             //scrn.putchr8(o.weapontype, w.x+10, w.y+10);
         //} else {
         if (o.pick.length > 1){
-            var ic = 0; for (var i of o.pick) {if (i != 35 ) ic++;}
+            let ic = 0; for (let i of o.pick) {if (i != 35 ) ic++;}
 
             if (ic > 0){
                 w.x = tx - o.Cos(o.vector) * o.center_x;
@@ -1061,7 +1061,7 @@ function sce_enemy_inv_gr(scrn, o){
     function lbar_draw(){
         if (!Boolean(o.hpbbw)) o.hpbbw = Math.trunc((o.hp / o.maxhp)*32);
     
-        var w = o.gt.worldtoView(o.x, o.y);
+        let w = o.gt.worldtoView(o.x, o.y);
 
         lbar = {};
 

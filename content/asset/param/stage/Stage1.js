@@ -7,19 +7,19 @@ function Stage1(stageno) {
     const BLOCK_H = 96;
     
     //
-    var dgn;
+    let dgn;
     
     dgn = new Dangeon(stageno);
     dgn.create();
 
-    var mp = dgn.mapdata;
+    let mp = dgn.mapdata;
  
     let hlist = dgn.ml; //通路を含む壁がないエリア
     let rlist = dgn.il; //壁際を除く部屋部分(初期配置エリア
     let clist = dgn.rl; //壁際含む部屋部分(通路は含まない)
 
     stageno = Math.floor(Math.random() * 1000000);
-    var rnd = new myrnd(stageno);//seed);
+    let rnd = new myrnd(stageno);//seed);
 
     this.scenario = mapScenro;
     this.bgImage = mapBgImage;
@@ -27,7 +27,7 @@ function Stage1(stageno) {
     this.initial = mapInitial;
     this.bgPtn = mapBgPattern;
 
-    var cmap = [];
+    let cmap = [];
     this.colmap = cmap;
     
     this.startroom_id; 
@@ -107,10 +107,10 @@ function Stage1(stageno) {
     function shuffle( shuffled ){
 
         for (i = 0; i < 3000; i++) {
-            var snum = Math.floor(rnd.next() * shuffled.length);
-            var dnum = Math.floor(rnd.next() * shuffled.length);
+            let snum = Math.floor(rnd.next() * shuffled.length);
+            let dnum = Math.floor(rnd.next() * shuffled.length);
 
-            var w = shuffled[snum];
+            let w = shuffled[snum];
             shuffled[snum] = shuffled[dnum];
             shuffled[dnum] = w;
         }
@@ -131,7 +131,7 @@ function Stage1(stageno) {
     //  フレームカウントがマイナスの場合は最初のみ実行
     function mapScenro() {
 
-        var ms =
+        let ms =
         //  開始フレーム,座標,,角度,シナリオ,キャラ
 	[
     //[600, 0, 0, 0, "message_billboard_cp", 6],
@@ -145,12 +145,12 @@ function Stage1(stageno) {
         //
         // フレームカウントでソートされていること。
 
-        var map_sc = []; //　出現パターン
+        let map_sc = []; //　出現パターン
 
-        for (var j in ms) {
-            var w = ms[j];
+        for (let j in ms) {
+            let w = ms[j];
 
-            var ptn = {};
+            let ptn = {};
 
             ptn.count = w[0];
             ptn.x = w[1];
@@ -163,16 +163,16 @@ function Stage1(stageno) {
             map_sc.push(ptn);
         }
 
-        for (var e in map_sc) {
+        for (let e in map_sc) {
 
-            var pt = map_sc[e];
+            let pt = map_sc[e];
 
-            var wx = Math.floor(pt.x / BLOCK_W);
-            var wy = Math.floor(pt.y / BLOCK_H);
+            let wx = Math.floor(pt.x / BLOCK_W);
+            let wy = Math.floor(pt.y / BLOCK_H);
 
-            var f = true;
+            let f = true;
 
-            for (var i in rlist) {
+            for (let i in rlist) {
                 if ((rlist[i].x == wx) && (rlist[i].y == wy)) {
 
                     f =false;
@@ -181,7 +181,7 @@ function Stage1(stageno) {
             }
 
             if (f) {
-                var vr = Math.floor(Math.random() * rlist.length);
+                let vr = Math.floor(Math.random() * rlist.length);
 
                 pt.x = rlist[vr].x * BLOCK_W + BLOCK_W/2;
                 pt.y = rlist[vr].y * BLOCK_H + BLOCK_H/2;
@@ -194,11 +194,11 @@ function Stage1(stageno) {
 
     function mapBgImage(stageno) {
 
-        var num = Math.floor(((stageno-1) % 15) / 5) + 1;
+        let num = Math.floor(((stageno-1) % 15) / 5) + 1;
 
-        var tex_bg = "bg" + num;
+        let tex_bg = "bg" + num;
 
-    //    var tex_bg = new Image();
+    //    let tex_bg = new Image();
     //    tex_bg.src = "pict/cha.png";
 
         return tex_bg;
@@ -210,21 +210,21 @@ function Stage1(stageno) {
         //スクロール時のbg調整用
         //mapImageNo, world ltx, world lty
 
-        var mc = [];
-        var mp = dgn.mapdata;
+        let mc = [];
+        let mp = dgn.mapdata;
 
-        //var mp = [[]];
-        //for (var j = 0; j < dgn.mw; j++){ mp[j] = []; for (var i = 0; i <dgn.mh; i++){mp[j][i] = false; }}
+        //let mp = [[]];
+        //for (let j = 0; j < dgn.mw; j++){ mp[j] = []; for (let i = 0; i <dgn.mh; i++){mp[j][i] = false; }}
 
-        var vx = [-1,  0,  1, -1,  1, -1,  0,  1];
-        var vy = [-1, -1, -1,  0,  0,  1,  1,  1];
+        let vx = [-1,  0,  1, -1,  1, -1,  0,  1];
+        let vy = [-1, -1, -1,  0,  0,  1,  1,  1];
 
-        var w = [];
+        let w = [];
 
         bit_check = function (n) {
-            var cr = [];
+            let cr = [];
 
-            for (var i in vx) {
+            for (let i in vx) {
 
                 if (Math.floor(n / Math.pow(2,i)) % 2 != 0) {
                     cr[i] = true;
@@ -252,8 +252,8 @@ function Stage1(stageno) {
             for (let j = 1; j <= dgn.mh - 1; j++) {
 
                 if (mp[i][j]) {
-                    var cr = bit_check(dgn.type[i][j]);
-                    for (var k in vx) {
+                    let cr = bit_check(dgn.type[i][j]);
+                    for (let k in vx) {
                         w = [cr[k] ? (Number(k) + 3) : 12,
                             i * BLOCK_W + 32 + 32 * vx[k],
                             j * BLOCK_H + 32 + 32 * vy[k],
@@ -268,7 +268,7 @@ function Stage1(stageno) {
                         //cmap[(i * 3 - 2) + vx[k]][(j * 3 - 2) + vy[k]] = cr[k];
                     }
                 } else {
-                    for (var k in vx) {
+                    for (let k in vx) {
                         //cmap[(i * 3 - 2) + vx[k]][(j * 3 - 2) + vy[k]] = false;//要素が無くてエラーにならないようにする。
                     }
                 }
@@ -290,7 +290,7 @@ function Stage1(stageno) {
             }
         }
 
-        for (var i in hlist) {
+        for (let i in hlist) {
 
             w = [0,
                 hlist[i].x * BLOCK_W, // + 10,
@@ -387,7 +387,7 @@ function Stage1(stageno) {
         }
 
         //ドアの設置
-        var r = Math.floor(rnd.next() * rlist.length)
+        let r = Math.floor(rnd.next() * rlist.length)
         w = [13,
             rlist[r].x * BLOCK_W + 16,
             rlist[r].y * BLOCK_H + 16,
@@ -400,17 +400,17 @@ function Stage1(stageno) {
 
         mc.push(w);
 
-        var map_cp = []; //　マップチップ
+        let map_cp = []; //　マップチップ
 
         //no:graphics　
         //type:floortype　0:床　1:壁　2:ドア　3:天井　4:Home 5:[Reserb] 6:Portal
         //     (type%2 == 1)trueの場合はFG(ForgForground) falseはBGに表示する。
         //c:当たり判定有無(有:true) visible:表示があるかどうか
 
-        for (var j in mc) {
-            var w = mc[j];
+        for (let j in mc) {
+            let w = mc[j];
 
-            var chip = {};
+            let chip = {};
 
             chip.no = w[0]; //bgchip_no(絵の種類) 現状(2024/03/28)ではBGptn使用だがspptnで処理でもよいかも
             chip.x = w[1];
@@ -450,7 +450,7 @@ function Stage1(stageno) {
         startroom = shuffle(startroom);//最小サイズの部屋(自機の開始位置)
         shuffled = shuffle(shuffled);//他の場所（敵やアイテムを配置）
         
-        var ms = [];
+        let ms = [];
         //  開始フレーム,座標,,角度,シナリオ,キャラ
 
         ms.push([false, startx,  starty, 0, "player", 0]);
@@ -470,11 +470,12 @@ function Stage1(stageno) {
             ]);
         }
 
-        var rcnt = 0;
+        let rcnt = 0;
+        let stmap;
 
         if ((stageno % 5) == 0) {
             //bossstage
-            var stmap = [
+            stmap = [
             ["common_vset0", 20, 20], //ball
             ["common_vset0", 22, 1], //key
             ["common_vset0", 21, 1], //extend
@@ -498,16 +499,16 @@ function Stage1(stageno) {
         } else {
             //normalstage
 
-            var e_mv  = Math.floor(stageno / 4); //1-4F_0.6-9F_1.11-14F_2.16-19F_3...26-29F_5
-            var e_rsh = Math.floor(stageno / 3); //1-3F_0.4-6F_1.7-9F_2.10-12F_3...27-29F_9
-            var e_tr  = Math.floor(stageno / 4); //1-4F_0.6-9F_1.11-14F_2.16-19F_3...26-29F_5
-            var e_mbl = Math.floor(stageno / 4); //1-4F_0.6-9F_1.11-14F_2.16-19F_3...26-29F_5
+            let e_mv  = Math.floor(stageno / 4); //1-4F_0.6-9F_1.11-14F_2.16-19F_3...26-29F_5
+            let e_rsh = Math.floor(stageno / 3); //1-3F_0.4-6F_1.7-9F_2.10-12F_3...27-29F_9
+            let e_tr  = Math.floor(stageno / 4); //1-4F_0.6-9F_1.11-14F_2.16-19F_3...26-29F_5
+            let e_mbl = Math.floor(stageno / 4); //1-4F_0.6-9F_1.11-14F_2.16-19F_3...26-29F_5
 
             const ENE_MAX = 25;
-            var e_mstd = ENE_MAX - e_mv - e_rsh - e_tr - e_mbl; //1F_25.14F_18_...29F_1
+            let e_mstd = ENE_MAX - e_mv - e_rsh - e_tr - e_mbl; //1F_25.14F_18_...29F_1
             e_mstd = (e_mstd < 5) ? 5 : e_mstd;
 
-            var stmap = [
+            stmap = [
             ["common_vset0", 20, 20], //ball
             ["common_vset0", 22, 1], //key
             ["common_vset0", 23, Math.floor(stageno / 4) + 4], //b //1-4F 4.6-9F_5.11-14F_6. 
@@ -533,13 +534,13 @@ function Stage1(stageno) {
             //["enemy_timeover", 33, 0]//l
         }
 
-        //var stmap = [[]];
+        //let stmap = [[]];
 
-        for (var i in stmap) {
-            var data = stmap[i];
+        for (let i in stmap) {
+            let data = stmap[i];
 
-            for (var j = 0; j < data[2]; j++) {
-                var nm = shuffled[rcnt];
+            for (let j = 0; j < data[2]; j++) {
+                let nm = shuffled[rcnt];
 
                 w = [true,
                     rlist[nm].x * BLOCK_W + BLOCK_W/2,
@@ -556,12 +557,12 @@ function Stage1(stageno) {
             }
         }
 
-        var map_sc = []; //　出現パターン
+        let map_sc = []; //　出現パターン
 
-        for (var j in ms) {
-            var w = ms[j];
+        for (let j in ms) {
+            let w = ms[j];
 
-            var ptn = {};
+            let ptn = {};
 
             ptn.s = w[0];
             ptn.x = w[1] + Math.floor(rnd.next() * (BLOCK_W/4)) *4 - BLOCK_W/2;
@@ -575,10 +576,10 @@ function Stage1(stageno) {
 
         //鍵の設定
         //5の倍数面は敵(ボス/中ボス)に鍵を持たせるために同じ座標に鍵を設定する。
-        var key_idx = -1;
+        let key_idx = -1;
 
-        for (var i in map_sc){
-            var w = map_sc[i];
+        for (let i in map_sc){
+            let w = map_sc[i];
 
             if (w.ch == 22){ //Key
                 key_idx = i;
@@ -587,8 +588,8 @@ function Stage1(stageno) {
         }
         if (key_idx < 0) alert("KEY not Found!");
 
-        for (var i in map_sc){
-            var w = map_sc[i];
+        for (let i in map_sc){
+            let w = map_sc[i];
 
             if (w.ch == 14){ //BOSS の位置に鍵を移動する。
                 map_sc[key_idx].x = w.x ;
@@ -603,7 +604,7 @@ function Stage1(stageno) {
 
     function mapBgPattern() {
 
-        var sp = 
+        let sp = 
         // SP NO.","X","Y","ADDX","ADDY"
     	[
             [0, 128 - 96, 128 - 128, 95, 95], //0,32,0 床96,96
@@ -630,12 +631,12 @@ function Stage1(stageno) {
             ["LPortal", 64, 96, 32, 32], //--, 0,96 点灯魔法陣64，96
         ];
 
-        var bg_ptn = []; // BGパターン
+        let bg_ptn = []; // BGパターン
 
-        for (var j in sp) {
-            var w = sp[j];
+        for (let j in sp) {
+            let w = sp[j];
 
-            var ptn = {};
+            let ptn = {};
 
             ptn.x = w[1];
             ptn.y = w[2];
@@ -651,12 +652,12 @@ function Stage1(stageno) {
 
     function myrnd(num) {
 
-        var seed = num;
+        let seed = num;
 
         this.next = readnum;
 
         function readnum() {
-            var rndnum = (1103515245 * seed + 12345) % 32768;
+            let rndnum = (1103515245 * seed + 12345) % 32768;
 
             seed = rndnum;
 

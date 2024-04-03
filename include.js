@@ -2,7 +2,7 @@
 //include
 //============================================
 
-var w = [
+let w = [
 //WebGameCoreSystem Files
     //SystemControl
     /*
@@ -87,6 +87,6 @@ var w = [
  "content/main.js"
 ];
 
-for (var i in w) {
+for (let i in w) {
     document.write('<script type="text/javascript" src="' + w[i] + '"></script>');
 };

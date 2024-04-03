@@ -6,10 +6,10 @@
     DMAP_W = MAP_W * 2 + 2;
     DMAP_H = MAP_H * 2 + 2;
 
-    var rnd = new myrnd( seed );
+    let rnd = new myrnd( seed );
 
-    var map = [[]];
-    var dispmap = [[]];
+    let map = [[]];
+    let dispmap = [[]];
 
     this.map = dispmap;
     this.mw = DMAP_W;
@@ -17,29 +17,29 @@
 
     this.create = function () {
 
-        for (var i = 0; i < MAP_W; i++) {
+        for (let i = 0; i < MAP_W; i++) {
             map[i] = [];
-            for (var j = 0; j < MAP_H; j++) {
+            for (let j = 0; j < MAP_H; j++) {
                 map[i][j] = -1;
 
             }
         }
 
-        for (var i = 0; i < DMAP_W; i++) {
+        for (let i = 0; i < DMAP_W; i++) {
             dispmap[i] = [];
-            for (var j = 0; j < DMAP_H; j++) {
+            for (let j = 0; j < DMAP_H; j++) {
                 dispmap[i][j] = "  ";
             }
         }
 
-        var vx = [0, 1, 0, -1];
-        var vy = [-1, 0, 1, 0];
+        let vx = [0, 1, 0, -1];
+        let vy = [-1, 0, 1, 0];
 
-        for (var i = 0; i < MAP_W; i++) {
-            for (var j = 0; j < MAP_H; j++) {
+        for (let i = 0; i < MAP_W; i++) {
+            for (let j = 0; j < MAP_H; j++) {
 
-                //            var m = Math.floor(Math.random() * 4);
-                var m = Math.floor(rnd.next() * 4);
+                //            let m = Math.floor(Math.random() * 4);
+                let m = Math.floor(rnd.next() * 4);
 
                 if (map[i][j] == -1) {
                     wallmake(i, j, m);
@@ -47,12 +47,12 @@
             }
         }
 
-        for (var i = 0; i < MAP_W; i++) {
-            for (var j = 0; j < MAP_H; j++) {
+        for (let i = 0; i < MAP_W; i++) {
+            for (let j = 0; j < MAP_H; j++) {
 
-                var wx = i * 2 + 1;
-                var wy = j * 2 + 1;
-                var wm = map[i][j];
+                let wx = i * 2 + 1;
+                let wy = j * 2 + 1;
+                let wm = map[i][j];
 
                 dispmap[wx][wy] = "□";
 
@@ -69,8 +69,8 @@
 
     function wallmake(x, y, m) {
 
-        var vx = [0, 1, 0, -1];
-        var vy = [-1, 0, 1, 0];
+        let vx = [0, 1, 0, -1];
+        let vy = [-1, 0, 1, 0];
 
         map[x][y] = m;
 
@@ -82,8 +82,8 @@
         x += vx[m];
         y += vy[m];
 
-        //       var r = Math.floor(Math.random() * 3)-1;
-        var r = Math.floor(rnd.next() * 3) - 1;
+        //       let r = Math.floor(Math.random() * 3)-1;
+        let r = Math.floor(rnd.next() * 3) - 1;
 
         m += r;
         if (m < 0) m = 3;
@@ -96,10 +96,10 @@
 
 
 
-        var st = "";
+        let st = "";
 
-        for (var i = 0; i < DMAP_H; i++) {
-            for (var j = 0; j < DMAP_W; j++) {
+        for (let i = 0; i < DMAP_H; i++) {
+            for (let j = 0; j < DMAP_W; j++) {
 
                 st += dispmap[j][i];
             }
@@ -111,12 +111,12 @@
 
     function myrnd(num) {
 
-        var seed = num;
+        let seed = num;
 
         this.next = readnum;
 
         function readnum() {
-            var rndnum = (1103515245 * seed + 12345) % 32768;
+            let rndnum = (1103515245 * seed + 12345) % 32768;
 
             seed = rndnum;
 

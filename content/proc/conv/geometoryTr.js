@@ -16,17 +16,17 @@ function geometoryTrance() {
     this.world_x = 0;
     this.world_y = 0;
 
-    var ww = this.worldwidth;
-    var wh = this.worldheight;
+    let ww = this.worldwidth;
+    let wh = this.worldheight;
 
-    var sw = this.stagewidth;
-    var sh = this.stageheight;
+    let sw = this.stagewidth;
+    let sh = this.stageheight;
 
-    var vw = this.viewwidth;
-    var vh = this.viewheight;
+    let vw = this.viewwidth;
+    let vh = this.viewheight;
 
-    var workWorldX = this.world_x;
-    var workWorldY = this.world_y;
+    let workWorldX = this.world_x;
+    let workWorldY = this.world_y;
 
     this.changestate = false;
 
@@ -41,7 +41,7 @@ function geometoryTrance() {
     
     //用途はほぼマウス位置からの座標変換で移動とかのフォロー用
     this.viewtoWorld = function (x, y) {
-        var w = {}
+        let w = {}
         w.x = this.world_x + x;
         w.y = this.world_y + y;
 
@@ -50,7 +50,7 @@ function geometoryTrance() {
 
     //ゲームオブジェクトは基本的にこちらで変換してから表示
     this.worldtoView = function (x, y) {
-        var w = {}
+        let w = {}
         if (this.world_x > ww - vw){
             if (x < vw){
                 w.x = ww - this.world_x + x;
@@ -116,7 +116,7 @@ function geometoryTrance() {
     //Stageの座標を返す
     this.nowstagepos = function () {
 
-        var w = {}
+        let w = {}
 
         //stagelefttop
         w.ltx = this.world_x + (vw / 2) - (sw / 2);
@@ -146,8 +146,8 @@ function geometoryTrance() {
 
     //入力した座標がStage内の場合True
     this.in_stage = function (x, y) {
-        var p = {}; p.x = x; p.y = y;; p.w = 1; p.h = 1;
-        var r = {};
+        let p = {}; p.x = x; p.y = y;; p.w = 1; p.h = 1;
+        let r = {};
         r.x = this.world_x + (vw / 2) - (sw / 2);
         r.y = this.world_y + (vh / 2) - (sh / 2);
         r.w = sw; r.h = sh;
@@ -157,32 +157,32 @@ function geometoryTrance() {
 
     //入力した座標がView内の場合True
     this.in_view = function (x, y) {
-        var p = {}; p.x = x; p.y = y; p.w = 1; p.h = 1;
-        var r = {}; r.x = this.world_x; r.y = this.world_y; r.w = vw; r.h = sh;
+        let p = {}; p.x = x; p.y = y; p.w = 1; p.h = 1;
+        let r = {}; r.x = this.world_x; r.y = this.world_y; r.w = vw; r.h = sh;
         return in_range(p, r);
     }
 
     //入力した範囲はViewに含まれる場合True
     this.in_view_range = function (x, y, w, h) {
-        var s = {}; s.x = x; s.y = y; s.w = w; s.h = h;
-        var r = {}; r.x = this.world_x; r.y = this.world_y; r.w = vw; r.h = vh;
+        let s = {}; s.x = x; s.y = y; s.w = w; s.h = h;
+        let r = {}; r.x = this.world_x; r.y = this.world_y; r.w = vw; r.h = vh;
         return in_range(s, r);
     }
 
     //入力した範囲はStageに含まれる場合True
     this.in_stage_range = function (x, y, w, h) {
-        var s = {}; s.x = x; s.y = y; s.w = w; s.h = h;
-        var r = {}; r.x = this.world_x; r.y = this.world_y; r.w = sw; r.h = sh;
+        let s = {}; s.x = x; s.y = y; s.w = w; s.h = h;
+        let r = {}; r.x = this.world_x; r.y = this.world_y; r.w = sw; r.h = sh;
         return in_range(s, r);
     }
 
     function in_range(s, r){//loopscrollcheck
-        var result = false;
-        var x = s.x;
-        var y = s.y;
+        let result = false;
+        let x = s.x;
+        let y = s.y;
 
-        for (var i=0; i<=1 ;i++){
-            for (var j=0; j<=1; j++){
+        for (let i=0; i<=1 ;i++){
+            for (let j=0; j<=1; j++){
                 s.x = x + ww*i;
                 s.y = y + wh*j;
                 result = (result || rangeCheck(s, r));

@@ -2,11 +2,11 @@
 //
 function sceneOption(state) {
 
-    var dev = state.System.dev;
+    let dev = state.System.dev;
     //宣言部
-    var work = dev.graphics[3];
+    let work = dev.graphics[3];
 
-    //var keys = dev.key_state;
+    //let keys = dev.key_state;
 
     this.init = scene_init;
     this.reset = scene_reset;
@@ -15,8 +15,8 @@ function sceneOption(state) {
 
     this.reset_enable = true;
 
-    var menuvf = false;
-    var keywait = 10;
+    let menuvf = false;
+    let keywait = 10;
 
     let ret_code = 6; //scenePause
     let retmf = false; //return mode false:pause true:gameS
@@ -52,9 +52,9 @@ function sceneOption(state) {
         if (keywait > 0) return 0;
 
         // input key section
-        var kstate = dev.key_state.check();
+        let kstate = dev.key_state.check();
 
-        var zkey = false; //exit button
+        let zkey = false; //exit button
         if (Boolean(kstate[90])) {//[z]
             if (kstate[90]) zkey = true;
         }
@@ -62,14 +62,14 @@ function sceneOption(state) {
 	        if (kstate[32]) zkey = true;
         }
 
-        var ckey = false; //dispalyclear
+        let ckey = false; //dispalyclear
         if (Boolean(kstate[67])) {
             if (kstate[67]) {//ckey↓
                 ckey = true;
             }
         }
 
-        var vkey = false; //inventry_view
+        let vkey = false; //inventry_view
         if (Boolean(kstate[86])) {
             if (kstate[86]) {//vkey↓
                 vkey = true;
@@ -97,9 +97,9 @@ function sceneOption(state) {
             }
         }
 
-        var numkey = false; //menu select num
-        var arrowkey = false; //list select 
-        for (var i in kstate){
+        let numkey = false; //menu select num
+        let arrowkey = false; //list select 
+        for (let i in kstate){
             if (Boolean(kstate[i])){
                 numkey = ((i >= 48) && (i <= 57))? true: false; //Fullkey[0]-[9]
                 arrowkey = ((i >= 37) && (i <= 40))? true: false; //Arrowkey
@@ -127,7 +127,7 @@ function sceneOption(state) {
         }
 
         if (ckey) {
-            for (var i=0; i<3; i++){
+            for (let i=0; i<3; i++){
                 dev.graphics[i].reset();
                 dev.graphics[i].clear();
                 dev.graphics[i].draw();

@@ -43,10 +43,10 @@ function soundCntl( asset ) {
     ];
 
     let snd = [];
-    //var s_pos = [];
-    //var s_stat = [];
+    //let s_pos = [];
+    //let s_stat = [];
 
-    for (var i in sd) {
+    for (let i in sd) {
         //snd[i] = new Audio("sound/" + sd[i] + ext);
         snd[i]  = asset[sd[i]].sound;//asset割り当て
         snd[i].pos = 0;
@@ -181,7 +181,7 @@ function soundCntl( asset ) {
         if (mute) vol = 0.0;
 
         vol = (vol > this.mastervolume)?this.mastervolume: vol;
-        for (var i in snd) {
+        for (let i in snd) {
             snd[i].volume = vol;
         }
         //snd[plnum].volume = vol;

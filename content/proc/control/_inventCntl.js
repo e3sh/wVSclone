@@ -14,13 +14,13 @@ function inventryControl(){
 
     //inventryControl
     //setupItem return -> o
-    var itemTable = itemTable();
+    let itemTable = itemTable();
 
-    var itemList = [];
+    let itemList = [];
 
     this.createItem = function(ID){
 
-        var item = new itemClass(ID, itemTable);
+        let item = new itemClass(ID, itemTable);
 
         this.itemlist.add(item);
         return item;
