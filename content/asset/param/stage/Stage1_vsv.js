@@ -56,6 +56,7 @@ function Stage1_vsv(stageno) {
     function mapBgImage(stageno) {
         return "bg1";
     }
+    function mapBgPattern() { return bgdata(); }
 
     function mapBgLayout() {
 
@@ -96,7 +97,7 @@ function Stage1_vsv(stageno) {
             //mc.push([12, 31 * BLOCK_W,  i * BLOCK_H, 32, 32, false, 0, true ]);
         }
         
-        for (let i = 0; i <= 50; i++) {
+        for (let i = 0; i <= 20; i++) {
             let wx = Math.floor(rnd.next() * 30) +1;
             let wy = Math.floor(rnd.next() * 30) +1;
 
@@ -125,6 +126,26 @@ function Stage1_vsv(stageno) {
             true
         ];
         mc.push(w);
+
+        wx = 15 * BLOCK_W + 10;
+        wy = 15 * BLOCK_H + 10;
+        w = [1,//chip.no１は、gameSceneで半透明の黒四角として表示処理されるようになっている。
+            wx-48, wy-48, 96, 96,
+            true,//HitCheck有
+            3, //ceiling(FG)
+            false
+        ];
+        mc.push(w);
+
+        sid = mc.length - 1;
+        w = [14, //魔法陣画像（拡大）
+            wx-32, wy-32, 64, 64,
+            true, //false,//HitCheck有
+            4, //Home(BG)
+            true //visibility
+        ];
+        mc.push(w);
+
         
         let map_cp = []; //　マップチップ
 
@@ -133,19 +154,24 @@ function Stage1_vsv(stageno) {
 
             let chip = {};
 
-            chip.no = w[0];
+            chip.no = w[0]; //bgchip_no(絵の種類) 現状(2024/03/28)ではBGptn使用だがspptnで処理でもよいかも
             chip.x = w[1];
             chip.y = w[2];
             chip.w = w[3];
             chip.h = w[4];
-            chip.c = w[5];
-            chip.type = w[6] + 10; //当たり判定混合用に背景ユニットはtype+10で処理することにする。
-            chip.view = false;
-            chip.visible = w[7];
-            chip.lookf = false;
+            chip.c = w[5]; //Hitcheck_当たり判定有無(有:true
+            chip.type = w[6] + 10; //当たり判定混合用に背景ユニットはtype+10で処理することにする。FG/BGはこの数字でif分岐(0:BG_1:FG_2:DOOR...）
+            chip.view = false; //視界に入っている場合はtrue/(処理時に変更される)
+            chip.visible = w[7]; //画像表示(基本有、(見えない壁では表示なし、通れる壁の場合は表示有、当たり判定無)
+            chip.lookf = false; //一度視界に入った場合にtrue(処理時に変更される/Submapで通ったところの認識で使用している)
+            chip.index = -1; //接触したときに個別識別する為のINDEX_ID
 
             map_cp.push(chip);
         }
+        for (let i in map_cp){map_cp[i].index = i;}
+
+        this.startroom_id = sid;
+        //this.colmap = cmap;
 
         return map_cp;
     }
@@ -185,10 +211,10 @@ function Stage1_vsv(stageno) {
         ms.push([false, 15 * BLOCK_W + 10, 15 * BLOCK_H + 10, 0, "player", 0]);
 
         let rcnt = 1;
-
+        let stmap;
         if ((stageno % 5) == 0) {
             //bossstage
-            let stmap = [
+            stmap = [
             ["common_vset0", 20, 20], //ball
             ["common_vset0", 22, 1], //key
             ["common_vset0", 21, 1], //extend
@@ -221,7 +247,7 @@ function Stage1_vsv(stageno) {
             let e_mstd = ENE_MAX - e_mv - e_rsh - e_tr - e_mbl;
             e_mstd = (e_mstd < 5) ? 5 : e_mstd;
 
-            let stmap = [
+            stmap = [
             ["common_vset0", 20, 20], //ball
             ["common_vset0", 22, 1], //key
             ["common_vset0", 23, Math.floor(stageno / 4) + 4], //b
@@ -312,47 +338,6 @@ function Stage1_vsv(stageno) {
         //マップの初期配置とマップチップの座標リストなど
         //flagはマップの初期化をするかどうか(trueでリスタート？）
     }
-
-    function mapBgPattern() {
-
-        let sp =
-        // SP NO.","X","Y","ADDX","ADDY"
-    	[[0, 128 - 96, 128 - 128, 95, 95], //0,32,0 床96,96
-    	[1, 224 - 96, 128 - 128, 95, 95], //1,128,0 壁96，96
-    	[2, 128 - 96, 128 - 128, 31, 31], //2, 32,0 床32，32　
-    	[3, 224 - 96, 128 - 128, 31, 31], //3,128,0 壁7　
-    	[4, 256 - 96, 128 - 128, 31, 31], //4,160,0 壁8 
-    	[5, 288 - 96, 128 - 128, 31, 31], //5,192,0 壁9
-    	[6, 224 - 96, 160 - 128, 31, 31], //6,128,32 壁4
-//    	[11, 256 - 96, 160 - 128, 31, 31], //
-    	[7, 288 - 96, 160 - 128, 31, 31], //7,192,32 壁6
-    	[8, 224 - 96, 192 - 128, 31, 31], //8,128,64 壁1
-    	[9, 256 - 96, 192 - 128, 31, 31], //9,160,64 壁2
-    	[10, 288 - 96, 192 - 128, 31, 31], //10,192,64 壁3
-    	[11, 256 - 96, 160 - 128, 31, 31], //11,160,32 壁5
-    	[12, 96 - 96, 192 - 128, 31, 31], //12,0,64 床(壁際)
-        [13,  0, 0, 32, 32], //13, 0, 0 Door
-        ];
-
-        let bg_ptn = []; // BGパターン
-
-        for (let j in sp) {
-            let w = sp[j];
-
-            let ptn = {};
-
-            ptn.x = w[1];
-            ptn.y = w[2];
-            ptn.w = w[3];
-            ptn.h = w[4];
-
-            bg_ptn[w[0]] = ptn;
-        }
-
-        return bg_ptn;
-    }
-
-
     function myrnd(num) {
 
         let seed = num;

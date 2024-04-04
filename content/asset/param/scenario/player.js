@@ -182,7 +182,13 @@ function sce_player( gObjc ) {
 
                         if (player.weapon == p.no){
                             wtut[p.no] = true;
-                            if ( p.name  == "rod" ) {o.item[20] = o.item[20] + 7;}//get ball
+                            if ( p.name  == "rod" ) {
+                                if (Boolean(o.item[20])){
+                                    o.item[20] += 7;
+                                }else{
+                                    o.item[20] = 7;
+                                }
+                                }//get ball
                             else {
                                 player.level++;
                                 if (!Boolean(o.item[4])){//<-tutorialCommentTable
@@ -612,7 +618,7 @@ function sce_player( gObjc ) {
                     break;
                 case 3:
                     o.set_object(37); //boom
-                    o.autotrig = 240 /(o.gameState.player.level + 1);
+                    //o.autotrig = 240 /(o.gameState.player.level + 1);
                     //o.autotrig = 30;
                     break;
                 case 4:
@@ -950,7 +956,13 @@ function sce_player( gObjc ) {
                 if (keyget > 0) {
                     this.set_object_ex(22, o.x, o.y, Math.floor(Math.random() * 360), "common_vset0");
                 }
-
+                //Clear Items
+                for (let i=51; i<59; i++){
+                    if (Boolean(o.item[i]))
+                    if (o.item[i] > 0) {
+                        this.set_object_ex(i, o.x, o.y, Math.floor(Math.random() * 360), 38);
+                    }
+                }
             }
             o.display_size = 1.3;
             o.change_sce("effect_bomb_x");//7

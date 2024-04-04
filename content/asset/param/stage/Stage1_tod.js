@@ -71,6 +71,7 @@ function Stage1_tod( seed, keyuse ) {
         //return tex_bg;
         return "bg3";
     }
+    function mapBgPattern() { return bgdata(); }
 
     function mapBgLayout() {
 
@@ -388,48 +389,6 @@ function Stage1_tod( seed, keyuse ) {
         //自機の発進処理もここに入れ込んでしまう方がスマートだと思われる。
         //flagはマップの初期化をするかどうか(trueでリスタート？）
     }
-
-    function mapBgPattern() {
-
-        let sp =
-        // SP NO.","X","Y","ADDX","ADDY"
-           // SP NO.","X","Y","ADDX","ADDY"
-        [[0, 128 - 96, 128 - 128, 95, 95],
-           [1, 224 - 96, 128 - 128, 95, 95],
-           [2, 128 - 96, 128 - 128, 31, 31],
-           [3, 224 - 96, 128 - 128, 31, 31],
-           [4, 256 - 96, 128 - 128, 31, 31],
-           [5, 288 - 96, 128 - 128, 31, 31],
-           [6, 224 - 96, 160 - 128, 31, 31],
-           [11, 256 - 96, 160 - 128, 31, 31],
-           [7, 288 - 96, 160 - 128, 31, 31],
-           [8, 224 - 96, 192 - 128, 31, 31],
-           [9, 256 - 96, 192 - 128, 31, 31],
-           [10, 288 - 96, 192 - 128, 31, 31],
-           [11, 256 - 96, 160 - 128, 31, 31],
-           [12, 96 - 96, 192 - 128, 31, 31],
-           [13,  0, 0, 32, 32],
-        ];
-
-        let bg_ptn = []; // BGパターン
-
-        for (let j in sp) {
-            let w = sp[j];
-
-            let ptn = {};
-
-            ptn.x = w[1];
-            ptn.y = w[2];
-            ptn.w = w[3];
-            ptn.h = w[4];
-
-            bg_ptn[w[0]] = ptn;
-        }
-
-        return bg_ptn;
-    }
-
-
     function myrnd(num) {
 
         let seed = num;

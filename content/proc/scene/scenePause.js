@@ -58,6 +58,37 @@ function scenePause(state) {
         work.putchr8(" Save and Quit.", DSP_X - 50, DSP_Y + 80);
         work.kprint("セーブしてタイトルに戻る", DSP_X - 50, DSP_Y + 90); 
 
+        let res = {load: true, ready:true, data:state.Game, title:"STAT/INV"};
+        res.data.stage = state.mapsc.stage;
+
+        if (res.load){
+            let t = state.Game.dataview2(res);
+            for (let i in t){
+                work.kprint(t[i],8, i*8 + 8);
+            }
+        }
+
+        let itemname = [
+            {no:50, sp:"AmuletR"}
+           ,{no:51, sp:"AmuletG"}
+           ,{no:52, sp:"AmuletB"}
+           ,{no:53, sp:"CandleR"}
+           ,{no:54, sp:"CandleB"}
+           ,{no:55, sp:"RingR"} 
+           ,{no:56, sp:"RingB"}
+           ,{no:57, sp:"Mirror"}
+           ];
+           
+        let ypos = 400 -24;
+        for (let i=51; i<59; i++){
+            if (Boolean(state.obCtrl.item[i])){
+                if (state.obCtrl.item[i] > 0) {
+                    work.put(itemname[i-51].sp, 12, ypos);
+                    ypos -= 24;
+                }
+            }
+        }
+
         work.draw();
         //work.reset();
         menuvf = false;

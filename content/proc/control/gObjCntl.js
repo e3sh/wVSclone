@@ -153,6 +153,14 @@
         35:"ｺｲﾝ",  // MP32 Coin1-4
         40:"宝箱", // MP39 TrBox
         50:"弓矢"    // MP43 Bow
+        ,51:"AmuletR"// MP50 AmuletR
+        ,52:"AmuletG"// MP51,AmuletG
+        ,53:"AmuletB"// MP52,AmuletB
+        ,54:"ﾛｳｿｸR"// MP53,CandleR
+        ,55:"ﾛｳｿｸB"// MP54,CandleB
+        ,56:"指輪R"// MP55,RingR
+        ,57:"指輪B"// MP56,RingB
+        ,58:"鏡"// MP57,Mirror
     }
     this.itemTable = itemtable;
 
@@ -1216,19 +1224,14 @@
                     result = true;
                 } 
             }
-
             if (o.type == 4){
                 mtnptn_put(scrn, x, y, o.mp);//, mpcnt, r, alpha, size){
-
                 //scrn.put(spname[o.chr], x, y);
-
                 result = true;
             }
         }
-
         return result;
     }
-
     // GameScene以外のSceneからItem追加する為のMethod
     this.get_item = function( num ){
 

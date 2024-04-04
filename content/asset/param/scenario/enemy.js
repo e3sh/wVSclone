@@ -958,10 +958,11 @@ function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリスト
     let ITEMLIST = [
         22, 27, 26, 21, //KEY,MAP,LAMP,1UP　
         15, 16, 17, 18, 19, 50, //WEAPONS
+        51,52,53,54,55,56,57,58,//ITEMS
         23, 24, 25, //COLORBALLS
         20, //BALL
     //    35,//:COINはPASS
-        0
+        ,0
     ];
 
     let rc = 0; //nonitem
@@ -994,10 +995,20 @@ function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリスト
         (35 COIN)   MP32    Coin1-4
         (40 TRBOX)DISPLAY用 MP39 TrBox
         50 BOW      MP43    Bow
+        51 AmuletR  MP50    <-SPDATAName
+        52 AmuletG  MP51    KEYITEMS
+        53 AmuletB  MP52
+        54 CandleR  MP53
+        55 CandleB  MP54
+        56 RingR    MP55
+        57 RingB    MP56
+        58 Mirror   MP57    <-SPDATAName
+
         表示優先順位
         1)KEY　LANP　MAP　1UP
         2)WEAPON全般
-        3)COLORBALL
+        3)KEYITEMS
+        4)COLORBALL
     */
 }
 
@@ -1024,6 +1035,14 @@ function sce_enemy_inv_gr(scrn, o){
     spname[27] = "Map";
     spname[35] = "Coin1";
     spname[50] = "Bow";
+    spname[51] = "AmuletR";
+    spname[52] = "AmuletG";
+    spname[53] = "AmuletB";
+    spname[54] = "CandleR";
+    spname[55] = "CandleB";
+    spname[56] = "RingR";
+    spname[57] = "RingB";
+    spname[58] = "Mirror";
 
     let w = o.gt.worldtoView(o.x, o.y);
 

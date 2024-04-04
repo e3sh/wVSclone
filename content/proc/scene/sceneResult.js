@@ -70,19 +70,12 @@ function sceneResult(state) {
         { ch:50, text:"弓矢",sp:"Bow"    }
     ];
 
+    let stage;
+    let nextstage;
+    let zapf;
+
     //処理部
     function scene_init() {
-        //初期化処理
-        /*diag = new DialogControl(
-
-            [
-            { keynum:38, text:"Selector", icon:"Mayura1", func:nop , x:320-80, y:200, w:120, h:50, keyon:false }//upkey
-            ,{ keynum:40, text:"地図", icon:"Map", func:nop , x:320-80, y:326, w:120, h:50, keyon:false }//downkey
-            ,{ keynum:37, text:"x3get テスト", icon:"BallB1", func:getitem(23) , x:320-80-150, y:255, w:120, h:50, keyon:false }//left
-            ,{ keynum:39, text:"選択肢", icon:"TrBox", func:nop , x:320-80+150, y:255, w:120, h:50, keyon:false }//right
-            ]
-        );
-        */
     }
 
     function scene_reset() {
@@ -148,6 +141,19 @@ function sceneResult(state) {
         dexef = false;        
 
         soundf = false;
+
+        //check
+        stage = mapsc.stage;
+        zapf = false;
+
+        nextstage = stage+1;
+
+        if (stage%15 == 9){
+            //RING CHECK ANY
+        }
+        if (stage%15 == 14){
+            //MIRROR AND AMULET ANY CHECK
+        }
     }
 
     function scene_step() {
@@ -244,12 +250,17 @@ function sceneResult(state) {
                 if (ret_code != 0) menu[i].sel = false; //ButtunLampOff
         }
 
-        let stage = state.Game.nowstage;
+        //let stage = state.Game.nowstage;
         wtxt.push(" == Stage -" + stage + "- Clear ==");//+ ret_code);
-        if (state.Game.nowstage%15 == 0){
+        if (stage%15 == 0){
             wtxt.push(" ");
             wtxt.push(" == CONGRATULATIONS!& ==");
         }
+        if (zapf){
+            wtxt.push(" ");
+            wtxt.push("  YOU Zapped to Stage." + nextstage );
+        }
+
         //      wtxt.push("---------------");
 //      wtxt.push("Push rMouse Button to Start");
 

@@ -252,6 +252,14 @@ function sceneOption(state) {
                 35:"Coin1",   //Coin
                 40:"TrBox",   //TrBox
                 50:"Bow"      //Bow
+                ,51:"AmuletR"// MP50 AmuletR
+                ,52:"AmuletG"// MP51,AmuletG
+                ,53:"AmuletB"// MP52,AmuletB
+                ,54:"CandleR"
+                ,55:"CandleB"
+                ,56:"RingR"
+                ,57:"RingB"
+                ,58:"Mirror"
             }
                 
             let obj = state.mapsc.ini_sc();

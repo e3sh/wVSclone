@@ -91,7 +91,11 @@ function sce_pl_bullet_homing2() {
             case 2:
                 if (o.frame > 90) o.get_target(2);
 
-                o.target_rotate_r(15 + ((o.frame < 20) ? 15 : 0));
+                if (Boolean(o.target)){
+                    if (o.gt.in_view(o.target.x, o.target.y)){
+                        o.target_rotate_r(15 + ((o.frame < 20) ? 15 : 0));
+                    }
+                }
                 o.vset(4 + ((o.frame > 20) ? 4 : 0) + ((o.frame > 25) ? 8 : 0));
                 break;
             case 4:

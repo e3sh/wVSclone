@@ -413,6 +413,21 @@ function motionPattern(){
     ["Barn3", 1, 2]
 	];
 */
+	//=================================================
+	let itemname = [
+	 {no:50, sp:"AmuletR"}
+	,{no:51, sp:"AmuletG"}
+	,{no:52, sp:"AmuletB"}
+	,{no:53, sp:"CandleR"}
+	,{no:54, sp:"CandleB"}
+	,{no:55, sp:"RingR"} 
+	,{no:56, sp:"RingB"}
+	,{no:57, sp:"Mirror"}
+	];
+
+	for (let i in itemname){
+		mp[itemname[i].no] = {pattern:[[itemname[i].sp,0,0]] }
+	}
 	//
 //@@
 	return mp;
@@ -455,4 +470,13 @@ function motionPattern(){
 44 Arrow
 45 Cursor
 46 Barn
+47-49 (Reserb)
+50 AmuletR
+51 AmuletG
+52 AmuletB
+53 CandleR
+54 CandleB
+55 RingR
+56 RingB
+57 Mirror
 */

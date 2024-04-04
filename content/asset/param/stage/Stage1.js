@@ -195,14 +195,11 @@ function Stage1(stageno) {
     function mapBgImage(stageno) {
 
         let num = Math.floor(((stageno-1) % 15) / 5) + 1;
-
         let tex_bg = "bg" + num;
-
-    //    let tex_bg = new Image();
-    //    tex_bg.src = "pict/cha.png";
 
         return tex_bg;
     }
+    function mapBgPattern() { return bgdata(); }
 
     function mapBgLayout() {
 
@@ -460,6 +457,8 @@ function Stage1(stageno) {
         //ms.push([false, rlist[r].x * 96 + 10, rlist[r].y * 96 + 10, 0, "friend_rotate", 10]);
     
         let itl = [20, 20, 20, 20, 23, 24, 25]; //スタート地点に設置される初期装備/ITEM
+    //    let itl = [20, 20, 20, 20, 23, 24, 25, 51, 52, 53, 54, 55, 56, 57, 58]; //スタート地点に設置される初期装備/ITEM DEBUG
+    
         for (let i=0; i < 7; i++){
             let r = startroom[i%startroom.length];
             ms.push([
@@ -530,9 +529,27 @@ function Stage1(stageno) {
             ["enemy_turn_r", 1, e_tr ],
             ["enemy_move_n_l", 1, e_mbl]
             ];
-
-            //["enemy_timeover", 33, 0]//l
         }
+        let chkno = stageno % 15;
+        //            0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+        let settb = [20,20,57,51,57,51,54,56,52,56,52,55,53,58,58,20];
+        // 51 AmuletR MP50 3 5  ST15 TRIGER  ZAP3 ||
+        // 52 AmuletG MP51 8 10 ST15 TRIGER  ZAP8 ||
+        // 53 AmuletB MP52 12   ST15 TRIGER  ZAP12||
+        // 54 CandleR MP53 6    NONE 
+        // 55 CandleB MP54 11   NONE
+        // 56 RingR   MP55 7 9  ST10 TRIGER  ZAP7 ||  
+        // 57 RingB   MP56 2 4  ST10 TRIGER  ZAP7
+        // 58 Mirror  MP57 13 14 ST15 TRIGER ZAP0 &&
+        //---------------------------
+        //------ OK Z OK  Z  Z   Z  Z
+        //AMULET o  x  -  -  -R -G -B
+        //RING   -  -  o  x  -  -  -
+        //MIRROR o  x  -  -  o  o  o
+        //       15 0 10  7  3  8  12
+        // ZAP CHECK STAGE-CLEAR9 -CLEAR14 /2024/04/04未実装　ResultScene
+
+        stmap.push(["common_vset0",settb[chkno],1]);
 
         //let stmap = [[]];
 
@@ -601,54 +618,6 @@ function Stage1(stageno) {
         //マップの初期配置とマップチップの座標リストなど
         //flagはマップの初期化をするかどうか(trueでリスタート？）
     }
-
-    function mapBgPattern() {
-
-        let sp = 
-        // SP NO.","X","Y","ADDX","ADDY"
-    	[
-            [0, 128 - 96, 128 - 128, 95, 95], //0,32,0 床96,96
-            [1, 224 - 96, 128 - 128, 95, 95], //1,128,0 壁96，96
-            [2, 128 - 96, 128 - 128, 31, 31], //2, 32,0 床32，32　
-            [3, 224 - 96, 128 - 128, 31, 31], //3,128,0 壁7　
-            [4, 256 - 96, 128 - 128, 31, 31], //4,160,0 壁8 
-            [5, 288 - 96, 128 - 128, 31, 31], //5,192,0 壁9
-            [6, 224 - 96, 160 - 128, 31, 31], //6,128,32 壁4
-    //    	[11, 256 - 96, 160 - 128, 31, 31], //
-            [7, 288 - 96, 160 - 128, 31, 31], //7,192,32 壁6
-            [8, 224 - 96, 192 - 128, 31, 31], //8,128,64 壁1
-            [9, 256 - 96, 192 - 128, 31, 31], //9,160,64 壁2
-            [10, 288 - 96, 192 - 128, 31, 31], //10,192,64 壁3
-            [11, 256 - 96, 160 - 128, 31, 31], //11,160,32 壁5
-            [12,  0, 64, 32, 32], //12, 0,64 床(壁際)
-            [13,  0,  0, 32, 32], //13, 0, 0 Door  32，32
-            [14,  0, 32, 32, 32], //14, 0,32 魔法陣 32，32
-            [15,  0, 96, 32, 32], //15, 0,96 石板   32，32
-            ["Door",     0,  0, 32, 32], //13, 0, 0 Door  32，32
-            ["Portal",   0, 32, 32, 32], //14, 0,32 魔法陣 32，32
-            ["StoneB",   0, 96, 32, 32], //15, 0,96 石板   32，32
-            ["OpDoor",  32, 96, 32, 32], //--, 0,32 解放扉　  32，96
-            ["LPortal", 64, 96, 32, 32], //--, 0,96 点灯魔法陣64，96
-        ];
-
-        let bg_ptn = []; // BGパターン
-
-        for (let j in sp) {
-            let w = sp[j];
-
-            let ptn = {};
-
-            ptn.x = w[1];
-            ptn.y = w[2];
-            ptn.w = w[3];
-            ptn.h = w[4];
-
-            bg_ptn[w[0]] = ptn;
-        }
-
-        return bg_ptn;
-    }
-
 
     function myrnd(num) {
 

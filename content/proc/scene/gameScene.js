@@ -279,9 +279,6 @@ function gameScene(state){
 
 	            obCtrl.item = state.Game.item;
 	            obCtrl.itemstack = state.Game.itemstack;
-
-
-
 	        } else {//InitialStart
 	            dead_cnt = 0;
 	            state.Game.nowstage = state.Config.startstage;

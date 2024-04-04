@@ -20,8 +20,7 @@
 //
 function ItemTable(){
 
-    let it = [];
-	const EQUIPMENT = 1, ITEM = 2, EXRARE = 3, POINT = 4;
+ 	const EQUIPMENT = 1, ITEM = 2, EXRARE = 3, POINT = 4;
 
 	let it = [
 //	ID, name, graph, type, get, equip, use, exrare, inspect, p0, p1, p2, p3, p4, p5, unk_name, info
@@ -76,8 +75,9 @@ function ItemTable(){
         , use: false    //使用デキル場合
         , exrare: false //特殊効果
         , inspect: false    //鑑定スルトカ？イル？Status表示とか
+        , instant: false    //入手時即時実行f
         , param:[0] //functionで使用するパラメ－タ用数値
-        , unk_name:"未鑑定名",unk_graph:"", text:"HELPTEXT", info:"簡単な説明" 
+        , unk_name:"未鑑定名",unk_graph:"", text:"HELPTEXT", info:"簡単な説明か性能表示" 
     }
 
     return item_list; 

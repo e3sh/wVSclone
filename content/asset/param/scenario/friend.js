@@ -328,7 +328,7 @@ function sce_friend_boom() {
             //o.set_object_ex(6, o.x + o.Cos(o.vector) * 40, o.y + o.Sin(o.vector) * 40, o.vector, "effect_hit");
 
             o.damageflag = false;
-            o.status = 2;
+            //o.status = 2;
             //f = 1; //敵にダメージで消滅
         }
 
@@ -361,7 +361,7 @@ function sce_friend_boom() {
 
         if (o.status == 0) f = 1; //未使用ステータスの場合は削除
 
-        if (o.states == 2) f = 1;//敵にダメージで消滅
+        //if (o.states == 2) f = 1;//敵にダメージで消滅
 
         if (o.shotcount > 180) return o.sc_move();
         return f;
