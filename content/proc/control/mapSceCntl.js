@@ -62,6 +62,7 @@ function mapSceControl(){
             }else if (num%15 == 0) {
                 stage_data = new Stage1_brm(num);//BossRooｍ
             }else if (num <= 30 ){
+                //stage_data = new TestStage(num);
                 stage_data = new Stage1(num);//NormalStage
             }else{
                 stage_data = new Stage1_tod(num, kyuse);//TEST STAGE
@@ -80,7 +81,7 @@ function mapSceControl(){
         }
         stage_msc   = stage[num].mapScenario;
         stage_bg    = stage[num].bgPattern;
-        stage_mch   = stage[num].mapChip;//プレイ中MapChipはCollisionチェックで書き換えているのでコピーを渡す。
+        stage_mch   = stage[num].mapChip;//プレイ中MapChipはCollisionチェックで書き換えているのでコピーを渡すつもり。
         stage_inisc = stage[num].initialScenario;
         stage_ptn   = stage[num].bgSpdata;
         colmap  = stage[num].colmap;

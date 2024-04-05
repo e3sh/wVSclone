@@ -77,6 +77,24 @@ function Stage1_brm() {
             }
         }
 
+        wx = 15 * BLOCK_W + 32;
+        wy = 25 * BLOCK_H + 32;
+        w = [1,//chip.no１は、gameSceneで半透明の黒四角として表示処理されるようになっている。
+            wx-48, wy-48, 96, 96,
+            true,//HitCheck有
+            3, //ceiling(FG)
+            false//部屋じゃないので表示しない
+        ];
+        mc.push(w);
+
+        sid = mc.length - 1;
+        w = [14, //魔法陣画像（拡大）
+            wx-32, wy-32, 64, 64,
+            true, //false,//HitCheck有
+            4, //Home(BG)
+            true //visibility
+        ];
+        mc.push(w);
 
         wx = 15;
         wy = 8;
@@ -123,7 +141,6 @@ function Stage1_brm() {
         ms.push([false, 15, 25, 0, "player", 0]);//Player
 
         ms.push([true, 15, 12, 0, "boss_1", 14]);//boss
-        //ms.push([true, 15, 14, 0, "boss_2", 14]);//boss
         ms.push([true, 15, 12, 0, "common_vset0", 22]);//key
 
         ms.push([true, 13, 16, 0, "boss_0", 34]);//sub

@@ -298,7 +298,7 @@ function gameScene(state){
 
 	    if (contflg && (!state.Game.cold)) {//result画面から戻ってきた場合
 	        //stage推移
-	        w = mapsc.stage;
+	        let w = mapsc.stage;
 	        w++;
 
 			if ( w > 30 ) w = 1;//ステージ最終面だった場合最初に戻る。エンディングがある場合は変更
@@ -342,9 +342,10 @@ function gameScene(state){
 		//^^^^^
 		obCtrl.messageconsole.write("==STAGE START==");
 
-		if (state.Game.cold && contflg) obCtrl.tutTable(9);//CONTINUEについて説明
-
-		if (state.Game.nowstage%5==0) obCtrl.tutTable(6);//ボスについて説明
+		if (state.Game.cold && contflg)	 obCtrl.tutTable(9);//CONTINUEについて説明
+		if (state.Game.nowstage%5==0)	 obCtrl.tutTable(6);//ボスについて説明
+		if (state.Game.nowstage%15==6)	 obCtrl.tutTable(13);//10面要アイテム説明
+		if (state.Game.nowstage%15==11)	 obCtrl.tutTable(14);//15面要アイテム説明
 	}
 
 	function game_step() {
@@ -1168,14 +1169,14 @@ function gameScene(state){
 		if (Boolean(obCtrl.item[20])) {
 			let n = obCtrl.item[20];
 
-			work3.kprint("球:" + n,
+			work3.kprint("①:" + n,
 			dev.layout.zanki_x + 256, dev.layout.zanki_y - 12);
 		}
 
 		//取得アイテム表示
 		if (Boolean(obCtrl.itemstack)) {
-
-			let wchr = { 20: "..", 23: "爆弾.", 24: "ｼｰﾙﾄﾞ.", 25: "薬." }
+			//①BALL ②B　③S　④L
+			let wchr = { 20: "①", 23: "②", 24: "③", 25: "④" }
 			let witem = [];
 
 			for (let i in obCtrl.itemstack) {

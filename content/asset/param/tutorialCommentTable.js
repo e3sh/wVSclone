@@ -8,7 +8,7 @@ function tutorialCommentTable(){
 	//基本操作
 	t[0] = ["「操作」: 移動:キーボード WASD/矢印 (GAMEPAD) ⑩レバー"
 		,"Z ⑬ 攻撃/回収 X ⑫ アイテム使用 C ⑪ ジャンプ"
-		,"ESC(START) PAUSE(一時停止)/ F:フルスクリーン "
+		,"ESC(START) メニュー/一時停止 / F:フルスクリーン "
 	//	,"ゲームの目的:時間内に鍵を入手して扉へ向かいステージクリアする"
 		]; //triger player.js
 	//施設の説明
@@ -57,6 +57,13 @@ function tutorialCommentTable(){
 		,"[H]キー(部屋の中では使用できません）"
 		];//triger player.js
 
+	t[13] = ["「ボス」:ステージ10に行くには"
+		,"いずれかの「アイテム:リング」が必要"
+		];//triger GameScene.js
+
+	t[14] = ["「大ボス」:ステージ15に行くには"
+		,"いずれかの「アイテム:護符」と「アイテム:ミラー」が必要"
+		];//triger GameScene.js
 
 	//triger gObjClass.js get_item();
 	//武器の説明
@@ -125,7 +132,7 @@ function tutorialCommentTable(){
 	t[35] = ["「アイテム:⑤コイン」:ポイントアイテム。EXP+10"];
 
 	t[40] = ["「アイテム:宝箱」:アイテムを持っていた敵がドロップ。EXP+100"
-		];
+		];//本コメント:呼び出しタイミング未実装
 
 	t[51] = ["「アイテム:赤の護符」:EXP+100"];
 	t[52] = ["「アイテム:緑の護符」:EXP+100"];

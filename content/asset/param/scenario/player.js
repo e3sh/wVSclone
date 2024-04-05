@@ -765,10 +765,10 @@ function sce_player( gObjc ) {
         o.vy = wvy;
 
         //Door in (StageClear)
-        if (!stageclrf && o.doorflag && o.jump == 0) {//
+        if (!stageclrf && !o.turndoorkey && o.doorflag && o.jump == 0) {//
             if (!Boolean(o.item[2])) o.get_item(2);//扉の説明実施
             if (keyget > 0) {
-                o.item[22] = 0;
+                //o.item[22] = 0;//ドアを開けたタイミングでキーを消すと入る前に倒された場合、鍵がなくなってステージクリア不可となる
                 o.turndoorkey = true;//ドア開けた連絡用
 
                 delay_st = o.alive;
@@ -780,8 +780,8 @@ function sce_player( gObjc ) {
             stageclrf = true;
 
             o.jump = 1;
-            o.jpcount = 20;
-            o.jpvec = -5.6 - 0.4 * o.vecfrm;;
+            o.jpcount = 40;
+            o.jpvec = -2.8 - 0.2 * o.vecfrm;;
             o.colcheck = false;
 
             o.triger = TRIG_WAIT;
@@ -795,7 +795,7 @@ function sce_player( gObjc ) {
             o.vy = Math.sign(o.starty - o.y)*2;
 
             if (o.alive > delay_st +250 && o.doorflag && o.jump == 0){//0.25s
-                //o.item[22] = 0;
+                o.item[22] = 0;//クリア時に鍵を消す
                 o.gameState.player.hp = o.hp;
 
                 o.gameState.player.spec.VIT = o.spec.VIT;

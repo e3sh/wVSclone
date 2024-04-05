@@ -42,6 +42,7 @@ let w = [
  "content/asset/param/stage/Dangeon_tod.js",
  "content/asset/param/stage/Stage1_vsv.js",
  "content/asset/param/stage/Stage1_brm.js",
+    //"content/asset/param/stage/TestStage.js",
  //データ部(キャラクタの動きなどの設定）
  "content/asset/param/scenario.js",
  "content/asset/param/scenario/player.js",

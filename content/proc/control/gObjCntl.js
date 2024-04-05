@@ -450,8 +450,18 @@
                 //w.colitem && w.colitem.remove();
                 //if ((w.c) && (w.view)) { //画面外は当たり判定を行わない
                 if (w.c) { //表示させなかった画面外の壁も当たり判定を行う
-
                     //当たり判定のある壁を当たり判定ツリーに追加
+
+                    //12:Door 13:Ciel 14:Circle 16:StoneB 
+                    //当たり判定のあるmapchipの画像を初期化(クリアした面に戻るとドアが開いたままの画像になっている為)                            
+                    switch(w.type){
+                        case 12: w.no = "Door"; break;
+                        case 13: break;
+                        case 14: w.no = "Portal"; break;
+                        case 16: break;
+                        default: break;
+                    }
+                    
                     if (!w.colitem) {
                         w.colitem = cdt.createObjectForTree();
                         w.colitem.obj = w;
@@ -1255,6 +1265,32 @@
 
         this.messageconsole.write(this.itemTable[num] + ".GET");
     };
+
+    this.keyitem_view_draw = function(device){
+
+        let ypos = 400 -24;
+        for (let i=51; i<59; i++){
+            if (Boolean(this.item[i])){
+                if (this.item[i] > 0) {
+                    device.put(
+                        motion_ptn[ch_ptn[i].mp].pattern[0][0]
+                        , 12, ypos);
+                    
+                    //device.kprint(motion_ptn[[ch_ptn[i].mp]].pattern[0],12,ypos);
+
+                    //device.kprint("ch-mp:" + ch_ptn[i].mp,12,ypos);
+                    //device.kprint("mp:" + motion_ptn[ch_ptn[i].mp].pattern[0][0],12,ypos+8);
+                    ypos -= 24;
+                }
+            }
+        }
+    }
+
+    this.keyitem_reset = function(){
+        for (let i=51; i<59; i++){
+            this.item[i] = 0;
+        }
+    }
 }
 
 // gObjCmdDec

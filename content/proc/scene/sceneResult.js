@@ -142,17 +142,82 @@ function sceneResult(state) {
 
         soundf = false;
 
-        //check
-        stage = mapsc.stage;
-        zapf = false;
+        //check      
+        // 51 AmuletR MP50 3    ST15 
+        // 52 AmuletG MP51 8    ST15 
+        // 53 AmuletB MP52 12   ST15 
+        // 54 CandleR MP53 6    NONE 
+        // 55 CandleB MP54 11   NONE
+        // 56 RingR   MP55 7 9  ST10   
+        // 57 RingB   MP56 2 4  ST10 
+        // 58 Mirror  MP57 13 14 ST15 
+        //---------------------------
+        //------ OK Z OK  Z  Z  Z
+        //AMULET o  x  -  -  o  x
+        //RING   -  -  o  x  -  -   
+        //MIRROR o  x  -  -  x  o
+        //       15 0 10  7 13  3 
+        // ZAP CHECK STAGE-CLEAR9 -CLEAR14
+        function itemcheck(){
+            
+            let r = [];
+            for (let i=0;i<=7;i++){
+                r[i] = state.obCtrl.item[51+i];
+                if (Boolean(r[i])){
+                    r[i] = (r[i]>0)?true:false;
+                } else r[i] = false;
+            }
+            let it = {
+                Amulet:{R: r[0], G: r[1], B: r[2]}
+                ,Ring: {R: r[5], B: r[6]}
+                ,Mirror:   r[7]
+            }
+            return it;
+        }
 
+        stage = mapsc.stage;
         nextstage = stage+1;
 
+        zapf = false;
+
+        let r = itemcheck();
         if (stage%15 == 9){
             //RING CHECK ANY
+            if (r.Ring.R || r.Ring.B ){
+                //NextStage Normal 10
+                zapf = false;
+            }else{
+                //Zap to 7
+                mapsc.stage = 6;
+                nextstage = mapsc.stage + 1;
+                zapf = true;
+            }
         }
         if (stage%15 == 14){
             //MIRROR AND AMULET ANY CHECK
+            if (r.Amulet.R || r.Amulet.G || r.Amulet.B){
+                if (r.Mirror){
+                    //NextStage Normal 15
+                    zapf = false;
+                }else{
+                    //Zap to Stage 13
+                    mapsc.stage = 12;
+                    nextstage = mapsc.stage + 1;
+                    zapf = true;
+                }
+            } else {
+                if (r.Mirror){
+                    //Zap to Stage 3
+                    mapsc.stage = 2;
+                    nextstage = mapsc.stage + 1;
+                    zapf = true;
+                }else{
+                    //Zap to Stage 0
+                    mapsc.stage = -1;//ZAP to Stage.0
+                    nextstage = mapsc.stage + 1;
+                    zapf = true;
+                }
+            }
         }
     }
 
@@ -194,6 +259,7 @@ function sceneResult(state) {
                 }
                 if (!soundf&&(state.Game.nowstage%15 == 0)) {
                     dev.sound.effect(15);//Fanfare
+                    state.obCtrl.keyitem_reset();
                     soundf = true;
                 }
             }
@@ -235,6 +301,7 @@ function sceneResult(state) {
                 device.stroke();
             }
             work2.putFunc(o);
+            state.obCtrl.keyitem_view_draw(work2);
 
             work2.draw();
             work2.reset();
@@ -252,15 +319,12 @@ function sceneResult(state) {
 
         //let stage = state.Game.nowstage;
         wtxt.push(" == Stage -" + stage + "- Clear ==");//+ ret_code);
+        wtxt.push(" ");
         if (stage%15 == 0){
-            wtxt.push(" ");
             wtxt.push(" == CONGRATULATIONS!& ==");
+        }else{
+            wtxt.push(((zapf)?"   WARP! ": "   Goto ") + "Next Stage." + nextstage );
         }
-        if (zapf){
-            wtxt.push(" ");
-            wtxt.push("  YOU Zapped to Stage." + nextstage );
-        }
-
         //      wtxt.push("---------------");
 //      wtxt.push("Push rMouse Button to Start");
 

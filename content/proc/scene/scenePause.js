@@ -67,7 +67,7 @@ function scenePause(state) {
                 work.kprint(t[i],8, i*8 + 8);
             }
         }
-
+        /*
         let itemname = [
             {no:50, sp:"AmuletR"}
            ,{no:51, sp:"AmuletG"}
@@ -88,6 +88,8 @@ function scenePause(state) {
                 }
             }
         }
+        */
+        state.obCtrl.keyitem_view_draw(work);
 
         work.draw();
         //work.reset();

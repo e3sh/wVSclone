@@ -68,7 +68,7 @@ function stateGame() {
     this.lamp = false;
     this.map = false;
 
-    this.mode = 0;//Palyer Type Select
+    this.mode = 0;//Palyer Type Select //TESTMODE 1
     this.score = 0;
     
     this.reset = function(){
