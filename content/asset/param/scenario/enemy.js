@@ -622,8 +622,11 @@ function sce_enemy_move_std2( intrvl, sdst ) {
                     break;
                 default:
                     o.set_object(45); //wand
+                    o.set_object(2); //bullet
+                    o.autotrig = 240;
                     break;
                 }
+                //o.set_object_ex(20, o.x, o.y, 0, 43, "AT" + o.weapontype);
             }
         }
         
@@ -1013,13 +1016,13 @@ function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリスト
 }
 
 function sce_enemy_inv_gr(scrn, o){
-    let spname = [];
+    //let spname = [];
 
     if (o.hp < o.maxhp) lbar_draw();
 
     if (!o.pickgetf) return;　//アイテム持っていない場合、処理せず。
     if (o.weapongetf && o.lockon_flag) return; //武器使用時表示しない。
-  
+    /*
     spname[15] = "Wand";
     spname[16] = "Knife";
     spname[17] = "Axe";
@@ -1043,7 +1046,7 @@ function sce_enemy_inv_gr(scrn, o){
     spname[56] = "RingR";
     spname[57] = "RingB";
     spname[58] = "Mirror";
-
+    */
     let w = o.gt.worldtoView(o.x, o.y);
 
     if ((w.x >= 0) && (w.x <= scrn.cw) && (w.y >= 0) && (w.y <= scrn.ch)) {
@@ -1059,7 +1062,8 @@ function sce_enemy_inv_gr(scrn, o){
             // o.vector = (o.startv + (o.rotatecount * 12))%360;
             //w.x = w.x + o.Cos(o.vector) * 16;
             //w.y = w.y + o.Sin(o.vector) * 16;
-            scrn.put(spname[f], w.x, w.y); 
+            //scrn.put(spname[f], w.x, w.y); 
+            scrn.put(o.dict_ch_sp( f ), w.x, w.y); 
             //scrn.putchr8(o.weapontype, w.x+10, w.y+10);
         //} else {
         if (o.pick.length > 1){

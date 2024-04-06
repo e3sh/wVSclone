@@ -689,7 +689,7 @@ function gameScene(state){
 									w.y + shifty,
 									mc.w, 
 									mc.h,
-									"rgba(4,4,4,0.8)"
+									obCtrl.ceilshadow
 								);
 							}else{
 								forgroundBG.putPattern(
@@ -1135,9 +1135,9 @@ function gameScene(state){
 		work3.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
 
 		stbar.setStatusArray([
-            state.Game.player.spec.VIT,
-            state.Game.player.spec.INT,
-            state.Game.player.spec.MND //,
+            state.Game.player.base.VIT,
+            state.Game.player.base.INT,
+            state.Game.player.base.MND //,
             //state.Game.player.spec.ETC
 			//Math.abs(Math.trunc((obCtrl.score-BaseLup)/(NextLup-BaseLup)*7))
         ]);

@@ -68,10 +68,11 @@ function sceneLvUp(state) { //2024/03/06
         work2.draw();
 
         let dpara = [
-            { keynum:38, text:["0.5s Ext.", (5 + state.Game.player.spec.VIT * 0.5) + "s->" + (5 + (state.Game.player.spec.VIT+1) * 0.5) + "s" ],
+            { keynum:38, text:["0.5s Ext.", (5 + state.Game.player.base.VIT * 0.5) + "s->" + (5 + (state.Game.player.base.VIT+1) * 0.5) + "s" ],
                 icon:"BallS1", barcolor: "cyan",  
                 func: { call: function(p){
-                    state.Game.player.spec.VIT++;
+                    //state.Game.player.spec.VIT++;
+                    state.Game.player.base.VIT++;
                     ret_code = p;
                 }, p:1},
                 x:-35, y:-25-55, w:70, h:50, keyon:false, select: false, curpos: 1 }//upkey
@@ -82,18 +83,20 @@ function sceneLvUp(state) { //2024/03/06
                 }, p:1},
                 x:-35, y:-25+55, w:70, h:50, keyon:false }//downkey
                 */
-            ,{ keynum:37, text:[" Heal+1", " " + (3 + state.Game.player.spec.MND) + " -> " + (3 + state.Game.player.spec.MND+1) ], 
+            ,{ keynum:37, text:[" Heal+1", " " + (3 + state.Game.player.base.MND) + " -> " + (3 + state.Game.player.base.MND+1) ], 
                 icon:"BallL1", barcolor: "limegreen",
                 func: { call: function(p){
-                    state.Game.player.spec.MND++;
+                    //state.Game.player.spec.MND++;
+                    state.Game.player.base.MND++;
                     ret_code = p;
                 }, p:1},
                 x:-35-80, y:-25, w:70, h:50, keyon:false, select: false, curpos: 8 }//left
 
-            ,{ keynum:39, text:["Damage+2", " " + (10 + state.Game.player.spec.INT*2) + "-> " + (10 + (state.Game.player.spec.INT+1)*2) ], 
+            ,{ keynum:39, text:["Damage+2", " " + (10 + state.Game.player.base.INT*2) + "-> " + (10 + (state.Game.player.base.INT+1)*2) ], 
                 icon:"BallB1", barcolor: "orangered",
                 func: { call: function(p){
-                    state.Game.player.spec.INT++;
+                    //state.Game.player.spec.INT++;
+                    state.Game.player.base.INT++;
                     ret_code = p;
                 }, p:1},
                 x:-35+80, y:-25, w:70, h:50, keyon:false, select: false, curpos: 2 }//right
@@ -147,9 +150,9 @@ function sceneLvUp(state) { //2024/03/06
         */
 
         diag.setStatusArray([
-            state.Game.player.spec.VIT,
-            state.Game.player.spec.MND, //順番注意
-            state.Game.player.spec.INT
+            state.Game.player.base.VIT,
+            state.Game.player.base.MND, //順番注意
+            state.Game.player.base.INT
         ]);
 
         if (keylock && !dexef && diag.step(kstate) == 1) {
@@ -170,6 +173,8 @@ function sceneLvUp(state) { //2024/03/06
                 dev.graphics[0].setInterval(1);//BG
                 dev.graphics[1].setInterval(1);//SPRITE
                 work2.setInterval(1);//<-dev.g2　FG
+
+                state.obCtrl.keyitem_enhance_check();
 
                 return ret_code;
             }

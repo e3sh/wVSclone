@@ -26,31 +26,64 @@ function stateGame() {
         this.stack = stack_;
         //{ 15:0, 16:0, 17:0, 18:0, 19:0, 50:0 };//GetWeaponItemLvWork use ObjCtrl getitem and player_sce
         //15:rod 16:sword 17:axe 19:spare 18:boom 50:bow
+        let sp_ = new stateSpec();
+        let bs_ = new stateSpec();
+        let eh_ = new stateSpec();
 
-        this.spec = new stateSpec();
+        this.spec = sp_;//参照
+        this.base = bs_//Base Spec 
+        this.enh  = eh_;//Enhance Spec (item /Buff/ Debuff etc)
     }
 
-    class stateSpec {
-            LV; HP; MP; 
-            STR; DEX; AGI;
-            VIT; INT; MND; 
-            LAK; ETC;
+    function stateSpec() {
 
-            constructor(){
-                this.LV = 0; //WeaponLevel ( = state.Game.player.level) 
-                this.HP = 0; //Maxhp (notuse)
-                //this.MP = 0; //MagicPoint (notuse) 
-                //this.STR;
-                //this.DEX;
-                //this.AGI;
-                this.VIT = 0; //HPrecover+ : init 3 +
-                this.INT = 0; //BombPower+ : init -10
-                this.MND = 0; //ShieldTime+: init 300flame(5s) +
-                //this.LAK;
-                this.ETC = 0;
+        let status = Array(11);
+        status.fill(0);
 
-                //console.log("ss" + this.LV);
-            }
+        this.STATUS = status;
+
+        this.LV = 0;    this.HP = 0;    this.MP = 0;
+        this.STR = 0;   this.DEX = 0;   this.AGI = 0;
+        this.VIT = 0;   this.INT = 0;   this.MND = 0;
+        this.LAK = 0;   this.ETC = 0;
+
+        set();
+
+        this.Set = set;
+        function set(){
+            this.LV  = status[0];//WeaponLevel ( = state.Game.player.level) 
+            this.HP  = status[1];
+            this.MP  = status[2]; 
+            this.STR = status[3];//Near  Ataack+: init 0    
+            this.DEX = status[4];//Range Attack+: init 0
+            this.AGI = status[5];
+            this.VIT = status[6];//HPrecover+ : init 3 +
+            this.INT = status[7];//BombPower+ : init -10
+            this.MND = status[8];//ShieldTime+: init 300flame(5s) +
+            this.LAK = status[9];
+            this.ETC = status[10];//spec:LvUp回数記録
+        }
+
+        this.Read = read;
+        function read(){
+            status[0] = this.LV; 
+            status[1] = this.HP; 
+            status[2] = this.MP; 
+            status[3] = this.STR; 
+            status[4] = this.DEX; 
+            status[5] = this.AGI; 
+            status[6] = this.VIT; 
+            status[7] = this.INT; 
+            status[8] = this.MND; 
+            status[9] = this.LAK; 
+            status[10] = this.ETC;
+        }
+        this.Reset = reset;
+        function reset(){
+            //["LV","HP","MP","STR","DEX","AGI","VIT","INT","MND","LAK","ETC"]
+            status.fill(0);
+            set();
+        }
     }
     
     this.player = new statePlayer();
@@ -73,6 +106,9 @@ function stateGame() {
     
     this.reset = function(){
 
+        this.player = new statePlayer();
+        /*
+
         this.player.zanki = 2;
         this.player.hp = INITIAL_HP;
         this.player.maxhp = this.player.hp;
@@ -80,8 +116,8 @@ function stateGame() {
      
         this.player.level = 0;//現状weaponLevelで使用予定
 
-        this.player.spec = new stateSpec();
-
+        this.player.spec.reset();// = new stateSpec();
+        /*
         this.player.spec.LV = 0; //WeaponLevel ( = state.Game.player.level) 
         this.player.spec.HP = 0; //Maxhp (notuse)
         this.player.spec.MP = 0; //MagicPoint (notuse) 
@@ -89,6 +125,30 @@ function stateGame() {
         this.player.spec.INT = 0; //BombPower+ : init -10
         this.player.spec.MND = 0; //ShieldTime+: init 300flame(5s) +
         this.player.spec.ETC = 0; //LvUp回数記録
+        */
+    }
+
+    this.spec_check = function(){
+
+        this.player.base.Read();
+        this.player.enh.Read();
+
+        let etc = 0;
+        for (let i=3; i<=8; i++){
+            //STR DEX AGI VIT INT MND
+            //console.log(i + ":s_" + Object.entries(this.player.spec));
+            //console.log(i + ":b_" + Object.entries(this.player.base));
+            //console.log(i + ":e_" + Object.entries(this.player.enh));
+
+            this.player.spec.STATUS[i] = this.player.base.STATUS[i] + this.player.enh.STATUS[i];
+            etc += this.player.base.STATUS[i];
+        }
+        this.player.spec.STATUS[10] = etc;
+        this.player.spec.Set();
+
+        //console.log("spec:" + this.player.spec.STATUS);
+        //console.log("base:" + this.player.base.STATUS);
+        //console.log("enh:"  + this.player.enh.STATUS);
     }
 
     this.load = function () {
@@ -146,9 +206,7 @@ function stateGame() {
 
         if (Boolean(localStorage)) {
 
-            let f = false;
             if (Boolean(localStorage.getItem("savedata"))) {
-                f = true;
                 let s = JSON.parse(localStorage.getItem("savedata"));
 
                 result.data = s;
@@ -232,6 +290,7 @@ function stateGame() {
         if (result.ready){
             if (result.load){
                 let s = result.data;
+                let p = s.player;
 
                 let w = "";
                 for (let i in items){
@@ -241,12 +300,14 @@ function stateGame() {
 
                 txt.push("STAGE:" + s.stage);
 
-                txt.push("⑦:" + s.player.zanki);
-                txt.push("HP :" + s.player.hp + " / " + s.player.maxhp);
-                txt.push("WEAPON :" + weapon[s.player.weapon] + " +" + s.player.level);
-                txt.push("VIT:" + s.player.spec.VIT);
-                txt.push("MND:" + s.player.spec.MND);
-                txt.push("INT:" + s.player.spec.INT);
+                txt.push("⑦:" + p.zanki);
+                txt.push("HP :" + p.hp + " / " + p.maxhp);
+                txt.push("WEAPON :" + weapon[p.weapon] + " +" + p.level);
+                txt.push("STR :" + p.spec.STR + " (" + p.base.STR + "+" + p.enh.STR + ")");
+                txt.push("DEX :" + p.spec.DEX + " (" + p.base.DEX + "+" + p.enh.DEX + ")");
+                txt.push("VIT :" + p.spec.VIT + " (" + p.base.VIT + "+" + p.enh.VIT + ")");
+                txt.push("MND :" + p.spec.MND + " (" + p.base.MND + "+" + p.enh.MND + ")");
+                txt.push("INT :" + p.spec.INT + " (" + p.base.INT + "+" + p.enh.INT + ")");
             }else{
                 txt.push("NOT FOUND.");
             }

@@ -274,16 +274,21 @@ function sce_player( gObjc ) {
 
         o.getweapon = new get_weapon_check( o );
 
-        //o.spec = o.gameState.player.spec;
+        gObjc.keyitem_enhance_check(); 
+        o.spec = o.gameState.player.spec;
 
         o.spec.LV = o.gameState.player.level;
         o.spec.HP = o.gameState.player.maxhp;
+
+        /*
+        o.spec.STR = o.gameState.player.spec.STR;
+        o.spec.DEX = o.gameState.player.spec.DEX;
         o.spec.VIT = o.gameState.player.spec.VIT;
         o.spec.INT = o.gameState.player.spec.INT;
         o.spec.MND = o.gameState.player.spec.MND;
         o.spec.ETC = o.gameState.player.spec.ETC;
-
-        o.gameState.player.spec = o.spec;
+        */
+        //o.gameState.player.spec = o.spec;
     
         SHIELD_TIME = SHIELD_TIME_BASE + o.spec.VIT*30; //0.5s(30f)
 
@@ -797,12 +802,12 @@ function sce_player( gObjc ) {
             if (o.alive > delay_st +250 && o.doorflag && o.jump == 0){//0.25s
                 o.item[22] = 0;//クリア時に鍵を消す
                 o.gameState.player.hp = o.hp;
-
+                /*
                 o.gameState.player.spec.VIT = o.spec.VIT;
                 o.gameState.player.spec.INT = o.spec.INT;
                 o.gameState.player.spec.MND = o.spec.MND;
                 o.gameState.player.spec.ETC = o.spec.ETC;
-
+                */
                 o.SIGNAL(835);//STAGE CLEAR
             }
         }

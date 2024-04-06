@@ -45,6 +45,7 @@
     this.ceilflag = false; //天井の下にいるかF
     this.ceildelay = 0; //消した後すぐには再表示させないための遅延カウンタ
     this.ceilindex = -1; //消す天井のmapChip_index
+    this.ceilshadow = "rgba(4,4,4,0.8)"; //天井の暗さ(影に入っている場合)
 
     //
     this.hidan = 0;
@@ -941,11 +942,15 @@
 
     // =======================================================
     // オブジェクトのセット
+    const PLAYER=98, FRIEND = 0, BULLET_P= 1;
+    const ENEMY = 2, BULLET_E=3;
+	const ITEM  = 4, ETC    = 5;
+
     this.set_s = set_sce;
 
     function set_sce(x, y, r, ch, sc, id, parent) {
 
-        let o = new gObjectClass();
+        let o = new gObjectClass(this);
 
         o.reset();
 
@@ -962,7 +967,7 @@
         o.gameState = state.Game;
         o.sound = dev.sound;
         
-        if (ch_ptn[ch].type == 0 || ch_ptn[ch].type == 98){
+        if (ch_ptn[ch].type == FRIEND || ch_ptn[ch].type == PLAYER){
             o.item = this.item;
             o.itemstack = this.itemstack;
             o.config = state.Config;
@@ -1005,8 +1010,10 @@
         o.custom_draw = sce.draw[sc];
 
         o.attack = 3;//characterパラメータで設定できない為、Scenarioかここで設定している(仮
-        if ((o.type == 1) || (o.type == 3)) {
+        if ((o.type == BULLET_P) || (o.type == BULLET_E)) {
             o.attack = o.hp;
+            //STATUSによる攻撃力アップ処理
+            if (o.type == BULLET_P) o.attack += (state.Game.player.spec.STR + state.Game.player.spec.DEX);
         }
 
         o.init(scrn, o);
@@ -1284,6 +1291,7 @@
                 }
             }
         }
+        this.keyitem_enhance_check();
     }
 
     this.keyitem_reset = function(){
@@ -1291,7 +1299,31 @@
             this.item[i] = 0;
         }
     }
+
+    this.keyitem_enhance_check = function(){
+
+        for (let i=51; i<59; i++){
+            if (!Boolean(this.item[i])){this.item[i] = 0;}
+        }
+
+        state.Game.player.enh.INT = (this.item[51] > 0)?this.item[51]: 0;//AmuletR
+        state.Game.player.enh.MND = (this.item[52] > 0)?this.item[52]: 0;//AmuletG
+        state.Game.player.enh.VIT = (this.item[53] > 0)?this.item[53]: 0;//AmuletB
+
+        state.Game.player.enh.STR = (this.item[56] > 0)?this.item[56]: 0;//RingR
+        state.Game.player.enh.DEX = (this.item[57] > 0)?this.item[57]: 0;//RingB
+
+        this.ceilshadow = (this.item[55] > 0)?"rgba( 0,64,64,0.2)"://CandleB:      
+            ((this.item[54] > 0)?"rgba(48,48, 0,0.4)":"rgba(4,4,4,0.8)");//CandleR:None
+
+        state.Game.spec_check();
+    }
+    
+    this.dict_Ch_Sp = function(ch){
+        return motion_ptn[ch_ptn[ch].mp].pattern[0][0];
+    }
 }
+
 
 // gObjCmdDec
 // ObjectControll  
@@ -1432,6 +1464,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                 }
             
                 objc.messageconsole.write(objc.itemTable[msg.src] + ".GET");
+                objc.keyitem_enhance_check();
             }
             objc.tutTable(msg.src);
              /*
@@ -1602,7 +1635,6 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
  
              wlog = false; 
              break;
- 
          default:
              execute = false;
              wlog = false; 

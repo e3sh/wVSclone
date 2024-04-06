@@ -93,9 +93,9 @@ function character(){
 
 	//ch_ptn:map/ 0-12:use,13:free,14-27:use,28-29:free,30:use,31:free,32-50:use,51-99:free,100:use,101-102:free,103:use,
 	//46-50 
-	[46, 44, 1, BULLET_P, 24, 8, 16, 16, "common_vset8",  0],//arrow friend
+	[46, 44, 1, BULLET_P,  8, 8, 16, 16, "common_vset8",  0],//arrow friend
 	[47, 43, 1, BULLET_P,  8, 8, 16, 16, "friend_front",  0],//bow friend
-	[48, 44, 1, BULLET_E, 24, 8, 16, 16, "common_vset8",  0],//arrow enemy
+	[48, 44, 1, BULLET_E,  8, 8, 16, 16, "common_vset8",  0],//arrow enemy
 	[49, 43, 1, BULLET_E,  8, 8, 16, 16, "friend_front",  0],//bow enemy
 	[50, 18, 1, ITEM	, 12,12, 24, 24, 30,			  0],//item bow
 	//51-58

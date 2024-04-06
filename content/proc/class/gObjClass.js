@@ -2,7 +2,9 @@
 // GameObjectItem
 // ゲームオブジェクトクラス
 //=============================================================
-function gObjectClass() {
+function gObjectClass(obCtrl) {
+    this.objCtrl = obCtrl;//ParentClass(ObjectControl)
+
     this.x; 			// X座標
     this.y; 			// Y座標
     this.vx; 		// VX座標
@@ -81,20 +83,25 @@ function gObjectClass() {
     //状況により個別に判定状態を切り替えられるようにフラグ管理も追加。2023/02/03
     //this.colcheck = true; //false true:当たり判定する。//対objということで地形はtypeで判定
     //this.dmgcheck = true; //false trueの場合　o.hp-o.attackする。アイテムの場合はセット時にattack0,かな
+    const PLAYER=98, FRIEND = 0, BULLET_P= 1;
+    const ENEMY = 2, BULLET_E=3;
+	const ITEM  = 4, ETC    = 5;
 
     this.setType = function(type){
         this.name = "unknown";
 
         this.type = type;
         //type （98:自機、0:味方、1:自弾、2:敵機、3:敵弾、4:アイテム、5:只の絵）
-        this.colcheck = !(type == 5);
-        this.dmgcheck = !(type == 4 || type == 5);
+        this.colcheck = !(type == ETC);
+        this.dmgcheck = !(type == ITEM || type == ETC);
     
-        if (type == 98 || type == 0 || type == 2){ //自機、味方、敵
+        if (type == PLAYER || type == FRIEND || type == ENEMY){ //自機、味方、敵
             this.jump = 0; //敵でも使うのでここに追加
             this.jpvec = -5.0;
-
-            this.spec = { 
+            
+            this.spec = {LV:0};//敵の武器を表示するのに自分と共有処理の為、参照している
+            // 
+            /*
                 LV: 0, //WeaponLevel ( = state.Game.player.level) 
                 HP: 0, //Maxhp (notuse)
                 MP: 0, //MagicPoint (notuse) 
@@ -270,7 +277,11 @@ gObjectClass.prototype = {
         let msg = {}; msg.cmd = "search_target_item";
         msg.src = src; msg.dst = dst; this.message.push(msg);
     },
-
+    //chrNoからmotion_ptnの0番のSpNameを返す。
+    dict_ch_sp: function (chr) { //chr:chr番号, return:Spname; add_2024/04/06
+        return this.objCtrl.dict_Ch_Sp( chr );
+        
+    },
     //自分から目標( tx, ty )の
     //	方向角度を調べる(上が角度0の0-359)
     target_r : function (tx, ty) {
