@@ -35,8 +35,7 @@ function stateGame() {
         this.enh  = eh_;//Enhance Spec (item /Buff/ Debuff etc)
     }
 
-    function stateSpec() {
-
+    let stateSpec = function() {
         let status = Array(11);
         status.fill(0);
 
@@ -46,11 +45,11 @@ function stateGame() {
         this.STR = 0;   this.DEX = 0;   this.AGI = 0;
         this.VIT = 0;   this.INT = 0;   this.MND = 0;
         this.LAK = 0;   this.ETC = 0;
+    }
 
-        set();
-
-        this.Set = set;
-        function set(){
+    let stateSpecMethod = function(){};
+        stateSpecMethod.prototype = {
+        Set: function(status){
             this.LV  = status[0];//WeaponLevel ( = state.Game.player.level) 
             this.HP  = status[1];
             this.MP  = status[2]; 
@@ -62,10 +61,11 @@ function stateGame() {
             this.MND = status[8];//ShieldTime+: init 300flame(5s) +
             this.LAK = status[9];
             this.ETC = status[10];//spec:LvUp回数記録
-        }
+        },
 
-        this.Read = read;
-        function read(){
+        Read: function(){
+            let status = Array(11);
+
             status[0] = this.LV; 
             status[1] = this.HP; 
             status[2] = this.MP; 
@@ -77,15 +77,33 @@ function stateGame() {
             status[8] = this.MND; 
             status[9] = this.LAK; 
             status[10] = this.ETC;
-        }
-        this.Reset = reset;
-        function reset(){
+
+            return status;
+        },
+
+        Reset: function(){
             //["LV","HP","MP","STR","DEX","AGI","VIT","INT","MND","LAK","ETC"]
+            let status = Array(11);
             status.fill(0);
-            set();
+            set(status);
+        },
+
+        Loader: function(e){
+            this.LV  = e.LV;//WeaponLevel ( = state.Game.player.level) 
+            this.HP  = e.HP;
+            this.MP  = e.MP; 
+            this.STR = e.STR;//Near  Ataack+: init 0    
+            this.DEX = e.DEX;//Range Attack+: init 0
+            this.AGI = e.AGI;
+            this.VIT = e.VIT;//HPrecover+ : init 3 +
+            this.INT = e.INT;//BombPower+ : init -10
+            this.MND = e.MND;//ShieldTime+: init 300flame(5s) +
+            this.LAK = e.LAK;
+            this.ETC = e.ETC;//spec:LvUp回数記録
         }
     }
-    
+    stateSpec.prototype = new stateSpecMethod();
+
     this.player = new statePlayer();
 
     this.outviewMove = true;//未使用
@@ -130,21 +148,18 @@ function stateGame() {
 
     this.spec_check = function(){
 
-        this.player.base.Read();
-        this.player.enh.Read();
+        let base = this.player.base.Read();
+        let enh  = this.player.enh.Read();
+        let spec = this.player.spec.Read();
 
         let etc = 0;
         for (let i=3; i<=8; i++){
-            //STR DEX AGI VIT INT MND
-            //console.log(i + ":s_" + Object.entries(this.player.spec));
-            //console.log(i + ":b_" + Object.entries(this.player.base));
-            //console.log(i + ":e_" + Object.entries(this.player.enh));
-
-            this.player.spec.STATUS[i] = this.player.base.STATUS[i] + this.player.enh.STATUS[i];
-            etc += this.player.base.STATUS[i];
+            spec[i] = base[i] + enh[i];
+            etc += base[i];
         }
-        this.player.spec.STATUS[10] = etc;
-        this.player.spec.Set();
+
+        spec[10] = etc;
+        this.player.spec.Set(spec);
 
         //console.log("spec:" + this.player.spec.STATUS);
         //console.log("base:" + this.player.base.STATUS);
@@ -168,6 +183,22 @@ function stateGame() {
                 this.itemstack = s.itemstack;
                 this.nowstage = s.stage;
                 this.player = s.player;
+
+                //SaveDataにMethodが含まれない為、データを移行する。
+                let spec = this.player.spec;
+                let base = this.player.base;
+                let enh = this.player.enh;
+
+                this.player.spec = new stateSpec();
+                this.player.base = new stateSpec();
+                this.player.enh = new stateSpec();
+
+                this.player.spec.Loader(spec);
+                this.player.base.Loader(base);
+                this.player.enh.Loader(enh);
+
+                //console.log(spec + base + enh);
+
             }
             ret_code = f ? 0 : 1; //	        alert(f ? "gload" : "gnondata");
         } else {
