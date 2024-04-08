@@ -1,5 +1,5 @@
 ﻿function gObjectControl(scrn, state) {
-
+    
     //メイン
     let cdt;// = new CLinear4TreeManager();
     //if (!cdt.init(5, 0, 0, 3000, 3000)) { alert("!"); }
@@ -225,6 +225,10 @@
     let cmdlog = "-----";
     let cmdcnt = 0;
 
+    const PLAYER=98, FRIEND = 0, BULLET_P= 1;
+    const ENEMY = 2, BULLET_E=3;
+	const ITEM  = 4, ETC    = 5;
+
     //再読み込み無しの再起動
     this.reset = function (cont_flag) {
 
@@ -307,7 +311,7 @@
             let onst = o.gt.in_view_range(o.x - (o.hit_x / 2), o.y - (o.hit_y / 2), o.hit_x, o.hit_y);
 
             if (!onst) {
-                if ((o.type == 1) || (o.type == 3)) {
+                if ((o.type == BULLET_P) || (o.type == BULLET_E)) {
                     if (state.Config.bulletmode) o.status = 0; //画面外から弾が飛んでこないようにする処理(飛んできたら難しすぎたので）
                     //.bulletmode：trueで表示画面外の弾は消滅。
                     if (!o.gt.in_world(o.x, o.y))o.status = 0; //画面外に出ている弾を消す。
@@ -325,7 +329,7 @@
                 //if ((o.type == 1) || (o.type == 3)) {
                 //    o.status = 0; //画面外から弾が飛んでこないようにする処理
                 //}
-                if (o.type != 5) continue;
+                if (o.type != ETC) continue;
             }
 
             /*
@@ -335,7 +339,7 @@
             }
             */
             //o.mouse_state = mstate;
-            if (o.type == 98) { 
+            if (o.type == PLAYER ) { 
                 o.key_state = kstate;
                 o.entrypadaxis = dev.directionM( kstate );
                 o.score = this.score;
@@ -350,10 +354,10 @@
                 delobj++;
                 //o.status = 0;
             } else {
-                if (o.type != 5) { //その他は当たり判定リストに載せない
+                if (o.type != ETC) { //その他は当たり判定リストに載せない
                     if (!o.firstRunning || ((o.x != o.old_x) || (o.y != o.old_y))) { //移動している場合
                         if (!o.gt.in_world(o.x, o.y)){
-                            if ((o.type != 1) && (o.type != 3)){//弾の場合は反対側に座標変換しない。
+                            if ((o.type != BULLET_P) && (o.type != BULLET_E)){//弾の場合は反対側に座標変換しない。
                                 o.x = o.gt.worldtoWorld_x(o.x);
                                 o.y = o.gt.worldtoWorld_y(o.y);
                             }
@@ -488,8 +492,8 @@
             let o = res[i];
             let e = res[i + 1];
 
-            let type_w1 = (o.type == 98) ? 0 : o.type;
-            let type_w2 = (e.type == 98) ? 0 : e.type;
+            let type_w1 = (o.type == PLAYER) ? 0 : o.type;
+            let type_w2 = (e.type == PLAYER) ? 0 : e.type;
 
             if ((type_w1 >= 10) && (type_w2 >= 10)) continue;
 
@@ -544,7 +548,7 @@
                         //}
                         if ([12, 13, 14, 16].includes(w.type)) {
                         //12:Door 13:Ciel 14:Circle 16:StoneB                            
-                            if (o.type ==98){
+                            if (o.type == PLAYER){
                                 switch(w.type){
                                     case 12:
                                         o.doorflag = true;
@@ -574,7 +578,7 @@
                                         break;
                                 }
                             } else {
-                                if ((o.type == 2)||(o.type == 3)){
+                                if ((o.type == ENEMY)||(o.type == BULLET_E)){
                                     switch(w.type){
                                         case 13:
                                             if (mapsc.startroom_id() == w.index){ //開始部屋に入れない処理
@@ -601,7 +605,7 @@
         for (i in obj) {
             o = obj[i];
 
-            if (o.type == 5) continue;//その他(effect)は地形当たり判定しない。
+            if (o.type == ETC) continue;//その他(effect)は地形当たり判定しない。
 
             ///*2023/01/22 debug(動作忘れたため)
             //地形との当たり判定（MAP配列）
@@ -664,7 +668,7 @@
                 let wo_crst = 0;
                 let wo_vect = 0;
 
-                if ((o.type == 1) || (o.type == 3)) {
+                if ((o.type == BULLET_P) || (o.type == BULLET_E)) {
                     //弾の場合はそのまま消滅
                 } else {
                     let bf = true;
@@ -699,10 +703,10 @@
                             }
                             o.crash = null;
                         } else {
-                            if (o.type == 98){
+                            if (o.type == PLAYER){
                                 state.Game.player.hp = o.hp;
                             }
-                            if (o.type == 2) {
+                            if (o.type == ENEMY) {
                                 //this.combo_sub(2);
                             }
                         }
@@ -829,7 +833,7 @@
                         device.rect(this.x, this.y, this.w, this.h );
                         device.stroke();
                     }
-                    if (o.type != 5) wscreen.putFunc(cl);
+                    if (o.type != ETC) wscreen.putFunc(cl);
                     /*
                     if ('spec' in o){
                         if ('LV' in o.spec){
@@ -872,9 +876,9 @@
 
                 if (o.visible) {
 
-                    if ((o.type == 1) || (o.type == 3) || (o.type == 5)) continue;
+                    if ((o.type == BULLET_P) || (o.type == BULLET_E) || (o.type == ETC)) continue;
 
-                    if ((o.type != 98) && (!flag)) continue;
+                    if ((o.type != PLAYER) && (!flag)) continue;
 
                     if (o.normal_draw_enable) {
                         device.beginPath();
@@ -918,7 +922,7 @@
                 if (!o.visible) continue;
                 //shadow 
                 //bullet/effectには影つけない
-                if ((o.type == 1) || (o.type == 3) || (o.type == 5 )) continue;
+                if ((o.type == BULLET_P) || (o.type == BULLET_E) || (o.type == ETC)) continue;
                 if (!o.gt.in_view(o.x,o.y)) continue;
                 if (o.normal_draw_enable) {
                     if (dev.gs.in_stage(o.x, o.y)){
@@ -942,10 +946,6 @@
 
     // =======================================================
     // オブジェクトのセット
-    const PLAYER=98, FRIEND = 0, BULLET_P= 1;
-    const ENEMY = 2, BULLET_E=3;
-	const ITEM  = 4, ETC    = 5;
-
     this.set_s = set_sce;
 
     function set_sce(x, y, r, ch, sc, id, parent) {
@@ -1197,7 +1197,7 @@
         for (let o of obj) {
             if (o instanceof Object){
             if (Boolean(o.type)){
-            if (o.type == 98){
+            if (o.type == PLAYER){
                 cntl_draw(scrn, o);
                 rc = o.gt.worldtoView(o.x, o.y);
                 break;
@@ -1231,7 +1231,7 @@
             */
             let o = obj[num];
 
-            if (o.type == 2){
+            if (o.type == ENEMY){
                 if (o.pick.length > 0){
                     for (let i of o.pick){
                         //scrn.put(spname[i], x, y);
@@ -1241,7 +1241,7 @@
                     result = true;
                 } 
             }
-            if (o.type == 4){
+            if (o.type == ITEM){
                 mtnptn_put(scrn, x, y, o.mp);//, mpcnt, r, alpha, size){
                 //scrn.put(spname[o.chr], x, y);
                 result = true;
@@ -1282,7 +1282,9 @@
                     device.put(
                         motion_ptn[ch_ptn[i].mp].pattern[0][0]
                         , 12, ypos);
-                    
+                    if (this.item[i] > 1){
+                        device.kprint("+" + (this.item[i]-1),12+2, ypos+6);
+                    }
                     //device.kprint(motion_ptn[[ch_ptn[i].mp]].pattern[0],12,ypos);
 
                     //device.kprint("ch-mp:" + ch_ptn[i].mp,12,ypos);
@@ -1330,6 +1332,10 @@
 // obj command Decode 2023/04/05 
 
 function ObjCmdDecode(msg, sobj, obj, state, sce){
+
+    const PLAYER=98, FRIEND = 0, BULLET_P= 1;
+    const ENEMY = 2, BULLET_E=3;
+	const ITEM  = 4, ETC    = 5;
     /*
      let command = {
          "set_object",
@@ -1479,7 +1485,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
  
          case "bomb":
              for (let i in obj) {
-                 if (obj[i].type == 3) {//敵の弾を消滅
+                 if (obj[i].type == BULLET_E) {//敵の弾を消滅
      
                      obj[i].change_sce(7);
                  }
@@ -1490,8 +1496,8 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
              for (let i in obj) {
                  let o = obj[i];
      
-                 if (o.type == 3) {//敵の弾を回収状態に
-                     o.type = 4;
+                 if (o.type == BULLET_E) {//敵の弾を回収状態に
+                     o.type = ITEM;
                      o.mp = 18;
                      o.score = 8;
                       //test用
@@ -1516,12 +1522,12 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                      obj[i].y - (obj[i].hit_y / 2), obj[i].hit_x, obj[i].hit_y);
      
                  if (onst) {
-                     if (obj[i].type == 2) {//敵には一律10のダメージ
+                     if (obj[i].type == ENEMY) {//敵には一律10のダメージ
                          obj[i].hp -= (10 + atrpwr);
                          if (obj[i].hp <= 0) obj[i].status = 2;
                      }
      
-                     if (obj[i].type == 3) {//敵の弾を消滅
+                     if (obj[i].type == BULLET_E) {//敵の弾を消滅
      
                          obj[i].change_sce(7);
                      }
@@ -1544,7 +1550,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
  
              for (let i in obj) {
                  let o = obj[i];
-                 if (o.type == 4) {//アイテムを回収モードに変更（上のほうに行ったときに）
+                 if (o.type == ITEM) {//アイテムを回収モードに変更（上のほうに行ったときに）
                      if (!Boolean(o.collection_mode)) {
                          o.collection_mode = true;
                          o.change_sce(30);
@@ -1562,7 +1568,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
      
                  if (onst) {
                      //アイテム回収モードにする
-                     if (obj[i].type == 4) {//アイテム
+                     if (obj[i].type == ITEM) {//アイテム
                              obj[i].change_sce(30);
                      }
                  }
@@ -1573,7 +1579,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
          case "collect3":
              for (let i in obj) {
                  //自機の半径n内にいるアイテムのみ　2023/1/12追加コマンド
-                 if (obj[i].type == 4){//アイテム
+                 if (obj[i].type == ITEM){//アイテム
                      if ( sobj.target_d( obj[i].x, obj[i].y ) < 100){//半径
                              obj[i].change_sce(30);
                      }
@@ -1604,7 +1610,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
  
              for (let i in obj) {
                  let wo = obj[i];
-                 if (wo.type == 2){//enemy
+                 if (wo.type == ENEMY){//enemy
                      //wo.lighton = true;                
                      for (let j of wo.pick){
                          if (j == msg.src){
@@ -1617,7 +1623,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                      }
                      continue;
                  }
-                 if (wo.type == 4){//item
+                 if (wo.type == ITEM){//item
                      //wo.lighton = true;
                      if (wo.chr == msg.src){
                          onflag = true;

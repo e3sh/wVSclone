@@ -14,6 +14,13 @@ function sce_item_direct_homing() {
         o.vset(16);
         o.display_size = 1.0;
 
+        o.colcheck = true;
+
+        o.jump = 0;
+        o.jpvec = -5.0;
+ 
+        o.shiftx = 0;
+        o.shifty = 0;
    }
 
     this.move = function (scrn, o) {
@@ -72,7 +79,7 @@ function sce_item_near_homing() {
         return o.sc_move();
     }
 }
-
+/*backup
 function sce_item_movingstop() {
     //死んでアイテム放出用（少し進んで止まる）
     //-----------------------------------------------------------------------
@@ -83,14 +90,91 @@ function sce_item_movingstop() {
     this.move = function (scrn, o) {
 
         if (o.frame > 100) o.vset(0);
-/*
-        if (o.frame > 200) {
-            o.vector = 180;
-            o.vset(1);
-        }
-*/
         o.frame++;
 
         return o.sc_move();
     }
+*/
+
+    function sce_item_movingstop() {
+        //死んでアイテム放出用（跳ねて進んで止まる）2024/04/08跳ねるようにverup 
+        //-----------------------------------------------------------------------
+        this.init = function (scrn, o) {
+            o.vset(1);
+
+            o.wmapc = false; //衝突連続状態
+            o.colcnt = 0;  //衝突状態カウント
+   
+            o.colcheck = true;
+
+            o.jump = 0;
+            o.jpvec = -5.0;
+     
+            o.shiftx = 0;
+            o.shifty = 0;
+        }
+    
+        this.move = function (scrn, o) {
+    
+            if (o.frame > 60 && !o.wmapc){
+                o.colcheck = true;
+                //reset jump
+                o.jump = 0;
+                o.jpvec = 0;
+         
+                o.shiftx = 0;
+                o.shifty = 0;
+
+                o.change_sce("common_vset0");
+            }else{
+                if(!o.wmapc){
+                    //set jump
+                    o.wmapc = true;
+    
+                    o.jump = 1;
+                    o.jpvec = -3;//-5.6 - 0.4 * o.vecfrm;;
+                    o.colcheck = false;
+                };
+            }
+            o.frame++;
+
+            if (o.jump == 1 ) {
+                o.shifty = o.shifty + o.jpvec;
+                o.jpvec = o.jpvec + 0.4 * o.vecfrm;
+                o.prioritySurface = true;
+                if (o.shifty > 0){
+                    o.jump = 0;
+                    o.shifty = 0;
+                    o.prioritySurface = false;
+                    o.colcheck = true;
+    
+                    o.wmapc = false;
+
+                   //o.change_sce("common_vset0");
+                }            
+                return o.sc_move();
+            }
+    
+            if (o.mapCollision) {
+                //o.colcnt++;
+                if ((o.colcnt > 1)&&!o.wmapc) {//連続衝突するとジャンプして回避してみる
+                    o.wmapc = true;
+    
+                    o.jump = 1;
+                    o.jpvec = -3;//-5.6 - 0.4 * o.vecfrm;;
+                    o.colcheck = false;
+    
+                    o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
+                    o.vset(1);
+                } else { 
+                    o.colcheck = true;
+                    o.vset(1);
+                }
+            }else{
+                //o.colcnt = 0;
+            }
+
+            return o.sc_move();
+        }
+    
 }

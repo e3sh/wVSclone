@@ -136,8 +136,10 @@ gObjectClass.prototype = {
 
     test : function () { return 0; },
     reset : function () {
+        const ETC=5;
+
         this.status = 0; //StatusValue.NoUse;
-        this.type = 5;   //TypeValue.Etc;
+        this.type = ETC;   //TypeValue.Etc;
         this.visible = false;
         this.mp_cnt_frm = 0;
         this.mp_cnt_anm = 0;
@@ -358,19 +360,23 @@ gObjectClass.prototype = {
 
     sc_move : function()
     {
+        const PLAYER=98, FRIEND = 0, BULLET_P= 1;
+        const ENEMY = 2, BULLET_E=3;
+        const ITEM  = 4, ETC    = 5;
+
         let onst = this.gt.in_view_range(this.x - (this.hit_x / 2), this.y - (this.hit_y / 2), this.hit_x, this.hit_y);
 
         let f = 0;
         if (this.status == 2) {//状態が衝突の場合
             switch (this.type) {//自身のタイプが...
-            case 1: //自弾
-            case 3: //敵弾
+            case BULLET_P : //自弾
+            case BULLET_E : //敵弾
                 if (onst) this.sound.effect(12); //hit音
                 this.change_sce("effect_vanish"); 
                 this.damageflag = false;
                 //↑ここで弾を消しているので削除すると弾が消えなくなる。2023/01/20消してしまってbugったので記録。
                 break;
-            case 2: //敵
+            case ENEMY : //敵
                 //this.display_size *= 2; //爆発を大きくする
                 this.change_sce("effect_bomb_x");//7
                 if (onst) this.sound.effect(8); //爆発音 
@@ -398,13 +404,14 @@ gObjectClass.prototype = {
                 }
                 this.add_score(this.score);
                 break;
-            case 4: //アイテム(敵がアイテムを取得する場合の事は考えていない。/<=拾うようにした）
+            case ITEM : //アイテム(敵がアイテムを取得する場合の事は考えていない。/<=拾うようにした）
                 if (Boolean(this.crash)) {
                     if (this.crash.pick_enable) {//
                         this.change_sce(6); //拾われたので消す
-                        if (this.crash.type == 2) {//相手が敵の場合
+                        if (this.crash.type == ENEMY) {//相手が敵の場合
                             this.crash.pick.push(this.chr);
-                        } else {//自分の場合
+                        } 
+                        if (this.crash.type == PLAYER) {//自分の場合
                             if ((this.chr != 21) && (this.chr != 22)) {//1up or Key
                                 this.sound.effect(9); //cursor音
                             }
@@ -460,8 +467,8 @@ gObjectClass.prototype = {
                 this.y = this.old_y;
 
                 switch (this.type) {//自身のタイプが...
-                case 1: //自弾
-                case 3: //敵弾
+                case BULLET_P : //自弾
+                case BULLET_E : //敵弾
                     f = 1;
                     break;
                 default:

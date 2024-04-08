@@ -1016,37 +1016,11 @@ function sce_enemy_inv_check(pick ){//敵が拾っているアイテムリスト
 }
 
 function sce_enemy_inv_gr(scrn, o){
-    //let spname = [];
 
     if (o.hp < o.maxhp) lbar_draw();
 
     if (!o.pickgetf) return;　//アイテム持っていない場合、処理せず。
-    if (o.weapongetf && o.lockon_flag) return; //武器使用時表示しない。
-    /*
-    spname[15] = "Wand";
-    spname[16] = "Knife";
-    spname[17] = "Axe";
-    spname[18] = "Spear";
-    spname[19] = "Boom";
-    spname[20] = "Ball1";
-    spname[21] = "miniMay";
-    spname[22] = "sKey";
-    spname[23] = "BallB1";
-    spname[24] = "BallS1";
-    spname[25] = "BallL1";
-    spname[26] = "Lamp";
-    spname[27] = "Map";
-    spname[35] = "Coin1";
-    spname[50] = "Bow";
-    spname[51] = "AmuletR";
-    spname[52] = "AmuletG";
-    spname[53] = "AmuletB";
-    spname[54] = "CandleR";
-    spname[55] = "CandleB";
-    spname[56] = "RingR";
-    spname[57] = "RingB";
-    spname[58] = "Mirror";
-    */
+    //if (o.weapongetf && o.lockon_flag) return; //武器使用時表示しない。
     let w = o.gt.worldtoView(o.x, o.y);
 
     if ((w.x >= 0) && (w.x <= scrn.cw) && (w.y >= 0) && (w.y <= scrn.ch)) {
@@ -1057,15 +1031,11 @@ function sce_enemy_inv_gr(scrn, o){
         w.x = w.x + o.Cos(o.vector) * 16;
         w.y = w.y + o.Sin(o.vector) * 16;
 
-        let f = o.pickviewitem; //sce_enemy_inv_check(o.pick);
-        //if (f != 0 ){
-            // o.vector = (o.startv + (o.rotatecount * 12))%360;
-            //w.x = w.x + o.Cos(o.vector) * 16;
-            //w.y = w.y + o.Sin(o.vector) * 16;
+        if (!(o.weapongetf && o.lockon_flag)){//武器使用時は表示しない。
+            let f = o.pickviewitem; //sce_enemy_inv_check(o.pick);
             //scrn.put(spname[f], w.x, w.y); 
             scrn.put(o.dict_ch_sp( f ), w.x, w.y); 
-            //scrn.putchr8(o.weapontype, w.x+10, w.y+10);
-        //} else {
+        }
         if (o.pick.length > 1){
             let ic = 0; for (let i of o.pick) {if (i != 35 ) ic++;}
 

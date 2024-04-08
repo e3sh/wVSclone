@@ -678,12 +678,13 @@ function sce_player( gObjc ) {
             let ww = [15, 16, 17, 19, 18, 50];
 
             let w = ww[o.before_weapon];
-            let wv = (o.vector + 180) % 360;
+            let wv = ((o.vector + (o.before_weapon - 2)*18) + 180) % 360;
+            //置いたときに重ならないように角度を変える
 
             this.set_object_ex(w,
-                    o.x + o.Cos(wv) * 40,
-                    o.y + o.Sin(wv) * 40,
-                    0, "common_vset0"
+                    o.x + o.Cos(wv) * 30,
+                    o.y + o.Sin(wv) * 30,
+                    wv, 38//"common_vset0"
                     ,o.before_wlevel 
             );
 

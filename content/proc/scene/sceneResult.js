@@ -234,7 +234,7 @@ function sceneResult(state) {
 
         let esckey = false; if (Boolean(kstate[27])) { if (kstate[27]) esckey = true; }
 
-        zkey = zkey || xkey || ckey; //any key
+        zkey = (zkey || xkey || ckey)? true:false; //any key
 
         //diag.step(kstate);
 

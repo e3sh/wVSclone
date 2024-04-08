@@ -1,13 +1,5 @@
 ﻿//StateControl
 //状態のまとめクラス
-//はじめに：
-//色々とシステムの状態などが拡散してきたのでまとめてStateとして扱うことを考える。
-//最初は本来Sceneで扱ってきたが、他（たとえばmapSce等）でもConfigの
-//内容を参照したりする場合に引数として渡すと関連付けがどうなってるのか
-//わからなくなってきたのでまとめてみる事（State集約）を考えることとする。
-//持つべき状態：
-//現在あつかっているConfig,Resultとあとあと必要となるだろうSystem,Gameなどであろう。
-//
 function stateControl( g ){
 
     //設定パラメータ
@@ -19,23 +11,30 @@ function stateControl( g ){
 	//デバイスパラメータやサウンド状況等(Devも）
 	this.System = new stateSystem( g );
 
-	//進行状態やプレイヤーステータス等(アイテムはここ）
+	//進行状態やプレイヤーステータス等(保持アイテムはここ）
 	this.Game = new stateGame( g );
 
 	//2023/02/14:GameSceneから↓へ変更　この時点ではinitもresetもしていない。
 	this.obCtrl = new gObjectControl(this.System.dev.graphics[1], this);
 	this.mapsc = new mapSceControl();
+
+	this.Utility = {
+		//export
+	}
+
+	this.Database = {
+		//obCtrlが持ってる
+		//scenario
+		//chr_ptn
+		//motion_ptn　→　sp_ptn
+
+		//mapscで持ってる
+		//map=mapsc
+		
+		//未作成
+		//itemList
+		//paramator
+	}
+
+
 }
-/*
-let stateControl = {
-
-	Config : new stateConfig(),
-
-	Result : new stateResult(),
-
-	System : new stateSystem(),
-
-	Game : new stateGame()
-
-}
-*/
