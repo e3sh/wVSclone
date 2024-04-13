@@ -25,7 +25,6 @@ let w = [
     */
     //"https://e3sh.github.io/WebGameCoreSystem/coremin.js",
     "system/coremin.js",
-    "system/proc/inputGamepad2.js",//GamePad認識改良版・認識したうちで一番若い番号のパッドを使用（０以外でも動作するように）
  //画面表示や入力関係処理部(compatible-convert)
  "content/proc/conv/deviceControl.js",
  "content/proc/conv/screen.js",
