@@ -304,14 +304,17 @@ class GameTask_Device extends GameTask {
 
     step(g) {
         let ks = g.keyboard.state();
+        let homekey = false; if (Boolean(ks[36])) homekey = true;
 
-        if (Boolean(ks[70])) {//[f]key
-            if (ks[70]){
-                if (!document.fullscreenElement){ 
-                    g.systemCanvas.requestFullscreen();
-               }
-            }
-        }
+		let r = g.gamepad.check();
+		let backbtn = g.gamepad.btn_back;
+
+        let fullscr = (homekey || backbtn)?true:false;
+		if (fullscr){
+			if (!document.fullscreenElement){ 
+				g.systemCanvas.requestFullscreen();
+		   }
+		}
 
         g.vgamepad.check(g.mouse, g.touchpad);
 

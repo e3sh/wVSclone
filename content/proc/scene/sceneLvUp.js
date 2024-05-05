@@ -128,6 +128,13 @@ function sceneLvUp(state) { //2024/03/06
 
         zkey = zkey || xkey || ckey; //any key
 
+        // Select時にWASDが効かないことへの対策コード
+        let dc = dev.directionM( kstate );
+        if (dc.up)      kstate[38] = true;
+        if (dc.down)    kstate[40] = true;
+        if (dc.left)    kstate[37] = true;
+        if (dc.right)   kstate[39] = true;
+
         if (diag.step(kstate) == 0) keylock = true;
 
         work2.draw();

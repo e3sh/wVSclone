@@ -120,10 +120,10 @@ function sceneResult(state) {
         work2.draw();
 
         let dpara = [
-            { keynum:38, text:"Selector", icon:"Mayura1", func:nop , x:320-80, y:200, w:120, h:50, keyon:false }//upkey
-            ,{ keynum:40, text:"地図", icon:"Map", func:nop , x:320-80, y:326, w:120, h:50, keyon:false }//downkey
-            ,{ keynum:37, text:"x3get テスト", icon:"BallB1", func:nop , x:320-80-150, y:255, w:120, h:50, keyon:false }//left
-            ,{ keynum:39, text:"選択肢", icon:"TrBox", func:nop , x:320-80+150, y:255, w:120, h:50, keyon:false }//right
+            { keynum:38, text:"up", icon:"Mayura1", func:nop , x:320-80, y:200, w:120, h:50, keyon:false }//upkey
+            ,{ keynum:40, text:"down", icon:"Map", func:nop , x:320-80, y:326, w:120, h:50, keyon:false }//downkey
+            ,{ keynum:37, text:"left", icon:"BallB1", func:nop , x:320-80-150, y:255, w:120, h:50, keyon:false }//left
+            ,{ keynum:39, text:"right", icon:"TrBox", func:nop , x:320-80+150, y:255, w:120, h:50, keyon:false }//right
             ];
 
         for ( let i in dpara ){//keycode udlr
@@ -236,6 +236,13 @@ function sceneResult(state) {
 
         zkey = (zkey || xkey || ckey)? true:false; //any key
 
+        // Select時にWASDが効かないことへの対策コード
+        let dc = dev.directionM( kstate );
+        if (dc.up)      kstate[38] = true;
+        if (dc.down)    kstate[40] = true;
+        if (dc.left)    kstate[37] = true;
+        if (dc.right)   kstate[39] = true;
+        
         //diag.step(kstate);
 
 //        if ((mstate.button == 0) && (!keylock)) {
@@ -327,7 +334,6 @@ function sceneResult(state) {
         }
         //      wtxt.push("---------------");
 //      wtxt.push("Push rMouse Button to Start");
-
 
         if (ret_code != 0) diag.effect();
         return (( zkey ) || ( diag.step(kstate) != 0 )) ? 0 :ret_code;
