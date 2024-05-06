@@ -42,7 +42,7 @@ function sceneControl(state) {
         //fcnt = 0;       
     }
 
-    this.step = function() {
+    this.step = function(g, input) {
         //fcnt ++;
 
         if (rc != 0) {
@@ -70,7 +70,7 @@ function sceneControl(state) {
                 sceneList[runscene].reset( fg );
             }
         }
-        rc = sceneList[runscene].step();
+        rc = sceneList[runscene].step(g, input);
 
         wipeEffectCount = (wipeEffectCount > 0) ? 
             wipeEffectCount-(3 * 60/(1000/state.System.deltaTime())) :

@@ -283,13 +283,13 @@
     //move ======================================
     //オブジェクトの移動/各処理のループ
 
-    this.move = function (mapsc) {
+    this.move = function (mapsc, input) {
 
         map_sc = mapsc;
 
         //    let mstate = dev.mouse_state.check();
         //let mstate = dev.mouse_state.check_last();
-        let kstate = dev.key_state.check();
+        let kstate = input.keycode;//dev.key_state.check();
 
         this.nonmove = 0;
         // 移動などの処理
@@ -341,7 +341,7 @@
             //o.mouse_state = mstate;
             if (o.type == PLAYER ) { 
                 o.key_state = kstate;
-                o.entrypadaxis = dev.directionM( kstate );
+                o.entrypadaxis = input;//dev.directionM( kstate );
                 o.score = this.score;
             }
 

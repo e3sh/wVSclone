@@ -101,29 +101,38 @@ function scenePause(state) {
         //keywait = 30;
     }
 
-    function scene_step() {
+    function scene_step(g, input) {
 
         keywait--;
         if (keywait > 0) return 0;
-        let kstate = dev.key_state.check();
 
-        let zkey     = false;
-        let qkey     = false;
+        //let kstate = dev.key_state.check();
+        let kstate = input.keycode;
+
+        // Select時にWASDを方向キーに使う場合の対策コード
+        //let dc = dev.directionM( kstate );
+        //if (dc.up)      kstate[38] = true;
+        //if (dc.down)    kstate[40] = true;
+        //if (dc.left)    kstate[37] = true;
+        //if (dc.right)   kstate[39] = true;
+       
+        let zkey     = (input.trigger.weapon)?true:false;
+        //let qkey     = false;
         let numkey   = false; //menu select num
-        let arrowkey = false; //list select 
+        let arrowkey = (input.up || input.down || input.left || input.right)?true:false;//false; //list select 
         for (let i in kstate){
             if (Boolean(kstate[i])){
-                if (i == 90 || i == 32 ) zkey = true;// [z] or [space]
-                if (i == 81) {//[q]
-                    qkey = true;
-                    delete(kstate[81]);// = false;//押しっぱなし検出する為、予防
-                }
+                //if (i == 90 || i == 32 ) zkey = true;// [z] or [space]
+                //if (i == 81) {//[q]
+                //    qkey = true;
+                //    delete(kstate[81]);// = false;//押しっぱなし検出する為、予防
+                //}
                 numkey = ((i >= 48) && (i <= 57))? true: false; //Fullkey[0]-[9]
-                arrowkey = ((i >= 37) && (i <= 40))? true: false; //Arrowkey
+                //arrowkey = (input.up || input.down || input.left || input.right)?true:false;//up(i >= 37) && (i <= 40))? true: false; //Arrowkey
             }
         }
 
-	    if (qkey) {
+	    if (input.quit){//(qkey) {
             if (state.Game.save() == 0) {
 	            //alert("ゲーム中断セーブ実施しました。\nタイトルに戻ります。");
                 dev.sound.volume(1.0);
@@ -159,9 +168,9 @@ function scenePause(state) {
             for (let i in kstate){
                 if (Boolean(kstate[i])){
                     s = s //+ ((i == 37)? -40 :0)//leftkey 
-                    + ((i == 38)? -1 :0) //upkey
+                    + ((input.up)? -1 :0) //upkey
                     //((i == 39)? +40 :0) //rightkey
-                    + ((i == 40)? +1 :0);//downkey
+                    + ((input.down)? +1 :0);//downkey
                 }
             }
             if (s < 0) s = 0;

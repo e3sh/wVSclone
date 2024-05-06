@@ -111,14 +111,17 @@ function sceneGover(state) {
         //reset処理を記述予定
     }
 
-    function scene_step() {
+    function scene_step(g, input) {
         //進行
         wtxt = [];
 
         //let mstate = inp.check_last();
-        let kstate = keys.check();
+        let kstate = input.keycode;//keys.check();
 
-        let zkey = false;
+        let zkey = input.trigger.weapon;//false;
+        let xkey = input.trigger.useitem;
+        let ckey = input.trigger.jump;
+
 
         if (!keylock) {
             if (Boolean(kstate[38])) {
@@ -147,6 +150,7 @@ function sceneGover(state) {
                 }
             }
             */
+           /*
             if (Boolean(kstate[32])) {
                 if (kstate[32]) {//↓
                     zkey = true;
@@ -154,8 +158,9 @@ function sceneGover(state) {
             }
 
                               if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
-            let xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
-            let ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
+            */
+            //let xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
+            //let ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
     
             zkey = zkey || xkey || ckey; //any key
 

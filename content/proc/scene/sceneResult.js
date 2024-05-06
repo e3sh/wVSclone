@@ -221,12 +221,12 @@ function sceneResult(state) {
         }
     }
 
-    function scene_step() {
+    function scene_step(g, input) {
         //進行
         wtxt = [];
 
  //       let mstate = inp.check_last();
-        let kstate = keys.check();
+        let kstate = input.keycode;//keys.check();
 
         let zkey = false; if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
         let xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
@@ -237,7 +237,7 @@ function sceneResult(state) {
         zkey = (zkey || xkey || ckey)? true:false; //any key
 
         // Select時にWASDが効かないことへの対策コード
-        let dc = dev.directionM( kstate );
+        let dc = input;//dev.directionM( kstate );
         if (dc.up)      kstate[38] = true;
         if (dc.down)    kstate[40] = true;
         if (dc.left)    kstate[37] = true;

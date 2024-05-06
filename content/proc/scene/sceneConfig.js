@@ -376,21 +376,21 @@ function sceneConfig(state) {
 
     }
 
-    function scene_step() {
+    function scene_step(g, input) {
 
         wtxt = [];
 
         //let mstate = inp.check_last();
-        let kstate = keys.check();
+        //let kstate = keys.check();
 
         //let x = mstate.x;
         //let y = mstate.y;
 
-        let zkey = false;
+        let zkey = input.trigger.weapon;//false;
         let lkey = false;
         let rkey = false;
 
-        const c = dev.directionM( kstate );
+        const c = input;//dev.directionM( kstate );
 
         if (!keylock) {
             //if (Boolean(kstate[37])) {
@@ -443,7 +443,7 @@ function sceneConfig(state) {
                     text.draw();
                 }
             //}
-
+            /*    
             //zkey = false;
             if (Boolean(kstate[90])) {
                 if (kstate[90]) {//↓
@@ -455,7 +455,7 @@ function sceneConfig(state) {
                     zkey = true;
                 }
             }
-
+            */
             if (keylock) {
                 dev.sound.effect(9);
             }

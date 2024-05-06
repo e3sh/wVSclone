@@ -348,7 +348,7 @@ function gameScene(state){
 		if (state.Game.nowstage%15==11)	 obCtrl.tutTable(14);//15面要アイテム説明
 	}
 
-	function game_step() {
+	function game_step(g, input) {
 
 		dev.gs.commit();
 
@@ -562,7 +562,7 @@ function gameScene(state){
 				//get_weapon_checksub( i );
 		}
 		}
-		obCtrl.move(mapsc);
+		obCtrl.move(mapsc, input);
 		mapsc.step(obCtrl, state.System.time());
 
 		if (state.Result.highscore < obCtrl.score) state.Result.highscore = obCtrl.score;

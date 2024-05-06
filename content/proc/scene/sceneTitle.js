@@ -183,19 +183,19 @@ function sceneTitle(state) {
         //reset処理を記述予定
     }
 
-    function scene_step() {
+    function scene_step(g, input) {
 
         work2.draw();
 
         wtxt = [];
 
-        let kstate = keys.check();
+        //let kstate = keys.check();
 
-        let zkey = false;
+        let zkey = input.trigger.weapon;//false;
 
         if (!keylock) {
 
-            const c = dev.directionM( kstate );
+            const c = input//dev.directionM( kstate );
             /*
             if (Boolean(kstate[38])) {
                 if (kstate[38]) {//↑
@@ -259,7 +259,7 @@ function sceneTitle(state) {
                 keylock = true;
                 keywait = 10
             }
-
+            /*
             zkey = false;
             if (Boolean(kstate[90])) {
                 if (kstate[90]) {//↓
@@ -271,7 +271,7 @@ function sceneTitle(state) {
                     zkey = true;
                 }
             }
-
+            */
             if (keylock) {
                 dev.sound.effect(9);
             }

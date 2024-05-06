@@ -147,13 +147,13 @@ function sceneStatusDisp(state) {
         list_draw(1);
     }
 
-    function scene_step() {
+    function scene_step(g, input) {
 
         keywait--;
         if (keywait > 0) return 0;
 
         // input key section
-        let kstate = dev.key_state.check();
+        let kstate = input.keycode;//dev.key_state.check();
 
         let zkey = false; //exit button
         if (Boolean(kstate[90])) {//[z]
