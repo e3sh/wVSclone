@@ -58,6 +58,8 @@ let w = [
  "content/asset/param/scenario/message.js",
  "content/asset/param/scenario/exevent.js",
  "content/asset/param/tutorialCommentTable.js",
+//イメージ、サウンドアセット
+ "content/GameAssetManager.js",
 //処理部
  "content/proc/control/gObjCntl.js",
  "content/proc/class/gObjClass.js",

@@ -1,48 +1,11 @@
-// main
-function main_r(sw) {
-
-	//resolution
-	// VGA  640 * 480 (4:3) DCGA  640*400(16:10)
-	// XGA  1024* 768 (4:3) 
-	// HDTV 1280* 720(16:9) WXGA 1280*800(16:10) 
-	// GDTV 1440*1080 (4:3)   
-	// FHD  1920*1080(16:9)
-
-	const VIEW_WIDTH  = 640;
-	const VIEW_HEIGHT = 400;
-
-	const OFFSET_X = 0;
-	const OFFSET_Y = 0;
-
-    const sysParam = {
-		canvasId: "Layer0",
-		//offscreen : sw, //offscreenCanvas Use Select "use" or etc / default use
-		screen: [
-	//  { canvasId: "Layer0", resolution: { w: 1920, h: 1280 } },
-			{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//BGSurface / systemCanvas Resolution
-			{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//SPSurface
-        	{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//FGSurface
-       		{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//UISurface
-        	{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } } //Effect
-		]
-	}
-
-	const game = new GameCore( sysParam );
-
-	//Game Asset Setup
-	GameAssetSetup(game);
-
-	//Game Task Setup
-	game.task.add(new GameTask_Load("load"));
-	game.task.add(new taskMainLoop("main"));
-	game.task.add(new GameTask_Debug("debug"));
-	game.task.add(new GameTask_Device("device"));
-
-	game.run();
-}
-/*
 function GameAssetSetup(game){
 
+	ImageAssetSetup(game);
+	SoundAssetSetup(game);
+	SpfontSetup(game);
+}
+
+function ImageAssetSetup(game){
 	const asset_path_sys = "system/asset/";
 	const asset_path_cts = "content/asset/";
 
@@ -61,9 +24,13 @@ function GameAssetSetup(game){
 	game.asset.imageLoad( "_irare"  ,asset_path_cts + "pict/icon-3_3.png" );
 
 	game.asset.imageLoad( "TitleLogo",asset_path_cts + "pict/TitleLogoTemp.png" );
+}
+
+function SoundAssetSetup(game){
+	const asset_path_cts = "content/asset/";
 
 	game.asset.soundLoad( "00round_start", asset_path_cts + "sound/00round_start");  
-	game.asset.soundLoad( "01main",		asset_path_cts + "sound/01main" 		);
+	game.asset.soundLoad( "01main",		asset_path_cts +    "sound/01main" 		);
 	game.asset.soundLoad( "02warnning",	asset_path_cts + 	"sound/02warnning"	);
 	game.asset.soundLoad( "03hurry_up",	asset_path_cts + 	"sound/03hurry_up"	);
 	game.asset.soundLoad( "04round_clear",asset_path_cts + 	"sound/04round_clear");
@@ -80,6 +47,9 @@ function GameAssetSetup(game){
 	game.asset.soundLoad( "15fanfare",	asset_path_cts + 	"sound/15fanfarre"  );
 	game.asset.soundLoad( "16battle",	asset_path_cts + 	"sound/16maou_game_battle16");
 	game.asset.soundLoad( "17jump",		asset_path_cts + 	"sound/17jump"		);
+}
+
+function SpfontSetup(game){
 
     //Game Device Setup
 	game.setSpFont({ name: "stfont",   id: "FontGraph", pattern: FontPtnCutArray(  0,   0,12,16) });
@@ -109,4 +79,3 @@ function GameAssetSetup(game){
 		return sp;
 	}
 }
-*/
