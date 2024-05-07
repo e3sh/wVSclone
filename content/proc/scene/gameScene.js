@@ -1120,7 +1120,7 @@ function gameScene(state){
 		HpbarDraw.mhp = state.Game.player.maxhp;
 		HpbarDraw.br = state.Game.player.barrier;
 		HpbarDraw.shw = state.Game.player.shieldtime;
-		HpbarDraw.bbw = w_hp;
+		HpbarDraw.bbw = Math.trunc(w_hp/state.Game.player.maxhp);
 		
 		//let BaseLup = Math.pow(state.Game.player.spec.ETC   ,2)* 100;
 		//let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;
