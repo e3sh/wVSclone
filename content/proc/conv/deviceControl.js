@@ -110,6 +110,7 @@ function deviceControl( g ){
 
         let key = g.keyboard;
         let gpd = g.gamepad;
+        let mouse = g.mouse;
         let tpd = g.touchpad;
         let vpd = g.vgamepad;
 
@@ -164,6 +165,9 @@ function deviceControl( g ){
                 state[17] = gpd.btn_rb;//Controlkey 
             }
 
+            mouse.mode(g);
+            mouse.check();
+            tpd.mode(g);
             let vstate = vpd.check(); 
             if (vstate.distance > 0){
                 //touchpad操作されているので方向処理

@@ -89,6 +89,7 @@ function stateGame() {
         },
 
         Loader: function(e){
+            if (Boolean(e)){
             this.LV  = e.LV;//WeaponLevel ( = state.Game.player.level) 
             this.HP  = e.HP;
             this.MP  = e.MP; 
@@ -100,6 +101,13 @@ function stateGame() {
             this.MND = e.MND;//ShieldTime+: init 300flame(5s) +
             this.LAK = e.LAK;
             this.ETC = e.ETC;//spec:LvUp回数記録
+            }else{
+                //console.log(Object.entries(e));
+                this.LV = 0;    this.HP = 0;    this.MP = 0;
+                this.STR = 0;   this.DEX = 0;   this.AGI = 0;
+                this.VIT = 0;   this.INT = 0;   this.MND = 0;
+                this.LAK = 0;   this.ETC = 0;
+            }
         }
     }
     stateSpec.prototype = new stateSpecMethod();
