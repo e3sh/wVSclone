@@ -18,9 +18,14 @@
 //　unk_name:   unknownName    未鑑定時の表示名 空白時または無しの場合は表示名と同じにする？(処理による）
 //　info    :   information    説明文
 //
-function ItemTable(){
+// Sorcerianの星式のようにパラメータ強化式とするほうが楽かも(equipで該当項目強化/useで一時強化.回復)ITEMの場合
+// Function種類(ADD_S_I,ADD_S_V,MUL_S_I,LD_S_Imidiate,SUM_S_V) CMD TARGET VALUE ARRAYNUMBER
+//              0,1,2,3,4,5,6,7,8,9,10
+//  const sn = ["LV", "HP", "MP", "STR", "DEX", "AGI", "VIT", "INT", "MND", "LAK", "ETC"];
 
- 	const EQUIPMENT = 1, ITEM = 2, EXRARE = 3, POINT = 4;
+function itemTable(){
+
+    const EQUIPMENT = 1, ITEM = 2, EXRARE = 3, POINT = 4;
 
 	let it = [
 //	ID, name, graph, type, get, equip, use, exrare, inspect, p0, p1, p2, p3, p4, p5, unk_name, info
@@ -29,7 +34,7 @@ function ItemTable(){
         false, false, false, false, false,
         0, 0, 0, 0, 0, 0,
         "unknownBall",
-        "様々な使い方がある魔力を秘めた玉"],
+        "EnergyBall"],
     [ 2, "Sword", "Knife",EQUIPMENT, 
         false, false, false, false, false,
         0, 0, 0, 0, 0, 0,
@@ -46,6 +51,26 @@ function ItemTable(){
         false, false, false, false, false,
         0, 0, 0, 0, 0, 0, "Dummy", "Dummy"],
     ]
+
+    const item = {
+        ID:"builtin_FFFF"
+        ,name: "itemname"
+        ,graph: "spdataname"//icon
+        ,motionPatten: -1//number"mp"
+        ,type:1|2|4|8|16//flag_bit EQUIP USEBLE EXRARE INSPECT ETC
+        //{equip:false, useble:false, exrare:false, inspect:false, etc:false}
+        ,get:   function(stat){} //getした時の処理とか
+        ,equip: function(stat){} //装備デキル場合ハ動作用Function
+        ,use:   function(stat){} //使用デキル場合
+        ,exrare:function(stat){} //特殊効果
+        ,inspect:function(stat){} //鑑定するのは固定機能でフラグ変更だけなのでclass標準で？またはStatus表示とか
+        ,option:function(stat){}
+        ,param:[0,0] //functionで使用するパラメ－タ用数値
+        ,index:0
+        ,scroe:0
+        ,unknown:false
+        ,unk_name:"未鑑定名",unk_graph:"", text:"HELPTEXT", info:"簡単な説明か性能表示" 
+    }
 
     let item_list = [];
 
@@ -68,17 +93,6 @@ function ItemTable(){
     		ptn.score = w[16];
     		item_list.add(ptn); 
 	}
-
-    let a = {ID:0, name:"", graph:"", type:""
-        , get: function(obj){obj.item[20]+this.param[0];}//getした時の処理とか
-        , equip: false  //装備デキル場合ハ動作用Function
-        , use: false    //使用デキル場合
-        , exrare: false //特殊効果
-        , inspect: false    //鑑定スルトカ？イル？Status表示とか
-        , instant: false    //入手時即時実行f
-        , param:[0] //functionで使用するパラメ－タ用数値
-        , unk_name:"未鑑定名",unk_graph:"", text:"HELPTEXT", info:"簡単な説明か性能表示" 
-    }
 
     return item_list; 
 }

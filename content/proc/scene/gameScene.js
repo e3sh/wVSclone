@@ -867,13 +867,13 @@ function gameScene(state){
 
 		let intim = Math.floor((120000 - mapsc.flame) / 1000);
 
-		let cf= true;
+		let cf= true; //Status :equal = true/change = false <- Draw exec 
 		for (let i in ui.state) if (ui.state[i] !== inste[i]) cf = false;
 
-		let cs= true;
+		let cs= true; //Score
 		for (let i in ui.score)	if (ui.score[i] !== insco[i]) cs = false;
 
-		let ct= true;
+		let ct= true; //Time 
 		if (ui.time !== intim) ct = false;
 
 		ui.state = inste;
@@ -1154,10 +1154,10 @@ function gameScene(state){
 
 		if (zc < 3) {
 			for (let i = 0; i < 2 - dead_cnt; i++) {
-				work3.put("Unyuu3", dev.layout.zanki_x + i * 32, dev.layout.zanki_y);
+				work3.put("miniMay", dev.layout.zanki_x + i * 32, dev.layout.zanki_y);
 			}
 		} else {
-			work3.put("Unyuu3", dev.layout.zanki_x, dev.layout.zanki_y);
+			work3.put("miniMay", dev.layout.zanki_x, dev.layout.zanki_y);
 			work3.kprint("x" + zc, dev.layout.zanki_x + 16, dev.layout.zanki_y);
 		}
 

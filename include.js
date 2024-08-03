@@ -75,7 +75,7 @@ let w = [
  "content/proc/scene/sceneStatusDisp.js",
  "content/proc/scene/sceneOption.js",
  "content/proc/scene/sceneLvUp.js",
-  //処理部（状態管理）
+//処理部（状態管理）
  "content/proc/state/stateConfig.js",
  "content/proc/state/stateResult.js",
  "content/proc/state/stateSystem.js", 
@@ -85,6 +85,8 @@ let w = [
 //tasks
  "content/MainLoopTask.js",
  "system/proc/task/GameTask.js",
+//patch(coremin更新せずに追加変更を反映)
+ "system/proc/offScreenTypeC.js",
 
  //メイン
  "content/main.js"
