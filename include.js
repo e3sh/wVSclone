@@ -86,7 +86,7 @@ let w = [
  "content/MainLoopTask.js",
  "system/proc/task/GameTask.js",
 //patch(coremin更新せずに追加変更を反映)
- "system/proc/offScreenTypeC.js",
+// "system/proc/offScreenTypeC.js",
 
  //メイン
  "content/main.js"

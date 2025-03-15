@@ -189,54 +189,12 @@ function sceneTitle(state) {
 
         wtxt = [];
 
-        //let kstate = keys.check();
-
-        let zkey = input.trigger.weapon;//false;
+        let zkey = input.trigger.weapon;
 
         if (!keylock) {
 
             const c = input//dev.directionM( kstate );
-            /*
-            if (Boolean(kstate[38])) {
-                if (kstate[38]) {//↑
-                    menusel--;
-                    if (menusel < 0) menusel = menu.length - 1;
-                    keylock = true;
-                    keywait = 10;
-                }
-            }
 
-            if (Boolean(kstate[40])) {
-                if (kstate[40]) {//↓
-                    menusel++;
-                    if (menusel > menu.length- 1) menusel = 0;
-                    keylock = true;
-                    keywait = 10
-                }
-            }
-            if (Boolean(kstate[37])) {
-                if (kstate[37]) {// <-
-                    psel.mode = 0;
-                    //menusel--;
-                    //if (menusel < 0) menusel = menu.length - 1;
-                    keylock = true;
-                    keywait = 10;
-                }
-            }
-
-            if (Boolean(kstate[39])) {
-                if (kstate[39]) {// ->
-                    psel.mode = 1;
-                    psel.x += 2;
-                    //menusel++;
-                    //if (menusel > menu.length- 1) menusel = 0;
-                    keylock = true;
-                    keywait = 10
-                }
-            }
-
-
-            */
             if (c.up || c.down || c.left || c.right){
                if (c.up) {//↑
                     menusel--;
@@ -259,19 +217,7 @@ function sceneTitle(state) {
                 keylock = true;
                 keywait = 10
             }
-            /*
-            zkey = false;
-            if (Boolean(kstate[90])) {
-                if (kstate[90]) {//↓
-                    zkey = true;
-                }
-            }
-            if (Boolean(kstate[32])) {
-                if (kstate[32]) {//↓
-                    zkey = true;
-                }
-            }
-            */
+
             if (keylock) {
                 dev.sound.effect(9);
             }

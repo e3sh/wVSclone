@@ -3,7 +3,7 @@
 //　各オブジェクトの行動を指定するリスト。
 //
 
-// 本シナリオ内にtutorialmessageを表示させる処理あり(202024/03/26)
+// 本シナリオ内にtutorialmessageを表示させる処理あり(2024/03/26)
 // 使ってないitem No.のアイテム取得をメッセージ表示のトリガーにしている。
 // get_item(0) 操作説明
 // get_item(1) 魔法陣について
@@ -362,10 +362,10 @@ function sce_player( gObjc ) {
         if (o.jump == 0) o.vset(0);
         let speed = 0;
         
-        let upkey = o.entrypadaxis.up;
-        let downkey = o.entrypadaxis.down;
-        let leftkey = o.entrypadaxis.left;
-        let rightkey = o.entrypadaxis.right;
+        let upkey = o.input.up;
+        let downkey = o.input.down;
+        let leftkey = o.input.left;
+        let rightkey = o.input.right;
 
         if (leftkey)  o.vector = 270;
         if (upkey)    o.vector = 0;
@@ -391,45 +391,33 @@ function sce_player( gObjc ) {
             //speed = o.maxspeed;
             if (o.jump == 0) o.vset(speed);
 
-            let ctrlkey = false;
-            if (Boolean(o.key_state[17])) { if (o.key_state[17]) ctrlkey = true; gObjc.tutTable(11);} //ctrlkey
-
-            if (!ctrlkey) o.turlet.check(o.entrypadaxis);//Ctrl入力中はターレット固定
+            if (o.input.trigger.tgtlock) {
+                gObjc.tutTable(11); //ctrlkey
+            }else{
+                o.turlet.check(o.input);//Ctrl入力していないときにターレット移動
+            }
         }else{
             o.mvkeytrig-= o.vecfrm;
             o.mvkeytrig = (o.mvkeytrig-o.vecfrm < 0)?0 : o.mvkeytrig;
         }
 
         if (o.vector > 180) { o.mp = 2; } else { o.mp = 1; }
-
-        let zkey = false;
-        if (Boolean(o.key_state[90])) { if (o.key_state[90]) zkey = true; }
-        if (Boolean(o.key_state[32])) { if (o.key_state[32]) zkey = true; } //spacebar
-
-        let xkey = false;
-        if (Boolean(o.key_state[88])) { if (o.key_state[88]) xkey = true; }
-
-        //let ctrlkey = false;
-        //if (Boolean(o.key_state[17])) { if (o.key_state[17]) ctrlkey = true; } //ctrlkey
-        
-        let ckey = false;
-        if (Boolean(o.key_state[67])) { if (o.key_state[67]) ckey = true; }
         
         let hkey = false;//Debug Help action test 
-        if (Boolean(o.key_state[72])) { if (o.key_state[72]) hkey = true; }
+        if (Boolean(o.input.keycode[72])) { if (o.input.keycode[72]) hkey = true; }
 
-        let esckey = false;
-        if (Boolean(o.key_state[27])) { if (o.key_state[27]) esckey = true; }
+        let pkey = false;//Debug pasue action test 
+        if (Boolean(o.input.keycode[80])) { if (o.input.keycode[80]) pkey = true; }
 
         //トリガーの入力間隔WAIT
         o.triger-= o.vecfrm;
-        if ((o.triger <= 0) && (!zkey)) {
+        if ((o.triger <= 0) && (!o.input.trigger.weapon)) {
             o.shot = 0;
             o.triger = 5;
         }
 
         o.trigerSub-= o.vecfrm;
-        if ((o.trigerSub <= 0) && (!xkey)) {
+        if ((o.trigerSub <= 0) && (!o.input.trigger.useitem)) {
             o.shotSub = 0;
             o.trigerSub = 5;
         }
@@ -440,7 +428,7 @@ function sce_player( gObjc ) {
             o.autotrig = 5;
         }
 
-        if (zkey) {
+        if (o.input.trigger.weapon) {
             if (o.shot == 0) {
                 o.shot = 1;
 
@@ -493,7 +481,7 @@ function sce_player( gObjc ) {
             }
         }
 
-        if (xkey) {
+        if (o.input.trigger.useitem) {
             if (o.shotSub == 0) {
                 o.shotSub = 1;
                 if (o.itemstack.length > 0) {
@@ -547,7 +535,7 @@ function sce_player( gObjc ) {
             }
         }
         
-        if (ckey) { //Jump
+        if (o.input.trigger.jump) { //Jump
             if (o.shot == 0 && o.jump == 0) {
                 o.shot = 1;
 
@@ -558,7 +546,6 @@ function sce_player( gObjc ) {
 
                 o.triger = TRIG_WAIT;
             }
-            
         }
         
         if (hkey) {
@@ -577,7 +564,7 @@ function sce_player( gObjc ) {
             }
         }
         
-        if (esckey) {
+        if (o.input.pause || pkey) {
             if (o.shot == 0) {
                 o.shot = 1;
                 o.SIGNAL(1); //pause

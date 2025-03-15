@@ -25,7 +25,7 @@ class taskMainLoop extends GameTask {
 
         let kstate = this.state.System.dev.key_state.check();
         let arrow = this.state.System.dev.directionM( kstate );
-        let pstate = g.gamepad.check();
+        //let pstate = g.gamepad.check();
 
         const input = {
             up: arrow.up        // W 

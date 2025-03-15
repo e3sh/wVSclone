@@ -28,7 +28,7 @@ function gObjectClass(obCtrl) {
     this.crash = -1; //衝突した相手のオブジェクトNO　/これも同様に↑に同じだが－
     this.id; 		// ID
     this.name;      // 名前
-    this.score = 0; 	//倒したときのスコア
+    this.score = 0; 	//倒したときのスコア　＝現在は経験値として使用
     this.triger = 0; //トリガーの抑止間隔
     this.shot = 0; 	//ショットフラグ
     this.alpha = 255; // ALPHA値(透明度)0:透明～255:不透明
@@ -112,7 +112,7 @@ function gObjectClass(obCtrl) {
                 INT: 0, //BombPower+ : init -10
                 MND: 0, //ShieldTime+: init 300flame(5s) +
                 LAK: 0,
-                ETC: 0
+                ETC: 0　//CharactorLevel
             }
             //キャラクタの内部パラメータ用(Obj以外のリストで持たせてIDで管理でもいいが、
             //バトルシステム的な部分は定まっていないのでこんな感じで

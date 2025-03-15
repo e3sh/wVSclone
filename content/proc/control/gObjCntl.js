@@ -5,11 +5,8 @@
     //if (!cdt.init(5, 0, 0, 3000, 3000)) { alert("!"); }
 
     let debug_colnum;
-    let debug_cflag;
-
+ 
     let dev = state.System.dev;
-
-    delobj = 0;//使ってない
 
     this.score = 0;
 
@@ -237,8 +234,6 @@
         cdt = new CLinear4TreeManager();
         if (!cdt.init(6, 0, 0, 3000, 3000)) { alert("!"); }
 
-        delobj = 0; //不要かも
-
         restart_count = 0;
 
         if (state.Game.cold) {
@@ -338,10 +333,9 @@
             continue;
             }
             */
-            //o.mouse_state = mstate;
+            //　PLAYERには入力を参照できるようにする
             if (o.type == PLAYER ) { 
-                o.key_state = kstate;
-                o.entrypadaxis = input;//dev.directionM( kstate );
+                o.input = input;
                 o.score = this.score;
             }
 
@@ -351,7 +345,6 @@
                 o.colitem && o.colitem.remove();
                 o.colitem = null;
                 delete obj[i];
-                delobj++;
                 //o.status = 0;
             } else {
                 if (o.type != ETC) { //その他は当たり判定リストに載せない
@@ -664,9 +657,9 @@
 
             if (o.crash) {
 
-                let wo_stat = 0;
-                let wo_crst = 0;
-                let wo_vect = 0;
+                //let wo_stat = 0;
+                //let wo_crst = 0;
+                //let wo_vect = 0;
 
                 if ((o.type == BULLET_P) || (o.type == BULLET_E)) {
                     //弾の場合はそのまま消滅
@@ -715,8 +708,6 @@
             }
         }
 
-        //    if (delobj > 10){obj.sort(); delobj = 0;}//消した配列が10個超えたらソート
-        //    if (!obj[obj.length-1]) {obj.pop();}//空の配列を削除します。
         /*
         let f = 0;
         for (i in obj) {
@@ -1275,21 +1266,23 @@
 
     this.keyitem_view_draw = function(device){
 
-        let ypos = 400 -24;
+        let xpos = 400 -32;
+        let ypos = 400 -16;
         for (let i=51; i<59; i++){
+            //this.item[i] = 2; DEBUG fullItemTest
             if (Boolean(this.item[i])){
                 if (this.item[i] > 0) {
                     device.put(
                         motion_ptn[ch_ptn[i].mp].pattern[0][0]
-                        , 12, ypos);
+                        , xpos, ypos);
                     if (this.item[i] > 1){
-                        device.kprint("+" + (this.item[i]-1),12+2, ypos+6);
+                        device.kprint("+" + (this.item[i]-1),xpos, ypos+6);
                     }
                     //device.kprint(motion_ptn[[ch_ptn[i].mp]].pattern[0],12,ypos);
 
                     //device.kprint("ch-mp:" + ch_ptn[i].mp,12,ypos);
                     //device.kprint("mp:" + motion_ptn[ch_ptn[i].mp].pattern[0][0],12,ypos+8);
-                    ypos -= 24;
+                    xpos += 22;
                 }
             }
         }

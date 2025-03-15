@@ -55,7 +55,7 @@ function gameScene(state){
 
 	let useosc = false;  //Use Off Screen Canvas
 
-	let UI_force_reflash = false;
+	let UI_force_reflash = true; //false;
 
 	let mmcanvas;
 	let mmdevice;
@@ -88,7 +88,7 @@ function gameScene(state){
 	ButtomlineBackgroundDraw.draw = function (device) {
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.5)";
-	    device.fillRect(dev.layout.clip_x, dev.layout.clip_y, 360, 36);
+	    device.fillRect(dev.layout.clip_x, dev.layout.clip_y, 640, 36);
 		//device.globalAlpha = 1.0;
 	}
     //hpbar
@@ -132,6 +132,26 @@ function gameScene(state){
 	    device.stroke();
 		*/
 	}
+	//Expbar
+	let expbarDraw = { 
+		now: 0, 
+		next: 0,
+		draw : function (device) {
+			device.beginPath();
+			device.fillStyle = "darkgray";//clear 
+			device.fillRect(dev.layout.score_x, dev.layout.score_y +5, 100, 3);
+	
+			device.fillStyle = "orange"//expbar 
+			device.fillRect(dev.layout.score_x, dev.layout.score_y, (this.now/this.next)*100, 7);
+
+			//border
+			//device.strokeStyle = "darkgray"; 
+			//device.lineWidth = 1;
+			//device.rect(dev.layout.score_x, dev.layout.score_y, 100, 8);
+			//device.stroke();
+		}
+	 }
+
 	//縮小マップ表示
 	let SubmapDraw = new smd(mmdevice, mmcanvas); 
 	function smd(ctx, elm) { 
@@ -279,6 +299,9 @@ function gameScene(state){
 
 	            obCtrl.item = state.Game.item;
 	            obCtrl.itemstack = state.Game.itemstack;
+
+				//LoadGameの場合は前回LvUp時のExp.まで補填(ExpはSaveしてない)
+				obCtrl.score = Math.pow(state.Game.player.spec.ETC , 2)* 100 ;
 	        } else {//InitialStart
 	            dead_cnt = 0;
 	            state.Game.nowstage = state.Config.startstage;
@@ -530,7 +553,7 @@ function gameScene(state){
 	    //}
 
 	    //item
-			let wchk = false;
+			//let wchk = false;
 			for (let i in obCtrl.item) {
 			//	
 				if (i == 21) {//extend
@@ -560,7 +583,7 @@ function gameScene(state){
 				//weaponチェックはplayer.jsでチェックしている。
 				//if (!wchk) wchk = getweapon.check(i);//1frameでは１個分の武器のみ取得チェック(重複すると消滅等発生する為)
 				//get_weapon_checksub( i );
-		}
+			}
 		}
 		obCtrl.move(mapsc, input);
 		mapsc.step(obCtrl, state.System.time());
@@ -576,8 +599,8 @@ function gameScene(state){
 		BGShadowDraw();
 		
         //==この↑は背景描画
-		obCtrl.drawShadow(work2);//objectのshadowを背景面に反映
-	    obCtrl.draw(work);
+		obCtrl.drawShadow(work2);//objectのshadowを背景面に反映(work2:BG)
+	    obCtrl.draw(work);//work:SP
 	    obCtrl.draw(forgroundBG, true); //prioritySurface = true の物を別Screenに描画する処理(通常のDrawではパスされる。）
 
 	    //==　ここから文字表示画面（出来るだけ書き換えを少なくする）
@@ -893,27 +916,43 @@ function gameScene(state){
 		if (!cf){
 			work3.reset();
 			work3.clear();
+
+			work3.putFunc(ButtomlineBackgroundDraw);
 		}else{
-			if (!cs) work3.fill(dev.layout.hiscore_x, dev.layout.hiscore_y,156,32);//,"green");
-			if (!ct) work3.fill(dev.layout.time_x, dev.layout.time_y,120,16);//,"red");
+			if (!cs) { 
+				work3.fill(dev.layout.hiscore_x, dev.layout.hiscore_y,8*12,16);//半透明を表示するために一旦クリア
+				work3.fill(dev.layout.hiscore_x, dev.layout.hiscore_y,8*12,16,"rgba(0,0,0,0.5)");
+			}
+
+			if (!ct) { 
+				work3.fill(dev.layout.time_x, dev.layout.time_y,8*9,8);//半透明を表示するために一旦クリア
+				work3.fill(dev.layout.time_x, dev.layout.time_y,8*9,8,"rgba(0,0,0,0.5)");
+			}
 		}
 
-		if (!cs || !cf){
+		if (!cs || !cf){ 
 			//work3.putchr("Hi-Sc:" + ui.score[0], dev.layout.hiscore_x, dev.layout.hiscore_y);
 			//work3.putchr("Score:" + ui.score[1], dev.layout.score_x, dev.layout.score_y);
-
+			let nowLvexp = Math.pow(state.Game.player.spec.ETC ,2)* 100;
 			let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;
-			let NextMkr = ( obCtrl.score >= NextLup) ? "#":" ";
-			let Nextstr = "       " + NextMkr + "Next." + NextLup;
-			work3.putchr("Exp." + ui.score[1], dev.layout.hiscore_x, dev.layout.hiscore_y);
+			//let NextMkr = ( obCtrl.score >= NextLup) ? "#":" ";
+			let Nextstr = ( obCtrl.score >= NextLup) ? 
+				"NextLvReady":"       Next." + NextLup;
+
+			expbarDraw.now = obCtrl.score - nowLvexp;
+			expbarDraw.next = NextLup - nowLvexp;
+			//if (expbarDraw.now <= NextLup) 
+			work3.putFunc(expbarDraw);
+
+			work3.putchr8("Exp." + ui.score[1], dev.layout.hiscore_x, dev.layout.hiscore_y);
 			Nextstr = Nextstr.substring(Nextstr.length-11);
-			work3.putchr(Nextstr, dev.layout.score_x, dev.layout.score_y);
+			work3.putchr8(Nextstr, dev.layout.score_x, dev.layout.score_y);
 
 			if  (cf) obCtrl.messageview.write("** SCORE Draw ** f:" + ui.cnt);
 		}
 
-		if (!ct || !cf){
-			work3.putchr("Time:" + ui.time, dev.layout.time_x, dev.layout.time_y);
+		if (!ct || !cf){ 
+			work3.putchr8("Time:" + ui.time, dev.layout.time_x, dev.layout.time_y);
 			if  (cf) obCtrl.messageview.write("** Time Draw ** f:" + ui.cnt);
 		}
 
@@ -940,7 +979,7 @@ function gameScene(state){
 		if (state.Game.mode !=1 ){
 			UI_PlayerType();
 		}else{
-			UI_PlayerType2();
+			//UI_PlayerType2();
 		}
 	}
 
@@ -1019,7 +1058,7 @@ function gameScene(state){
 	//==========
 	function UI_PlayerType(){
 
-		work3.putFunc(ButtomlineBackgroundDraw);
+		//work3.putFunc(ButtomlineBackgroundDraw);
 
 		//残機表示
 		let zc = 2 - dead_cnt;
@@ -1092,6 +1131,7 @@ function gameScene(state){
 					dev.layout.zanki_x + i * 20 + 136, dev.layout.zanki_y + 8);
 				}
 			}
+			obCtrl.keyitem_view_draw(work3);
 		}
 
 		n = 0;
@@ -1112,7 +1152,7 @@ function gameScene(state){
 				((state.Game.player.level > 2 )?" Max":"");
 				work3.putchr8(wt, dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y + 8);
 			}
-		work3.putchr("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y);
+		work3.putchr8("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y);
 		
 		let w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
 

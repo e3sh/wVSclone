@@ -8,10 +8,7 @@ function sceneResult(state) {
     let work2 = dev.graphics[2];//メイン描画面(FG)
 	//let text = dev.text;
     //let text = dev.graphics[3];//文字表示面
-
-    //let inp = dev.mouse_state;
-    let keys = dev.key_state;
-
+ 
     this.init = scene_init;
     this.reset = scene_reset;
     this.step = scene_step;

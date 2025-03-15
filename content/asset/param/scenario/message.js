@@ -16,6 +16,8 @@ function sce_message_billboard( msg, wait) {
         this.normal_draw_enable = false; //visible = false;だと↓も表示されない。
         this.custom_draw_enable = true;
 
+        o.prioritySurface = true;
+
         o.p_count = 0;
         o.mes_col = 0;
         o.mes_line = 0;
@@ -76,13 +78,12 @@ function sce_message_small(colno) {
     this.init = function (scrn, o) {
         o.vset(1);
         o.type = 5; //当たり判定の無い状態にする
-        this.normal_draw_enable = false; //visible = false;だと↓も表示されない。
-        this.custom_draw_enable = true;
+        o.normal_draw_enable = false; //visible = false;だと↓も表示されない。
+        o.custom_draw_enable = true;
 
+        o.prioritySurface = true;
         o.w_st = o.id;
-
         o.x -= (o.w_st.length * 8) / 2;
-
         o.display_size = 1.0;
 
     }
@@ -91,9 +92,7 @@ function sce_message_small(colno) {
 
         if (o.frame > 50) o.status = 0; //時間が来たら消す。
 
-        //o.display_size = 1.0 + (o.frame / 150);
-
-        o.frame++;
+        o.frame+= o.vecfrm;
 
         return o.sc_move();
     }
@@ -101,25 +100,6 @@ function sce_message_small(colno) {
     this.draw = function (scrn, o) {
 
         let w = o.gt.worldtoView(o.x, o.y);
-        /*
-        if (colno == 0) {
-            let cl = {}
-            cl.x = w.x;
-            cl.y = w.y - 4;
-            cl.w = o.w_st.length * 8;
-            cl.h = 8;
-
-            cl.draw = function (device) {
-                device.beginPath();
-
-                device.strokeStyle = "gray";
-                device.lineWidth = 1;
-                device.rect(this.x, this.y, this.w, this.h);
-                device.stroke();
-            }
-            scrn.putFunc(cl);
-        }
-        */
         scrn.putchr8c(o.w_st, w.x, w.y, colno, o.display_size);
     }
 }
