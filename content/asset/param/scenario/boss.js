@@ -73,7 +73,8 @@ function sce_boss_1(){
 
         o.custom_draw_enable = false;
 
-        //o.wdspf = true;
+        o.born_x = o.x;
+        o.born_y = o.y;
 
         o.cnt = 0;
     }
@@ -94,10 +95,13 @@ function sce_boss_1(){
                 o.cnt = 0;
                 o.set_object(30);
             }
-            o.vset(2);
+            o.vset(0);
             o.vector = (o.vector + 8*o.vecfrm + 360) % 360;
             //o.frame = 59; // 59;
         };
+
+        o.x = o.born_x;
+        o.y = o.born_y;
 
         if (o.status == 2) {
             o.set_object_ex(14, o.x, o.y, 180, 50);//Boss2

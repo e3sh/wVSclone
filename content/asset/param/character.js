@@ -29,9 +29,9 @@ function character(){
 	const ETC = 5;
 
 	let ch = [
-//	CHNO,mp,Hp,Type,cex,cey,sizx,sizy,s0,s1,s2,s3,s4,s5,id,sc
+//	CHNO,mp,Hp,Type,cex,cey,sizx,sizy,s0,id,score,comment,shadow
 //自機
-	[ 0, 1, 10, PLAYER	, 16, 16, 24, 16, 0, 0,"Player",""],
+	[ 0, 1, 10, PLAYER	, 16, 16, 24, 16, 0, 0,"Player"],
 
 //自弾
 	[6, 26,  8, BULLET_P, 16, 16, 16, 16, "common_vset6"			, 0,"自弾"],
@@ -48,10 +48,10 @@ function character(){
 
 //敵
 	[ 1, 4,  8,	ENEMY	, 16, 16, 24, 16, 0, 10,"通常"],
-	[14, 4, 90, ENEMY	, 16, 16, 24, 24, 0, 50,"Boss_?"],
+	[14, 4, 90, ENEMY	, 16, 16, 24, 24, 0, 50,"Boss_?", true],
     [30, 7,  1, BULLET_E,  8,  8,  6,  6,33,  0,"全方位弾ボス"],
 	[33,31,240, ENEMY	, 16, 16, 24, 24, 0, 10,"timeover"],
-    [34, 4,120, ENEMY	, 16, 16, 32, 32, 0, 30,"enemy boss x"],
+    [34, 4,120, ENEMY	, 16, 16, 32, 32, 0, 30,"enemy boss x", true],
 
 //敵弾
 	[ 2, 7, 1, BULLET_E	, 4, 4,  6,  6, 4,  0,""],
@@ -70,19 +70,19 @@ function character(){
 	[45, 41, 1, BULLET_E,  8, 16, 16, 16, "friend_rotate"		, 0,"(wand)"],
 
 //アイテム
-	[15, 38, 1, ITEM	, 12, 12, 24, 24, 30,   0,"wand"],
-	[16, 15, 1, ITEM	, 12, 12, 24, 24, 30,   0,"sword"],
-	[17, 37, 1, ITEM	, 12, 12, 24, 24, 30,   0,"axe"],
-	[18, 16, 1, ITEM	, 12, 12, 24, 24, 30,   0,"spear"],
-	[19, 17, 1, ITEM	, 12, 12, 24, 24, 30,   0,"boom"],
+	[15, 38, 1, ITEM	, 12, 12, 24, 24, 30,   0,"wand"	,true],
+	[16, 15, 1, ITEM	, 12, 12, 24, 24, 30,   0,"sword"	,true],
+	[17, 37, 1, ITEM	, 12, 12, 24, 24, 30,   0,"axe"		,true],
+	[18, 16, 1, ITEM	, 12, 12, 24, 24, 30,   0,"spear"	,true],
+	[19, 17, 1, ITEM	, 12, 12, 24, 24, 30,   0,"boom"	,true],
 	[20, 26, 1, ITEM	,  8, 8,  16, 16, 30,   4,"Ball"],
-	[21,  1, 1, ITEM	, 16, 16, 32, 32, 30, 100,"1upItem"],
-	[22, 27, 1, ITEM	,  8, 8,  16, 16, 30,  10,"KeyItem"],
+	[21,  1, 1, ITEM	, 16, 16, 32, 32, 30, 100,"1upItem"	,true],
+	[22, 27, 1, ITEM	,  8, 8,  16, 16, 30,  10,"KeyItem"	,true],
 	[23, 28, 1, ITEM	,  8, 8,  16, 16, 30,   8,"(B)"],
 	[24, 29, 1, ITEM	,  8, 8,  16, 16, 30,   8,"(S)"],
 	[25, 30, 1, ITEM	,  8, 8,  16, 16, 30,   8,"(L)"],
-	[26, 33, 1, ITEM	, 12, 12, 24, 24, 30,  10,"Lamp"],
-	[27, 34, 1, ITEM	, 12, 12, 24, 24, 30,  10,"Map"],
+	[26, 33, 1, ITEM	, 12, 12, 24, 24, 30,  10,"Lamp"	,true],
+	[27, 34, 1, ITEM	, 12, 12, 24, 24, 30,  10,"Map"		,true],
 	[35, 32, 1, ITEM	,  8, 8,  16, 16, 30,  10,"[o]コイン"],
 	[40, 39, 1, ENEMY	, 12, 12, 24, 24, 30, 100,"宝箱"],
 
@@ -92,16 +92,15 @@ function character(){
 	[47, 43, 1, BULLET_P,  8, 8, 16, 16, "friend_front",  0,"bow friend"],
 	[48, 44, 1, BULLET_E,  8, 8, 16, 16, "common_vset8",  0,"arrow enemy"],
 	[49, 43, 1, BULLET_E,  8, 8, 16, 16, "friend_front",  0,"bow enemy"],
-	[50, 18, 1, ITEM	, 12,12, 24, 24, 30,			  0,"item bow"],
-	//51-58
-	[51, 50, 1, ITEM	, 12, 12, 24, 24, 30, 100,"AmuletR"],
-	[52, 51, 1, ITEM	, 12, 12, 24, 24, 30, 100,"AmuletG"],
-	[53, 52, 1, ITEM	, 12, 12, 24, 24, 30, 100,"AmuletB"],
-	[54, 53, 1, ITEM	, 12, 12, 24, 24, 30, 100,"CandleR"],
-	[55, 54, 1, ITEM	, 12, 12, 24, 24, 30, 100,"CandleB"],
-	[56, 55, 1, ITEM	, 12, 12, 24, 24, 30, 100,"RingR"],
-	[57, 56, 1, ITEM	, 12, 12, 24, 24, 30, 100,"RingB"],
-	[58, 57, 1, ITEM	, 12, 12, 24, 24, 30, 100,"Mirror"],
+	[50, 18, 1, ITEM	, 12, 12, 24, 24, 30,   0,"item bow",true],
+	[51, 50, 1, ITEM	, 12, 12, 24, 24, 30, 100,"AmuletR" ,true],
+	[52, 51, 1, ITEM	, 12, 12, 24, 24, 30, 100,"AmuletG" ,true],
+	[53, 52, 1, ITEM	, 12, 12, 24, 24, 30, 100,"AmuletB" ,true],
+	[54, 53, 1, ITEM	, 12, 12, 24, 24, 30, 100,"CandleR" ,true],
+	[55, 54, 1, ITEM	, 12, 12, 24, 24, 30, 100,"CandleB" ,true],
+	[56, 55, 1, ITEM	, 12, 12, 24, 24, 30, 100,"RingR"	,true],
+	[57, 56, 1, ITEM	, 12, 12, 24, 24, 30, 100,"RingB"	,true],
+	[58, 57, 1, ITEM	, 12, 12, 24, 24, 30, 100,"Mirror"	,true],
 
 	//InformationCursor処理用
 	[100, 45, 1, ETC	, 8, 8, 16, 16, "effect_informationCursor", 0,"InformationCursor"],
@@ -136,6 +135,8 @@ function character(){
 		ptn.id = 0;//w[14];// 設置時に個別に指定する。
 		ptn.score = w[9];
 		ptn.comment =  typeText[w[3]] + " " + w[10];
+		ptn.shadow = Boolean(w[11]);
+
 		chr_ptn[ w[0] ] = ptn; 
 
 	//追加すべきパラメータに関する考察

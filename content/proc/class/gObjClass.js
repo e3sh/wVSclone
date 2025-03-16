@@ -72,12 +72,14 @@ function gObjectClass(obCtrl) {
     this.shiftx = 0; //扱い座標と表示座標をずらす場合に使用 2023/02/02
     this.shifty = 0; //
 
-    //this.jump; this.jumpcount; //これはplayerでしか使用しないから個別でよい
-    //this.jump = 0; //敵でも使うのでここに追加
+    //this.jump; this.jumpcount; 
+    //this.jump = 0;
     //this.jpvec = -5.0;
 
     this.vecfrm;//1秒で60stepを実行するとしたときを1としたときの、DeltaTimeとの割合(1stepの移動量vx,vyに掛ける)
     this.barthTime;
+
+    this.effectShadow = false; //影に強調エフェクトするかどうか2025/03/15追加
 
     //Typeによって当たり判定/ダメージ判定をするが、//
     //状況により個別に判定状態を切り替えられるようにフラグ管理も追加。2023/02/03

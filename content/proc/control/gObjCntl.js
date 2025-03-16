@@ -927,6 +927,13 @@
                             device.fillStyle = "rgba(0,0,0,0.6)";
                             device.ellipse(w.x, w.y + wh, ww, wh/4, 0,  0, Math.PI*2, true );
                             device.fill();
+
+                            if (o.effectShadow) {
+                                device.beginPath();
+                                device.strokeStyle = "rgba(255,255,255," + (o.alive%330)/330 +")";
+                                device.ellipse(w.x, w.y + wh, ww, wh/4, 0,  0, Math.PI*2, true );
+                                device.stroke();
+                            }
                         }
                     }
                 }
@@ -994,6 +1001,8 @@
         o.status = 1; //StatusValue.Normal ;
 
         if (!Boolean(sc)) sc = ch_ptn[ch].senario[0];
+
+        o.effectShadow = ch_ptn[ch].shadow;
 
         o.init = sce.init[sc];
         o.move = sce.move[sc];

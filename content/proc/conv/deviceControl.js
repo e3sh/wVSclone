@@ -47,8 +47,8 @@ function deviceControl( g ){
     this.layout = new gameLayout();
 
     this.mouse_state = g.mouse;
-    let keys = g.keyboard;
 
+    //let keys = g.keyboard;
     //this.key_state = keys;  //keys;
 
     this.gpad_state = g.gamepad;
