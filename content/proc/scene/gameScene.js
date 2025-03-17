@@ -53,7 +53,7 @@ function gameScene(state){
 
 	let mmrefle = true; //mini map reflash
 
-	let useosc = false;  //Use Off Screen Canvas
+	//let useosc = false;  //Use Off Screen Canvas
 
 	let UI_force_reflash = true; //false;
 
@@ -139,10 +139,11 @@ function gameScene(state){
 		draw : function (device) {
 			device.beginPath();
 			device.fillStyle = "darkgray";//clear 
-			device.fillRect(dev.layout.score_x, dev.layout.score_y +5, 100, 3);
+			device.fillRect(dev.layout.score_x, dev.layout.score_y+5, 100, 3);
 	
-			device.fillStyle = "orange"//expbar 
-			device.fillRect(dev.layout.score_x, dev.layout.score_y, (this.now/this.next)*100, 7);
+
+			device.fillStyle = ((this.now/this.next) >= 1)?"yellowgreen":"orange"//expbar 
+			device.fillRect(dev.layout.score_x+1, dev.layout.score_y+3, (this.now/this.next)*100, 4);
 
 			//border
 			//device.strokeStyle = "darkgray"; 
@@ -937,7 +938,7 @@ function gameScene(state){
 			let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;
 			//let NextMkr = ( obCtrl.score >= NextLup) ? "#":" ";
 			let Nextstr = ( obCtrl.score >= NextLup) ? 
-				"NextLvReady":"       Next." + NextLup;
+				" NextLvReady":"       Next." + NextLup;
 
 			expbarDraw.now = obCtrl.score - nowLvexp;
 			expbarDraw.next = NextLup - nowLvexp;
@@ -945,8 +946,9 @@ function gameScene(state){
 			work3.putFunc(expbarDraw);
 
 			work3.putchr8("Exp." + ui.score[1], dev.layout.hiscore_x, dev.layout.hiscore_y);
-			Nextstr = Nextstr.substring(Nextstr.length-11);
-			work3.putchr8(Nextstr, dev.layout.score_x, dev.layout.score_y);
+			Nextstr = Nextstr.substring(Nextstr.length-13);
+			work3.kprint(Nextstr, dev.layout.score_x, dev.layout.score_y);
+			//work3.putchr8(Nextstr, dev.layout.score_x, dev.layout.score_y);
 
 			if  (cf) obCtrl.messageview.write("** SCORE Draw ** f:" + ui.cnt);
 		}

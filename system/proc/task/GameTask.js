@@ -1,51 +1,3 @@
-class GameTask_FPScount extends GameTask {
-
-    constructor(id){
-        super(id);
-    }
-
-    oldtime;
-    newtime = Date.now();
-    cnt = 0;
-
-    fps_log = [];
-    log_cnt = 0;
-    log_max = 0;
-
-    interval;
-
-    fps = 0;
-    
-    step(g) {
-
-        this.oldtime = this.newtime;
-        this.newtime = Date.now();
-
-        this.interval = this.newtime - this.oldtime;
-
-        if (this.log_cnt > this.log_max) this.log_max = this.log_cnt;
-        this.fps_log[this.log_cnt] = this.interval;
-
-        this.log_cnt++;
-        if (this.log_cnt > 59) this.log_cnt = 0;
-
-        let w = 0;
-        for (let i = 0; i <= this.log_max; i++) {
-            w += this.fps_log[i];
-        }
-
-        this.cnt++;
-
-        this.fps = parseInt(1000 / (w / (this.log_max + 1)));
-
-    }
-
-    draw(g){
-        g.font["8x8white"].putchr("FPS:" + this.fps, 320, 0);
-    }
-
-}
-
 class GameTask_Debug extends GameTask {
 
     constructor(id){
@@ -120,6 +72,8 @@ class GameTask_Load extends GameTask {
         infoflg;
         infodly;
 
+        fsf;//firstStep excuted flag
+
     init(g){
         const USEFONT = "6x8";// "8x8white";
         this.scrn = g.screen[4];
@@ -128,9 +82,14 @@ class GameTask_Load extends GameTask {
         //this.cnt = 0;
         this.infoflg = false;
         this.infodly = 0;
+        //this.infodly = g.time();
+
+        this.fsf = false;
     }
 
     step(g) {
+        if (!this.fsf) this.infodly = g.time();
+
         let kstate = g.keyboard.check();
         let mstate = g.mouse.check();
         let tstate = g.touchpad.check();
@@ -139,11 +98,15 @@ class GameTask_Load extends GameTask {
         g.state.Config.debug = this.infoflg;
 
         let startflag = false; 
-        if (Boolean(kstate[32])||g.gamepad.btn_start||mstate.button==0) {
-            if (kstate[32]||g.gamepad.btn_start||mstate.button==0) {//spacebar↓
-                startflag = true;
+
+        if (this.infoflg){ 
+            if (Boolean(kstate[32])||g.gamepad.btn_start||mstate.button==0) {
+                if (kstate[32]||g.gamepad.btn_start||mstate.button==0) {//spacebar↓
+                    startflag = true;
+                }
             }
         }
+
         if (Boolean(kstate[27])||g.gamepad.btn_back) {
             if (kstate[27]||g.gamepad.btn_back) {//esckey↓
                 this.infoflg = true;
@@ -151,11 +114,15 @@ class GameTask_Load extends GameTask {
             }
         }
 
+        if (((g.time()-this.infodly) > 3000)&&(!this.infoflg)) {
+            startflag = true;
+        }
+
         if (tstate.pos.length > 2){
             startflag = true;
         }
 
-        if (startflag) {
+        if (startflag && this.fsf) {
             let maintask = g.task.read("main");
 
             g.state.Config.debug = false;
@@ -174,13 +141,14 @@ class GameTask_Load extends GameTask {
             this.str.push("[Gamepad]");
             this.str.push("Not Ready.");
         }
+
+        this.fsf = true;
     }
 
     draw(g){
         const LINEH = 8;
         const DELAY = this.infodly;//1000;
         const LWAIT = 4;
-
 
         let st = g.asset.check();
 
@@ -192,6 +160,10 @@ class GameTask_Load extends GameTask {
             st.push("vvvvvvvvvvvvvvvvvvvvvv");
             st.push("vvvv  GAME START  vvvv");
             st.push("vvvvvvvvvvvvvvvvvvvvvv");
+            st.push(".......ok".substring(0,Math.trunc((g.time()-this.infodly)/300)));
+
+            g.state.System.dev.graphics[4].put("TitleLogo"
+                , 320, 178-Math.trunc((g.time()-this.infodly)/60));
         }
 
         //let pfunc = g.asset.image["FontGraph"].ready ? this.fontsc.putchr :this.scrn.print ;  
@@ -222,27 +194,25 @@ class GameTask_Load extends GameTask {
             c += st[i].length;
         }
 
-        let o = {}
-            o.x = 0;
-            o.y = st.length*LINEH +16;
-            o.w = 32 * 8;
-            o.h = 8;
-            let wc = Math.floor(Math.cos(((g.time()%3000)/3000)*6.28)*256)+256;
-            wc = (wc > 255)?255: wc;
-            o.c = 'rgb( 0, 0,' + wc + ')';//"navy";
-            //o.c = 'rgb( 0,' +  Math.floor(Math.sin(((g.time()%2000)/2000)*6.28 + 2)*255)  + ',' + Math.floor(Math.cos(((g.time()%2000)/2000)*6.28)*255) + ')';//"navy";
-        o.draw = function (device) {
+        if (this.infoflg){
+           let o = {}
+                o.x = 0;
+                o.y = st.length*LINEH +16;
+                o.w = 32 * 8;
+                o.h = 8;
+                let wc = Math.floor(Math.cos(((g.time()%3000)/3000)*6.28)*256)+256;
+                wc = (wc > 255)?255: wc;
+                o.c = 'rgb( 0, 0,' + wc + ')';//"navy";
+                //o.c = 'rgb( 0,' +  Math.floor(Math.sin(((g.time()%2000)/2000)*6.28 + 2)*255)  + ',' + Math.floor(Math.cos(((g.time()%2000)/2000)*6.28)*255) + ')';//"navy";
+            o.draw = function (device) {
                 device.beginPath();
                 device.fillStyle = this.c;
                 device.fillRect(this.x, this.y, this.w, this.h);
             }
-        this.scrn.putFunc(o);
+            this.scrn.putFunc(o);
 
+            pfunc("Push SPACE key or [START] button", 0, st.length*LINEH +16);
 
-        pfunc("Push SPACE key or [START] button", 0, st.length*LINEH +16);
-
-        if (this.infoflg)
-        {
             pfunc(g.task.namelist(), 0, this.scrn.ch-8);
 
             for (let i in this.str){

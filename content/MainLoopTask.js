@@ -18,7 +18,7 @@ class taskMainLoop extends GameTask {
    
     pre = function (g) {
         this.visible = false;
-        this.enable = false;;
+        this.enable = false;
     }
 
     step = function (g) {
