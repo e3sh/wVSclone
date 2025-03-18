@@ -1273,12 +1273,14 @@
         this.messageconsole.write(this.itemTable[num] + ".GET");
     };
 
-    this.keyitem_view_draw = function(device){
+    this.keyitem_view_draw = function(device, mode = false){
 
-        let xpos = 400 -32;
-        let ypos = 400 -16;
+        let helptext = {51:"INT", 52:"MND", 53:"VIT", 56:"STR", 57:"DEX"};
+
+        let xpos = dev.layout.keyitem_x;
+        let ypos = dev.layout.keyitem_y;
         for (let i=51; i<59; i++){
-            //this.item[i] = 2; DEBUG fullItemTest
+            //this.item[i] = 2; // DEBUG fullItemTest
             if (Boolean(this.item[i])){
                 if (this.item[i] > 0) {
                     device.put(
@@ -1286,6 +1288,11 @@
                         , xpos, ypos);
                     if (this.item[i] > 1){
                         device.kprint("+" + (this.item[i]-1),xpos, ypos+6);
+                    }
+
+                    if (mode){
+                        if (Boolean(helptext[i]))
+                            device.kprint(helptext[i],xpos-12, ypos-16);
                     }
                     //device.kprint(motion_ptn[[ch_ptn[i].mp]].pattern[0],12,ypos);
 

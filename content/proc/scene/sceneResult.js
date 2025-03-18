@@ -305,7 +305,7 @@ function sceneResult(state) {
                 device.stroke();
             }
             work2.putFunc(o);
-            state.obCtrl.keyitem_view_draw(work2);
+            //state.obCtrl.keyitem_view_draw(work2);
 
             work2.draw();
             work2.reset();

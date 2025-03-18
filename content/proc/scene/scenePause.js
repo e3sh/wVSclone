@@ -234,6 +234,12 @@ function scenePause(state) {
                 for (let i in tutCtable[tutCn]){
                     work.kprint(tutCn + "." + i + ":" + tutCtable[tutCn][i], 0, 264 + 10 * i);
                 }
+
+                for (let i=0; i<5; i++){
+                    work.kprint(tutCtable[100+i][0], 100, 56 + 8 * i);
+                }
+                state.obCtrl.keyitem_view_draw(work ,true);
+
             }else{
                 work.kprint(tutCn + ".: Message Empty.", 0, 264);
             }

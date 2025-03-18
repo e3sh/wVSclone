@@ -17,12 +17,15 @@
         canvas.height = 400;
 
         ctx.fillStyle = "black";
-        ctx.fillRect(0,0,640,400);
+        ctx.fillRect(0 ,0 ,canvas.width ,canvas.height);
 
         const titleLogo = new Image();
         titleLogo.src = "content/asset/pict/TitleLogoTemp.png";
 
-        ctx.drawImage(titleLogo,320-203,128+50-34);
+        ctx.drawImage(titleLogo
+            ,320   -titleLogo.width/2
+            ,128+50-titleLogo.height/2
+        );
         //406*68
     }
     function page_start(){

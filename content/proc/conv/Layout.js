@@ -37,6 +37,10 @@ function gameLayout() {
 
     this.clip_x = DSP_SP_X ;//+ 140;
     this.clip_y = DSP_SP_Y + GS_SIZE_Y -36;
+
+    this.keyitem_x = DSP_SP_X + 368;
+    this.keyitem_y = DSP_SP_Y + GS_SIZE_Y -16;
+
 }
 
 
