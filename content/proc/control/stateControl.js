@@ -14,8 +14,10 @@ function stateControl( g ){
 	//進行状態やプレイヤーステータス等(保持アイテムはここ）
 	this.Game = new stateGame( g );
 
-	//2023/02/14:GameSceneから↓へ変更　この時点ではinitもresetもしていない。
+	//2023/02/14:GameSceneから↓へ変更　この時点ではresetしていない。
 	this.obCtrl = new gObjectControl(this.System.dev.graphics[1], this);
+	//↑第一引数にscreenを入れているのは移動時の画面サイズ取得の為なので適したscreenを指定する	
+
 	this.mapsc = new mapSceControl();
 
 	this.Utility = {

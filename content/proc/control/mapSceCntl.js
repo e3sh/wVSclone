@@ -77,11 +77,23 @@ function mapSceControl(){
             s.colmap        = stage_data.colmap;
             s.startroom_id  = stage_data.startroom_id;
 
+            /*
+            let jsontext = JSON.stringify(s);
+
+            if (Boolean(localStorage)) { //ローカルストレージ使えたらセーブ実施
+                localStorage.setItem("stagedata" + num, jsontext);
+                console.log("stage" + num  + " mapgenerate complited.");
+            } else {
+                console.log("stage" + num  + " mapgenerate do not saved.");
+            }
+            let s = JSON.parse(localStorage.getItem("savedata"));
+            */
             stage[num] = s;
         }
+
         stage_msc   = stage[num].mapScenario;
         stage_bg    = stage[num].bgPattern;
-        stage_mch   = stage[num].mapChip;//プレイ中MapChipはCollisionチェックで書き換えているのでコピーを渡すつもり。
+        stage_mch   = stage[num].mapChip;//Collisionチェックで書き換える
         stage_inisc = stage[num].initialScenario;
         stage_ptn   = stage[num].bgSpdata;
         colmap  = stage[num].colmap;

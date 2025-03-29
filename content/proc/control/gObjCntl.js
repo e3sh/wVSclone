@@ -958,9 +958,6 @@
 
         o.superviser = this;//ObCtrl;
 
-        //o.scrn = scrn;
-        //o.graphicsLayer = dev.graphics;
-        //o.mouse_state = dev.mouse_state.check_last();
         o.gt = dev.gs;
         o.gameState = state.Game;
         o.sound = dev.sound;
