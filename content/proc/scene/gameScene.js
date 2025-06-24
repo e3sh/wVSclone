@@ -1,9 +1,7 @@
 ﻿//gameScene
-//ゲーム本体部分のループや画面推移を管理する予定
-//タイトルなどは別シーンとして管理すればいいかも
-//（デバッグ表示やカーソル表示、FPS表示などのゲーム部分と
-//別になる部分と分離して管理しやすくするのが目的。
-//
+//ゲーム本体部分のループや画面推移を管理(main)
+//2025/06/24
+
 function gameScene(state){
 //dev deviceControlClass 
 
@@ -28,231 +26,25 @@ function gameScene(state){
 	let obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
 	let mapsc  = state.mapsc; //= new mapSceControl();
 
-	let escore;
-
-	//let scr_cnt = 0;
 	let dead_cnt = 0;
 
 	let tex_bg = [];
 	let mapChip = [];
 	let bgData = [];
 
-	//let ldflg = false;
-	//let scenechange = false;
-	//let ec_draw_count = 0;
-
 	let sndcf = false;
 
 	let mapdisp = false;
 	let lampf = false;
 
-	//let mapv = false;
-
-	let fdrawcnt = 0;
 	let drawexecute = false;
 
 	let mmrefle = true; //mini map reflash
 
-	//let useosc = false;  //Use Off Screen Canvas
-
-	let UI_force_reflash = true; //false;
-
-	let mmcanvas;
-	let mmdevice;
-
-	if (typeof OffscreenCanvas !== "undefined"){ 
-		mmcanvas = new OffscreenCanvas(150, 150);
-	
-		mmdevice = mmcanvas.getContext("2d");
-
-		useosc = true;
-	}
-	
-	//縮小マップ枠
-	let SubmapframeDraw = {}
-	SubmapframeDraw.draw = function (device) {
-	    device.beginPath();
-	    device.fillStyle = "rgba(0,0,0,0.3)";
-	    device.fillRect(dev.layout.map_x, dev.layout.map_y, 150, 150);
-		//device.globalAlpha = 1.0;
-1	    /*
-		device.beginPath();
-	    device.strokeStyle = "rgba(0,0,255,0.5)";
-	    device.rect(dev.layout.map_x, dev.layout.map_y, 150, 150);
-	    device.stroke();
-		*/
-	}
-
-	//一番下の行消す(clipすんのがいいかも
-	let ButtomlineBackgroundDraw = {}
-	ButtomlineBackgroundDraw.draw = function (device) {
-	    device.beginPath();
-	    device.fillStyle = "rgba(0,0,0,0.5)";
-	    device.fillRect(dev.layout.clip_x, dev.layout.clip_y, 640, 36);
-		//device.globalAlpha = 1.0;
-	}
-    //hpbar
-	let HpbarDraw = { hp: 0, mhp: 0, br: true, shw:0, bbw:0, exp: 0, }
-	//br:SHIELD展開中 shw: SHIELD width(シールドゲージの幅0-100 
-	//bbw:beforehp bar width exp:notUse.
-	HpbarDraw.draw = function (device) {
-
-		let cbar = (this.hp/this.mhp>0.5)?"limegreen":"yellowgreen";//(this.hp/this.mhp>0.3)?"yellowgreen":"red"; 
-		let cborder = (this.hp/this.mhp>0.5)?"white":(this.hp/this.mhp>0.3)?"yellow":"orange"; 
-
-	    device.beginPath();
-	    device.fillStyle = "black";//clear 
-	    device.fillRect(dev.layout.hp_x, dev.layout.hp_y, 102, 15);
-
-		device.fillStyle = "red";//effect 
-	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, this.bbw, 14-1);
-	    device.fillStyle = cbar;//hpbar 
-	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, (this.hp/this.mhp)*100, 14-1);
-		if (this.br){//shieldbar
-	    	device.fillStyle = "cyan"; 
-	    	device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 3, this.shw, 14-3);
-
-			let c = (this.shw%10)*5 + 205;
-	    	device.fillStyle = "rgb(0," + c + "," + c + ")";
-			//(this.shw > 50)?"rgb(0," + c + "," + c + ")": 
-			//(this.shw < 25)?"rgb(" + c + ",128, 128)":"rgb(" + c + "," + c + ",160)"; //"skyblue"; 
-	    	device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 4, this.shw-1, 14-4);
-		}
-		//border
-		device.strokeStyle = cborder; 
-		device.lineWidth = 2;
-	    device.rect(dev.layout.hp_x, dev.layout.hp_y, 102, 15);
-	    device.stroke();
-		/*
-	    device.beginPath();
-		device.strokeStyle = "white";//"dimgray";
-	    device.lineWidth = 2;
-		device.moveTo(dev.layout.hp_x +1        , dev.layout.hp_y +14);
-		device.lineTo(dev.layout.hp_x + this.exp, dev.layout.hp_y +14);
-	    device.stroke();
-		*/
-	}
-	//Expbar
-	let expbarDraw = { 
-		now: 0, 
-		next: 0,
-		draw : function (device) {
-			device.beginPath();
-			device.fillStyle = "darkgray";//clear 
-			device.fillRect(dev.layout.score_x, dev.layout.score_y+5, 100, 3);
-	
-
-			device.fillStyle = ((this.now/this.next) >= 1)?"yellowgreen":"orange"//expbar 
-			device.fillRect(dev.layout.score_x+1, dev.layout.score_y+3, (this.now/this.next)*100, 4);
-
-			//border
-			//device.strokeStyle = "darkgray"; 
-			//device.lineWidth = 1;
-			//device.rect(dev.layout.score_x, dev.layout.score_y, 100, 8);
-			//device.stroke();
-		}
-	 }
-
-	//縮小マップ表示
-	let SubmapDraw = new smd(mmdevice, mmcanvas); 
-	function smd(ctx, elm) { 
-		this. mcp = mapChip;
-		let osc = false;
-		//this.draw = osc? this.predr: this.ondr;
-
-		this.d = ctx;
-		this.e = elm;
-
-		this.x = dev.layout.map_x;
-		this.y = dev.layout.map_y;
-		/*
-		this.draw = function (device) {
-			//for (let i = 0, loopend = this.mcp.length; i < loopend; i++) {
-			for (let i in this.mcp){
-				let mc = this.mcp[i];
-				if (mc.lookf){
-					//if ((mc.visible) && ((mc.type == 11) || (mc.type == 12))) {
-					if (mc.visible) {
-						let c = ["dimgray", "steelblue", "orange"];
-
-						device.beginPath();
-						//device.strokeStyle = (mc.type == 12) ? "orange" : "blue";
-						device.strokeStyle = c[mc.type -10];
-						device.lineWidth = 1;
-						device.rect(this.x + mc.x / 20, this.y + mc.y / 20, 2, 2);
-						device.stroke();
-					}
-				}
-			}
-		}
-		*/
-		this.create = function(){
-		//	ondr(this.d);
-			this.d.clearRect(0, 0, 150, 150);
-			for (let i = 0, loopend = this.mcp.length; i < loopend; i++) {
-			//	for (let i in this.mcp){
-					let mc = this.mcp[i];
-					//if (mc.lookf){
-						//if ((mc.visible) && ((mc.type == 11) || (mc.type == 12))) {
-						if (mc.visible) {
-							let c;
-							if (mc.lookf){
-								c = ["dimgray", "steelblue", "orange"];
-							} else {
-								c = ["darkslategray", "darkslategray", "orange"];
-							}
-							this.d.beginPath();
-							//device.strokeStyle = (mc.type == 12) ? "orange" : "blue";
-							this.d.strokeStyle = c[mc.type -10];
-							this.d.lineWidth = 1;
-							this.d.rect(this.x + mc.x / 20, this.y + mc.y / 20, 2, 2);
-							this.d.stroke();
-						}
-					//}
-			//	}
-			}
-		}
-
-		this.draw = function(device){
-			device.drawImage(this.e, this.x, this.y);
-		}
-	}
-	//forgroundBG.putFunc(cl);//submapは[2]に表示、点は[3]に表示に変更
-
-	//LvUpStatusMatar
-	let stbar = new statusBarMeter(["cyan","orange","limegreen","white"]);
-
-	function statusBarMeter(setupParam){
-        //setupParamater [barcolor, ...,}]
-        let status;
-
-        this.setStatusArray = function(ary){
-            status = ary;
-        }
-
-        this.draw = function(device, x, y){
-            
-            let o = { s:status, b:setupParam, x:x, y:y }
-            o.draw = function(device){
-                device.beginPath();
-
-                for (let i in this.s){
-					device.fillStyle = this.b[i];
-                    for (let j=0; j<this.s[i]; j++){
-						if (j<7){
-                        	device.fillRect(this.x + j*4, this.y + i*5, 3, 4);
-						}
-                    }
-                }
-
-            }
-            device.putFunc(o);
-        }
-    }
-
 	mapdisp = true; //以前の処理では自動で消されない画面に書いていたので常時表示処理させる為に常にtrue；
 
-	//let getweapon = new get_weapon_check( state );
+	const debugDisp = new gameSceneUI_debug(state);
+	const UIDisp = new gameSceneUI_stateinv(state);
 
 	//==========================================================================================
 	//処理部
@@ -281,6 +73,7 @@ function gameScene(state){
 		dev.graphics[2].setInterval(1);//FG
 		dev.graphics[3].setInterval(0);//UI
 
+		work2.clear();
 	    work3.clear();
 
 		//フロアチェンジ前の座標がSubmapが見たことにされる為、1度表示されて正しい座標に移動後から壁のlookfを有効にする。	
@@ -340,29 +133,19 @@ function gameScene(state){
 	        dev.sound.play();
 	    }
 
-	    //tex_bg = dev.images[mapsc.bgImage()];
 	    tex_bg = dev.game.asset.image[mapsc.bgImage()].img;
 
 		mapChip = mapsc.mapChip();
 	    bgData = mapsc.bgPtn();
 
-		SubmapDraw.mcp = mapChip; 
-	    //work2.clear("darkgreen");
-
-	    //work2.reset();
-
-	    escore = new gs_score_effect(obCtrl.score);
-	    ehighscore = new gs_score_effect(state.Result.highscore);
-
 	    sndcf = true;
 
 		lampf = state.Config.lamp_use ? true : false;
 	    mapdisp = state.Config.map_use ? false : true; 
-		//mapdisp = false;
-	    mapv = false;
-        //debug code-- 2023/01/07
-		//lampf = true ;
-	    //mapdisp = false;
+
+		debugDisp.reset();
+		UIDisp.reset();
+
 		//^^^^^
 		obCtrl.messageconsole.write("==STAGE START==");
 
@@ -379,7 +162,7 @@ function gameScene(state){
 		if (!this.reset_enable){
 			this.reset_enable = true; // reset無しで戻ってきたときにtrueに変更
 			mapsc.pauseOff(state.System.time());
-			UI_force_reflash = true;
+			UIDisp.force_reflash();
 		} 
 
 		//StateGameに今の状態を反映
@@ -476,8 +259,6 @@ function gameScene(state){
 	                dev.sound.change(4);//Stageclear
 	                dev.sound.play();
 
-
-
 	                return 5; //result
 	        }
 
@@ -509,6 +290,7 @@ function gameScene(state){
 	                obCtrl.combo = [];
 	                //state.Game.player.maxhp = 10;//ゲームオーバーまで体力上昇分を保留する。2012/04/04
 	                state.Game.player.hp = state.Game.player.maxhp;
+					state.Game.player.zanki = 2 - dead_cnt;
 
 	                obCtrl.restart();
 
@@ -545,15 +327,10 @@ function gameScene(state){
 	            }
 	        }
 	    } else {　//not Interrapt
-	        //bg_scroll = true;
 	        mapsc.enable = true;
 	        mapsc.counter_runnning = true;
 
-			//UI_force_reflash = false;
-	        //demo_mode = false;
-	    //}
-
-	    //item
+	    	//item
 			//let wchk = false;
 			for (let i in obCtrl.item) {
 			//	
@@ -598,77 +375,19 @@ function gameScene(state){
         
 		BGDraw();
 		BGShadowDraw();
+		debugDisp.colDraw(mapChip);
 		
         //==この↑は背景描画
 		obCtrl.drawShadow(work2);//objectのshadowを背景面に反映(work2:BG)
 	    obCtrl.draw(work);//work:SP
 	    obCtrl.draw(forgroundBG, true); //prioritySurface = true の物を別Screenに描画する処理(通常のDrawではパスされる。）
 
-	    //==　ここから文字表示画面（出来るだけ書き換えを少なくする）
-	    //プライオリティ最前面の画面追加したので
+		if (state.Game.lamp) obCtrl.drawPoint(dev.graphics[4], state.Game.lamp);//rader
 	    
-		let scdispview = false;
-        
-	    fdrawcnt++;
-	    if ((fdrawcnt % 6) == 0) {
-	        fdrawcnt = 0;
-	        scdispview = true;
-	    }
-		scdispview = true;//debug
-	    
-		if (scdispview){
-			
-			//work3.reset();
-			//work3.clear();
-			if (!mapdisp || lampf) {
-				//work3.putFunc(SubmapframeDraw);//forgroundBG.putFunc(SubmapframeDraw);
-				//if (!mapdisp){//mapdispはfalseで表示(今となってはなぜかわからん/そのうち修正)
-				//	if (mmrefle){
-				//		SubmapDraw.create();
-				//		mmrefle = false;
-						//work3.putFunc(SubmapDraw);
-				//	}
-				//	work3.putFunc(SubmapDraw);
-				//}
-				obCtrl.drawPoint(dev.graphics[4], lampf);
-				//obCtrl.drawPoint(work3, lampf);//dev.graphics[3]
-			}
+		mmrefle = UIDisp.check(mmrefle);
+		UIDisp.draw();
+		debugDisp.draw();
 
-			//work3.putFunc(ButtomlineBackgroundDraw);
-			playerHPber.draw();
-			UIDraw( UI_force_reflash );
-
-	        //debug　true　の場合以下表示
-
-			let wtxt;
- 	        if (state.Config.debug) {
-
-				wtxt = read_debugStates();
-				if (state.Config.viewlog) wtxt = wtxt.concat(obCtrl.messagelog.read()); 
-    	        //let wtxt = read_debugStates().concat(obCtrl.messagelog.read());
-	    	    for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.status_x, dev.layout.status_y + 8 * s);
-
-				//wtxt = obCtrl.messagelog.read();
-	    	    //for (let s in wtxt) work3.putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
-
-				wtxt = obCtrl.messageview.read();
-	    	    if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
-	    	    //if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
-	    	}else{
-				wtxt = obCtrl.messageconsole.read();
-				if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 10 * s);
-				//if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
-			}
-			//tutorialDisplay 
-			if ( obCtrl.tutorialDisplayTime > state.System.time()){
-				wtxt = obCtrl.tutorialconsole.read();
-				for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.zanki_x, dev.layout.zanki_y - 80 + 10 * s);
-			}
-			
-		}
-		if (!mapdisp){ mapv = true; }
-
-		if (UI_force_reflash) UI_force_reflash = false;
 		drawexecute = true;         
 	}
 
@@ -755,30 +474,6 @@ function gameScene(state){
 						//work2.putchr(Number(mc.no).toString(), w.x, w.y);
 					}
 				}
-				
-				//壁の当たり判定有無確認用のデバックコード
-				if (state.Config.debug){
-					if (mc.c) {
-						let cl = {}
-						cl.x = w.x;
-						cl.y = w.y;
-						cl.w = mc.w;
-						cl.h = mc.h;
-
-						cl.draw = function (device) {
-							device.beginPath();
-
-							device.strokeStyle = "green";
-							device.lineWidth = 3;
-							device.rect(this.x, this.y, this.w, this.h);
-							device.stroke();
-						}
-
-						work2.putFunc(cl);
-						forgroundBG.putFunc(cl);
-					}
-					//work2.putchr((mc.type).toString(16), w.x, w.y);
-				}
 			} else {
 				mc.view = false;
 			}
@@ -825,445 +520,4 @@ function gameScene(state){
 			}
 		}
 	}
-
-	let ui = { cnt: 0,state:[], score:[], time: 0};
-
-	let playerHPber = new effect_tlHPbar();
-
-	function effect_tlHPbar(){
-		let before_barwidth = 0;
-		let device = dev.graphics[4];
-
-		this.draw = function(){
-			let w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
-			let now_bw = Math.trunc((w_hp / state.Game.player.maxhp)*100);
-
-			HpbarDraw.hp = w_hp; 
-			HpbarDraw.mhp = state.Game.player.maxhp;
-			HpbarDraw.br = state.Game.player.barrier;
-			HpbarDraw.shw = state.Game.player.shieldtime;
-			HpbarDraw.bbw = before_barwidth;
-
-			device.putFunc(HpbarDraw);
-		   
-			let wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;// + "." + before_barwidth;
-	
-			if (state.Game.player.barrier) {
-				//wst = "HP:" + w_hp +"/SHIELD";       
-			}
-			device.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
-
-			if (before_barwidth > now_bw) before_barwidth = before_barwidth - 1;
-			if (before_barwidth <= now_bw) before_barwidth = now_bw;
-
-		}
-	}
-
-	//UI表示は都度更新と随時更新では負荷減効果あり、必要時都度更新で処理する。
-	//(ミニマップのレーダー(点)は常時なのでここでは処理しない)
-
-	function UIDraw( force_reflash ){
-
-		let insco = [
-			ehighscore.read(state.Result.highscore),//state.Result.highscore,
-			escore.read(obCtrl.score)//obCtrl.score,
-		];
-
-		let inste = [ 
-			//ehighscore.read(state.Result.highscore),//state.Result.highscore,
-			//escore.read(obCtrl.score),//obCtrl.score,
-			dead_cnt,
-			mapdisp,
-			lampf,
-			obCtrl.item[20],//ball
-			obCtrl.item[22],//key
-			obCtrl.item[35],//coin
-			obCtrl.itemstack.length,
-			state.Game.player.weapon,
-			state.Game.player.level,
-			mapsc.stage,
-			//Math.floor((120000 - mapsc.flame) / 1000),
-			state.Game.player.hp,
-			state.Game.player.maxhp,
-			state.Game.player.barrier,
-			mmrefle
-		];
-
-		let intim = Math.floor((120000 - mapsc.flame) / 1000);
-
-		let cf= true; //Status :equal = true/change = false <- Draw exec 
-		for (let i in ui.state) if (ui.state[i] !== inste[i]) cf = false;
-
-		let cs= true; //Score
-		for (let i in ui.score)	if (ui.score[i] !== insco[i]) cs = false;
-
-		let ct= true; //Time 
-		if (ui.time !== intim) ct = false;
-
-		ui.state = inste;
-		ui.score = insco;
-		ui.time = intim;
-		ui.cnt++;
-
-		if (force_reflash){ cf = false; cs = false; ct = false;}
-
-		//work3.fill(dev.layout.hiscore_x + 12 * 6, dev.layout.hiscore_y, 12 * 7, 32); // , "darkblue");
-
-		//obCtrl.messageview.write(JSON.stringify(uistate) + "/" + cf);
-		if  (cf && cs && ct) return;
-
-		//obCtrl.messageview.write("** SCORE Draw **" + ui.cnt);
-
-		if (!cf){
-			work3.reset();
-			work3.clear();
-
-			work3.putFunc(ButtomlineBackgroundDraw);
-		}else{
-			if (!cs) { 
-				work3.fill(dev.layout.hiscore_x, dev.layout.hiscore_y,8*12,16);//半透明を表示するために一旦クリア
-				work3.fill(dev.layout.hiscore_x, dev.layout.hiscore_y,8*12,16,"rgba(0,0,0,0.5)");
-			}
-
-			if (!ct) { 
-				work3.fill(dev.layout.time_x, dev.layout.time_y,8*9,8);//半透明を表示するために一旦クリア
-				work3.fill(dev.layout.time_x, dev.layout.time_y,8*9,8,"rgba(0,0,0,0.5)");
-			}
-		}
-
-		if (!cs || !cf){ 
-			//work3.putchr("Hi-Sc:" + ui.score[0], dev.layout.hiscore_x, dev.layout.hiscore_y);
-			//work3.putchr("Score:" + ui.score[1], dev.layout.score_x, dev.layout.score_y);
-			let nowLvexp = Math.pow(state.Game.player.spec.ETC ,2)* 100;
-			let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;
-			//let NextMkr = ( obCtrl.score >= NextLup) ? "#":" ";
-			let Nextstr = ( obCtrl.score >= NextLup) ? 
-				" NextLvReady":"       Next." + NextLup;
-
-			expbarDraw.now = obCtrl.score - nowLvexp;
-			expbarDraw.next = NextLup - nowLvexp;
-			//if (expbarDraw.now <= NextLup) 
-			work3.putFunc(expbarDraw);
-
-			work3.putchr8("Exp." + ui.score[1], dev.layout.hiscore_x, dev.layout.hiscore_y);
-			Nextstr = Nextstr.substring(Nextstr.length-13);
-			work3.kprint(Nextstr, dev.layout.score_x, dev.layout.score_y);
-			//work3.putchr8(Nextstr, dev.layout.score_x, dev.layout.score_y);
-
-			if  (cf) obCtrl.messageview.write("** SCORE Draw ** f:" + ui.cnt);
-		}
-
-		if (!ct || !cf){ 
-			work3.putchr8("Time:" + ui.time, dev.layout.time_x, dev.layout.time_y);
-			if  (cf) obCtrl.messageview.write("** Time Draw ** f:" + ui.cnt);
-		}
-
-		if  (cf) return;
-
-		obCtrl.messageview.write("** UI Draw ** f:"+ ui.cnt);
-		ui.cnt = 0;
-
-		if (!mapdisp || lampf) {
-			work3.putFunc(SubmapframeDraw);//forgroundBG.putFunc(SubmapframeDraw);
-			if (!mapdisp){//mapdispはfalseで表示(今となってはなぜかわからん/そのうち修正)
-				if (mmrefle){
-					SubmapDraw.create();
-					obCtrl.messageview.write("** Submap Create **");
-					mmrefle = false;
-					//work3.putFunc(SubmapDraw);
-				}
-				work3.putFunc(SubmapDraw);
-			}
-			//obCtrl.drawPoint(dev.graphics[3], lampf);
-			//obCtrl.drawPoint(work3, lampf);//dev.graphics[3]
-		}
-		
-		if (state.Game.mode !=1 ){
-			UI_PlayerType();
-		}else{
-			//UI_PlayerType2();
-		}
-	}
-
-	//==========
-	function gs_score_effect( sc ){
-
-		let wscore = sc;
-	
-		this.read = function (score) {
-	
-			if (score <= wscore) {
-				wscore = score;
-			} else {
-	
-				let num = Math.ceil((score - wscore) / 5);
-	
-				wscore += num;
-			}
-	
-			let sc = wscore;
-	
-			let wd = [];
-			let wt = "";
-	
-			for (i = 0; i < 7; i++) {
-				let num = sc % 10;
-				wd[7 - i] = num;
-				sc = (sc - num) / 10;
-			}
-	
-			for (i in wd) {
-				wt = wt + "" + wd[i];
-			}
-	
-			return wt;
-		}
-	}
-
-	//==========
-	function read_debugStates(){
-		let wtxt = [];
-
-		wtxt.push("o:" + obCtrl.cnt() + "/" + obCtrl.num() + "/" + obCtrl.nonmove + "/" + obCtrl.collisioncount);
-		wtxt.push("f:" + mapsc.flame + "/ " + dev.gs.changestate);
-
-		if (obCtrl.interrapt) {
-			wtxt.push("interrapt:" + obCtrl.SIGNAL);
-		} else {
-			wtxt.push("running:" + obCtrl.SIGNAL);
-		}
-
-		for (i in obCtrl.item) 
-		{
-			if (Boolean(obCtrl.item[i])) wtxt.push("item[" + i + "]:" + obCtrl.item[i]);
-		}
-
-		let n1 = 0;
-		for (i in obCtrl.total) {
-			if (i == 2) n1 = obCtrl.total[i];
-		}
-
-		let n2 = 1;
-		for (i in obCtrl.obCount) {
-			if (i == 2) n2 = obCtrl.obCount[i];
-		}
-
-		let spec = state.Game.player.spec;
-
-		wtxt.push("wx,wy:" + Math.floor(dev.gs.world_x) + "," + Math.floor(dev.gs.world_y));
-		wtxt.push("play:" + Math.floor(dev.sound.info()) + "." + dev.sound.running() );
-		//wtxt.push("lv:" + spec.LV + " v"+ spec.VIT + ":m" + spec.MND + ":i" + spec.INT );
-		wtxt.push("Living:" + obCtrl.rollcall("mayura"));
-
-		return wtxt;
-	}
-	//==========
-	function UI_PlayerType(){
-
-		//work3.putFunc(ButtomlineBackgroundDraw);
-
-		//残機表示
-		let zc = 2 - dead_cnt;
-		if (zc < 3) {
-			for (let i = 0; i < 2 - dead_cnt; i++) {
-				work3.put("Mayura1", dev.layout.zanki_x + i * 32, dev.layout.zanki_y);
-			}
-		} else {
-			work3.put("Mayura1", dev.layout.zanki_x, dev.layout.zanki_y);
-			work3.putchr8("x" + zc, dev.layout.zanki_x + 16, dev.layout.zanki_y);
-		}
-
-		//Lamp/map
-		if(!mapdisp){ work3.put("Map",dev.layout.map_x + 36, dev.layout.map_y + 12) }//dev.layout.zanki_x + 360, dev.layout.zanki_y-16);}
-		if(lampf) { work3.put("Lamp",dev.layout.map_x + 12, dev.layout.map_y + 12) }//dev.layout.zanki_x + 336, dev.layout.zanki_y-16);}
-
-		//ball表示
-		if (Boolean(obCtrl.item[20])) {
-			let n = obCtrl.item[20];
-			if (n <= 3) {
-				for (let i = 0; i < n; i++) {
-					work3.put("Ball1",
-					dev.layout.zanki_x + i * 20 + 288, dev.layout.zanki_y - 8);
-				}
-			} else {
-				work3.put("Ball1",
-				dev.layout.zanki_x + 288, dev.layout.zanki_y - 8);
-
-				work3.putchr8("x" + n, dev.layout.zanki_x + 288 + 10, dev.layout.zanki_y - 12);
-			}
-		}
-		//Coin表示
-		if (Boolean(obCtrl.item[35])) {
-			let n = obCtrl.item[35];
-			if (n <= 6) {
-				for (let i = 0; i < n; i++) {
-					work3.put("Coin1",
-					dev.layout.zanki_x + i * 8 + 288, dev.layout.zanki_y + 8);
-				}
-			} else {
-				work3.put("Coin1",
-				dev.layout.zanki_x + 288, dev.layout.zanki_y + 8);
-				work3.putchr8("x" + n, dev.layout.zanki_x + 288 + 10, dev.layout.zanki_y + 8);
-			}
-		}
-		//取得アイテム表示
-		if (Boolean(obCtrl.itemstack)) {
-
-			let wchr = { 20: "Ball1", 23: "BallB1", 24: "BallS1", 25: "BallL1" }
-			let witem = [];
-
-			for (let i in obCtrl.itemstack) {
-				let w = obCtrl.itemstack[i];
-				witem.push(w);
-			}
-
-			work3.putchr8("[X]", dev.layout.zanki_x + 132 - 16, dev.layout.zanki_y - 16);
-			n = witem.length;
-
-			if (n >= 8) {n = 6; work3.putchr8("...", dev.layout.zanki_x + n * 20 + 128, dev.layout.zanki_y + 8);}
-			//if (n >= 7) n = 7;
-
-			for (let i = 0; i < n; i++) {
-				if (i == 0) {
-					work3.put(wchr[witem[witem.length - 1 - i]],
-					dev.layout.zanki_x + i * 20 + 132, dev.layout.zanki_y);
-					//640 - (12 * 12), 479 - 32 + 5);
-				} else {
-					work3.put(wchr[witem[witem.length - 1 - i]],
-					dev.layout.zanki_x + i * 20 + 136, dev.layout.zanki_y + 8);
-				}
-			}
-			obCtrl.keyitem_view_draw(work3);
-		}
-
-		n = 0;
-		if (Boolean(obCtrl.item[22])) {
-			n = obCtrl.item[22];
-		}
-		if (n > 0) work3.put("Key", dev.layout.zanki_x + 64, dev.layout.zanki_y);
-
-		let wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Bow"];
-
-		if (!Boolean(state.Game.player.weapon)) state.Game.player.weapon = 0;
-		if (!Boolean(state.Game.player.level)) state.Game.player.level = 0;
-
-		work3.putchr8("[Z]", dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y - 16);
-		work3.put(wweapon[state.Game.player.weapon], dev.layout.zanki_x + 96, dev.layout.zanki_y);
-		if (state.Game.player.level > 0){
-			let wt = "+" + state.Game.player.level + 
-				((state.Game.player.level > 2 )?" Max":"");
-				work3.putchr8(wt, dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y + 8);
-			}
-		work3.putchr8("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y);
-		
-		let w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
-
-		HpbarDraw.hp = w_hp; 
-		HpbarDraw.mhp = state.Game.player.maxhp;
-		HpbarDraw.br = state.Game.player.barrier;
-		HpbarDraw.shw = state.Game.player.shieldtime;
-		HpbarDraw.bbw = Math.trunc(w_hp/state.Game.player.maxhp);
-		
-		//let BaseLup = Math.pow(state.Game.player.spec.ETC   ,2)* 100;
-		//let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;
-		//HpbarDraw.exp = Math.abs(Math.trunc((obCtrl.score-BaseLup)/(NextLup-BaseLup)*100));
-		work3.putFunc(HpbarDraw);
-	   
-		let wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
-
-		if (state.Game.player.barrier) {
-			//wst = "HP:" + w_hp +"/SHIELD";       
-		}
-		work3.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
-
-		stbar.setStatusArray([
-            state.Game.player.base.VIT,
-            state.Game.player.base.INT,
-            state.Game.player.base.MND //,
-            //state.Game.player.spec.ETC
-			//Math.abs(Math.trunc((obCtrl.score-BaseLup)/(NextLup-BaseLup)*7))
-        ]);
-		stbar.draw(work3, dev.layout.zanki_x + 252, dev.layout.zanki_y -16);
-
-	}
-	//==========
-	function UI_PlayerType2(){
-
-		//work3.putFunc(ButtomlineBackgroundDraw);
-
-		//残機表示
-		let zc = 2 - dead_cnt;
-
-		if (zc < 3) {
-			for (let i = 0; i < 2 - dead_cnt; i++) {
-				work3.put("miniMay", dev.layout.zanki_x + i * 32, dev.layout.zanki_y);
-			}
-		} else {
-			work3.put("miniMay", dev.layout.zanki_x, dev.layout.zanki_y);
-			work3.kprint("x" + zc, dev.layout.zanki_x + 16, dev.layout.zanki_y);
-		}
-
-		//Lamp/map
-		if(!mapdisp) work3.put("Map",dev.layout.map_x + 36, dev.layout.map_y + 12);
-		if(lampf) work3.put("Lamp",dev.layout.map_x + 12, dev.layout.map_y + 12);
-
-		//ball表示
-		if (Boolean(obCtrl.item[20])) {
-			let n = obCtrl.item[20];
-
-			work3.kprint("①:" + n,
-			dev.layout.zanki_x + 256, dev.layout.zanki_y - 12);
-		}
-
-		//取得アイテム表示
-		if (Boolean(obCtrl.itemstack)) {
-			//①BALL ②B　③S　④L
-			let wchr = { 20: "①", 23: "②", 24: "③", 25: "④" }
-			let witem = [];
-
-			for (let i in obCtrl.itemstack) {
-				let w = obCtrl.itemstack[i];
-				witem.push(w);
-			}
-			//n = witem.length;
-			w = "";
-			for  (let i = 0; i < witem.length; i++)
-				w += wchr[witem[i]];
-			work3.kprint(w + "<-", dev.layout.zanki_x + 136, dev.layout.zanki_y);
-		}
-
-		n = 0;
-		if (Boolean(obCtrl.item[22])) {
-			n = obCtrl.item[22];
-		}
-		if (n > 0) work3.put("sKey", dev.layout.zanki_x + 64, dev.layout.zanki_y);
-
-		let wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Bow"];
-
-		if (!Boolean(state.Game.player.weapon)) state.Game.player.weapon = 0;
-		if (!Boolean(state.Game.player.level)) state.Game.player.level = 0;
-
-		work3.kprint("武器", dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y - 16);
-		work3.put(wweapon[state.Game.player.weapon], dev.layout.zanki_x + 96, dev.layout.zanki_y);
-		if (state.Game.player.level > 0){
-			let wt = "+" + state.Game.player.level + 
-			((state.Game.player.level > 2 )?" Max":"");
-			work3.kprint(wt, dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y + 8);
-		}
-		work3.kprint("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y +40);
-
-		let w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
-
-		HpbarDraw.hp = w_hp; 
-		HpbarDraw.mhp = state.Game.player.maxhp;
-		HpbarDraw.br = state.Game.player.barrier;
-		work3.putFunc(HpbarDraw);
-
-		let wst = "HP:" + w_hp + "/" + state.Game.player.maxhp;
-
-		if (state.Game.player.barrier) {
-			wst = "HP:" + w_hp +"/SHIELD";       
-		}
-		work3.kprint(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
-	}	
 }

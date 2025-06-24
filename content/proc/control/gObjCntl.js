@@ -1,4 +1,15 @@
-﻿function gObjectControl(scrn, state) {
+﻿//gameObjectのコントロール全般
+//
+//色々なものが入りすぎてるので分割検討
+//UI関連から呼び出される部分 .UI
+//インベントリ関連 .inventry(個別ではなくて全体(PLAYER)の持ち物)
+//地形との当たり判定 .collision
+//地形イベント処理 .event .worldEvent
+//表示周り（スプライト表示の表示プライオリティ処理などもある） .draw?
+//キャラクタコントロールコマンドデコード関連 .decode
+//記入2025/06/24処理検討コメント追加
+
+function gObjectControl(scrn, state) {
     
     //メイン
     let cdt;// = new CLinear4TreeManager();

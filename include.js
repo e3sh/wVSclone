@@ -67,6 +67,9 @@ let w = [
  "content/proc/control/sceneControl.js",
 //処理部（それぞれの場面）
  "content/proc/scene/gameScene.js",
+ "content/proc/scene/gSceneUI_debug.js",
+ "content/proc/scene/gSceneUI_minimap.js",
+ "content/proc/scene/gSceneUI_stateinv.js",
  "content/proc/scene/sceneTitle.js",
  "content/proc/scene/sceneGover.js",
  "content/proc/scene/sceneConfig.js",
