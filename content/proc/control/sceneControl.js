@@ -21,6 +21,8 @@ function sceneControl(state) {
 
     let wipeEffectCount; 
 
+    let twcw = [];
+
     let menuvf = false;
 
     //let clRect = function(x,y,w,h){this.draw = function(device){ device.clearRect(x,y,w,h);}}
@@ -75,6 +77,14 @@ function sceneControl(state) {
         wipeEffectCount = (wipeEffectCount > 0) ? 
             wipeEffectCount-(3 * 60/(1000/state.System.deltaTime())) :
             0;
+
+        for (let i in twcw){
+            if (twcw[i].running){
+                twcw[i].step();
+            } else {
+                delete twcw[i];
+            } 
+        }
     }
 
     this.draw = function(){
@@ -88,7 +98,15 @@ function sceneControl(state) {
         }
 
         sceneList[runscene].draw();
-                
+
+        for (let i in twcw){
+            if (twcw[i].running){
+                twcw[i].draw();
+            } else {
+                delete twcw[i];
+            } 
+        }
+
         if (state.Config.debug) {
             //if (fcnt%90 > 30){
             if (state.System.blink()){    
@@ -124,6 +142,64 @@ function sceneControl(state) {
 
         scrn.fill(0, 0, cw/2 - size, ch, c);
         scrn.fill(cw/2 + size, 0, cw/2-size,ch, c);
+    }
+
+	const tweenclosewindow = function(){
+
+		let center_x, center_y, count, w, h, vw, vh;
+        let device;
+
+		this.running = false;
+
+		this.set = function(dev, rect, c){
+
+			center_x = rect.x+rect.w/2;
+			center_y = rect.y+rect.h/2;
+
+			w = rect.w;
+			h = rect.h;
+
+			vw = rect.w/c;
+			vh = rect.h/c;
+
+			count = c;
+
+            device = dev;
+
+			this.running = true;
+		}
+
+		this.step = function(){
+			w -= vw;
+			h -= vh;
+
+			count--;
+			if (count<=0) this.running = false;
+		}
+		
+		this.draw = function(){
+
+			const bx = {x:center_x-w/2, y:center_y-h/2, w:w, h:h}
+			bx.draw = function (device) {
+				device.beginPath();
+				device.globalAlpha = 1.0;
+				device.lineWidth = 1;
+				device.strokeStyle = "rgba(255,255,255,1.0)";
+				device.strokeRect(this.x, this.y, this.w, this.h);
+				device.fillStyle = "rgba(0,0,0,0.5)";
+				device.fillRect(this.x, this.y, this.w, this.h);
+				device.restore();
+			}
+			device.putFunc(bx);
+		}
+	}
+
+    this.setTCW = function(device, rect, count){
+
+        const tcw = new tweenclosewindow();
+        tcw.set(device, rect, count);
+
+        twcw.push(tcw);
     }
 }
 

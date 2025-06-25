@@ -46,5 +46,6 @@ function stateControl( g ){
 
 	//gObj内機能の切り出しなのでobCtrlを参照する。obCtrl宣言後に生成すること
 	this.obUtil = new gObjectUtility(this);
-	
+
+	//sceneControlでのタスクセット/scene渡りでの継続処理用(実験要素)
 }

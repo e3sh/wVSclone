@@ -183,6 +183,9 @@ function sceneLvUp(state) { //2024/03/06
 
                 state.obUtil.keyitem_enhance_check();
 
+                let w = state.obUtil.player_objv(work);
+                diag.close(dev.graphics[2], w.x, w.y, 20)
+
                 return ret_code;
             }
         } 
@@ -259,6 +262,15 @@ function sceneLvUp(state) { //2024/03/06
                     //if (menulist[i].w >0){ menulist[i].w--;}
                     if (menulist[i].h >0){ menulist[i].h--;}
                 }
+            }
+        }
+
+        this.close = function(device, x, y, count){
+
+            for (let i in menulist){
+
+                let m = menulist[i];
+                state.scene.setTCW(device, {x: x+m.x, y: y+m.y,w: m.w,h: m.h}, count);
             }
         }
 

@@ -13,6 +13,8 @@ class taskMainLoop extends GameTask {
         this.state = new stateControl(g);
 	    this.scene = new sceneControl(this.state);
 
+        this.state.scene = this.scene;
+
         g.state = this.state;
     }
    
