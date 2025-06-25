@@ -3,7 +3,16 @@
 // obj command Decode 2023/04/05 
 
 function ObjCmdDecode(msg, sobj, obj, state, sce){
-   /*
+
+    const PLAYER   = state.Constant.objtype.PLAYER; 
+    const FRIEND   = state.Constant.objtype.FRIEND; 
+    const BULLET_P = state.Constant.objtype.BULLET_P;
+    const ENEMY    = state.Constant.objtype.ENEMY; 
+    const BULLET_E = state.Constant.objtype.BULLET_E;
+	const ITEM     = state.Constant.objtype.ITEM; 
+    const ETC      = state.Constant.objtype.ETC;
+
+    /*
     let command = {
         "set_object",
         "set_object_ex",
@@ -19,7 +28,6 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
         "collect2",//画面内のアイテムを回収状態にする
         "collect3",//自機半径100px以内のアイテムを回収状態にする
         "SIGNAL",
-        "reset_combo",//combo管理していないので無効
         "search_target_item"//Key(指定アイテム)の有無や方向のチェック
     };
     */
@@ -34,9 +42,9 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
     switch (msg.cmd){
         case "set_object":
             mapsc.add(
-                sobj.x, sobj.y,
+                sobj.x, sobj.y + sobj.shifty ,
                 sobj.vector,
-                msg.src , null, null ,
+                msg.src , 0, 0,
                 sobj
             );
             wlog = false; 
@@ -92,53 +100,67 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                 objc.item[msg.src] = 1;
             }
 
-            objc.score += sobj.score;
+            if (msg.src > 14){ //説明文を出す処理では処理しない。(0-14説明用)
+            
+                objc.score += sobj.score;
 
-            let x = sobj.x;
-            let y = sobj.y;
+                let x = sobj.x;
+                let y = sobj.y;
 
-            let wid = "Get Item." + msg.src;
+                let wid = "Get Item." + msg.src;
 
-            if (msg.src == 35) {
-                wid = sobj.score + "pts.";
-                dev.sound.effect(11); //get音
-                mapsc.add(x, y, 0, 20, 39, wid); //43green
+                if (msg.src == 35) {
+                    wid = sobj.score + "pts.";
+                    dev.sound.effect(11); //get音
+                    mapsc.add(x, y, 0, 20, 39, wid); //43green
+                }
+
+                if (msg.src == 21) {
+                    wid = "Extend!";
+                    mapsc.add(x, y, 0, 20, 39, wid);
+                }
+
+                if (msg.src == 22) {
+                    wid = "GetKey!";
+                    dev.sound.effect(11); //get音
+                    mapsc.add(x, y, 0, 20, 39, wid);
+                }
+
+                if (((msg.src >= 15) && (msg.src <= 19)) || (msg.src==50)){
+                    state.Game.player.stack.push({ch:msg.src, id:msg.dst});
+                    wid = "Weapon!"; 
+                    dev.sound.effect(11); //get音
+                    mapsc.add(x, y, 0, 20, 39, wid);
+                }
+
+                let f = false;
+                if ((msg.src == 23) || (msg.src == 24) || (msg.src == 25)) {
+                    //dev.sound.effect(9); //cursor音
+                    f = true;
+                }
+
+                if (f) { //useble items
+                    let w = msg.src;
+                    objc.itemstack.push(w);
+                }
+            
+                state.obUtil.messageconsole.write(objc.itemTable[msg.src] + ".GET");
+                state.obUtil.keyitem_enhance_check();
             }
-
-            if (msg.src == 21) {
-                wid = "Extend!";
-                mapsc.add(x, y, 0, 20, 39, wid);
+            state.obUtil.tutTable(msg.src);
+            /*
+            if (Boolean(objc.tutTable[msg.src])){
+            for (let m of objc.tutTable[msg.src]){
+                objc.tutorialconsole.write(m);
             }
-
-            if (msg.src == 22) {
-                wid = "GetKey!";
-                dev.sound.effect(11); //get音
-                mapsc.add(x, y, 0, 20, 39, wid);
+            objc.tutorialconsole.write("---");
             }
-
-            if ((msg.src >= 15) && (msg.src <= 19)) {
-                wid = "Weapon!";
-                dev.sound.effect(11); //get音
-                mapsc.add(x, y, 0, 20, 39, wid);
-            }
-
-            let f = false;
-            if ((msg.src == 23) || (msg.src == 24) || (msg.src == 25)) {
-                //dev.sound.effect(9); //cursor音
-                f = true;
-            }
-
-            if (f) {
-                let w = msg.src;
-                objc.itemstack.push(w);
-            }
-
-            objc.messageconsole.write(objc.itemTable[msg.src] + ".GET");
+            */
             break;
 
         case "bomb":
             for (let i in obj) {
-                if (obj[i].type == 3) {//敵の弾を消滅
+                if (obj[i].type == BULLET_E) {//敵の弾を消滅
     
                     obj[i].change_sce(7);
                 }
@@ -146,17 +168,14 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
             break;
 
         case "bomb2":
-            if (Boolean(objc.item[7])) { 
-                if (objc.item[7] > 0) objc.item[7]--;
-            }
             for (let i in obj) {
                 let o = obj[i];
     
-                if (o.type == 3) {//敵の弾を回収状態に
-                    o.type = 4;
+                if (o.type == BULLET_E) {//敵の弾を回収状態に
+                    o.type = ITEM;
                     o.mp = 18;
                     o.score = 8;
-                     //test用
+                    //test用
                     if (o.chr != 7) {
                         let witem = [18, 22, 26, 27, 29, 30];
     
@@ -168,9 +187,9 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
             break;
 
         case "bomb3":
-            if (Boolean(objc.item[7])) {
-                if (objc.item[7] > 0) objc.item[7]--;
-            }
+            //msg.src : add attack power
+            let atrpwr = isNaN(msg.src)? 0: msg.src;
+
             for (let i in obj) {
                 //画面内にいる敵のみ
                 let onst = sobj.gt.in_view_range(
@@ -178,18 +197,18 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                     obj[i].y - (obj[i].hit_y / 2), obj[i].hit_x, obj[i].hit_y);
     
                 if (onst) {
-                    if (obj[i].type == 2) {//敵には一律10のダメージ
-                        obj[i].hp -= 10;
+                    if (obj[i].type == ENEMY) {//敵には一律10のダメージ
+                        obj[i].hp -= (10 + atrpwr);
                         if (obj[i].hp <= 0) obj[i].status = 2;
                     }
     
-                    if (obj[i].type == 3) {//敵の弾を消滅
+                    if (obj[i].type == BULLET_E) {//敵の弾を消滅
     
                         obj[i].change_sce(7);
                     }
                 }
             }
-            objc.messageconsole.write("=BOMB=");
+            state.obUtil.messageconsole.write("=BOMB=");
             break;
 
         case "bomb4":
@@ -206,7 +225,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
 
             for (let i in obj) {
                 let o = obj[i];
-                if (o.type == 4) {//アイテムを回収モードに変更（上のほうに行ったときに）
+                if (o.type == ITEM) {//アイテムを回収モードに変更（上のほうに行ったときに）
                     if (!Boolean(o.collection_mode)) {
                         o.collection_mode = true;
                         o.change_sce(30);
@@ -224,18 +243,18 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
     
                 if (onst) {
                     //アイテム回収モードにする
-                    if (obj[i].type == 4) {//アイテム
+                    if (obj[i].type == ITEM) {//アイテム
                             obj[i].change_sce(30);
                     }
                 }
             }
-            objc.messageconsole.write("=COLLECT=");
+            state.obUtil.messageconsole.write("=COLLECT=");
             break;
 
         case "collect3":
             for (let i in obj) {
                 //自機の半径n内にいるアイテムのみ　2023/1/12追加コマンド
-                if (obj[i].type == 4){//アイテム
+                if (obj[i].type == ITEM){//アイテム
                     if ( sobj.target_d( obj[i].x, obj[i].y ) < 100){//半径
                             obj[i].change_sce(30);
                     }
@@ -254,7 +273,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                 if (msg.src == 0) objc.interrapt = false;
             }
             break;
-     
+    
         case "search_target_item":
             //稼働中objに対象のCHNOが存在するか？(KEYSEARCH用) 
             //無かったら、敵の持ち物をチェックする。
@@ -266,7 +285,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
 
             for (let i in obj) {
                 let wo = obj[i];
-                if (wo.type == 2){//enemy
+                if (wo.type == ENEMY){//enemy
                     //wo.lighton = true;                
                     for (let j of wo.pick){
                         if (j == msg.src){
@@ -279,7 +298,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                     }
                     continue;
                 }
-                if (wo.type == 4){//item
+                if (wo.type == ITEM){//item
                     //wo.lighton = true;
                     if (wo.chr == msg.src){
                         onflag = true;
@@ -297,7 +316,6 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
 
             wlog = false; 
             break;
-
         default:
             execute = false;
             wlog = false; 
@@ -308,3 +326,4 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
 
     return result;
 }
+ 

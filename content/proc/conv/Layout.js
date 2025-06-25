@@ -19,7 +19,7 @@ function gameLayout() {
     //Debug Status
     this.status_x = DSP_SP_X + GS_SIZE_X - 120;
     this.status_y = DSP_SP_Y + 32;
-        
+
     this.zanki_x = DSP_SP_X + 20;//160;
     this.zanki_y = DSP_SP_Y + GS_SIZE_Y - 16;
 
@@ -40,7 +40,9 @@ function gameLayout() {
 
     this.keyitem_x = DSP_SP_X + 368;
     this.keyitem_y = DSP_SP_Y + GS_SIZE_Y -16;
-
+    
+    this.tutmsg_x = DSP_SP_X + 20;
+    this.tutmsg_y = DSP_SP_Y + GS_SIZE_Y -96;
 }
 
 

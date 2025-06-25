@@ -263,7 +263,7 @@ function sceneResult(state) {
                 }
                 if (!soundf&&(state.Game.nowstage%15 == 0)) {
                     dev.sound.effect(15);//Fanfare
-                    state.obCtrl.keyitem_reset();
+                    state.obUtil.keyitem_reset();
                     soundf = true;
                 }
             }
@@ -338,9 +338,9 @@ function sceneResult(state) {
 
     function scene_draw() {
 
-        let w = state.obCtrl.player_objv(work);
+        let w = state.obUtil.player_objv(work);
         work.fill(w.x-16,w.y-16,32,32,0);
-        state.obCtrl.player_objv(work);
+        state.obUtil.player_objv(work);
 
         for (let i in menu) {
 

@@ -24,6 +24,7 @@ function gameScene(state){
 	this.score = 0;
 
 	let obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
+	let obUtil = state.obUtil;
 	let mapsc  = state.mapsc; //= new mapSceControl();
 
 	let dead_cnt = 0;
@@ -61,7 +62,6 @@ function gameScene(state){
 		//state.Result.highscore = 0;
 		state.Result.score = 0;
 		state.Game.item = obCtrl.item;
-		state.Result.combo = obCtrl.combo;
 
 		//scenechange = false;
 	}
@@ -147,7 +147,7 @@ function gameScene(state){
 		UIDisp.reset();
 
 		//^^^^^
-		obCtrl.messageconsole.write("==STAGE START==");
+		obUtil.messageconsole.write("==STAGE START==");
 
 		if (state.Game.cold && contflg)	 obCtrl.tutTable(9);//CONTINUEについて説明
 		if (state.Game.nowstage%5==0)	 obCtrl.tutTable(6);//ボスについて説明
@@ -241,11 +241,8 @@ function gameScene(state){
 	                state.Game.item = obCtrl.item;
 	                state.Game.itemstack = obCtrl.itemstack;
 	                state.Game.player.zanki = 2 - dead_cnt;
-	                state.Result.combo = obCtrl.combo;
-	                state.Result.combomax = obCtrl.combomax;
 	                state.Result.obCount = obCtrl.obCount;
 	                state.Result.total = obCtrl.total;
-	                state.Result.hidan = obCtrl.hidan;
 
 	                state.Game.cold = false;
 
@@ -287,7 +284,6 @@ function gameScene(state){
 	                    obCtrl.item = []; //取得アイテムカウント消す(パワーアップだけでもよいがとりあえず）
 	                    obCtrl.itemstack = [];
 	                }
-	                obCtrl.combo = [];
 	                //state.Game.player.maxhp = 10;//ゲームオーバーまで体力上昇分を保留する。2012/04/04
 	                state.Game.player.hp = state.Game.player.maxhp;
 					state.Game.player.zanki = 2 - dead_cnt;
@@ -306,11 +302,8 @@ function gameScene(state){
 	                state.Game.item = obCtrl.item;
 	                state.Game.itemstack = obCtrl.itemstack;
 	                state.Game.player.zanki = 2 - dead_cnt;
-                    state.Result.combo = obCtrl.combo;
-                    state.Result.combomax = obCtrl.combomax;
                     state.Result.obCount = obCtrl.obCount;
                     state.Result.total = obCtrl.total;
-                    state.Result.hidan = obCtrl.hidan;
 
                     obCtrl.draw(work2);
 
@@ -382,7 +375,7 @@ function gameScene(state){
 	    obCtrl.draw(work);//work:SP
 	    obCtrl.draw(forgroundBG, true); //prioritySurface = true の物を別Screenに描画する処理(通常のDrawではパスされる。）
 
-		if (state.Game.lamp) obCtrl.drawPoint(dev.graphics[4], state.Game.lamp);//rader
+		//if (state.Game.lamp) obCtrl.drawPoint(dev.graphics[4], state.Game.lamp);//rader UIDisp内MinimapDispで処理
 	    
 		mmrefle = UIDisp.check(mmrefle);
 		UIDisp.draw();

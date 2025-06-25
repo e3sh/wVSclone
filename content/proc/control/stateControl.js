@@ -2,10 +2,13 @@
 //状態のまとめクラス
 function stateControl( g ){
 
+	//定数値
+	this.Constant = new ConstantData();
+
     //設定パラメータ
 	this.Config = new stateConfig( g );
 
-	//スコアなど（コンボとかはここ）
+	//スコアなど
 	this.Result = new stateResult( g );
 
 	//デバイスパラメータやサウンド状況等(Devも）
@@ -14,29 +17,34 @@ function stateControl( g ){
 	//進行状態やプレイヤーステータス等(保持アイテムはここ）
 	this.Game = new stateGame( g );
 
+	this.Database = {
+		chrPattern: character(),
+		motionPattern: motionPattern(),
+
+		//objtype:{PLAYER:98, FRIEND:0, BULLET_P:1, ENEMY:2, BULLET_E:3, ITEM:4, ETC:5}
+		//scenario:
+
+		//mapscで持ってる
+		//map=mapsc
+
+
+		//未作成
+		//itemList: itemTable(),
+		//paramator
+	};
+
+	this.Utility = {
+		//export
+	}
+
+	//2025/06/25:obCtrl宣言はstate.Databaseを参照するのでするので後ろで実行
 	//2023/02/14:GameSceneから↓へ変更　この時点ではresetしていない。
 	this.obCtrl = new gObjectControl(this.System.dev.graphics[1], this);
 	//↑第一引数にscreenを入れているのは移動時の画面サイズ取得の為なので適したscreenを指定する	
 
 	this.mapsc = new mapSceControl();
 
-	this.Utility = {
-		//export
-	}
-
-	this.Database = {
-		//obCtrlが持ってる
-		//scenario
-		//chr_ptn
-		//motion_ptn　→　sp_ptn
-
-		//mapscで持ってる
-		//map=mapsc
-		
-		//未作成
-		//itemList
-		//paramator
-	}
-
-
+	//gObj内機能の切り出しなのでobCtrlを参照する。obCtrl宣言後に生成すること
+	this.obUtil = new gObjectUtility(this);
+	
 }

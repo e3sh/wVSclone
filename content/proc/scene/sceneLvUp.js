@@ -181,7 +181,7 @@ function sceneLvUp(state) { //2024/03/06
                 dev.graphics[1].setInterval(1);//SPRITE
                 work2.setInterval(1);//<-dev.g2　FG
 
-                state.obCtrl.keyitem_enhance_check();
+                state.obUtil.keyitem_enhance_check();
 
                 return ret_code;
             }
@@ -191,11 +191,11 @@ function sceneLvUp(state) { //2024/03/06
 
     function scene_draw() {
 
-        let w = state.obCtrl.player_objv(work);
+        let w = state.obUtil.player_objv(work);
 
         work.fill(w.x-120,w.y-100,240,200,0);
 
-        state.obCtrl.player_objv(work);
+        state.obUtil.player_objv(work);
 
         diag.draw(work, w.x, w.y);
 

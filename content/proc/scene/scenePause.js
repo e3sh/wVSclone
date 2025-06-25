@@ -89,7 +89,7 @@ function scenePause(state) {
             }
         }
         */
-        state.obCtrl.keyitem_view_draw(work);
+        state.obUtil.keyitem_view_draw(work);
 
         work.draw();
         //work.reset();
@@ -167,13 +167,19 @@ function scenePause(state) {
             let s = tutCn;
             for (let i in kstate){
                 if (Boolean(kstate[i])){
-                    s = s //+ ((i == 37)? -40 :0)//leftkey 
+                    let vy =  
                     + ((input.up)? -1 :0) //upkey
                     //((i == 39)? +40 :0) //rightkey
                     + ((input.down)? +1 :0);//downkey
+
+                    do{
+                        s += vy
+                        if (s <0 || s>tutCtable.length) break;
+                    }while (!Boolean(tutCtable[s]))
                 }
             }
-            if (s < 0) s = 0;
+            if (s < 0) s = tutCtable.length -1;
+            if (s > tutCtable.length) s = 0;
             tutCn = s;
             //HELPMESSAGE
         }
@@ -231,15 +237,14 @@ function scenePause(state) {
             work.fill(0, 240, 8 * 22, 8 * 11);//, "navy");
 
             if (Boolean(tutCtable[tutCn])){
+                let c=(Boolean(state.obUtil.tutorialDone[tutCn]))?":":".";
                 for (let i in tutCtable[tutCn]){
-                    work.kprint(tutCn + "." + i + ":" + tutCtable[tutCn][i], 0, 264 + 10 * i);
+                    work.kprint(tutCn + c + i + " " + tutCtable[tutCn][i], 0, 264 + 10 * i);
                 }
-
                 for (let i=0; i<5; i++){
                     work.kprint(tutCtable[100+i][0], 100, 56 + 8 * i);
                 }
-                state.obCtrl.keyitem_view_draw(work ,true);
-
+                state.obUtil.keyitem_view_draw(work ,true);
             }else{
                 work.kprint(tutCn + ".: Message Empty.", 0, 264);
             }
@@ -286,25 +291,5 @@ function scenePause(state) {
 
     function scene_draw() {
         //表示
-        /*
-        if (obCtrl.interrapt){
-			if (obCtrl.SIGNAL == 1) {
-            	work3.putchr(" == PAUSE ==", 320 - 50, 200);
-            	work3.putchr("Push <Z>key or [Space] ", 320 - 100, 220);
-            	work3.putchr(" Return game.", 320 - 50, 240);
-            	work3.putchr("Push <Q>key /", 320 - 100, 260);
-            	work3.putchr("Save and Quit.", 320 - 50, 280); 
-        	} else {
-            	work3.fill(320 - 100, 200, 12 * 24, 20 * 5);
-        	}
-		}
-        */
-        //work.reset();
-    }
-
-    function submenuStep(){
-    }
-
-    function submenuDraw(){
     }
 }

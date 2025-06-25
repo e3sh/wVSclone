@@ -13,6 +13,7 @@ function gameSceneUI_minimap(state){
 	this.reset = game_reset;
 	this.draw = game_draw;
 	this.check = renewcheck;
+	this.rader = drawPoint;
 
 	this.reset_enable = true;
 
@@ -116,10 +117,71 @@ function gameSceneUI_minimap(state){
 
 		if (refle && state.Game.map) {
 			SubmapDraw.create();
-			obCtrl.messageview.write("** Submap Create **");
+			state.obUtil.messageview.write("** Submap Create **");
 			refle = false;
 		}
 
 		return refle;
 	}
+
+    function drawPoint(wscreen, flag) {
+
+		const t = state.Constant.objtype;
+
+		let col = [];
+        col[t.PLAYER  ] = "white";
+        col[t.FRIEND  ] = "skyblue";
+        col[t.BULLET_P] = "skyblue";
+        col[t.ENEMY   ] = "red";
+        col[t.BULLET_E] = "orange";
+        col[t.ITEM    ] = "yellow";
+        col[t.ETC     ] = "green";
+
+        if (!Boolean(wscreen)) wscreen = dev.graphics[4];
+
+        let nt = Date.now();
+
+        let cl = {};
+
+        cl.obj = obCtrl.objList; 
+        cl.col = col;
+        cl.draw = function (device) {
+
+            for (let i in this.obj) {
+                let o = this.obj[i];
+
+                if (o.visible) {
+
+                    if ((o.type == t.BULLET_P) || (o.type == t.BULLET_E) || (o.type == t.ETC)) continue;
+                    //if (o.type == t.ETC) continue;
+
+                    if ((o.type != t.PLAYER) && (!flag)) continue;
+
+                    if (o.normal_draw_enable) {
+                        device.beginPath();
+                        device.strokeStyle = this.col[o.type];
+                        device.lineWidth = 1;
+                        device.rect(
+                            dev.layout.map_x + o.x / 20, 
+                            dev.layout.map_y + o.y / 20,
+                            o.hit_x / 20, o.hit_y / 20);
+                        device.stroke();
+                    }
+
+                    if (o.lighton) {
+                        device.beginPath();
+                        device.strokeStyle = this.col[o.type];
+                        device.lineWidth = 1;
+                        device.arc(
+                            dev.layout.map_x + (o.x + o.hit_x/2) / 20,
+                            dev.layout.map_y + (o.y + o.hit_y/2) / 20,
+                             (nt%27)/9*2, 0, 2 * Math.PI, false);
+                        device.stroke();
+                    }
+                }
+            }
+        }
+
+        wscreen.putFunc(cl);
+    }
 }

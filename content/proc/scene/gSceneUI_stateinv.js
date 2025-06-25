@@ -13,13 +13,10 @@ function gameSceneUI_stateinv(state){
 	this.reset = game_reset;
 	this.draw = game_draw;
 
-	let obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
+	let obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);//
 	let mapsc  = state.mapsc; //= new mapSceControl();
 
 	let escore;
-
-	let mapdisp = false;
-	let lampf = false;
 
 	let fdrawcnt = 0;
 
@@ -120,12 +117,26 @@ function gameSceneUI_stateinv(state){
         }
     }
 
-	mapdisp = true; //以前の処理では自動で消されない画面に書いていたので常時表示処理させる為に常にtrue；
-
+	//チュートリアルメッセージ枠
+	const tutWindowBackgroundDraw = {}
+	tutWindowBackgroundDraw.draw = function (device) {
+		device.beginPath();
+		device.globalAlpha = 1.0;
+		device.lineWidth = 1;
+		device.strokeStyle = "rgba(255,255,255,1.0)";
+		device.strokeRect(dev.layout.tutmsg_x-1, dev.layout.tutmsg_y-1, 386, 50);
+		device.fillStyle = "rgba(0,0,0,0.5)";
+		device.fillRect(dev.layout.tutmsg_x, dev.layout.tutmsg_y, 384, 48);
+		device.restore();
+	}
 	const minimapDisp = new gameSceneUI_minimap(state);
-
-	this.check = minimapDisp.check;
-
+	this.check = function(refle){
+		let f = minimapDisp.check(refle);
+		if (f != refle){
+			UI_force_reflash = true;
+		}
+		return f;
+	}
 	//let getweapon = new get_weapon_check( state );
 
 	//==========================================================================================
@@ -144,7 +155,10 @@ function gameSceneUI_stateinv(state){
 	}
 
 	function game_draw() {
-        
+
+		if (state.Game.lamp || state.Game.map) minimapDisp.rader(dev.graphics[4], state.Game.lamp);//rader
+        //minimapDisp.rader;
+
 	    //==　ここから文字表示画面（出来るだけ書き換えを少なくする）
 	    //プライオリティ最前面の画面追加したので
 	    
@@ -158,12 +172,6 @@ function gameSceneUI_stateinv(state){
 		scdispview = true;//debug
 	    
 		if (scdispview){
-			
-			if (!mapdisp || lampf) {
-				obCtrl.drawPoint(dev.graphics[4], lampf);
-			}
-
-			//work3.putFunc(ButtomlineBackgroundDraw);
 			playerHPber.draw();
 			UIDraw( UI_force_reflash );
 
@@ -171,22 +179,21 @@ function gameSceneUI_stateinv(state){
 
 			let wtxt;
 			//tutorialDisplay 
-			if ( obCtrl.tutorialDisplayTime > state.System.time()){
-				wtxt = obCtrl.tutorialconsole.read();
-				for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.zanki_x, dev.layout.zanki_y - 80 + 10 * s);
+			if ( state.obUtil.tutorialDisplayTime > state.System.time()){
+				dev.graphics[2].putFunc(tutWindowBackgroundDraw);
+				wtxt = state.obUtil.tutorialconsole.read();
+				for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.tutmsg_x, dev.layout.tutmsg_y + 10 * s);
 			}
-			
 		}
-		if (!mapdisp){ mapv = true; }
 
 		if (UI_force_reflash) UI_force_reflash = false;
 		drawexecute = true;         
 	}
-
+	//---------------------
 	let ui = { cnt: 0,state:[], score:[], time: 0};
 
 	let playerHPber = new effect_tlHPbar();
-
+	//---------------------
 	function effect_tlHPbar(){
 		let before_barwidth = 0;
 		let device = dev.graphics[4];
@@ -235,6 +242,7 @@ function gameSceneUI_stateinv(state){
 			obCtrl.item[20],//ball
 			obCtrl.item[22],//key
 			obCtrl.item[35],//coin
+			obCtrl.item.length,//アイテム数が変わった場合、何か拾った(keyitem)
 			obCtrl.itemstack.length,
 			state.Game.player.weapon,
 			state.Game.player.level,
@@ -306,17 +314,17 @@ function gameSceneUI_stateinv(state){
 			work3.kprint(Nextstr, dev.layout.score_x, dev.layout.score_y);
 			//work3.putchr8(Nextstr, dev.layout.score_x, dev.layout.score_y);
 
-			if  (cf) obCtrl.messageview.write("** SCORE Draw ** f:" + ui.cnt);
+			if  (cf) state.obUtil.messageview.write("** SCORE Draw ** f:" + ui.cnt);
 		}
 
 		if (!ct || !cf){ 
 			work3.putchr8("Time:" + ui.time, dev.layout.time_x, dev.layout.time_y);
-			if  (cf) obCtrl.messageview.write("** Time Draw ** f:" + ui.cnt);
+			if  (cf) state.obUtil.messageview.write("** Time Draw ** f:" + ui.cnt);
 		}
 
 		if  (cf) return;
 
-		obCtrl.messageview.write("** UI Draw ** f:"+ ui.cnt);
+		state.obUtil.messageview.write("** UI Draw ** f:"+ ui.cnt);
 		ui.cnt = 0;
 
 		minimapDisp.draw();//submap display
@@ -437,7 +445,7 @@ function gameSceneUI_stateinv(state){
 					dev.layout.zanki_x + i * 20 + 136, dev.layout.zanki_y + 8);
 				}
 			}
-			obCtrl.keyitem_view_draw(work3);
+			state.obUtil.keyitem_view_draw(work3);
 		}
 
 		n = 0;

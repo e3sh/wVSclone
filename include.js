@@ -32,6 +32,7 @@ let w = [
  "content/proc/conv/geometoryTr.js",
  "content/proc/conv/Layout.js",
 //データ部(キャラクタやスプライトパターン制御用の設定）
+ "content/asset/param/constant.js",
  "content/asset/param/spdata.js",
  "content/asset/param/character.js",
  "content/asset/param/motionPtn.js",
@@ -62,6 +63,7 @@ let w = [
  "content/GameAssetManager.js",
 //処理部
  "content/proc/control/gObjCntl.js",
+ "content/proc/control/gObjCmdc.js",
  "content/proc/class/gObjClass.js",
  "content/proc/control/mapSceCntl.js",
  "content/proc/control/sceneControl.js",
@@ -84,6 +86,7 @@ let w = [
  "content/proc/state/stateSystem.js", 
  "content/proc/state/stateGame.js",
  "content/proc/control/stateControl.js",
+ "content/proc/gObjUtil.js",
  "content/proc/CL4TreeM.js",
 //tasks
  "content/MainLoopTask.js",

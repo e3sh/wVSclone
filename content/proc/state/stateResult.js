@@ -6,7 +6,6 @@ function stateResult() {
     this.highscore = 0;
     this.score = 0;
     //this.item = obCtrl.item;
-    this.combo;
     //現在gameSceneでここに色々登録されている。
 
     let ret_code = 0;

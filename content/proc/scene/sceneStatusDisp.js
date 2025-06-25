@@ -25,7 +25,7 @@ function sceneStatusDisp(state) {
     function list_draw(page, invt){//page, invtentry_mode = 持ち物表示
         if (page < 1) page = 1;
 
-        let st = state.obCtrl.list(); 
+        let st = state.obUtil.list(); 
 
         maxpage = Math.floor(st.length/200) + 1;
         //let s = "Tp,objX,objY,s,Mp / Num:" + st.length;
@@ -58,7 +58,7 @@ function sceneStatusDisp(state) {
                 let y = (c%50)*8+8;
                 //work.putchr8(s ,x ,y );
                 if (invt) {
-                    if (state.obCtrl.lookpick(work, i, x + 48+8, y)){
+                    if (state.obUtil.lookpick(work, i, x + 48+8, y)){
                         s = s.substring(0, 6);
                     }
                 }
@@ -109,7 +109,7 @@ function sceneStatusDisp(state) {
         let s = "== ObjectNo.[" + num +"] =="; 
         work.putchr8(s, 0,0 );
 
-        let st = state.obCtrl.lookObj(num);
+        let st = state.obUtil.lookObj(num);
         for (let i in st){
             let s = String(st[i]);
 
@@ -120,9 +120,9 @@ function sceneStatusDisp(state) {
             if (c>100) break;
         }
 
-        state.obCtrl.lookObjv(work, num, 240, 80);
+        state.obUtil.lookObjv(work, num, 240, 80);
 
-        if (state.obCtrl.lookpick(work, num, Math.floor(c/COL)*320+8, ((c+2)%COL)*8+16)){
+        if (state.obUtil.lookpick(work, num, Math.floor(c/COL)*320+8, ((c+2)%COL)*8+16)){
             work.putchr8("pickitem/thisitem",Math.floor(c/COL)*320+8, ((c+1)%COL)*8+8 );
         };
 
