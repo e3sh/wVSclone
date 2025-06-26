@@ -37,7 +37,6 @@ function gameSceneUI_stateinv(state){
 	//br:SHIELD展開中 shw: SHIELD width(シールドゲージの幅0-100 
 	//bbw:beforehp bar width exp:notUse.
 	HpbarDraw.draw = function (device) {
-
 		let cbar = (this.hp/this.mhp>0.5)?"limegreen":"yellowgreen";//(this.hp/this.mhp>0.3)?"yellowgreen":"red"; 
 		let cborder = (this.hp/this.mhp>0.5)?"white":(this.hp/this.mhp>0.3)?"yellow":"orange"; 
 
@@ -130,55 +129,6 @@ function gameSceneUI_stateinv(state){
 		device.restore();
 	}
 
-	const tweenclosewindow = function(){
-
-		let center_x, center_y, count, w, h, vw, vh;
-
-		this.running = false;
-
-		this.set = function(rect, c){
-
-			center_x = rect.x+rect.w/2;
-			center_y = rect.y+rect.h/2;
-
-			w = rect.w;
-			h = rect.h;
-
-			vw = rect.w/c;
-			vh = rect.h/c;
-
-			count = c;
-
-			this.running = true;
-		}
-
-		this.step = function(){
-			w -= vw;
-			h -= vh;
-
-			count--;
-			if (count<=0) this.running = false;
-		}
-		
-		this.draw = function(dev){
-
-			const bx = {x:center_x-w/2, y:center_y-h/2, w:w, h:h}
-			bx.draw = function (device) {
-				device.beginPath();
-				device.globalAlpha = 1.0;
-				device.lineWidth = 1;
-				device.strokeStyle = "rgba(255,255,255,1.0)";
-				device.strokeRect(this.x, this.y, this.w, this.h);
-				device.fillStyle = "rgba(0,0,0,0.5)";
-				device.fillRect(this.x, this.y, this.w, this.h);
-				device.restore();
-			}
-			dev.putFunc(bx);
-		}
-	}
-
-	wclose = new tweenclosewindow();
-
 	const minimapDisp = new gameSceneUI_minimap(state);
 	this.check = function(refle){
 		let f = minimapDisp.check(refle);
@@ -206,11 +156,6 @@ function gameSceneUI_stateinv(state){
 
 	let closing = false;
 	function game_draw() {
-
-		if (wclose.running){
-			wclose.step();
-			wclose.draw(dev.graphics[2]);
-		}
 
 		if (state.Game.lamp || state.Game.map) minimapDisp.rader(dev.graphics[4], state.Game.lamp);//rader
         //minimapDisp.rader;
@@ -242,7 +187,8 @@ function gameSceneUI_stateinv(state){
 				closing = true;
 			}else{
 				if (closing){
-					wclose.set(
+					state.scene.setTCW(
+						dev.graphics[2],
 						{x:dev.layout.tutmsg_x-1, y:dev.layout.tutmsg_y-1, w:386, h:50},
 						20
 					);

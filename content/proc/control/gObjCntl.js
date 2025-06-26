@@ -714,6 +714,7 @@ function gObjectControl(scrn, state) {
 
                             if (o.effectShadow) {
                                 device.beginPath();
+                                device.lineWidth = o.id +1;//weaponLevel normal:0 //強化武器は枠が太く光る処理
                                 device.strokeStyle = "rgba(255,255,255," + (o.alive%330)/330 +")";
                                 device.ellipse(w.x, w.y + wh, ww, wh/4, 0,  0, Math.PI*2, true );
                                 device.stroke();

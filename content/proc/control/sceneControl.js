@@ -20,10 +20,9 @@ function sceneControl(state) {
     sceneList[9] = new sceneLvUp(state);       titleSce[9] = "LvUp";
 
     let wipeEffectCount; 
+    let wipemode = "fade";
 
     let twcw = [];
-
-    let menuvf = false;
 
     //let clRect = function(x,y,w,h){this.draw = function(device){ device.clearRect(x,y,w,h);}}
 
@@ -58,14 +57,18 @@ function sceneControl(state) {
                 fg = true;
                //continue flag on時(次の面に行く場合)にはWipe表示
                 wipeEffectCount = scrn.cw/2;
+                wipemode = "fade";
             }
             //(GameStartの時もWipe表示)TITLE画面からGameSceneへ来た時
-            if (runscene == TITLERC && rc==1) wipeEffectCount = scrn.cw/2;
-            //移動してくるときにWipe有りなしを指定したいのでrc＝{nextscene:num,　continue:bool,　wipeview:bool}
-            //みたいに変更する？そのうちに
+            if (runscene == TITLERC && rc==1) {
+                wipeEffectCount = scrn.cw/2;
+                wipemode = "circle";
+            }
+            //移動してくるときにWipeEffect有りとなるのば、rc_code>=10の場合（TITLEからGameSceneの場合は関係なし)
 
             runscene = rc;
-    
+
+            // 該当Sceneの.reset_enableがfalseの場合はreset経由せずに直接戻る
             if (sceneList[runscene].reset_enable) {
                 if (runscene == TITLERC) reset();//TITLEに戻るときにすべてのsceneのreset_enableをtrueに戻しておく。
                 //GameSceneのPauseから復帰のステータスが残ったままになってしまい、quit後の再実行時不具合になるため。
@@ -79,11 +82,7 @@ function sceneControl(state) {
             0;
 
         for (let i in twcw){
-            if (twcw[i].running){
-                twcw[i].step();
-            } else {
-                delete twcw[i];
-            } 
+            if (twcw[i].running) twcw[i].step();
         }
     }
 
@@ -91,7 +90,7 @@ function sceneControl(state) {
 
         if (wipeEffectCount > 0){
 
-            EffectWipeFrame(scrn.cw/2-wipeEffectCount);
+            EffectWipeFrame(scrn.cw/2-wipeEffectCount, wipemode);
         } else {
             //scrn.fill(0, 0, scrn.cw, scrn.ch, "black");
             //scrn.fill(192, 120, 640, 400);
@@ -103,7 +102,9 @@ function sceneControl(state) {
             if (twcw[i].running){
                 twcw[i].draw();
             } else {
-                delete twcw[i];
+                twcw.splice(i,1);
+                //delete twcw[i]; //これでは配列要素は減らない
+                //console.log(twcw.length);
             } 
         }
 
@@ -131,17 +132,49 @@ function sceneControl(state) {
         }
     }
 
-    function EffectWipeFrame(size){
+    function EffectWipeFrame(size, mode="fade"){
+
         let cw = scrn.cw;
         let ch = scrn.ch;
 
-        let c = "black";//rgba(0,0,0,"+ ((cw-size*2) /cw) +")";
+        let alpha, c;
 
-        scrn.fill(0, 0, cw, ch/2 - size, c);
-        scrn.fill(0, ch/2 + size, cw, ch/2 - size, c);
+        switch(mode){
+            case "fade":
+                alpha = ((cw-size*2) /cw);
+                //let alpha = Math.abs(Math.sin(((cw-size*2) /cw)*Math.PI)); 
+                c = "rgba(0,0,0,"+ alpha +")";
 
-        scrn.fill(0, 0, cw/2 - size, ch, c);
-        scrn.fill(cw/2 + size, 0, cw/2-size,ch, c);
+                scrn.fill(0, 0, cw, ch, c);
+                break;
+            case "box":
+                c = "black";
+
+                scrn.fill(0, 0, cw, ch/2 - size, c);
+                scrn.fill(0, ch/2 + size, cw, ch/2 - size, c);
+
+                scrn.fill(0, 0, cw/2 - size, ch, c);
+                scrn.fill(cw/2 + size, 0, cw/2-size,ch, c);
+                break;
+            case "circle":
+                c = "black";
+                scrn.fill(0, 0, cw, ch, c);
+
+                let earc = {x:cw/2, y:ch/2, r:size};
+                earc.draw = function(device){
+                    device.globalCompositeOperation = "destination-out";
+                    device.beginPath();
+                    device.fillStyle = "green";
+                    device.arc(this.x, this.y, this.r, 0, Math.PI*2, false);
+                    device.fill();
+                    device.restore();
+                    device.globalCompositeOperation = "source-over";
+                }
+                scrn.putFunc(earc);
+                break;
+            default:
+                break;
+        }
     }
 
 	const tweenclosewindow = function(){

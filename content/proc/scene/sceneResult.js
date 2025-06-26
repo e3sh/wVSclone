@@ -4,10 +4,10 @@ function sceneResult(state) {
     
     let dev = state.System.dev;
     //宣言部
-    let work = dev.graphics[3];//メニュー(最上面)
+    let work = dev.graphics[3];//メニュー(最上面) UI
     let work2 = dev.graphics[2];//メイン描画面(FG)
 	//let text = dev.text;
-    //let text = dev.graphics[3];//文字表示面
+    //let text = dev.graphics[3];//文字表示面 UI
  
     this.init = scene_init;
     this.reset = scene_reset;
@@ -268,9 +268,8 @@ function sceneResult(state) {
                 }
             }
             if (esckey){//restart test
-                counter = 0;
-                //return 5;
-                ret_code = 5;
+            //    counter = 0;
+            //    ret_code = 5;
             } 
         }
 
@@ -333,7 +332,15 @@ function sceneResult(state) {
 //      wtxt.push("Push rMouse Button to Start");
 
         if (ret_code != 0) diag.effect();
-        return (( zkey ) || ( diag.step(kstate) != 0 )) ? 0 :ret_code;
+
+        if (( zkey ) || ( diag.step(kstate) != 0 )){
+            return 0;// wait/pause
+        }else{
+            diag.close(dev.graphics[2], 20);
+            return ret_code;
+        }
+
+        //return (( zkey ) || ( diag.step(kstate) != 0 )) ? 0 :ret_code;
     }
 
     function scene_draw() {
@@ -422,6 +429,14 @@ function sceneResult(state) {
                     //if (menulist[i].w >0) menulist[i].w--;
                     //if (menulist[i].h >0) menulist[i].h--;
                 }
+            }
+        }
+
+        this.close = function(device, count){
+
+            for (let i in menulist){
+                let m = menulist[i];
+                state.scene.setTCW(device, {x: m.x, y: m.y,w: m.w,h: m.h}, count);
             }
         }
 
