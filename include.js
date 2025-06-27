@@ -37,12 +37,12 @@ let w = [
  "content/asset/param/character.js",
  "content/asset/param/motionPtn.js",
  //データ部(ステージの敵の動きなどの設定)
- "content/asset/param/stage/Stage1.js",
+ "content/asset/param/stage/Stage_normal.js",
  "content/asset/param/stage/Dangeon.js",
- "content/asset/param/stage/Stage1_tod.js",
+ "content/asset/param/stage/Stage_tod.js",
  "content/asset/param/stage/Dangeon_tod.js",
- "content/asset/param/stage/Stage1_vsv.js",
- "content/asset/param/stage/Stage1_brm.js",
+ "content/asset/param/stage/Stage_openfield.js",
+ "content/asset/param/stage/Stage_greathall.js",
  "content/asset/param/stage/TestStage.js",
  //データ部(キャラクタの動きなどの設定）
  "content/asset/param/scenario.js",

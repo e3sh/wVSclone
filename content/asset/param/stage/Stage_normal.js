@@ -1,6 +1,6 @@
 ﻿//　ステージの設定(用語が混乱してるけど　マップ、マップシナリオ、マップチップの統合）
 
-function Stage1(stageno) {
+function Stage_normal(stageno) {
 
     //stageno = 0;
     const BLOCK_W = 96;
@@ -18,7 +18,7 @@ function Stage1(stageno) {
     let rlist = dgn.il; //壁際を除く部屋部分(初期配置エリア
     let clist = dgn.rl; //壁際含む部屋部分(通路は含まない)
 
-    stageno = Math.floor(Math.random() * 1000000);
+    //stageno = Math.floor(Math.random() * 1000000);
     let rnd = new myrnd(stageno);//seed);
 
     this.scenario = mapScenro;

@@ -1,6 +1,6 @@
 ﻿//　ステージの設定(用語が混乱してるけど　マップ、マップシナリオ、マップチップの統合）
 
-function Stage1_brm() {
+function Stage_greathall() {
 
     //stageno = 0;
     let BLOCK_W = 96;
@@ -70,7 +70,7 @@ function Stage1_brm() {
                 mc.push([11,  13 * BLOCK_W -32,  i * BLOCK_H +32 *j, 32, 32, true , 1, true ]);//Wall
                 //mc.push([12,  13 * BLOCK_W -32,  i * BLOCK_H +32 *j, 32, 32, false, 0, true ]);//Floor
                 //mc.push([12,  13 * BLOCK_W,  i * BLOCK_H + 32 *j, 32, 32, false, 0, true ]);//shadow
-　
+
                 mc.push([11,  18 * BLOCK_W,  i * BLOCK_H + 32 *j, 32, 32, true , 1, true ]);//Wall
                 //mc.push([12,  18 * BLOCK_W,  i * BLOCK_H + 32 *j, 32, 32, false, 0, true ]);//Floor
                 //mc.push([12,  18 * BLOCK_W -32,  i * BLOCK_H + 32 *j, 32, 32, false, 0, true ]);//shadow

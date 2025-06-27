@@ -1,12 +1,12 @@
 ﻿//　ステージの設定(用語が混乱してるけど　マップ、マップシナリオ、マップチップの統合）
 
-function Stage1_vsv(stageno) {
+function Stage_openfield(stageno) {
 
     //stageno = 0;
     let BLOCK_W = 96;
     let BLOCK_H = 96;
 
-    stageno = Math.floor(Math.random() * 1000000);
+    //stageno = Math.floor(Math.random() * 1000000);
     let rnd = new myrnd(stageno);//seed);
 
     this.scenario = mapScenro;

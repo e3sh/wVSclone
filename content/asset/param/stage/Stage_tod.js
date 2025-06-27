@@ -1,5 +1,5 @@
 ﻿//　ステージの設定(用語が混乱してるけど　マップ、マップシナリオ、マップチップの統合）
-function Stage1_tod( seed, keyuse ) {
+function Stage_tod( seed, keyuse ) {
 
     let dgn;
 

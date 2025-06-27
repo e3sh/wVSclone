@@ -36,7 +36,8 @@ function mapSceControl(){
         return stage;
     }
 
-	let stage_data;//マップデータクラス用
+    let stage_name;
+    let stage_data;//マップデータクラス用
 	let stage_msc;//マップシナリオ
 	let stage_bg;//bgグラフィック
 	let stage_mch; //マップチップ座標
@@ -58,14 +59,14 @@ function mapSceControl(){
 	//    stage_data = new Stage1_tod(num, kyuse);
         if (!Boolean(stage[num])){
             if (num <= 0){
-                stage_data = new Stage1_vsv(num);//TEST STAGE
+                stage_data = new Stage_openfield(num);//TEST STAGE
             }else if (num%15 == 0) {
-                stage_data = new Stage1_brm(num);//BossRooｍ
+                stage_data = new Stage_greathall(num);//BossRooｍ
             }else if (num <= 30 ){
                 //stage_data = new TestStage(num);
-                stage_data = new Stage1(num);//NormalStage
+                stage_data = new Stage_normal(num);//NormalStage
             }else{
-                stage_data = new Stage1_tod(num, kyuse);//TEST STAGE
+                stage_data = new Stage_tod(num, kyuse);//TEST STAGE
             }
             let s = new StageListSubClass();
 
@@ -76,6 +77,51 @@ function mapSceControl(){
             s.bgSpdata      = stage_data.bgPtn(); 
             s.colmap        = stage_data.colmap;
             s.startroom_id  = stage_data.startroom_id;
+
+            const roomnamelist = "";
+            
+            
+            let sname = "unknown";
+            const StageNameList = {
+                0:"OPFIELD",
+
+                1:"FORESTE",    
+                2:"FORESTA",    
+                3:"FORESTB",
+                4:"FORESTC",
+                5:"FORESTD",
+
+                6:"CAVEENT",
+                7:"CAVE_A",
+                8:"CAVE_B",
+                9:"CAVE_C",
+                10:"CAVEDEEP",
+
+                11:"FORTENT",
+                12:"FORT_A",
+                13:"FORT_B",
+                14:"FORTDEEP",
+                15:"BOSSROOM",
+
+                16:"DFORESTA",
+                17:"DFORESTB",
+                18:"DFORESTC",
+                19:"DFORESTD",
+                20:"DFORESTE",
+
+                21:"DCAVE_A",
+                22:"DCAVE_B",
+                23:"DCAVE_C",
+                24:"DCAVE_D",
+                25:"DCAVEEND",
+
+                26:"LFORT_A",
+                27:"LFORT_B",
+                28:"LFORT_C",
+                29:"LFORTEND",
+                30:"LASTROOM",
+            }
+          
 
             /*
             let jsontext = JSON.stringify(s);
@@ -91,6 +137,7 @@ function mapSceControl(){
             stage[num] = s;
         }
 
+        stage_name  = stage[num].name;
         stage_msc   = stage[num].mapScenario;
         stage_bg    = stage[num].bgPattern;
         stage_mch   = stage[num].mapChip;//Collisionチェックで書き換える
@@ -114,6 +161,7 @@ function mapSceControl(){
 	    ini_sc = stage_inisc;
 	}
 
+    this.stagename = function(){return stage_name;}
 	this.bgImage = function () { return stage_bg;  }
     this.bgPtn   = function () { return stage_ptn; }
     this.mapChip = function () { return stage_mch; }
@@ -220,6 +268,7 @@ function mapSceControl(){
 	    this.x;	this.y; this.r; this.ch; this.sce; this.parent;
 	}
     function StageListSubClass(){
+        this.name;
         this.data;      //マップデータクラス用 StageClass
         this.mapScenario;//マップシナリオ 
         this.bgPattern; //bgグラフィック
