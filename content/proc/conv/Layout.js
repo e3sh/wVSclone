@@ -11,38 +11,111 @@ function gameLayout() {
     const DSP_SP_Y = 0;//120;
 
     // NextExp
-    this.score_x = DSP_SP_X + GS_SIZE_X - (8 * 12);
-    this.score_y = DSP_SP_Y + GS_SIZE_Y - 24;
+    this.nextexp = {
+        x: DSP_SP_X + GS_SIZE_X - (8 * 12),
+        y: DSP_SP_Y + GS_SIZE_Y - 24
+    }
+
     // Exp.
-    this.hiscore_x = DSP_SP_X + GS_SIZE_X - (8 * 12);
-    this.hiscore_y = DSP_SP_Y + GS_SIZE_Y - 32;
-    //Debug Status
-    this.status_x = DSP_SP_X + GS_SIZE_X - 120;
-    this.status_y = DSP_SP_Y + 32;
+    this.exp = {
+        x: DSP_SP_X + GS_SIZE_X - (8 * 12),
+        y: DSP_SP_Y + GS_SIZE_Y - 32
+    }
+ 
+    // Debug Status
+    this.debugstatus ={
+        x: DSP_SP_X + GS_SIZE_X - 120,
+        y: DSP_SP_Y + 32
+    }
 
-    this.zanki_x = DSP_SP_X + 20;//160;
-    this.zanki_y = DSP_SP_Y + GS_SIZE_Y - 16;
+    this.debugmessage ={
+        x: DSP_SP_X,
+        y: DSP_SP_Y + 150
+    }
 
-    this.time_x = DSP_SP_X + GS_SIZE_X - (8 * 9);
-    this.time_y = DSP_SP_Y + GS_SIZE_Y -8;
+    // Zanki
+    this.zanki = {
+        x: DSP_SP_X + 20,
+        y: DSP_SP_Y + GS_SIZE_Y - 16
+    }
 
-    this.stage_x = DSP_SP_X + GS_SIZE_X - (8 * 9);
-    this.stage_y = DSP_SP_Y + GS_SIZE_Y -16;
+    //ball  
+    this.ball = {
+        x: DSP_SP_X + 20 +288,
+        y: DSP_SP_Y + GS_SIZE_Y - 16 -8
+    }
 
-    this.map_x = DSP_SP_X;// 640 - 150;
-    this.map_y = DSP_SP_Y; // 480 - 48 - 150;
-
-    this.hp_x = DSP_SP_X + 20+148;//168;
-    this.hp_y = DSP_SP_Y + GS_SIZE_Y -32;
-
-    this.clip_x = DSP_SP_X ;//+ 140;
-    this.clip_y = DSP_SP_Y + GS_SIZE_Y -36;
-
-    this.keyitem_x = DSP_SP_X + 368;
-    this.keyitem_y = DSP_SP_Y + GS_SIZE_Y -16;
+    //coin
+    this.coin = {
+        x: DSP_SP_X + 20 +288,
+        y: DSP_SP_Y + GS_SIZE_Y - 16 +8
+    }
     
-    this.tutmsg_x = DSP_SP_X + 20;
-    this.tutmsg_y = DSP_SP_Y + GS_SIZE_Y -96;
+    //items
+    this.items = {
+        x: DSP_SP_X + 20 +128 , 
+        y: DSP_SP_Y + GS_SIZE_Y - 16
+    }
+
+    //key
+    this.key = {
+        x: DSP_SP_X + 20 + 64, 
+        y: DSP_SP_Y + GS_SIZE_Y - 16
+    }
+
+    //weapon
+    this.weapon = {
+        x: DSP_SP_X + 20  +96, 
+        y: DSP_SP_Y + GS_SIZE_Y - 16
+    }
+
+    //time
+    this.time = {
+        x: DSP_SP_X + GS_SIZE_X - (8 * 9), 
+        y: DSP_SP_Y + GS_SIZE_Y -8
+    }
+
+    //stage number 
+    this.stage = {
+        x: DSP_SP_X + GS_SIZE_X - (8 * 9), 
+        y: DSP_SP_Y + GS_SIZE_Y -16
+    }
+
+    //minimap
+    this.map = {
+        x: DSP_SP_X, 
+        y: DSP_SP_Y
+    }
+
+    //hpbar
+    this.hp = {
+        x: DSP_SP_X + 168, 
+        y: DSP_SP_Y + GS_SIZE_Y -32
+    }
+
+    //underline
+    this.clip = {
+        x: DSP_SP_X, 
+        y: DSP_SP_Y + GS_SIZE_Y -36
+    }
+
+    //itemlist
+    this.keyitem = {
+        x: DSP_SP_X + 368, 
+        y: DSP_SP_Y + GS_SIZE_Y -16
+    }
+
+    //tutorial window
+    this.tutmsg = {
+        x: DSP_SP_X + 20, 
+        y: DSP_SP_Y + GS_SIZE_Y -96
+    }
+
+    //lvupstatus
+    this.status = {
+        x: DSP_SP_X + 20 +252,
+        y: DSP_SP_Y + GS_SIZE_Y -32
+    }
 }
 
 

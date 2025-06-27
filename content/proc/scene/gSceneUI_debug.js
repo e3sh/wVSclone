@@ -60,17 +60,17 @@ function gameSceneUI_debug(state){
 			wtxt = read_debugStates();
 			if (state.Config.viewlog) wtxt = wtxt.concat(state.obUtil.messagelog.read()); 
 			//let wtxt = read_debugStates().concat(obCtrl.messagelog.read());
-			for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.status_x, dev.layout.status_y + 8 * s);
+			for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.debugstatus.x, dev.layout.debugstatus.y + 8 * s);
 
 			//wtxt = obCtrl.messagelog.read();
 			//for (let s in wtxt) work3.putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 
 			wtxt = state.obUtil.messageview.read();
-			if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+			if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.debugmessage.x, dev.layout.debugmessage.y + 8 * s);
 			//if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 		}else{
 			wtxt = state.obUtil.messageconsole.read();
-			if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 10 * s);
+			if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.debugmessage.x, dev.layout.debugmessage.y + 10 * s);
 			//if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 		}
 

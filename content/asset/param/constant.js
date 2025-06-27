@@ -17,4 +17,5 @@ function ConstantData(){
         STONEB:16
     }
 
+    this.DEBUGMODE_ENABLE = false;
 }

@@ -12,7 +12,7 @@ https://e3sh.github.io/wVSclone/main.html
 - 攻撃(Action):　　　[Z] or [Space]　/ (X)｜(□)
 - アイテム使用(Use):　[X] or [Ctrl]  / (B)｜(○)
 - ジャンプ(Jump):　　　[C]　　　　    / (A)｜(×)
-- 一時停止(Pause):　　　[ESC]　　　/ (START)｜(三)  
+- 一時停止(Pause):　　　[P]　　　　　/ (START)｜(三)  
 
 -＊ WASDとテンキーでも移動可能。
 
@@ -74,34 +74,39 @@ https://e3sh.github.io/wVSclone/main.html
 
 --- 　　
 
+## 一時停止(Pause)画面:
+- 上下キーでチュートリアルメッセージ確認 
+- Z:ゲームに戻る
+- @:一時中断(Save)
+
 ## DEBUG 機能:
 タイトル画面のConfigと一時停止(Pause)画面で設定可能
 
-### タイトル画面のConfig:
-- DebugStatus :ONでデバッグステータス表示 *1
-  各offscreenバッファーの制御状態とfps/loadの表示/当たり判定範囲などを表示
-- BulletErace :ONで画面外からの弾を消す *2
-  発生した弾が表示画面内でない場合は即座に消滅するようになる。
-
-
-### 一時停止(Pause)画面:
-フルキーボード側の数字キーでオフオンの切り替え
+### 一時停止(Pause)画面での操作メニュー:
+フルキーボード側の数字キーで操作
 　
-- 1 : Debug Display        デバッグステータス表示　*1のONと同じ効果    
-- 2 : Lamp(on FloorChange) ランプ所持(面切り替え後に有効) 　
-- 3 : Map (on FloorChange) 地図所持(面切り替え後に有効)　 
-- 4 : Mute (NotSupport)    効果音・BGMのMUTE（今のところ、うまく動かないので効果なし) 
-- 5 : BulletMode(offRange) 画面外からの弾を消す　 *2のONと同じ効果
-- 6 : Weapon Level         パワーアップ状態の増減
-- 7 : Map Option Menu      ステージ状態確認画面に推移する。
-- 8 : Obj Status　Disp     状態確認画面に推移する。　 
-- 9 : (Debug)Log View      デバッグ表示時のログ表示切替
-- 0 : Menu Display         本メニューの表示オフオン 　
+- 1 : Debug Display   デバッグステータス表示　*1のONと同じ効果    
+- 2 : Lamp(nextStage) ランプ所持(面切り替え後に有効) 　
+- 3 : Map (nextStage) 地図所持(面切り替え後に有効)　 
+- 4 : Change menu     PPmodeメニューに変更 
+- 5 : Bullet(inRange) 画面外からの弾を消す
+- 6 : Weapon Level    パワーアップ状態の増減
+- 7 : Map Option Menu ステージ状態確認画面に推移する。
+- 8 : Obj Status　Disp 状態確認画面に推移する。　 
+- 9 : (Debug)Log View デバッグ表示時のログ表示切替
+- 0 : Menu Display    本メニューの表示オフオン 　
 
-- 上下キーでチュートリアルメッセージ確認 
-- Z:ゲームに戻る
-- Q:一時中断(Save)
-
+PP(PlayerParamater)mode
+- 1 : Heal HP         HP全回復    
+- 2 : Get Lamp        ランプ取得 　
+- 3 : Get Map         地図取得　 
+- 4 : Change menu     通常メニューに戻る 
+- 5 : Get Key         鍵取得
+- 6 : Get Keyitems    上記以外のキーアイテム全取得
+- 7 : Get Extend      自機Extendアイテム取得
+- 8 :  
+- 9 : 
+- 0 : Menu Display    本メニューの表示オフオン 　
 
 ### 状態確認(StatusDisplay)画面:
 (一時停止画面から8:ObjStatusDispで入る画面の)

@@ -251,8 +251,8 @@ function gObjectUtility(state) {
 
         let helptext = {51:"INT", 52:"MND", 53:"VIT", 56:"STR", 57:"DEX"};
 
-        let xpos = dev.layout.keyitem_x;
-        let ypos = dev.layout.keyitem_y;
+        let xpos = dev.layout.keyitem.x;
+        let ypos = dev.layout.keyitem.y;
         for (let i=51; i<59; i++){
             //this.item[i] = 2; // DEBUG fullItemTest
             if (Boolean(this.item[i])){

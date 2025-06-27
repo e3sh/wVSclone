@@ -42,6 +42,8 @@ class taskMainLoop extends GameTask {
             }
             ,quit:false
             ,pause:false
+            ,start:false
+            ,back:false
             ,keycode: kstate
         }
 
@@ -53,8 +55,10 @@ class taskMainLoop extends GameTask {
         if (Boolean(kstate[67])) input.trigger.jump     = kstate[67];//C, (B)
         if (Boolean(kstate[17])) input.trigger.tgtlock  = kstate[17];//Ctrl,[RB]
 
-        if (Boolean(kstate[27])) input.pause    = kstate[27];//ESC, (START)
+        if (Boolean(kstate[80])) input.pause    = kstate[80];//P, (START)
         if (Boolean(kstate[81])) input.quit     = kstate[81];//Q, (Y)
+        if (Boolean(kstate[192])) input.back     = kstate[192];//End, (Back)
+        //if (Boolean(kstate[x])) input.start   = kstate[x];//undefind, (START)
 
         this.scene.step(g, input);
     }

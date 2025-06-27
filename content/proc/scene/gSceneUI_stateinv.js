@@ -29,7 +29,7 @@ function gameSceneUI_stateinv(state){
 	ButtomlineBackgroundDraw.draw = function (device) {
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.5)";
-	    device.fillRect(dev.layout.clip_x, dev.layout.clip_y, 640, 36);
+	    device.fillRect(dev.layout.clip.x, dev.layout.clip.y, 640, 36);
 		//device.globalAlpha = 1.0;
 	}
     //hpbar
@@ -42,26 +42,26 @@ function gameSceneUI_stateinv(state){
 
 	    device.beginPath();
 	    device.fillStyle = "black";//clear 
-	    device.fillRect(dev.layout.hp_x, dev.layout.hp_y, 102, 15);
+	    device.fillRect(dev.layout.hp.x, dev.layout.hp.y, 102, 15);
 
 		device.fillStyle = "red";//effect 
-	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, this.bbw, 14-1);
+	    device.fillRect(dev.layout.hp.x + 1, dev.layout.hp.y + 1, this.bbw, 14-1);
 	    device.fillStyle = cbar;//hpbar 
-	    device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 1, (this.hp/this.mhp)*100, 14-1);
+	    device.fillRect(dev.layout.hp.x + 1, dev.layout.hp.y + 1, (this.hp/this.mhp)*100, 14-1);
 		if (this.br){//shieldbar
 	    	device.fillStyle = "cyan"; 
-	    	device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 3, this.shw, 14-3);
+	    	device.fillRect(dev.layout.hp.x + 1, dev.layout.hp.y + 3, this.shw, 14-3);
 
 			let c = (this.shw%10)*5 + 205;
 	    	device.fillStyle = "rgb(0," + c + "," + c + ")";
 			//(this.shw > 50)?"rgb(0," + c + "," + c + ")": 
 			//(this.shw < 25)?"rgb(" + c + ",128, 128)":"rgb(" + c + "," + c + ",160)"; //"skyblue"; 
-	    	device.fillRect(dev.layout.hp_x + 1, dev.layout.hp_y + 4, this.shw-1, 14-4);
+	    	device.fillRect(dev.layout.hp.x + 1, dev.layout.hp.y + 4, this.shw-1, 14-4);
 		}
 		//border
 		device.strokeStyle = cborder; 
 		device.lineWidth = 2;
-	    device.rect(dev.layout.hp_x, dev.layout.hp_y, 102, 15);
+	    device.rect(dev.layout.hp.x, dev.layout.hp.y, 102, 15);
 	    device.stroke();
 	}
 	//Expbar
@@ -71,11 +71,11 @@ function gameSceneUI_stateinv(state){
 		draw : function (device) {
 			device.beginPath();
 			device.fillStyle = "darkgray";//clear 
-			device.fillRect(dev.layout.score_x, dev.layout.score_y+5, 100, 3);
+			device.fillRect(dev.layout.nextexp.x, dev.layout.nextexp.y+5, 100, 3);
 	
 
 			device.fillStyle = ((this.now/this.next) >= 1)?"yellowgreen":"orange"//expbar 
-			device.fillRect(dev.layout.score_x+1, dev.layout.score_y+3, (this.now/this.next)*100, 4);
+			device.fillRect(dev.layout.nextexp.x+1, dev.layout.nextexp.y+3, (this.now/this.next)*100, 4);
 
 			//border
 			//device.strokeStyle = "darkgray"; 
@@ -123,9 +123,9 @@ function gameSceneUI_stateinv(state){
 		device.globalAlpha = 1.0;
 		device.lineWidth = 1;
 		device.strokeStyle = "rgba(255,255,255,1.0)";
-		device.strokeRect(dev.layout.tutmsg_x-1, dev.layout.tutmsg_y-1, 386, 50);
+		device.strokeRect(dev.layout.tutmsg.x-1, dev.layout.tutmsg.y-1, 386, 50);
 		device.fillStyle = "rgba(0,0,0,0.5)";
-		device.fillRect(dev.layout.tutmsg_x, dev.layout.tutmsg_y, 384, 48);
+		device.fillRect(dev.layout.tutmsg.x, dev.layout.tutmsg.y, 384, 48);
 		device.restore();
 	}
 
@@ -183,13 +183,13 @@ function gameSceneUI_stateinv(state){
 			if ( state.obUtil.tutorialDisplayTime > state.System.time()){
 				dev.graphics[2].putFunc(tutWindowBackgroundDraw);
 				wtxt = state.obUtil.tutorialconsole.read();
-				for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.tutmsg_x, dev.layout.tutmsg_y + 10 * s);
+				for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.tutmsg.x, dev.layout.tutmsg.y + 10 * s);
 				closing = true;
 			}else{
 				if (closing){
 					state.scene.setTCW(
 						dev.graphics[2],
-						{x:dev.layout.tutmsg_x-1, y:dev.layout.tutmsg_y-1, w:386, h:50},
+						{x:dev.layout.tutmsg.x-1, y:dev.layout.tutmsg.y-1, w:386, h:50},
 						20
 					);
 					closing = false;
@@ -226,7 +226,7 @@ function gameSceneUI_stateinv(state){
 			if (state.Game.player.barrier) {
 				//wst = "HP:" + w_hp +"/SHIELD";       
 			}
-			device.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
+			device.putchr8(wst, dev.layout.hp.x + 8, dev.layout.hp.y + 4);
 
 			if (before_barwidth > now_bw) before_barwidth = before_barwidth - 1;
 			if (before_barwidth <= now_bw) before_barwidth = now_bw;
@@ -296,13 +296,13 @@ function gameSceneUI_stateinv(state){
 			work3.putFunc(ButtomlineBackgroundDraw);
 		}else{
 			if (!cs) { 
-				work3.fill(dev.layout.hiscore_x, dev.layout.hiscore_y,8*12,16);//半透明を表示するために一旦クリア
-				work3.fill(dev.layout.hiscore_x, dev.layout.hiscore_y,8*12,16,"rgba(0,0,0,0.5)");
+				work3.fill(dev.layout.exp.x, dev.layout.exp.y,8*12,16);//半透明を表示するために一旦クリア
+				work3.fill(dev.layout.exp.x, dev.layout.exp.y,8*12,16,"rgba(0,0,0,0.5)");
 			}
 
 			if (!ct) { 
-				work3.fill(dev.layout.time_x, dev.layout.time_y,8*9,8);//半透明を表示するために一旦クリア
-				work3.fill(dev.layout.time_x, dev.layout.time_y,8*9,8,"rgba(0,0,0,0.5)");
+				work3.fill(dev.layout.time.x, dev.layout.time.y,8*9,8);//半透明を表示するために一旦クリア
+				work3.fill(dev.layout.time.x, dev.layout.time.y,8*9,8,"rgba(0,0,0,0.5)");
 			}
 		}
 
@@ -320,16 +320,16 @@ function gameSceneUI_stateinv(state){
 			//if (expbarDraw.now <= NextLup) 
 			work3.putFunc(expbarDraw);
 
-			work3.putchr8("Exp." + ui.score[1], dev.layout.hiscore_x, dev.layout.hiscore_y);
+			work3.putchr8("Exp." + ui.score[1], dev.layout.exp.x, dev.layout.exp.y);
 			Nextstr = Nextstr.substring(Nextstr.length-13);
-			work3.kprint(Nextstr, dev.layout.score_x, dev.layout.score_y);
+			work3.kprint(Nextstr, dev.layout.nextexp.x, dev.layout.nextexp.y);
 			//work3.putchr8(Nextstr, dev.layout.score_x, dev.layout.score_y);
 
 			if  (cf) state.obUtil.messageview.write("** SCORE Draw ** f:" + ui.cnt);
 		}
 
 		if (!ct || !cf){ 
-			work3.putchr8("Time:" + ui.time, dev.layout.time_x, dev.layout.time_y);
+			work3.putchr8("Time:" + ui.time, dev.layout.time.x, dev.layout.time.y);
 			if  (cf) state.obUtil.messageview.write("** Time Draw ** f:" + ui.cnt);
 		}
 
@@ -389,16 +389,12 @@ function gameSceneUI_stateinv(state){
 		let zc = state.Game.player.zanki;//2 - dead_cnt;
 		if (zc < 3) {
 			for (let i = 0; i < zc; i++) {
-				work3.put("Mayura1", dev.layout.zanki_x + i * 32, dev.layout.zanki_y);
+				work3.put("Mayura1", dev.layout.zanki.x + i * 32, dev.layout.zanki.y);
 			}
 		} else {
-			work3.put("Mayura1", dev.layout.zanki_x, dev.layout.zanki_y);
-			work3.putchr8("x" + zc, dev.layout.zanki_x + 16, dev.layout.zanki_y);
+			work3.put("Mayura1", dev.layout.zanki.x, dev.layout.zanki.y);
+			work3.putchr8("x" + zc, dev.layout.zanki.x + 16, dev.layout.zanki.y);
 		}
-
-		//Lamp/map
-		//if(state.Game.map){ work3.put("Map",dev.layout.map_x + 36, dev.layout.map_y + 12) }//dev.layout.zanki_x + 360, dev.layout.zanki_y-16);}
-		//if(state.Game.lamp) { work3.put("Lamp",dev.layout.map_x + 12, dev.layout.map_y + 12) }//dev.layout.zanki_x + 336, dev.layout.zanki_y-16);}
 
 		//ball表示
 		if (Boolean(obCtrl.item[20])) {
@@ -406,13 +402,13 @@ function gameSceneUI_stateinv(state){
 			if (n <= 3) {
 				for (let i = 0; i < n; i++) {
 					work3.put("Ball1",
-					dev.layout.zanki_x + i * 20 + 288, dev.layout.zanki_y - 8);
+					dev.layout.ball.x + i * 20, dev.layout.ball.y);
 				}
 			} else {
 				work3.put("Ball1",
-				dev.layout.zanki_x + 288, dev.layout.zanki_y - 8);
+				dev.layout.ball.x, dev.layout.ball.y);
 
-				work3.putchr8("x" + n, dev.layout.zanki_x + 288 + 10, dev.layout.zanki_y - 12);
+				work3.putchr8("x" + n, dev.layout.ball.x + 10, dev.layout.ball.y-4);
 			}
 		}
 		//Coin表示
@@ -421,12 +417,12 @@ function gameSceneUI_stateinv(state){
 			if (n <= 6) {
 				for (let i = 0; i < n; i++) {
 					work3.put("Coin1",
-					dev.layout.zanki_x + i * 8 + 288, dev.layout.zanki_y + 8);
+					dev.layout.coin.x + i * 8, dev.layout.coin.y);
 				}
 			} else {
 				work3.put("Coin1",
-				dev.layout.zanki_x + 288, dev.layout.zanki_y + 8);
-				work3.putchr8("x" + n, dev.layout.zanki_x + 288 + 10, dev.layout.zanki_y + 8);
+				dev.layout.coin.x, dev.layout.coin.y);
+				work3.putchr8("x" + n, dev.layout.coin.x + 10, dev.layout.coin.y-4);
 			}
 		}
 		//取得アイテム表示
@@ -440,20 +436,20 @@ function gameSceneUI_stateinv(state){
 				witem.push(w);
 			}
 
-			work3.putchr8("[X]", dev.layout.zanki_x + 132 - 16, dev.layout.zanki_y - 16);
+			work3.putchr8("[X]", dev.layout.items.x -16, dev.layout.items.y -16);
 			n = witem.length;
 
-			if (n >= 8) {n = 6; work3.putchr8("...", dev.layout.zanki_x + n * 20 + 128, dev.layout.zanki_y + 8);}
+			if (n >= 8) {n = 6; work3.putchr8("...", dev.layout.items.x + n * 20 -8, dev.layout.items.y+8);}
 			//if (n >= 7) n = 7;
 
 			for (let i = 0; i < n; i++) {
 				if (i == 0) {
 					work3.put(wchr[witem[witem.length - 1 - i]],
-					dev.layout.zanki_x + i * 20 + 132, dev.layout.zanki_y);
+					dev.layout.items.x + i * 20, dev.layout.items.y);
 					//640 - (12 * 12), 479 - 32 + 5);
 				} else {
 					work3.put(wchr[witem[witem.length - 1 - i]],
-					dev.layout.zanki_x + i * 20 + 136, dev.layout.zanki_y + 8);
+					dev.layout.items.x + i * 20, dev.layout.items.y+8);
 				}
 			}
 			state.obUtil.keyitem_view_draw(work3);
@@ -463,21 +459,21 @@ function gameSceneUI_stateinv(state){
 		if (Boolean(obCtrl.item[22])) {
 			n = obCtrl.item[22];
 		}
-		if (n > 0) work3.put("Key", dev.layout.zanki_x + 64, dev.layout.zanki_y);
+		if (n > 0) work3.put("Key", dev.layout.key.x, dev.layout.key.y);
 
 		let wweapon = ["Wand", "Knife", "Axe", "Boom", "Spear", "Bow"];
 
 		if (!Boolean(state.Game.player.weapon)) state.Game.player.weapon = 0;
 		if (!Boolean(state.Game.player.level)) state.Game.player.level = 0;
 
-		work3.putchr8("[Z]", dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y - 16);
-		work3.put(wweapon[state.Game.player.weapon], dev.layout.zanki_x + 96, dev.layout.zanki_y);
+		work3.putchr8("[Z]", dev.layout.weapon.x - 16, dev.layout.weapon.y -16);
+		work3.put(wweapon[state.Game.player.weapon], dev.layout.weapon.x, dev.layout.weapon.y);
 		if (state.Game.player.level > 0){
 			let wt = "+" + state.Game.player.level + 
 				((state.Game.player.level > 2 )?" Max":"");
-				work3.putchr8(wt, dev.layout.zanki_x + 96 - 16, dev.layout.zanki_y + 8);
+				work3.putchr8(wt, dev.layout.weapon.x - 16, dev.layout.weapon.y + 8);
 			}
-		work3.putchr8("Stage " + mapsc.stage, dev.layout.stage_x, dev.layout.stage_y);
+		work3.putchr8("Stage " + mapsc.stage, dev.layout.stage.x, dev.layout.stage.y);
 		
 		let w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
 
@@ -497,7 +493,7 @@ function gameSceneUI_stateinv(state){
 		if (state.Game.player.barrier) {
 			//wst = "HP:" + w_hp +"/SHIELD";       
 		}
-		work3.putchr8(wst, dev.layout.hp_x + 8, dev.layout.hp_y + 4);
+		work3.putchr8(wst, dev.layout.hp.x + 8, dev.layout.hp.y + 4);
 
 		stbar.setStatusArray([
             state.Game.player.base.VIT,
@@ -506,6 +502,6 @@ function gameSceneUI_stateinv(state){
             //state.Game.player.spec.ETC
 			//Math.abs(Math.trunc((obCtrl.score-BaseLup)/(NextLup-BaseLup)*7))
         ]);
-		stbar.draw(work3, dev.layout.zanki_x + 252, dev.layout.zanki_y -16);
+		stbar.draw(work3, dev.layout.status.x, dev.layout.status.y);
 	}
 }

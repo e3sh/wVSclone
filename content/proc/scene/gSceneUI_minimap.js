@@ -40,7 +40,7 @@ function gameSceneUI_minimap(state){
 	SubmapframeDraw.draw = function (device) {
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.3)";
-	    device.fillRect(dev.layout.map_x, dev.layout.map_y, 150, 150);
+	    device.fillRect(dev.layout.map.x, dev.layout.map.y, 150, 150);
 	}
 
 	//縮小マップ表示
@@ -53,8 +53,8 @@ function gameSceneUI_minimap(state){
 		this.d = ctx;
 		this.e = elm;
 
-		this.x = dev.layout.map_x;
-		this.y = dev.layout.map_y;
+		this.x = dev.layout.map.x;
+		this.y = dev.layout.map.y;
 
 		this.create = function(){
 		//	ondr(this.d);
@@ -105,10 +105,10 @@ function gameSceneUI_minimap(state){
 			dev.graphics[3].putFunc(SubmapframeDraw);
 			if (state.Game.map) {
 				dev.graphics[3].putFunc(SubmapDraw);
-				dev.graphics[3].put("Map",dev.layout.map_x + 36, dev.layout.map_y + 12);
+				dev.graphics[3].put("Map",dev.layout.map.x + 36, dev.layout.map.y + 12);
 			}
 			if (state.Game.lamp) {
-				dev.graphics[3].put("Lamp",dev.layout.map_x + 12, dev.layout.map_y + 12);
+				dev.graphics[3].put("Lamp",dev.layout.map.x + 12, dev.layout.map.y + 12);
 			}
 		}
 	}
@@ -162,8 +162,8 @@ function gameSceneUI_minimap(state){
                         device.strokeStyle = this.col[o.type];
                         device.lineWidth = 1;
                         device.rect(
-                            dev.layout.map_x + o.x / 20, 
-                            dev.layout.map_y + o.y / 20,
+                            dev.layout.map.x + o.x / 20, 
+                            dev.layout.map.y + o.y / 20,
                             o.hit_x / 20, o.hit_y / 20);
                         device.stroke();
                     }
@@ -173,8 +173,8 @@ function gameSceneUI_minimap(state){
                         device.strokeStyle = this.col[o.type];
                         device.lineWidth = 1;
                         device.arc(
-                            dev.layout.map_x + (o.x + o.hit_x/2) / 20,
-                            dev.layout.map_y + (o.y + o.hit_y/2) / 20,
+                            dev.layout.map.x + (o.x + o.hit_x/2) / 20,
+                            dev.layout.map.y + (o.y + o.hit_y/2) / 20,
                              (nt%27)/9*2, 0, 2 * Math.PI, false);
                         device.stroke();
                     }
