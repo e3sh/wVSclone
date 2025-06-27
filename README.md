@@ -85,25 +85,25 @@ https://e3sh.github.io/wVSclone/main.html
 ### 一時停止(Pause)画面での操作メニュー:
 フルキーボード側の数字キーで操作
 　
-- 1 : Debug Display   デバッグステータス表示　*1のONと同じ効果    
-- 2 : Lamp(nextStage) ランプ所持(面切り替え後に有効) 　
-- 3 : Map (nextStage) 地図所持(面切り替え後に有効)　 
-- 4 : Change menu     PPmodeメニューに変更 
-- 5 : Bullet(inRange) 画面外からの弾を消す
-- 6 : Weapon Level    パワーアップ状態の増減
-- 7 : Map Option Menu ステージ状態確認画面に推移する。
-- 8 : Obj Status　Disp 状態確認画面に推移する。　 
-- 9 : (Debug)Log View デバッグ表示時のログ表示切替
-- 0 : Menu Display    本メニューの表示オフオン 　
+- 1 : Debug Display　　デバッグステータス表示
+- 2 : Lamp(nextStage) 　ランプ所持(面切り替え後に有効) 　
+- 3 : Map (nextStage) 　　地図所持(面切り替え後に有効)　 
+- 4 : Change menu　　　PPmodeメニューに変更 
+- 5 : Bullet(inRange) 　　画面外からの弾を消す
+- 6 : Weapon Level　　　パワーアップ状態の増減
+- 7 : Map Option Menu　ステージ状態確認画面に推移する。
+- 8 : Obj Status Disp　　状態確認画面に推移する。　 
+- 9 : (Debug)Log View　デバッグ表示時のログ表示切替
+- 0 : Menu Display　　　本メニューの表示オフオン 　
 
 PP(PlayerParamater)mode
-- 1 : Heal HP         HP全回復    
-- 2 : Get Lamp        ランプ取得 　
-- 3 : Get Map         地図取得　 
-- 4 : Change menu     通常メニューに戻る 
-- 5 : Get Key         鍵取得
-- 6 : Get Keyitems    上記以外のキーアイテム全取得
-- 7 : Get Extend      自機Extendアイテム取得
+- 1 : Heal HP　　　　HP全回復    
+- 2 : Get Lamp　　　ランプ取得 　
+- 3 : Get Map　　　地図取得　 
+- 4 : Change menu　通常メニューに戻る 
+- 5 : Get Key　　　　鍵取得
+- 6 : Get Keyitems　上記以外のキーアイテム全取得
+- 7 : Get Extend　　自機Extendアイテム取得
 - 8 :  
 - 9 : 
 - 0 : Menu Display    本メニューの表示オフオン 　
