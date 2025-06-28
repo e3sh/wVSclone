@@ -109,26 +109,24 @@ function sceneControl(state) {
         }
 
         if (state.Config.debug) {
-            //if (fcnt%90 > 30){
-            if (state.System.blink()){    
-                let st = titleSce[runscene];
+            let st = "SCENE:" + titleSce[runscene];
 
-                bar = {}
+            bar = {};
 
-                bar.x = scrn.cw-st.length*8;
-                bar.y = 0;
-                bar.l = st.length*8;
-        
-                bar.draw = function(device){
-                    device.beginPath();
-                    device.fillStyle = "black";
-                    device.lineWidth = 1;
-                    device.fillRect(this.x, this.y, this.l*8, 8);
-                    //device.stroke();
-                }
-                scrn.putFunc(bar);
-                scrn.putchr8(st, scrn.cw-st.length*8, 0);
-            }                
+            bar.x = state.System.dev.layout.debugstatus.x;
+            bar.y = state.System.dev.layout.debugstatus.y - 24;
+            bar.l = st.length*8;
+    
+            bar.draw = function(device){
+                device.globalCompositeOperation = "source-over";
+                device.beginPath();
+                device.fillStyle = "black";
+                device.lineWidth = 1;
+                device.fillRect(this.x, this.y, this.l, 8);
+                //device.stroke();
+            }
+            if (state.System.blink()) scrn.putFunc(bar);
+            scrn.putchr8(st, bar.x, bar.y);
         }
     }
 
@@ -184,27 +182,33 @@ function sceneControl(state) {
 
 		this.running = false;
 
-		this.set = function(dev, rect, c){
+		this.set = function(dev, rect, c,  close){
 
 			center_x = rect.x+rect.w/2;
 			center_y = rect.y+rect.h/2;
 
-			w = rect.w;
-			h = rect.h;
+            if (!Boolean(close)){
+                w = rect.w;
+                h = rect.h;
 
-			vw = rect.w/c;
-			vh = rect.h/c;
+                vw = -(rect.w/c);
+                vh = -(rect.h/c);
+            }else{
+                w = 0;
+                h = 0;
 
-			count = c;
-
+                vw = rect.w/c;
+                vh = rect.h/c;
+            }
+            count = c;
             device = dev;
 
 			this.running = true;
 		}
 
 		this.step = function(){
-			w -= vw;
-			h -= vh;
+			w += vw;
+			h += vh;
 
 			count--;
 			if (count<=0) this.running = false;
@@ -227,10 +231,10 @@ function sceneControl(state) {
 		}
 	}
 
-    this.setTCW = function(device, rect, count){
+    this.setTCW = function(device, rect, count, close){
 
         const tcw = new tweenclosewindow();
-        tcw.set(device, rect, count);
+        tcw.set(device, rect, count, close);
 
         twcw.push(tcw);
     }

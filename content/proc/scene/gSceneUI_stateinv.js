@@ -139,6 +139,8 @@ function gameSceneUI_stateinv(state){
 	}
 	//let getweapon = new get_weapon_check( state );
 
+	let nextlvrdy = false;
+
 	//==========================================================================================
 	//処理部
 	function game_reset() {
@@ -154,7 +156,10 @@ function gameSceneUI_stateinv(state){
 		UIDraw( UI_force_reflash );
 	}
 
+	let opening = false;
+	let openstime = 0;
 	let closing = false;
+
 	function game_draw() {
 
 		if (state.Game.lamp || state.Game.map) minimapDisp.rader(dev.graphics[4], state.Game.lamp);//rader
@@ -176,15 +181,31 @@ function gameSceneUI_stateinv(state){
 			playerHPber.draw();
 			UIDraw( UI_force_reflash );
 
-	        //debug　true　の場合以下表示
-
+			if (nextlvrdy){
+				if (state.System.blink()) dev.graphics[4].kprint(" NextLvReady", dev.layout.nextexp.x, dev.layout.nextexp.y);
+			}
+			
+			
 			let wtxt;
 			//tutorialDisplay 
 			if ( state.obUtil.tutorialDisplayTime > state.System.time()){
-				dev.graphics[2].putFunc(tutWindowBackgroundDraw);
-				wtxt = state.obUtil.tutorialconsole.read();
-				for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.tutmsg.x, dev.layout.tutmsg.y + 10 * s);
-				closing = true;
+
+				if (!opening){
+					opening = true;
+					openstime = state.System.time()+1000/3;//20f
+					state.scene.setTCW(
+						dev.graphics[2],
+						{x:dev.layout.tutmsg.x-1, y:dev.layout.tutmsg.y-1, w:386, h:50},
+						20,"open"
+					);
+				}
+
+				if (opening && (state.System.time() > openstime)){
+					dev.graphics[2].putFunc(tutWindowBackgroundDraw);
+					wtxt = state.obUtil.tutorialconsole.read();
+					for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.tutmsg.x, dev.layout.tutmsg.y + 10 * s);
+					closing = true;
+				}
 			}else{
 				if (closing){
 					state.scene.setTCW(
@@ -192,6 +213,7 @@ function gameSceneUI_stateinv(state){
 						{x:dev.layout.tutmsg.x-1, y:dev.layout.tutmsg.y-1, w:386, h:50},
 						20
 					);
+					opening = false;
 					closing = false;
 				}
 			}
@@ -307,14 +329,12 @@ function gameSceneUI_stateinv(state){
 		}
 
 		if (!cs || !cf){ 
-			//work3.putchr("Hi-Sc:" + ui.score[0], dev.layout.hiscore_x, dev.layout.hiscore_y);
-			//work3.putchr("Score:" + ui.score[1], dev.layout.score_x, dev.layout.score_y);
 			let nowLvexp = Math.pow(state.Game.player.spec.ETC ,2)* 100;
 			let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;
-			//let NextMkr = ( obCtrl.score >= NextLup) ? "#":" ";
-			let Nextstr = ( obCtrl.score >= NextLup) ? 
-				" NextLvReady":"       Next." + NextLup;
+			let Nextstr = "       Next." + NextLup;
 
+			nextlvrdy = ( obCtrl.score >= NextLup)?true:false;
+				
 			expbarDraw.now = obCtrl.score - nowLvexp;
 			expbarDraw.next = NextLup - nowLvexp;
 			//if (expbarDraw.now <= NextLup) 
@@ -322,10 +342,10 @@ function gameSceneUI_stateinv(state){
 
 			work3.putchr8("Exp." + ui.score[1], dev.layout.exp.x, dev.layout.exp.y);
 			Nextstr = Nextstr.substring(Nextstr.length-13);
-			work3.kprint(Nextstr, dev.layout.nextexp.x, dev.layout.nextexp.y);
+			if (!nextlvrdy) work3.kprint(Nextstr, dev.layout.nextexp.x, dev.layout.nextexp.y);
 			//work3.putchr8(Nextstr, dev.layout.score_x, dev.layout.score_y);
 
-			if  (cf) state.obUtil.messageview.write("** SCORE Draw ** f:" + ui.cnt);
+			if  (cf) state.obUtil.messageview.write("** EXP Draw ** f:" + ui.cnt);
 		}
 
 		if (!ct || !cf){ 
@@ -408,7 +428,7 @@ function gameSceneUI_stateinv(state){
 				work3.put("Ball1",
 				dev.layout.ball.x, dev.layout.ball.y);
 
-				work3.putchr8("x" + n, dev.layout.ball.x + 10, dev.layout.ball.y-4);
+				work3.putchr8("x" + n, dev.layout.ball.x + 6, dev.layout.ball.y);
 			}
 		}
 		//Coin表示
@@ -422,7 +442,7 @@ function gameSceneUI_stateinv(state){
 			} else {
 				work3.put("Coin1",
 				dev.layout.coin.x, dev.layout.coin.y);
-				work3.putchr8("x" + n, dev.layout.coin.x + 10, dev.layout.coin.y-4);
+				work3.putchr8("x" + n, dev.layout.coin.x + 6, dev.layout.coin.y);
 			}
 		}
 		//取得アイテム表示
@@ -436,24 +456,44 @@ function gameSceneUI_stateinv(state){
 				witem.push(w);
 			}
 
-			work3.putchr8("[X]", dev.layout.items.x -16, dev.layout.items.y -16);
+			work3.putchr8("[X]", dev.layout.items.x -16, dev.layout.items.y -18);
 			n = witem.length;
 
-			if (n >= 8) {n = 6; work3.putchr8("...", dev.layout.items.x + n * 20 -8, dev.layout.items.y+8);}
+			//if (n >= 8) {n = 6; work3.putchr8("...", dev.layout.items.x + n * 20 -8, dev.layout.items.y+8);}
 			//if (n >= 7) n = 7;
 
 			for (let i = 0; i < n; i++) {
 				if (i == 0) {
 					work3.put(wchr[witem[witem.length - 1 - i]],
 					dev.layout.items.x + i * 20, dev.layout.items.y);
+
+					let n = witem[witem.length - 1 - i]-23;
+
+					work3.fill(dev.layout.items.x + n * 30 + 20, dev.layout.items.y+4,30, 12,"blue");
+
+
 					//640 - (12 * 12), 479 - 32 + 5);
 				} else {
-					work3.put(wchr[witem[witem.length - 1 - i]],
-					dev.layout.items.x + i * 20, dev.layout.items.y+8);
+					//work3.put(wchr[witem[witem.length - 1 - i]],
+					//dev.layout.items.x + i * 20, dev.layout.items.y+8);
 				}
 			}
-			state.obUtil.keyitem_view_draw(work3);
+
+			for (let i=0; i<=2; i++){
+				let w = obCtrl.item[23+i];
+				if (Boolean(w)){
+					work3.put(wchr[23+i],
+					dev.layout.items.x + i * 30 + 30, dev.layout.items.y+8);
+						
+					if (w>1){
+						work3.putchr8("x"+w,
+						dev.layout.items.x + i * 30 + 36, dev.layout.items.y+8);
+					}
+				}
+			}
 		}
+		//keyitems
+		state.obUtil.keyitem_view_draw(work3);
 
 		n = 0;
 		if (Boolean(obCtrl.item[22])) {
@@ -466,7 +506,7 @@ function gameSceneUI_stateinv(state){
 		if (!Boolean(state.Game.player.weapon)) state.Game.player.weapon = 0;
 		if (!Boolean(state.Game.player.level)) state.Game.player.level = 0;
 
-		work3.putchr8("[Z]", dev.layout.weapon.x - 16, dev.layout.weapon.y -16);
+		work3.putchr8("[Z]", dev.layout.weapon.x - 16, dev.layout.weapon.y -18);
 		work3.put(wweapon[state.Game.player.weapon], dev.layout.weapon.x, dev.layout.weapon.y);
 		if (state.Game.player.level > 0){
 			let wt = "+" + state.Game.player.level + 

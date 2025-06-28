@@ -42,13 +42,13 @@ function gameLayout() {
     //ball  
     this.ball = {
         x: DSP_SP_X + 20 +288,
-        y: DSP_SP_Y + GS_SIZE_Y - 16 -8
+        y: DSP_SP_Y + GS_SIZE_Y - 26
     }
 
     //coin
     this.coin = {
         x: DSP_SP_X + 20 +288,
-        y: DSP_SP_Y + GS_SIZE_Y - 16 +8
+        y: DSP_SP_Y + GS_SIZE_Y - 8
     }
     
     //items
@@ -90,7 +90,7 @@ function gameLayout() {
     //hpbar
     this.hp = {
         x: DSP_SP_X + 168, 
-        y: DSP_SP_Y + GS_SIZE_Y -32
+        y: DSP_SP_Y + GS_SIZE_Y -34
     }
 
     //underline
@@ -114,7 +114,7 @@ function gameLayout() {
     //lvupstatus
     this.status = {
         x: DSP_SP_X + 20 +252,
-        y: DSP_SP_Y + GS_SIZE_Y -32
+        y: DSP_SP_Y + GS_SIZE_Y -34
     }
 }
 

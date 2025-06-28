@@ -329,6 +329,7 @@ function Stage_normal(stageno) {
             ];
             mc.push(w);
 
+            //スタート地点には魔法陣、他の部屋には石板を置く
             if (i == room_status.min) {
                 startx = x + (wdt/2)+32;
                 starty = y + (hgt/2)+32;
@@ -384,7 +385,17 @@ function Stage_normal(stageno) {
         }
 
         //ドアの設置
-        let r = Math.floor(rnd.next() * rlist.length)
+
+        //スタート地点にドアがあることがあったので避ける処理追加
+        let selectlist = [];
+        for (let i = 0; i < rlist.length; i++) {
+            if (rlist[i].id != room_status.min){
+                selectlist.push(i);    
+            }
+        }
+        let shuffled = shuffle(selectlist);//スタート地点以外の部屋リスト
+        
+        let r = Math.floor(shuffled[0]);//rnd.next() * rlist.length)
         w = [13,
             rlist[r].x * BLOCK_W + 16,
             rlist[r].y * BLOCK_H + 16,

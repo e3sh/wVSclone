@@ -74,6 +74,13 @@ function gameSceneUI_debug(state){
 			//if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 		}
 
+		if (state.Config.debug) {
+			let wcol = {23:"orange", 24:"cyan", 25:"limegreen"};
+			for (let i in obCtrl.itemstack) {
+				let w = obCtrl.itemstack[i];
+				UI.fill(dev.layout.items.x + i * 3 + 16, dev.layout.items.y, 2, 2, wcol[w]);
+			}
+		}
 	}
 
 	function BGDraw(mapChip) {

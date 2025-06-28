@@ -15,8 +15,9 @@ function sceneOption(state) {
 
     this.reset_enable = true;
 
-    let menuvf = false;
     let keywait = 10;
+
+    let mobvf = true;
 
     let ret_code = 6; //scenePause
     let retmf = false; //return mode false:pause true:gameS
@@ -134,6 +135,11 @@ function sceneOption(state) {
             }
         }
 
+        if (vkey) {
+            mobvf = (!mobvf);
+        }
+
+
         if (ikey) {
             cmapdf = (cmapdf)?false:true;
             //IMPORT
@@ -203,6 +209,7 @@ function sceneOption(state) {
         st.push("=== COMMAND ===");
         st.push("Z: " + (retmf?"RETURN TITLE":"EXIT"));
         st.push("C: CLEAR_SCREEN");
+        st.push("V: MOB VIEW: " + ((mobvf)?"ON":"OFF"));
         st.push("I: MAP_IMPORT（"+(ikey?"?":"未実装")+"）" );
         //st.push("E: MAP_EXPORT");
         //st.push("R: -//MAP_RESET" );
@@ -212,7 +219,7 @@ function sceneOption(state) {
         }
 
         mapDraw();
-        charDraw(sel);
+        if (mobvf) charDraw(sel);
         if (cmapdf) cmapDraw();
         work.kprint("Stage:" + state.mapsc.chacheUseStatus() ,150 ,0);
         work.kprint("Stage:" + nowstage ,150 ,8);
@@ -308,8 +315,8 @@ function sceneOption(state) {
         function mapDraw() {
 
             mcp = state.mapsc.mapChip();
-
-            let c = ["dimgray", "steelblue", "orange"];
+            //0:floor 1:wall 2:door 3:ciel 4:circle,5:?,6:stoneb
+            let c = ["dimgray", "steelblue", "orange"," rgba(255,0,0,0.3)","white", "gray","cyan"];
             for (let i = 0, loopend = mcp.length; i < loopend; i++) {
 
                 let mc = mcp[i];
