@@ -322,7 +322,7 @@ function sceneLvUp(state) { //2024/03/06
     }
 
     function statusBarMeter(setupParam){
-        //setupParamater [barcolor, ...,}]
+        //setupP0aramater [barcolor, ...,}]
         let status;
 
         this.setStatusArray = function(ary){

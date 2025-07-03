@@ -182,7 +182,12 @@ function gameSceneUI_stateinv(state){
 			UIDraw( UI_force_reflash );
 
 			if (nextlvrdy){
-				if (state.System.blink()) dev.graphics[4].kprint(" NextLvReady", dev.layout.nextexp.x, dev.layout.nextexp.y);
+				if (state.System.blink()) {
+					dev.graphics[4].fill(dev.layout.nextexp.x +1, dev.layout.nextexp.y, 12*8, 7, "yellowgreen");
+					dev.graphics[4].kprint(" HomePortal->", dev.layout.nextexp.x, dev.layout.nextexp.y);
+				}
+				let w = Math.trunc(state.System.time()/100)%5;
+				dev.graphics[4].put("cursorx", dev.layout.status.x + 8, dev.layout.status.y + 9 - w);
 			}
 			
 			
@@ -279,7 +284,7 @@ function gameSceneUI_stateinv(state){
 			obCtrl.itemstack.length,
 			state.Game.player.weapon,
 			state.Game.player.level,
-			mapsc.stage,
+			mapsc.stagename(),
 			//Math.floor((120000 - mapsc.flame) / 1000),
 			state.Game.player.hp,
 			state.Game.player.maxhp,
@@ -331,7 +336,7 @@ function gameSceneUI_stateinv(state){
 		if (!cs || !cf){ 
 			let nowLvexp = Math.pow(state.Game.player.spec.ETC ,2)* 100;
 			let NextLup = Math.pow(state.Game.player.spec.ETC+1 ,2)* 100;
-			let Nextstr = "       Next." + NextLup;
+			let Nextstr = (obCtrl.score >= NextLup)?" NextLvReady":"       Next." + NextLup;
 
 			nextlvrdy = ( obCtrl.score >= NextLup)?true:false;
 				
@@ -342,7 +347,7 @@ function gameSceneUI_stateinv(state){
 
 			work3.putchr8("Exp." + ui.score[1], dev.layout.exp.x, dev.layout.exp.y);
 			Nextstr = Nextstr.substring(Nextstr.length-13);
-			if (!nextlvrdy) work3.kprint(Nextstr, dev.layout.nextexp.x, dev.layout.nextexp.y);
+			work3.kprint(Nextstr, dev.layout.nextexp.x, dev.layout.nextexp.y);
 			//work3.putchr8(Nextstr, dev.layout.score_x, dev.layout.score_y);
 
 			if  (cf) state.obUtil.messageview.write("** EXP Draw ** f:" + ui.cnt);
@@ -469,7 +474,7 @@ function gameSceneUI_stateinv(state){
 
 					let n = witem[witem.length - 1 - i]-23;
 
-					work3.fill(dev.layout.items.x + n * 30 + 20, dev.layout.items.y+4,30, 12,"blue");
+					work3.fill(dev.layout.items.x + n * 32 + 24, dev.layout.items.y+4,32, 12,"blue");
 
 
 					//640 - (12 * 12), 479 - 32 + 5);
@@ -483,11 +488,11 @@ function gameSceneUI_stateinv(state){
 				let w = obCtrl.item[23+i];
 				if (Boolean(w)){
 					work3.put(wchr[23+i],
-					dev.layout.items.x + i * 30 + 30, dev.layout.items.y+8);
+					dev.layout.items.x + i * 32 + 32, dev.layout.items.y+8);
 						
 					if (w>1){
 						work3.putchr8("x"+w,
-						dev.layout.items.x + i * 30 + 36, dev.layout.items.y+8);
+						dev.layout.items.x + i * 32 + 32, dev.layout.items.y+8);
 					}
 				}
 			}
@@ -513,8 +518,9 @@ function gameSceneUI_stateinv(state){
 				((state.Game.player.level > 2 )?" Max":"");
 				work3.putchr8(wt, dev.layout.weapon.x - 16, dev.layout.weapon.y + 8);
 			}
-		work3.putchr8("Stage " + mapsc.stage, dev.layout.stage.x, dev.layout.stage.y);
-		
+		//work3.putchr8("Stage " + mapsc.stage, dev.layout.stage.x, dev.layout.stage.y);
+		work3.putchr8(mapsc.stagename(), dev.layout.stage.x, dev.layout.stage.y);
+	
 		let w_hp = (state.Game.player.hp > 0) ? state.Game.player.hp : 0;
 
 		HpbarDraw.hp = w_hp; 

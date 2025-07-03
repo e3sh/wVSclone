@@ -235,7 +235,8 @@ function gameScene(state){
 
 	        if (obCtrl.SIGNAL == 835) {//リザルト画面要求(面クリアー処理予定
 
-	            obCtrl.score += Math.floor((120000 - mapsc.flame) / 100);
+				//StageClearBonus
+	            obCtrl.score += mapsc.stage*100;//Math.floor((120000 - mapsc.flame) / 100);
 
 	                state.Result.score = obCtrl.score;
 	                state.Game.item = obCtrl.item;

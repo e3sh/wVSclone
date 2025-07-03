@@ -46,6 +46,46 @@ function mapSceControl(){
 
 	let colmap;
     let sid;
+
+    const StageNameList = {
+        0:"OPFIELD",
+
+        1:"ENTRY_F",    
+        2:"FOREST_A",    
+        3:"FOREST_B",
+        4:"FOREST_C",
+        5:"FOREST_D",
+
+        6:"CAVEENT",
+        7:"CAVE_A",
+        8:"CAVE_B",
+        9:"CAVE_C",
+        10:"CAVEDEEP",
+
+        11:"FORT_ENT",
+        12:"FORT_A",
+        13:"FORT_B",
+        14:"FORTDEEP",
+        15:"BOSSROOM",
+
+        16:"DFORESTA",
+        17:"DFORESTB",
+        18:"DFORESTC",
+        19:"DFORESTD",
+        20:"DFORESTE",
+
+        21:"DCAVE_A",
+        22:"DCAVE_B",
+        23:"DCAVE_C",
+        24:"DCAVE_D",
+        25:"DCAVEEND",
+
+        26:"LFORT_A",
+        27:"LFORT_B",
+        28:"LFORT_C",
+        29:"LFORTEND",
+        30:"LASTROOM",
+    }
 	this.cmap = function () { return colmap; } //当たり判定用マップデータ[x,y]
     this.startroom_id = function(){return sid; } //開始部屋のMapChipIndex
 
@@ -60,6 +100,8 @@ function mapSceControl(){
         if (!Boolean(stage[num])){
             if (num <= 0){
                 stage_data = new Stage_openfield(num);//TEST STAGE
+            }else if (num == 1) {
+                stage_data = new Stage_tutorial();//1st Stage
             }else if (num%15 == 0) {
                 stage_data = new Stage_greathall(num);//BossRooｍ
             }else if (num <= 30 ){
@@ -78,50 +120,10 @@ function mapSceControl(){
             s.colmap        = stage_data.colmap;
             s.startroom_id  = stage_data.startroom_id;
 
-            const roomnamelist = "";
-            
-            
             let sname = "unknown";
-            const StageNameList = {
-                0:"OPFIELD",
-
-                1:"FORESTE",    
-                2:"FORESTA",    
-                3:"FORESTB",
-                4:"FORESTC",
-                5:"FORESTD",
-
-                6:"CAVEENT",
-                7:"CAVE_A",
-                8:"CAVE_B",
-                9:"CAVE_C",
-                10:"CAVEDEEP",
-
-                11:"FORTENT",
-                12:"FORT_A",
-                13:"FORT_B",
-                14:"FORTDEEP",
-                15:"BOSSROOM",
-
-                16:"DFORESTA",
-                17:"DFORESTB",
-                18:"DFORESTC",
-                19:"DFORESTD",
-                20:"DFORESTE",
-
-                21:"DCAVE_A",
-                22:"DCAVE_B",
-                23:"DCAVE_C",
-                24:"DCAVE_D",
-                25:"DCAVEEND",
-
-                26:"LFORT_A",
-                27:"LFORT_B",
-                28:"LFORT_C",
-                29:"LFORTEND",
-                30:"LASTROOM",
-            }
-          
+            
+            if (Boolean(StageNameList[num])) sname = StageNameList[num]; 
+            s.name = sname;
 
             /*
             let jsontext = JSON.stringify(s);
@@ -161,7 +163,17 @@ function mapSceControl(){
 	    ini_sc = stage_inisc;
 	}
 
-    this.stagename = function(){return stage_name;}
+    this.stagename = function(number){
+        //番号入力なしの場合、今のステージ名を返す
+        let sname = "unknown";
+
+        if (Boolean(number)){
+            if (Boolean(StageNameList[number])) sname = StageNameList[number]; 
+        }else{
+            sname = stage_name;
+        }
+        return sname;
+    }
 	this.bgImage = function () { return stage_bg;  }
     this.bgPtn   = function () { return stage_ptn; }
     this.mapChip = function () { return stage_mch; }

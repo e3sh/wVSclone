@@ -321,12 +321,15 @@ function sceneResult(state) {
         }
 
         //let stage = state.Game.nowstage;
-        wtxt.push(" == Stage -" + stage + "- Clear ==");//+ ret_code);
+        wtxt.push(" == Stage -" + state.mapsc.stagename( stage ) + "- Clear ==");//+ ret_code);
         wtxt.push(" ");
         if (stage%15 == 0){
             wtxt.push(" == CONGRATULATIONS!& ==");
         }else{
-            wtxt.push(((zapf)?"   WARP! ": "   Goto ") + "Next Stage." + nextstage );
+            wtxt.push(
+                ((zapf)?"   WARP! ": "   Goto ") + "Next Stage." 
+                + state.mapsc.stagename( nextstage ) 
+            );
         }
         //      wtxt.push("---------------");
 //      wtxt.push("Push rMouse Button to Start");
@@ -374,9 +377,8 @@ function sceneResult(state) {
         }
 
         for (let s in wtxt) {
-            work.putchr(wtxt[s], 320-150, 120 + 16 * s );// + (150 - counter) );
-            //			work.putchr8(wtxt[s],0,0 + 8*s);
-            //		        work.print(wtxt[s],0,0 + 16*s +200);	
+            let ox = Math.trunc(wtxt[s].length*12)/2;
+            work.putchr(wtxt[s], 320-ox, 120 + 16 * s );
         }
 
         diag.draw(work);
