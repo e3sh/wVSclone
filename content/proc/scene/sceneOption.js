@@ -209,8 +209,10 @@ function sceneOption(state) {
         st.push("=== COMMAND ===");
         st.push("Z: " + (retmf?"RETURN TITLE":"EXIT"));
         st.push("C: CLEAR_SCREEN");
-        st.push("V: MOB VIEW: " + ((mobvf)?"ON":"OFF"));
-        st.push("I: MAP_IMPORT（"+(ikey?"?":"未実装")+"）" );
+        st.push("V: MOB  VIEW: " + ((mobvf)?"ON":"OFF"));
+        st.push("I: CMAP VIEW: " + ((cmapdf)?"ON":"OFF"));
+
+        //st.push("I: MAP_IMPORT（"+(ikey?"?":"未実装")+"）" );
         //st.push("E: MAP_EXPORT");
         //st.push("R: -//MAP_RESET" );
 

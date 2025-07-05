@@ -11,6 +11,13 @@ function Stage_tutorial() {
     this.initial = mapInitial;
     this.bgPtn = mapBgPattern;
 
+    let cmap = [];
+    this.colmap = cmap;
+
+    const MAP_W = 30;
+    const MAP_H = 30;
+
+    const dgn = {mw: MAP_W, mh: MAP_H};
 
     function mapScenro() {
         let map_sc = [
@@ -26,6 +33,12 @@ function Stage_tutorial() {
     function mapBgPattern() { return bgdata(); }
 
     function mapBgLayout() {
+
+        //array initialize
+        for (let i=0; i<(dgn.mw+1)*3; i++) {
+            cmap[i] = new Array(dgn.mh*3);
+            cmap[i].fill(true);
+        }
         //
         //0:none 1:floor 2:shadow 3:door 4:home 5:stoneb 9:blackwall
         //walltype :10>
@@ -89,6 +102,12 @@ function Stage_tutorial() {
                         j*BLOCK_H + OFFSET_Y,
                         96, 96, false, 0, true 
                     ]);
+
+                    for (let k=0; k<=2; k++){
+                        for (let l=0; l<=2; l++){
+                            cmap[i*3 + k + 18][j*3 + l + 18] = null;//(7-1)*3 OFFSET
+                        }
+                    }
                 }
                 if ((d >=2 && d<=9)){
                     //SP No, X, Y, W, H, collison, layer, visible
@@ -128,21 +147,24 @@ function Stage_tutorial() {
                 if (d>=10){
                     const splist = [ 3, 4, 5, 6,11, 7, 8, 9,10];
 
-                    let spno, typeno, col, rootx, rooty;
+                    let spno, typeno, col, rootx, rooty, rx, ry;
 
                     rootx = i*BLOCK_W + OFFSET_X;
                     rooty = j*BLOCK_H + OFFSET_Y;
+
+                    rx = Math.trunc((rootx-BLOCK_W)/32);
+                    ry = Math.trunc((rooty-BLOCK_H)/32);
 
                     let wd = wallmap[d];
 
                     for (let i=0; i<=8; i++){
                         if (wd%2 == 0){
                             spno = 12;
-                            typeno = 10; //floor
+                            typeno = 0; //floor
                             col = false;
                         }else{
                             spno = splist[i];
-                            typeno = 11; //wall
+                            typeno = 1; //wall
                             col = true;
                         }
 
@@ -150,8 +172,10 @@ function Stage_tutorial() {
                             spno,
                             rootx+32*(2-(i%3)), 
                             rooty+32*(2-Math.trunc(i/3)), 
-                            32, 32, col, typeno, true 
+                            32, 32, false, typeno, true 
                         ]);
+
+                        cmap[rx +(2-(i%3))][ry + (2-Math.trunc(i/3))] = col;
 
                         wd = Math.trunc(wd/2);
                     }

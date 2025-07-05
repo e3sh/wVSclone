@@ -12,8 +12,13 @@ function Stage_greathall() {
     this.initial = mapInitial;
     this.bgPtn = mapBgPattern;
 
-    //let cmap = [];
-    //this.colmap = cmap;
+    let cmap = [];
+    this.colmap = cmap;
+
+    const MAP_W = 30;
+    const MAP_H = 30;
+
+    const dgn = {mw: MAP_W, mh: MAP_H};
 
     function mapScenro() {
         let map_sc = [
@@ -29,10 +34,15 @@ function Stage_greathall() {
     function mapBgPattern() { return bgdata(); }
 
     function mapBgLayout() {
-
         let mc = [];
         
         let w = [];
+
+        //array initialize
+        for (let i=0; i<(dgn.mw+1)*3; i++) {
+            cmap[i] = new Array(dgn.mh*3);
+            cmap[i].fill(true);
+        }
 
         //Floor
         for (let i = 13; i <= 17 ;i++) {
@@ -48,34 +58,42 @@ function Stage_greathall() {
                     true
                 ];
                 mc.push(w);
-                //cmap[i][j] = null;
+
+                for (let k=0; k<=2; k++){
+                    for (let l=0; l<=2; l++){
+                        cmap[(i-1)*3 + k][(j-1)*3 + l] = null;
+                    }
+                }
             }
         }
         //枠 wall width
         for (let i = 12*BLOCK_W+32; i<=18*BLOCK_W+32; i+=32){
-            mc.push([11,  i, 8 * BLOCK_H -64, 32, 32, true , 1, true ]);//Wall
-            mc.push([11,  i, 8 * BLOCK_H -32, 32, 32, true , 1, true ]);//Wall
+            mc.push([11,  i, 8 * BLOCK_H -64, 32, 32, false , 1, true ]);//Wall
+            mc.push([11,  i, 8 * BLOCK_H -32, 32, 32, false , 1, true ]);//Wall
 
-            mc.push([11,  i,26 * BLOCK_H    , 32, 32, true , 1, true ]);//Wall
-            mc.push([11,  i,26 * BLOCK_H +32, 32, 32, true , 1, true ]);//Wall
+            mc.push([11,  i,26 * BLOCK_H    , 32, 32, false , 1, true ]);//Wall
+            mc.push([11,  i,26 * BLOCK_H +32, 32, 32, false , 1, true ]);//Wall
         }
 
         //shadow
         for (let i = 13; i <= 17 ;i++) {
             for (let j = 0; j<3 ;j++){
-                mc.push([12,  i * BLOCK_W + 32 * j,  8 * BLOCK_H , 32, 32, false, 0, true ]);//shadow
+                mc.push([12,  i * BLOCK_W + 32 * j,  8 * BLOCK_H    , 32, 32, false, 0, true ]);//shadow
                 mc.push([12,  i * BLOCK_W + 32 * j,  8 * BLOCK_H +32, 32, 32, false, 0, true ]);//shadow
+
+                cmap[i*3 + j][8] = null;
+                cmap[i*3 + j][9] = null;
             }
         }
 
         //wall height
         for (let i = 8; i <= 25 ;i++) {
             for (let j = 0; j<3 ;j++){
-                mc.push([11,  13 * BLOCK_W -64, i * BLOCK_H +32 *j, 32, 32, true , 1, true ]);//Wall
-                mc.push([11,  13 * BLOCK_W -32, i * BLOCK_H +32 *j, 32, 32, true , 1, true ]);//Wall
+                mc.push([11,  13 * BLOCK_W -64, i * BLOCK_H +32 *j, 32, 32, false , 1, true ]);//Wall
+                mc.push([11,  13 * BLOCK_W -32, i * BLOCK_H +32 *j, 32, 32, false , 1, true ]);//Wall
 
-                mc.push([11,  18 * BLOCK_W    , i * BLOCK_H + 32 *j, 32, 32, true , 1, true ]);//Wall
-                mc.push([11,  18 * BLOCK_W +32, i * BLOCK_H + 32 *j, 32, 32, true , 1, true ]);//Wall
+                mc.push([11,  18 * BLOCK_W    , i * BLOCK_H + 32 *j, 32, 32, false , 1, true ]);//Wall
+                mc.push([11,  18 * BLOCK_W +32, i * BLOCK_H + 32 *j, 32, 32, false , 1, true ]);//Wall
             }
         }
 
