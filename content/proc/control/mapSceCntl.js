@@ -91,9 +91,66 @@ function mapSceControl(){
 
     //initial make new map data 1-15
     for (let i=1 ; i<=15; i++){
-        newdata(i, this.keyuse);
+        //newdata(i, this.keyuse);
     }
 	//newdata(this.stage, this.keyuse);
+
+    function mapdatacreate(num){
+
+        if (num <= 0){
+            stage_data = new Stage_openfield(num);//TEST STAGE
+        }else if (num == 1) {
+            stage_data = new Stage_tutorial();//1st Stage
+        }else if (num%15 == 0) {
+            stage_data = new Stage_greathall(num);//BossRooｍ
+        }else if (num <= 30 ){
+            //stage_data = new TestStage(num);
+            stage_data = new Stage_normal(num);//NormalStage
+        }else{
+            stage_data = new Stage_tod(num, kyuse);//TEST STAGE
+        }
+        let s = new StageListSubClass();
+
+        s.mapScenario   = stage_data.scenario();
+        s.bgPattern     = stage_data.bgImage(num);
+        s.mapChip       = stage_data.bgLayout();
+        s.initialScenario = stage_data.initial(num);
+        s.bgSpdata      = stage_data.bgPtn(); 
+        s.colmap        = stage_data.colmap;
+        s.startroom_id  = stage_data.startroom_id;
+
+        let sname = "unknown";
+        
+        if (Boolean(StageNameList[num])) sname = StageNameList[num]; 
+        s.name = sname;
+
+        let d = new Date();
+        s.createdate = d.toString();
+        let jsontext = JSON.stringify(s);
+
+        let executef = false;
+        if (Boolean(localStorage)) { //ローカルストレージ使えたらセーブ実施
+            localStorage.setItem("stagedata_" + num, jsontext);
+            console.log("stage" + num  + " mapgenerate complited.");
+            executef = true;
+        } else {
+            console.log("stage" + num  + " mapgenerate do not saved.");
+        }
+
+        return executef;
+    }
+
+    function mapdataload(num){
+
+        if (!localStorage.getItem("stagedata_"+num)){
+        //stagedata_num がなかった場合、mapdatacreate
+            mapdatacreate(num);
+        }
+
+        let s = JSON.parse(localStorage.getItem("stagedata_" + num));
+
+        return s;
+    }
 
 	function newdata(num, kyuse) {
 	//    stage_data = new Stage1_tod(num, kyuse);
@@ -125,17 +182,7 @@ function mapSceControl(){
             if (Boolean(StageNameList[num])) sname = StageNameList[num]; 
             s.name = sname;
 
-            /*
-            let jsontext = JSON.stringify(s);
-
-            if (Boolean(localStorage)) { //ローカルストレージ使えたらセーブ実施
-                localStorage.setItem("stagedata" + num, jsontext);
-                console.log("stage" + num  + " mapgenerate complited.");
-            } else {
-                console.log("stage" + num  + " mapgenerate do not saved.");
-            }
-            let s = JSON.parse(localStorage.getItem("savedata"));
-            */
+            //let s = mapdataload(num);
             stage[num] = s;
         }
 
@@ -148,6 +195,9 @@ function mapSceControl(){
         colmap  = stage[num].colmap;
         sid     = stage[num].startroom_id;
         //console.log(sid);
+
+        map_sc = stage_msc;
+        ini_sc = stage_inisc;
 	}
 
 	this.change = function (stage) {

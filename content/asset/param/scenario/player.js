@@ -323,7 +323,7 @@ function sce_player( gObjc ) {
     this.move = function (scrn, o) {
 
         let powup = 0;
-        let oneup = 0;
+        //let oneup = 0;
         let keyget = 0;
 
         for (let i in o.item) {
