@@ -146,6 +146,7 @@ function sceneOption(state) {
         }
         if (ekey) {
             //EXPORT
+            state.mapsc.mapexport(nowstage);
             //if (retmf){
             //let obj1 = state.mapsc.ini_sc();
             //let obj2 = state.mapsc.mapChip();
@@ -213,7 +214,7 @@ function sceneOption(state) {
         st.push("I: CMAP VIEW: " + ((cmapdf)?"ON":"OFF"));
 
         //st.push("I: MAP_IMPORT（"+(ikey?"?":"未実装")+"）" );
-        //st.push("E: MAP_EXPORT");
+        st.push("E: MAP_EXPORT");
         //st.push("R: -//MAP_RESET" );
 
         for (let i in st){
@@ -344,17 +345,17 @@ function sceneOption(state) {
        } 
 
        //export file
-        function exportFile(filename = "sample.json", obj){
+        //function exportFile(filename = "sample.json", obj){
 
-            const json = JSON.stringify(obj, null, 2);
-            const blob = new Blob([json], {type: "application/json"});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = filename;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
+        //    const json = JSON.stringify(obj, null, 2);
+        //    const blob = new Blob([json], {type: "application/json"});
+        //    const url = URL.createObjectURL(blob);
+        //    const a = document.createElement("a");
+        //    a.href = url;
+        //    a.download = filename;
+        //    a.click();
+        //    URL.revokeObjectURL(url);
+        //}
 
         //import file
         function importFile(){

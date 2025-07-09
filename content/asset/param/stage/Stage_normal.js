@@ -131,17 +131,21 @@ function Stage_normal(stageno) {
     //  フレームカウントがマイナスの場合は最初のみ実行
     function mapScenro() {
 
+        const WVS_MAX_W = dgn.mw * BLOCK_W; //world view size
+        const WVS_MAX_H = dgn.mh * BLOCK_H; //
+
         let ms =
         //  開始フレーム,座標,,角度,シナリオ,キャラ
-	[
-    //[600, 0, 0, 0, "message_billboard_cp", 6],
-    [118000, 240, 240, 180, "signal_warning", 6],
-	[119999, 240, 240, 180, "enemy_timeover", 33],
-	[119999, 240, 2000, 180, "enemy_timeover", 33],
-	[119999, 1500, 1500, 180, "enemy_timeover", 33],
-    [119999, 2000, 240, 180, "enemy_timeover", 33],
-    [119999, 2000, 2000, 180, "enemy_timeover", 33],
-	[600000, -1, -1, 0, 0, 0]];
+	    [
+            //[600, 0, 0, 0, "message_billboard_cp", 6],
+            [118000, 240, 240, 180, "signal_warning", 6],
+        //	[119999, 240, 240, 180, "enemy_timeover", 33],
+            [119999, BLOCK_W/2,              BLOCK_H/2 , 180, "enemy_timeover", 33],
+            [119999, BLOCK_W/2, WVS_MAX_H - (BLOCK_H/2), 180, "enemy_timeover", 33],
+            [119999, WVS_MAX_W - (BLOCK_W/2), BLOCK_H/2, 180, "enemy_timeover", 33],
+            [119999, WVS_MAX_W - (BLOCK_W/2), WVS_MAX_H - (BLOCK_H/2), 180, "enemy_timeover", 33],
+            [600000, -1, -1, 0, 0, 0]
+        ];
         //
         // フレームカウントでソートされていること。
 
@@ -163,6 +167,7 @@ function Stage_normal(stageno) {
             map_sc.push(ptn);
         }
 
+        /*
         for (let e in map_sc) {
 
             let pt = map_sc[e];
@@ -187,9 +192,8 @@ function Stage_normal(stageno) {
                 pt.y = rlist[vr].y * BLOCK_H + BLOCK_H/2;
             }
         }
-
+        */
         return map_sc;
-
     }
 
     function mapBgImage(stageno) {

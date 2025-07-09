@@ -160,12 +160,35 @@ function gameSceneUI_stateinv(state){
 	let openstime = 0;
 	let closing = false;
 
+	let mapviewflag = false;
+	let delaystartf = false;
+	let delaytime = 0;
+
 	function game_draw() {
 
-		if (state.Game.lamp || state.Game.map) minimapDisp.rader(dev.graphics[4], state.Game.lamp);//rader
+		if (state.Game.map || state.Game.lamp) {
+			if (!delaystartf) {
+				delaystartf = true;
+				delaytime = state.System.time() + (1000/2); //30f
+				state.scene.setTCW(
+					dev.graphics[2],
+					{x:dev.layout.map.x, y:dev.layout.map.y, w:150, h:150},
+					30,"open"
+				);
+			}
+			if (delaystartf && (state.System.time() >= delaytime)){
+				mapviewflag = true;
+				UI_force_reflash = true;
+			}
+		}else{
+			mapviewflag = false;
+			delaystartf = false;
+		}
+
+		if (mapviewflag) minimapDisp.rader(dev.graphics[4], state.Game.lamp);//rader
         //minimapDisp.rader;
 
-	    //==　ここから文字表示画面（出来るだけ書き換えを少なくする）
+		//==　ここから文字表示画面（出来るだけ書き換えを少なくする）
 	    //プライオリティ最前面の画面追加したので
 	    
 		let scdispview = false;
@@ -189,7 +212,6 @@ function gameSceneUI_stateinv(state){
 				let w = Math.trunc(state.System.time()/100)%5;
 				dev.graphics[4].put("cursorx", dev.layout.status.x + 8, dev.layout.status.y + 9 - w);
 			}
-			
 			
 			let wtxt;
 			//tutorialDisplay 
@@ -465,23 +487,26 @@ function gameSceneUI_stateinv(state){
 			n = witem.length;
 
 			//if (n >= 8) {n = 6; work3.putchr8("...", dev.layout.items.x + n * 20 -8, dev.layout.items.y+8);}
-			//if (n >= 7) n = 7;
+			if (n >= 6) n = 6;
 
 			for (let i = 0; i < n; i++) {
 				if (i == 0) {
 					work3.put(wchr[witem[witem.length - 1 - i]],
 					dev.layout.items.x + i * 20, dev.layout.items.y);
+				
+					let num = witem[witem.length - 1 - i]-23;
 
-					let n = witem[witem.length - 1 - i]-23;
-
-					work3.fill(dev.layout.items.x + n * 32 + 24, dev.layout.items.y+4,32, 12,"blue");
-
-
+					work3.fill(dev.layout.items.x + num * 32 + 24, dev.layout.items.y+4,32, 12,"blue");
 					//640 - (12 * 12), 479 - 32 + 5);
-				} else {
+				}// else {
+					let num = witem[witem.length - 1 - i]-23;
+
+					let color = "rgb(0," + (255-(i*30)) + "," + (255-(i*30))+ ")";
+					console.log(color);
+					work3.fill(dev.layout.items.x + num * 32 + 48, dev.layout.items.y+(i*3),6, 2, color);
 					//work3.put(wchr[witem[witem.length - 1 - i]],
 					//dev.layout.items.x + i * 20, dev.layout.items.y+8);
-				}
+				//}
 			}
 
 			for (let i=0; i<=2; i++){

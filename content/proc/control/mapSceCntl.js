@@ -107,7 +107,7 @@ function mapSceControl(){
             //stage_data = new TestStage(num);
             stage_data = new Stage_normal(num);//NormalStage
         }else{
-            stage_data = new Stage_tod(num, kyuse);//TEST STAGE
+            stage_data = new Stage_tod(num, true);//TEST STAGE
         }
         let s = new StageListSubClass();
 
@@ -126,6 +126,12 @@ function mapSceControl(){
 
         let d = new Date();
         s.createdate = d.toString();
+
+        return s;
+    }
+
+    function mapdata_save(s){
+        //webstorage save
         let jsontext = JSON.stringify(s);
 
         let executef = false;
@@ -141,20 +147,42 @@ function mapSceControl(){
     }
 
     function mapdataload(num){
+        //webstorage load
+        let s;
 
         if (!localStorage.getItem("stagedata_"+num)){
         //stagedata_num がなかった場合、mapdatacreate
-            mapdatacreate(num);
+            s = mapdatacreate(num);
+            mapdata_save(s);
+        } else {
+            s = JSON.parse(localStorage.getItem("stagedata_" + num));
         }
 
-        let s = JSON.parse(localStorage.getItem("stagedata_" + num));
-
         return s;
+    }
+
+    function fexport(filename = "sample.json", obj){
+        //textfile export
+        const json = JSON.stringify(obj, null, 2);
+        const blob = new Blob([json], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    this.mapexport = function(num){
+
+        fexport("stagedata_" + num, mapdatacreate(num));
     }
 
 	function newdata(num, kyuse) {
 	//    stage_data = new Stage1_tod(num, kyuse);
         if (!Boolean(stage[num])){
+
+            /*
             if (num <= 0){
                 stage_data = new Stage_openfield(num);//TEST STAGE
             }else if (num == 1) {
@@ -183,7 +211,9 @@ function mapSceControl(){
             s.name = sname;
 
             //let s = mapdataload(num);
-            stage[num] = s;
+            */
+
+            stage[num] = mapdatacreate(num);//s;
         }
 
         stage_name  = stage[num].name;

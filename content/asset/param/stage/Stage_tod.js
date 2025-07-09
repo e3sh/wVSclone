@@ -65,9 +65,8 @@ function Stage_tod( seed, keyuse ) {
     }
 
     function mapBgImage() {
-
-        let tex_bg = new Image();
-        tex_bg.src = "pict/cha.png";
+        //let tex_bg = new Image();
+        //tex_bg.src = "pict/cha.png";
         //return tex_bg;
         return "bg3";
     }

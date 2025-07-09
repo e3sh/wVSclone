@@ -211,7 +211,9 @@ function sceneControl(state) {
 			h += vh;
 
 			count--;
-			if (count<=0) this.running = false;
+			if (count<=0){ 
+                this.running = false;
+            }
 		}
 		
 		this.draw = function(){

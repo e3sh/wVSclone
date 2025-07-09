@@ -27,6 +27,10 @@ function gameSceneUI_minimap(state){
 	let mmcanvas;
 	let mmdevice;
 
+	let mapviewflag = false;
+	let delaystartf = false;
+	let delaytime = 0;
+
 	if (typeof OffscreenCanvas !== "undefined"){ 
 		mmcanvas = new OffscreenCanvas(150, 150);
 	
@@ -94,13 +98,37 @@ function gameSceneUI_minimap(state){
 
 	    //work3.clear();
 
+		mapviewflag = false;
+		delaystartf = false;
+		delaytime = 0;
+
 		mapChip = mapsc.mapChip();
 
 		SubmapDraw.mcp = mapChip; 
 	}
 
 	function game_draw() {//mapreflash flag
+
 		if (state.Game.map || state.Game.lamp) {
+			if (!delaystartf) {
+				delaystartf = true;
+				delaytime = state.System.time() + (1000/2); //30f
+				//state.scene.setTCW(
+				//	dev.graphics[2],
+				//	{x:dev.layout.map.x, y:dev.layout.map.y, w:150, h:150},
+				//	30,"open"
+				//);
+			}
+			if (delaystartf && (state.System.time() >= delaytime)){
+				mapviewflag = true;
+			}
+
+		}else{
+			mapviewflag = false;
+			delaystartf = false;
+		}
+
+		if (mapviewflag) {
 			//obCtrl.drawPoint(dev.graphics[4], state.Game.lamp);
 			dev.graphics[3].putFunc(SubmapframeDraw);
 			if (state.Game.map) {
