@@ -38,6 +38,7 @@ class taskMainLoop extends GameTask {
                 weapon:false
                 ,useitem:false
                 ,jump:false
+                ,select:false
                 ,tgtlock:false
             }
             ,quit:false
@@ -53,11 +54,12 @@ class taskMainLoop extends GameTask {
 
         if (Boolean(kstate[88])) input.trigger.useitem  = kstate[88];//X, (X)
         if (Boolean(kstate[67])) input.trigger.jump     = kstate[67];//C, (B)
+        if (Boolean(kstate[69])) input.trigger.select   = kstate[69];//E, (Y)
         if (Boolean(kstate[17])) input.trigger.tgtlock  = kstate[17];//Ctrl,[RB]
 
         if (Boolean(kstate[80])) input.pause    = kstate[80];//P, (START)
-        if (Boolean(kstate[81])) input.quit     = kstate[81];//Q, (Y)
-        if (Boolean(kstate[192])) input.back     = kstate[192];//End, (Back)
+        //if (Boolean(kstate[81])) input.quit     = kstate[81];//Q, (Y)
+        if (Boolean(kstate[192])) input.back     = kstate[192];//@, (Back)
         //if (Boolean(kstate[x])) input.start   = kstate[x];//undefind, (START)
 
         this.scene.step(g, input);

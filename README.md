@@ -12,11 +12,14 @@ https://e3sh.github.io/wVSclone/main.html
 - 攻撃(Action):　　　[Z] or [Space]　/ (X)｜(□)
 - アイテム使用(Use):　[X] or [Ctrl]  / (B)｜(○)
 - ジャンプ(Jump):　　　[C]　　　　    / (A)｜(×)
-- 一時停止(Pause):　　　[P]　　　　　/ (START)｜(三)  
+- アイテム選択(Select): [E]         / (Y)|(△) 
 
 -＊ WASDとテンキーでも移動可能。
 
 ・ 攻撃(Action)操作:玉を消費（WAND:攻撃 / 他武器:画面内アイテム回収)
+
+- 一時停止(Pause):  [P]　/　(START)｜(三) 
+- 全画面表示:   [Home]　/　(BACK)
 
 ## ITEMS:アイテムの用途や効果
 - ( ):玉　：(薄黄色)　WAND:消耗して攻撃 / 他武器:消耗して画面内アイテム回収
@@ -75,9 +78,9 @@ https://e3sh.github.io/wVSclone/main.html
 --- 　　
 
 ## 一時停止(Pause)画面:
-- 上下キーでチュートリアルメッセージ確認 
-- Z:ゲームに戻る
-- @:一時中断(Save)
+- チュートリアルメッセージ確認:  上下キー 
+- Z:ゲームに戻る: [Z] or [Space]　/ (X)｜(□) 
+- @:一時中断(Save): [@] / (BACK)
 
 ## DEBUG 機能:
 タイトル画面のConfigと一時停止(Pause)画面で設定可能

@@ -195,18 +195,26 @@ function gameScene(state){
 
 	    //ゲームの進行
 	    if (obCtrl.interrapt) {
-			// SIGNAL LIST
-			//   1: PauseScene
-			// 835: resultScene
-			//1709: LvUpScene
-			//4649: Restart/Gover(zanki状態による)
-			//6055:（未使用）Boss
+			const SIGNAL_LIST = [
+				1	,//PauseScene
+				835	,//resultScene
+				1709,//LvUpScene
+				4649,//Restart/Gover(zanki状態による)
+				6055//未使用）Boss
+			];
 			//他数字は空き
 			// GameScene切り替え依頼をobjから行う場合にSIGNALで
 			// interraptがtrueとなる。次のフレームで自動でfalse。
-			//
-			//UI_force_reflash = true;
+			//シーン切り替えのあるシグナルの場合はinterrapt有効
+			//無いシグナルはanyでUI_force_reflashのみの実行指示
+			if (!SIGNAL_LIST.includes(obCtrl.SIGNAL)){
+				obCtrl.interrapt = false;
+				//UI_force_reflash = true;
+				UIDisp.force_reflash();
+			}
+		}
 
+		if (obCtrl.interrapt) {	
 	        if (obCtrl.SIGNAL == 1) {
 	            mapsc.enable = false;
 	            mapsc.counter_runnning = false;

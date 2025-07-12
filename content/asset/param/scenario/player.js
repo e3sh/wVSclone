@@ -27,16 +27,6 @@ function sce_player( gObjc ) {
         x: Array(40),
         y: Array(40)
     }
-    /*
-    const wpn = {
-        0:{ch:6,sce:"common_vset8"    },//wand
-        1:{ch:10,sce:"friend_rotate"    },//sword
-        2:{ch:38,sce:"friend_rotate_full"   },//axe
-        3:{ch:37,sce:"friend_boom"          },//boom
-        4:{ch:36,sce:"friend_straight"          },//spear
-        5:{ch:46,sce:"common_vset10"          } //arrow
-    }
-    */
     const weaponlist = [
         {no: 0,chr:15, name:"rod"  ,auto: false },
         {no: 1,chr:16, name:"sword",auto: true },
@@ -49,15 +39,8 @@ function sce_player( gObjc ) {
     function turlet_vec_check(SEP){
         //separate 分割数
         if (!Boolean(SEP)) SEP = 16;
-        //turlet check
-        /*
-        let turVector = [];
-        for (let i=0; i<16; i++){
-            turVector[i] = 22.5*i;
-        }
-        */
+
         let turlet = 0;
-        let now = 0;
 
         let D0 = SEP*0;
         let D3 = SEP*0.25;
@@ -65,9 +48,6 @@ function sce_player( gObjc ) {
         let D9 = SEP*0.75;
 
         this.check = function(key){
-
-            //now++;
-            //if (now%6!=0) return;
 
             if (key.up){
                 if (turlet != D0){
@@ -78,7 +58,6 @@ function sce_player( gObjc ) {
                             if (turlet < SEP) turlet++;}
                         if (turlet <= D3) { 
                             if (turlet > D0) turlet--;}
-                        //turlet = turlet%SEP;
                     }
                 } 
             }
@@ -120,25 +99,12 @@ function sce_player( gObjc ) {
             if ((key.up)&&(key.left))   { turlet = SEP*(  1-0.125);}
             if ((key.down)&&(key.right)){ turlet = SEP*(0.5-0.125);}
             if ((key.down)&&(key.left)) { turlet = SEP*(0.5+0.125);}
-            /*
-            if (Math.abs(turlet - now)>3) {
-                turlet = now%16;
-            } else {
-                if (turlet > now){
-                    turlet = turlet -1;
-                    if (turlet < 0) turlet = 15;
-                }
-                if (turlet < now) turlet = turlet +1;
-                turlet = turlet%16;
-            }
-            */
         }
         this.vector = function(){
             return turlet * (360/SEP);//turVector[turlet];
         }
         this.num = function(){
             let w = "S:" + SEP + ".0:" + D0 + ".3:" + D3 + ".6:" + D6 + ".9:" + D9;    
-            
             
             return turlet + "." + w;}//debug
 
@@ -153,17 +119,8 @@ function sce_player( gObjc ) {
         let player = o.gameState.player;
         let wtut = [];//武器チュートリアル実施回数チェックwork
         let wtuc=0;
-        /*
-		let weaponlist = [
-			{no: 0,chr:15, name:"rod"  },
-			{no: 1,chr:16, name:"sword"},
-			{no: 2,chr:17, name:"axe"  },
-			{no: 3,chr:19, name:"spear"},
-			{no: 4,chr:18, name:"boom" },
-			{no: 5,chr:50, name:"bow"  }
-		];
-        */
-		this.check = checksub;
+
+        this.check = checksub;
 
 		function checksub(){
 
@@ -406,8 +363,8 @@ function sce_player( gObjc ) {
         let hkey = false;//Debug Help action test 
         if (Boolean(o.input.keycode[72])) { if (o.input.keycode[72]) hkey = true; }
 
-        let pkey = false;//Debug pasue action test 
-        if (Boolean(o.input.keycode[80])) { if (o.input.keycode[80]) pkey = true; }
+        //let pkey = false;//Debug pasue action test 
+        //if (Boolean(o.input.keycode[80])) { if (o.input.keycode[80]) pkey = true; }
 
         //トリガーの入力間隔WAIT
         o.triger-= o.vecfrm;
@@ -448,24 +405,6 @@ function sce_player( gObjc ) {
 
                             o.triger = TRIG_WAIT;
                         }
-                        //break;
-                        
-                    //case 1:
-                        //o.set_object(10); //sword
-                        //break;
-                    //case 2:
-                        //o.set_object(38); //spare
-                        //break;
-                    //case 3:
-                        //let t = o.vector;
-                        //o.vector = o.turlet.vector(); 
-                        //o.set_object(37); //boom
-                        //t = o.vector;
-                        //o.triger = 180 /(o.gameState.player.level + 1);
-                        //o.triger = TRIG_WAIT;
-                        //break;
-                    //case 4:
-                        //o.set_object(36); //axe
                         //break;
                     default://自動攻撃の武器使用時はショットボタンは画面内アイテム回収/玉消費
                         if ((powup > 0) || (o.config.shotfree)) {
@@ -548,6 +487,29 @@ function sce_player( gObjc ) {
             }
         }
         
+        if (o.input.trigger.select){//Change Select Item
+            if (o.shotSub == 0) {
+                o.shotSub = 1;
+                //Key Test
+                if (o.itemstack.length > 0) {
+                    let w = o.itemstack[o.itemstack.length-1]-23; //o.itemstack.pop();
+                    w = (w+1)%3;
+                    o.itemstack.sort((a, b)=>{
+                        let wa = (a == w+23)?0:a;
+                        let wb = (b == w+23)?0:b;
+
+                        return wb-wa;
+                    });
+
+                    //o.set_object_ex(20, o.x, o.y, 0, 43, "E"+w );
+                    o.SIGNAL(7); //(any) UI force Reflash
+                }else{
+                    //o.set_object_ex(20, o.x, o.y, 0, 43, "E--" );
+                }
+                o.trigerSub = TRIG_WAIT;
+            }
+        }
+
         if (hkey) {
             if (o.shot == 0){
                 o.shot = 1;
@@ -564,7 +526,7 @@ function sce_player( gObjc ) {
             }
         }
         
-        if (o.input.pause || pkey) {
+        if (o.input.pause) {
             if (o.shot == 0) {
                 o.shot = 1;
                 o.SIGNAL(1); //pause
@@ -629,31 +591,9 @@ function sce_player( gObjc ) {
                     //o.autotrig = 30;
                     break;
                 default:
-                    //if (o.alive > ws_charge_t){
-                    //    ws_charge_t = o.alive + 5000; //5s;
-                    //    if (ws_charge_c < 3) ws_charge_c++;
-                    //}
-                    /*
-                    if ((powup > 0) || (o.config.shotfree)) {
-                        if ((ws_charge_c>0)&&(!o.w_repro)){
-                            o.set_object(6);//pl_bullet_rotate_circle"
-                            o.item[20]--;
-                            if (o.item[20] < 0) o.item[20] = 0;
-                            //o.w_repro = true;
-                            ws_charge_c--;
-                            o.set_object(39); //wand
-                        }
-                    }
-                    */
                     break;
             }
             o.vector = t;
-            /*
-            if (o.alive > ws_charge_t){
-                ws_charge_t = o.alive + 5000; //5s;
-                if (ws_charge_c < 3) ws_charge_c++;
-            }
-            */
         }
         
         //武器取得チェック(武器用スタックに何かあるか)
@@ -692,9 +632,6 @@ function sce_player( gObjc ) {
                 o.set_object_ex(6, o.x, o.y, o.vector, "effect_hit_shield");
             }
             o.damage.count = 15;
-
-            //effect_hit_shield
-            //o.gameState.player.hp = o.hp;
         }
 
         let wvec = this.vector;
@@ -716,7 +653,7 @@ function sce_player( gObjc ) {
         if (!o.mapCollision) {
             o.old_x = o.x;
             o.old_y = o.y;
-            //o.x += o.vx;  o.y += o.vy;
+
             o.x += (o.vx * o.vecfrm);  o.y += (o.vy * o.vecfrm);
 
             if ((o.x == o.old_x)&&(o.y == o.old_y)){}else{
@@ -725,9 +662,6 @@ function sce_player( gObjc ) {
                 op.ptr++;
                 op.ptr = op.ptr % op.x.length; 
             }
-            //let w = o.gt.worldtoWorld(o.x, o.y);
-            //o.x = w.x;  o.y = w.y;
-
         } else {
             o.x = o.old_x;
             o.y = o.old_y;
@@ -873,25 +807,7 @@ function sce_player( gObjc ) {
             //o.item[35] = n/10;
 
             if ( portalwarp.cnt%5 == 0 ) o.item[35]--;
-            portalwarp.cnt++;            
-
-            //到着チェック
-            /*
-            let u = Math.abs(o.x - o.startx);
-            let h = Math.abs(o.y - o.startx);
-            if ( Math.sqrt(u * u + h * h) < 48){
-                o.warptime = o.alive;
-                o.portalflag = false;
-                //o.jump = 0;
-
-                o.vx = 0;
-                o.vy = 0;
-                /*
-                o.shifty = 0;
-                o.prioritySurface = false;
-                o.colcheck = true;
-                */
-            //}else{
+                portalwarp.cnt++;            
                 
                 let d = 60 - portalwarp.cnt; 
                 if (d > 1){
@@ -911,7 +827,6 @@ function sce_player( gObjc ) {
                     o.jump = 1;
                     o.colcheck = false;
                 }
-            //}
         }
 
         //option
@@ -1065,26 +980,8 @@ function sce_player( gObjc ) {
             );
             
             if (i > op.x.length - o.item[20]) {
-                /*
-                if (((i-1) % 10) == 0){
-                    //scrn.fill(w.x-8, w.y-8,16,16,c);
-                    scrn.putFunc( {   x: w.x ,y: w.y ,r: 6 - o.frame%6/2,
-                            draw: function (device) {
-                                device.beginPath();
-                                device.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
-                                device.fillStyle = "white";
-                                device.fill();
-                            }
-                        } );
-                }else{
-                    */
-                    scrn.fill(w.x, w.y, 2, 2,"gray");
-                }
-            /*
-            }else{
-                //scrn.fill(w.x, w.y, 2, 2,"gray");
+                scrn.fill(w.x, w.y, 2, 2,"gray");
             }
-            */     
                   
             if (i > op.x.length - o.itemstack.length){    
                 if (Boolean(o.itemstack[op.x.length - i])){
