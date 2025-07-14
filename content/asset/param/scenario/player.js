@@ -492,8 +492,14 @@ function sce_player( gObjc ) {
                 o.shotSub = 1;
                 //Key Test
                 if (o.itemstack.length > 0) {
-                    let w = o.itemstack[o.itemstack.length-1]-23; //o.itemstack.pop();
-                    w = (w+1)%3;
+                    let idx = o.itemstack[o.itemstack.length-1]-23; //o.itemstack.pop();
+                    
+                    let w;
+                    if (o.item[23+(idx+1)%3] > 0){
+                        w = (idx+1)%3; //空欄ではない場合
+                    }else{
+                        w = (idx+2)%3; //空欄選択時さらに進める
+                    }
                     o.itemstack.sort((a, b)=>{
                         let wa = (a == w+23)?0:a;
                         let wb = (b == w+23)?0:b;
@@ -501,7 +507,7 @@ function sce_player( gObjc ) {
                         return wb-wa;
                     });
 
-                    //o.set_object_ex(20, o.x, o.y, 0, 43, "E"+w );
+                    //o.set_object_ex(20, o.x, o.y, 0, 43, "E"+(o.itemstack.length-1) );
                     o.SIGNAL(7); //(any) UI force Reflash
                 }else{
                     //o.set_object_ex(20, o.x, o.y, 0, 43, "E--" );
