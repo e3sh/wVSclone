@@ -2,9 +2,9 @@
 //
 function sceneOption(state) {
 
-    let dev = state.System.dev;
+    const dev = state.System.dev;
     //宣言部
-    let work = dev.graphics[3];
+    const work = dev.graphics[state.Constant.layer.UI];
 
     //let keys = dev.key_state;
 
@@ -34,10 +34,11 @@ function sceneOption(state) {
     }
 
     function scene_reset() {
-        dev.graphics[0].setInterval(0);//BG　WORK2
-		dev.graphics[1].setInterval(0);//SPRITE
-		dev.graphics[2].setInterval(0);//FG
-    
+        //dev.graphics[0].setInterval(0);//BG　WORK2
+		//dev.graphics[1].setInterval(0);//SPRITE
+		//dev.graphics[2].setInterval(0);//FG
+        dev.pauseBGSP();
+
         work.setInterval(0);//UI
 
         sel = 0;
@@ -117,9 +118,10 @@ function sceneOption(state) {
             work.draw();
 
             if (retmf){
-                dev.graphics[0].setInterval(1);//BG　WORK2
-                dev.graphics[1].setInterval(1);//SPRITE
-                dev.graphics[2].setInterval(1);//FG
+                //dev.graphics[0].setInterval(1);//BG　WORK2
+                //dev.graphics[1].setInterval(1);//SPRITE
+                //dev.graphics[2].setInterval(1);//FG
+                dev.resumeBGSP();
 
                 //state.Game.cold = true;
             }
@@ -128,11 +130,12 @@ function sceneOption(state) {
         }
 
         if (ckey) {
-            for (let i=0; i<3; i++){
-                dev.graphics[i].reset();
-                dev.graphics[i].clear();
-                dev.graphics[i].draw();
-            }
+            dev.clearBGSP();
+            //for (let i=0; i<3; i++){
+                //dev.graphics[i].reset();
+                //dev.graphics[i].clear();
+                //dev.graphics[i].draw();
+            //}
         }
 
         if (vkey) {

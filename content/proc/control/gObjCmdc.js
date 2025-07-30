@@ -32,9 +32,9 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
     };
     */
 
-    objc = state.obCtrl;
-    mapsc = state.mapsc;
-    dev = state.System.dev;
+    const objc = state.obCtrl;
+    const mapsc = state.mapsc;
+    const dev = state.System.dev;
 
     let execute = true;    
     let wlog = true; 

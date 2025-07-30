@@ -2,17 +2,17 @@
 //
 function sceneConfig(state) {
 
-    let dev = state.System.dev;
+    const dev = state.System.dev;
 
     //宣言部
-    let work = dev.graphics[3];
-    let work2 = dev.graphics[0];
+    const work = dev.graphics[state.Constant.layer.UI];
+    const work2 = dev.graphics[state.Constant.layer.BUI];
 
     //let text = dev.text;
-    let text = dev.graphics[2]; 
+    const text = dev.graphics[state.Constant.layer.FG]; 
 
     //let inp = dev.mouse_state;
-    let keys = dev.key_state;
+    //const  keys = dev.key_state;
 
     this.init = scene_init;
     this.reset = scene_reset;
@@ -332,9 +332,10 @@ function sceneConfig(state) {
     }
 
     function scene_reset() {
-        dev.graphics[0].setInterval(0);//BG　WORK2
-		dev.graphics[1].setInterval(0);//SPRITE
-		dev.graphics[2].setInterval(0);//FG
+        dev.pauseBGSP();
+        //dev.graphics[0].setInterval(0);//BG　WORK2
+		//dev.graphics[1].setInterval(0);//SPRITE
+		//dev.graphics[2].setInterval(0);//FG
 
         for (let i in menu) {
             menu[i].sel = false;

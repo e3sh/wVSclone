@@ -736,7 +736,7 @@ function sce_player( gObjc ) {
                 o.gameState.player.spec.MND = o.spec.MND;
                 o.gameState.player.spec.ETC = o.spec.ETC;
                 */
-                o.SIGNAL(835);//STAGE CLEAR
+                o.SIGNAL(o.signaltype.RESULT);//835);//STAGE CLEAR
             }
         }
         o.doorflag = false;
@@ -767,7 +767,7 @@ function sce_player( gObjc ) {
                 lvupf = false;
                 o.lighton = false;
                 o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
-                o.SIGNAL(1709);//LVUP
+                o.SIGNAL(o.signaltype.LVLUP);//1709);//LVUP
                 if (!Boolean(o.item[5])){//<-tutorialCommentTable
                     if (o.spec.ETC > 2) o.get_item(5);//レベルアップの説明    
                 }

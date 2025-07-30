@@ -8,19 +8,18 @@ function gameSceneUI_debug(state){
 //dev deviceControlClass 
 
     //宣言部
-    let dev = state.System.dev;
+    const dev = state.System.dev;
 
-	let BG = dev.graphics[0];
-    let UI = dev.graphics[3];
-    let FG = dev.graphics[2];
+	const BG = dev.graphics[state.Constant.layer.BG];
+    const UI = dev.graphics[state.Constant.layer.UI];
+    const FG = dev.graphics[state.Constant.layer.FG];
 
 	this.reset = game_reset;
 	this.draw = game_draw;
 	this.colDraw = BGDraw;
 
-
-	let obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
-	let mapsc  = state.mapsc; //= new mapSceControl();
+	const obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
+	const mapsc  = state.mapsc; //= new mapSceControl();
 
 	let fdrawcnt = 0;
 
@@ -60,17 +59,17 @@ function gameSceneUI_debug(state){
 			wtxt = read_debugStates();
 			if (state.Config.viewlog) wtxt = wtxt.concat(state.obUtil.messagelog.read()); 
 			//let wtxt = read_debugStates().concat(obCtrl.messagelog.read());
-			for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.debugstatus.x, dev.layout.debugstatus.y + 8 * s);
+			for (let s in wtxt) FG.putchr8(wtxt[s], dev.layout.debugstatus.x, dev.layout.debugstatus.y + 8 * s);
 
 			//wtxt = obCtrl.messagelog.read();
 			//for (let s in wtxt) work3.putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 
 			wtxt = state.obUtil.messageview.read();
-			if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.debugmessage.x, dev.layout.debugmessage.y + 8 * s);
+			if (state.Config.viewlog) for (let s in wtxt) FG.kprint(wtxt[s], dev.layout.debugmessage.x, dev.layout.debugmessage.y + 8 * s);
 			//if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 		}else{
 			wtxt = state.obUtil.messageconsole.read();
-			if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].kprint(wtxt[s], dev.layout.debugmessage.x, dev.layout.debugmessage.y + 10 * s);
+			if (state.Config.viewlog) for (let s in wtxt) FG.kprint(wtxt[s], dev.layout.debugmessage.x, dev.layout.debugmessage.y + 10 * s);
 			//if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 		}
 

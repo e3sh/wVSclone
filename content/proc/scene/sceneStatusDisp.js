@@ -2,9 +2,9 @@
 //
 function sceneStatusDisp(state) {
 
-    let dev = state.System.dev;
+    const dev = state.System.dev;
     //宣言部
-    let work = dev.graphics[3];
+    const work = dev.graphics[state.Constant.layer.UI];
  
     //let keys = dev.key_state;
 
@@ -136,10 +136,11 @@ function sceneStatusDisp(state) {
     }
 
     function scene_reset() {
-        dev.graphics[0].setInterval(0);//BG　WORK2
-		dev.graphics[1].setInterval(0);//SPRITE
-		dev.graphics[2].setInterval(0);//FG
-    
+        //dev.graphics[0].setInterval(0);//BG　WORK2
+		//dev.graphics[1].setInterval(0);//SPRITE
+		//dev.graphics[2].setInterval(0);//FG
+        dev.pauseBGSP();
+
         work.setInterval(0);//UI
 
         ret_code = 0;
@@ -203,11 +204,12 @@ function sceneStatusDisp(state) {
         }
 
         if (ckey) {
-            for (let i=0; i<3; i++){
-                dev.graphics[i].reset();
-                dev.graphics[i].clear();
-                dev.graphics[i].draw();
-            }
+            dev.clearBGSP();
+            //for (let i=0; i<3; i++){
+            //    dev.graphics[i].reset();
+            //    dev.graphics[i].clear();
+            //    dev.graphics[i].draw();
+            //}
             list_draw(inp, menuvf);
         }
 

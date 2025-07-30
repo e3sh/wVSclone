@@ -6,12 +6,12 @@ function gameScene(state){
 //dev deviceControlClass 
 
     //宣言部
-    let dev = state.System.dev;
+    const dev = state.System.dev;
 
-	let work = dev.graphics[1];//1 SP
-    let work2 = dev.graphics[0];//0 BG
-    let work3 = dev.graphics[3];//3 UI
-    let forgroundBG = dev.graphics[2];//2 FG
+	const work = dev.graphics[state.Constant.layer.SP];//1 SP
+    const work2 = dev.graphics[state.Constant.layer.BG];//0 BG
+    const work3 = dev.graphics[state.Constant.layer.UI];//3 UI
+    const forgroundBG = dev.graphics[state.Constant.layer.FG];//2 FG
 
 	work2.backgroundcolor = "black";
 
@@ -23,9 +23,9 @@ function gameScene(state){
 	this.reset_enable = true;
 	this.score = 0;
 
-	let obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
-	let obUtil = state.obUtil;
-	let mapsc  = state.mapsc; //= new mapSceControl();
+	const obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
+	const obUtil = state.obUtil;
+	const mapsc  = state.mapsc; //= new mapSceControl();
 
 	let dead_cnt = 0;
 
@@ -68,9 +68,12 @@ function gameScene(state){
 
 	function game_reset(contflg) {
 	    //ゲーム画面の描画を開始(Flip/Drawを自動で実行　各フレームで)
-		dev.graphics[0].setInterval(1);//BG
-		dev.graphics[1].setInterval(1);//SPRITE
-		dev.graphics[2].setInterval(1);//FG
+		//dev.graphics[0].setInterval(1);//BG
+		//dev.graphics[1].setInterval(1);//SPRITE
+		//dev.graphics[2].setInterval(1);//FG
+		dev.clearBGSP();
+		dev.resumeBGSP();
+
 		dev.graphics[3].setInterval(0);//UI
 
 		work2.clear();
@@ -196,11 +199,11 @@ function gameScene(state){
 	    //ゲームの進行
 	    if (obCtrl.interrapt) {
 			const SIGNAL_LIST = [
-				1	,//PauseScene
-				835	,//resultScene
-				1709,//LvUpScene
-				4649,//Restart/Gover(zanki状態による)
-				6055//未使用）Boss
+				state.Constant.signal.PAUSE,//PauseScene
+				state.Constant.signal.RESULT,//resultScene
+				state.Constant.signal.LVLUP,//LvUpScene
+				state.Constant.signal.DEAD,//Restart/Gover(zanki状態による)
+				state.Constant.signal.BOSS//未使用）Boss
 			];
 			//他数字は空き
 			// GameScene切り替え依頼をobjから行う場合にSIGNALで
@@ -215,7 +218,7 @@ function gameScene(state){
 		}
 
 		if (obCtrl.interrapt) {	
-	        if (obCtrl.SIGNAL == 1) {
+	        if (obCtrl.SIGNAL == state.Constant.signal.PAUSE) {
 	            mapsc.enable = false;
 	            mapsc.counter_runnning = false;
 
@@ -241,7 +244,7 @@ function gameScene(state){
 	        }
 			*/
 
-	        if (obCtrl.SIGNAL == 835) {//リザルト画面要求(面クリアー処理予定
+	        if (obCtrl.SIGNAL == state.Constant.signal.RESULT) {//リザルト画面要求(面クリアー処理予定
 
 				//StageClearBonus
 	            obCtrl.score += mapsc.stage*100;//Math.floor((120000 - mapsc.flame) / 100);
@@ -268,7 +271,7 @@ function gameScene(state){
 	                return 5; //result
 	        }
 
-	        if (obCtrl.SIGNAL == 1709) {//LevelUp要求
+	        if (obCtrl.SIGNAL == state.Constant.signal.LVLUP) {//LevelUp要求
 
 				mapsc.enable = true;
 				mapsc.counter_runnning = false;
@@ -286,7 +289,7 @@ function gameScene(state){
 				return 9; //Lvup
 			}
 
-	        if (obCtrl.SIGNAL == 4649) {//リスターとシグナルが来た(自機が死んで3.0sec位あと）
+	        if (obCtrl.SIGNAL == state.Constant.signal.DEAD) {//リスターとシグナルが来た(自機が死んで3.0sec位あと）
 	            dead_cnt++;
 	            if (dead_cnt < 3) {
 	                if (state.Config.itemreset) {

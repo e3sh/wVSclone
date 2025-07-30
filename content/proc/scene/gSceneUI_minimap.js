@@ -8,7 +8,7 @@ function gameSceneUI_minimap(state){
 //dev deviceControlClass 
 
     //宣言部
-    let dev = state.System.dev;
+    const dev = state.System.dev;
 
 	this.reset = game_reset;
 	this.draw = game_draw;
@@ -17,8 +17,8 @@ function gameSceneUI_minimap(state){
 
 	this.reset_enable = true;
 
-	let obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
-	let mapsc  = state.mapsc; //= new mapSceControl();
+	const obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
+	const mapsc  = state.mapsc; //= new mapSceControl();
 
 	let fdrawcnt = 0;
 
@@ -132,11 +132,11 @@ function gameSceneUI_minimap(state){
 			//obCtrl.drawPoint(dev.graphics[4], state.Game.lamp);
 			dev.graphics[3].putFunc(SubmapframeDraw);
 			if (state.Game.map) {
-				dev.graphics[3].putFunc(SubmapDraw);
-				dev.graphics[3].put("Map",dev.layout.map.x + 36, dev.layout.map.y + 12);
+				dev.graphics[state.Constant.layer.UI].putFunc(SubmapDraw);
+				dev.graphics[state.Constant.layer.UI].put("Map",dev.layout.map.x + 36, dev.layout.map.y + 12);
 			}
 			if (state.Game.lamp) {
-				dev.graphics[3].put("Lamp",dev.layout.map.x + 12, dev.layout.map.y + 12);
+				dev.graphics[state.Constant.layer.UI].put("Lamp",dev.layout.map.x + 12, dev.layout.map.y + 12);
 			}
 		}
 	}
@@ -165,7 +165,7 @@ function gameSceneUI_minimap(state){
         col[t.ITEM    ] = "yellow";
         col[t.ETC     ] = "green";
 
-        if (!Boolean(wscreen)) wscreen = dev.graphics[4];
+        if (!Boolean(wscreen)) wscreen = dev.graphics[state.Constant.layer.EFFECT];
 
         let nt = Date.now();
 

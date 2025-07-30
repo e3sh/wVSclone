@@ -595,7 +595,7 @@ function gObjectControl(scrn, state) {
                 before_int = this.interrapt;
                 before_SIG = this.SIGNAL;
                 this.interrapt = true;
-                this.SIGNAL = 4649;
+                this.SIGNAL = state.Constant.signal.DEAD;
 
                 //dev.sound.volume(1.0);//ボリューム戻し(戻さないと開始音が鳴らなくなる。)
                 //画面から自機がいなくなったらリスタートシグナルを上げる(数字は適当で仮）  
@@ -745,6 +745,8 @@ function gObjectControl(scrn, state) {
 
         o.gt = dev.gs;
         o.gameState = state.Game;
+        o.signaltype = state.Constant.signal;
+
         o.sound = dev.sound;
         
         if (ch_ptn[ch].type == FRIEND || ch_ptn[ch].type == PLAYER){

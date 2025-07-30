@@ -8,7 +8,11 @@ class GameTask_Debug extends GameTask {
 
     init(g){
         const USEFONT = "6x8";// "8x8white";
-        g.font[USEFONT].useScreen(3);
+
+        const s = new ConstantData();
+        const MSG = s.layer.MSG;
+
+        g.font[USEFONT].useScreen(MSG);
         this.fontsc =  g.font[USEFONT];
     }
 
@@ -76,8 +80,11 @@ class GameTask_Load extends GameTask {
 
     init(g){
         const USEFONT = "6x8";// "8x8white";
-        this.scrn = g.screen[4];
-        g.font[USEFONT].useScreen(4);
+        
+        const s = new ConstantData();
+        const MSG = s.layer.MSG;
+        this.scrn = g.screen[MSG];
+        g.font[USEFONT].useScreen(MSG);
         this.fontsc =  g.font[USEFONT];
         //this.cnt = 0;
         this.infoflg = false;
@@ -267,8 +274,11 @@ class GameTask_Device extends GameTask {
     init(g){
         const USEFONT = "6x8";// "8x8white";
 
-        this.scrn = g.screen[4];
-        g.font[USEFONT].useScreen(4);
+        const s = new ConstantData();
+        const MSG = s.layer.MSG;
+;
+        this.scrn = g.screen[MSG];
+        g.font[USEFONT].useScreen(MSG);
         this.fontsc =  g.font[USEFONT];
     }
 

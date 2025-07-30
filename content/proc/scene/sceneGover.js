@@ -1,15 +1,14 @@
 ﻿//Scene(gameover)
 //
 function sceneGover(state) {
-    let dev = state.System.dev;
+    const dev = state.System.dev;
 
     //宣言部
-    let work = dev.graphics[3]; //文字表示面で使用
-    let work2 = dev.graphics[2]; //メイン画面
+    const work = dev.graphics[state.Constant.layer.UI]; //文字表示面で使用
+    const work2 = dev.graphics[state.Constant.layer.BUI]; //メイン画面
 
-    let inp = dev.mouse_state;
-    let keys = dev.key_state;
-
+    //let inp = dev.mouse_state;
+    //let keys = dev.key_state;
 
     this.init = scene_init;
     this.reset = scene_reset;
@@ -95,8 +94,10 @@ function sceneGover(state) {
             }
         }
         //ゲーム画面の描画を停止(Flip/Drawを自動で実行するのを停止)
-        dev.graphics[0].setInterval(0);//BG
-        dev.graphics[1].setInterval(0);//SPRITE
+        //dev.graphics[0].setInterval(0);//BG
+        //dev.graphics[1].setInterval(0);//SPRITE
+        dev.pauseBGSP();
+
         work2.setInterval(0);//<-dev.g2　FG
         work2.putFunc(o);
         work2.draw();

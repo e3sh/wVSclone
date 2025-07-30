@@ -2,14 +2,14 @@
 //
 function sceneTitle(state) {
 
-    let dev = state.System.dev;
+    const dev = state.System.dev;
     //宣言部
-    let work = dev.graphics[3];
-    let work2 = dev.graphics[0];
+    const work = dev.graphics[state.Constant.layer.UI];
+    const work2 = dev.graphics[state.Constant.layer.BUI];
     //let ForgroundBG = dev.graphics[2];
 
     //let inp = dev.mouse_state;
-    let keys = dev.key_state;
+    //let keys = dev.key_state;
 
     this.init = scene_init;
     this.reset = scene_reset;
@@ -69,17 +69,21 @@ function sceneTitle(state) {
 
         state.Config.load();
 
-        dev.graphics[0].setInterval(0);//BG　WORK2
-		dev.graphics[1].setInterval(0);//SPRITE
-		dev.graphics[2].setInterval(0);//FG
-		dev.graphics[3].setInterval(1);//UI //
+        //dev.graphics[0].setInterval(0);//BG　WORK2
+		//dev.graphics[1].setInterval(0);//SPRITE
+		//dev.graphics[2].setInterval(0);//FG
+        dev.pauseBGSP();
+
+		dev.graphics[state.Constant.layer.UI].setInterval(1);//UI //
         //DeviceControlで[0]のBackgroundColor”Black”と設定している。
         //今後は各Sceneで設定したほうが良い。
         //TitleにはすべてのSceneから戻ってくる可能性があるので画面状態が分からない。手動にした画面を一度クリア。
-        dev.graphics[0].reset(); dev.graphics[0].clear(); dev.graphics[0].draw();//BG　WORK2
-		dev.graphics[1].reset(); dev.graphics[1].clear(); dev.graphics[1].draw();//SPRITE
-		dev.graphics[2].reset(); dev.graphics[2].clear(); dev.graphics[2].draw();//FG
+
+        //dev.graphics[0].reset(); dev.graphics[0].clear(); dev.graphics[0].draw();//BG　WORK2
+		//dev.graphics[1].reset(); dev.graphics[1].clear(); dev.graphics[1].draw();//SPRITE
+		//dev.graphics[2].reset(); dev.graphics[2].clear(); dev.graphics[2].draw();//FG
         //↑drawまでしないと、Canvasには反映しません。
+        dev.clearBGSP();
 
         //dev.graphics[3].clear();
         //document.getElementById("manual_1").style.visibility =  'visible';

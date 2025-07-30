@@ -5,8 +5,8 @@
 //　を多重定義しないようにまとめて扱うクラス。
 //**************************************************************
 function deviceControl( g ){
-    //document.getElementById("console").innerHTML = image(g.asset.image["BG1"]);
-    let SCREEN_PAGES = g.screen.length; //alert("g:"+ g.screen.length);
+
+    let SCREEN_PAGES = g.screen.length;
 
     let dsp = [];
 
@@ -34,9 +34,22 @@ function deviceControl( g ){
 
     this.graphics = dsp;
 
-	//this.canvas = dsp; //使ってないと思うが互換性の為
-	//this.text = dsp[3]; //前にText面があったときの名残で互換性の為残っている。
-
+    this.pauseBGSP = function(){
+        dsp[0].setInterval(0);
+        dsp[1].setInterval(0);
+        dsp[2].setInterval(0);
+    }
+    this.resumeBGSP = function(){
+        dsp[0].setInterval(1);
+        dsp[1].setInterval(1);
+        dsp[2].setInterval(1);
+    }
+    this.clearBGSP = function(){
+        dsp[0].reset(); dsp[0].clear(); dsp[0].draw();//BG　WORK2
+		dsp[1].reset(); dsp[1].clear(); dsp[1].draw();//SPRITE
+		dsp[2].reset(); dsp[2].clear(); dsp[2].draw();//FG
+    }
+    
     this.kanji = new fontPrintControl(
         g,
         g.asset.image["KanjiHw"].img, 6, 8,

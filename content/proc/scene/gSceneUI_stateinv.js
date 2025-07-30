@@ -6,15 +6,15 @@
 function gameSceneUI_stateinv(state){
 //dev deviceControlClass 
     //宣言部
-    let dev = state.System.dev;
+    const dev = state.System.dev;
 
-    let work3 = dev.graphics[3];//3 UI
+    const work3 = dev.graphics[state.Constant.layer.UI];//3 UI
 
 	this.reset = game_reset;
 	this.draw = game_draw;
 
-	let obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);//
-	let mapsc  = state.mapsc; //= new mapSceControl();
+	const obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);//
+	const mapsc  = state.mapsc; //= new mapSceControl();
 
 	let escore;
 
@@ -25,7 +25,7 @@ function gameSceneUI_stateinv(state){
 	this.force_reflash = ()=>{UI_force_reflash = true;}
 	
 	//一番下の行消す(clip
-	let ButtomlineBackgroundDraw = {}
+	const ButtomlineBackgroundDraw = {}
 	ButtomlineBackgroundDraw.draw = function (device) {
 	    device.beginPath();
 	    device.fillStyle = "rgba(0,0,0,0.5)";
@@ -33,7 +33,7 @@ function gameSceneUI_stateinv(state){
 		//device.globalAlpha = 1.0;
 	}
     //hpbar
-	let HpbarDraw = { hp: 0, mhp: 0, br: true, shw:0, bbw:0, exp: 0, }
+	const HpbarDraw = { hp: 0, mhp: 0, br: true, shw:0, bbw:0, exp: 0, }
 	//br:SHIELD展開中 shw: SHIELD width(シールドゲージの幅0-100 
 	//bbw:beforehp bar width exp:notUse.
 	HpbarDraw.draw = function (device) {
@@ -65,7 +65,7 @@ function gameSceneUI_stateinv(state){
 	    device.stroke();
 	}
 	//Expbar
-	let expbarDraw = { 
+	const expbarDraw = { 
 		now: 0, 
 		next: 0,
 		draw : function (device) {
@@ -86,7 +86,7 @@ function gameSceneUI_stateinv(state){
 	 }
 
 	//LvUpStatusMatar
-	let stbar = new statusBarMeter(["cyan","orange","limegreen","white"]);
+	const stbar = new statusBarMeter(["cyan","orange","limegreen","white"]);
 
 	function statusBarMeter(setupParam){
         //setupParamater [barcolor, ...,}]
@@ -250,7 +250,7 @@ function gameSceneUI_stateinv(state){
 		drawexecute = true;         
 	}
 	//---------------------
-	let ui = { cnt: 0,state:[], score:[], time: 0};
+	const ui = { cnt: 0,state:[], score:[], time: 0};
 
 	let playerHPber = new effect_tlHPbar();
 	//---------------------
@@ -502,7 +502,7 @@ function gameSceneUI_stateinv(state){
 					let num = witem[witem.length - 1 - i]-23;
 
 					let color = "rgb(0," + (255-(i*30)) + "," + (255-(i*30))+ ")";
-					console.log(color);
+					//console.log(color);
 					work3.fill(dev.layout.items.x + num * 32 + 48, dev.layout.items.y+(i*3),6, 2, color);
 					//work3.put(wchr[witem[witem.length - 1 - i]],
 					//dev.layout.items.x + i * 20, dev.layout.items.y+8);

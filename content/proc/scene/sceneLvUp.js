@@ -2,12 +2,12 @@
 //
 function sceneLvUp(state) { //2024/03/06
     
-    let dev = state.System.dev;
+    const dev = state.System.dev;
     //宣言部
-    let work = dev.graphics[3];//メニュー(最上面)
-    let work2 = dev.graphics[2];//メイン描画面(FG)
+    const work = dev.graphics[state.Constant.layer.UI];//メニュー(最上面)
+    const work2 = dev.graphics[state.Constant.layer.BUI];//メイン描画面(FG)
 
-    let keys = dev.key_state;
+    //let keys = dev.key_state;
 
     this.init = scene_init;
     this.reset = scene_reset;
@@ -24,7 +24,7 @@ function sceneLvUp(state) { //2024/03/06
     let diag;
     let dexef;
 
-    let stbar;
+    //let stbar;
 
     let guide_cursor;
 
@@ -60,12 +60,15 @@ function sceneLvUp(state) { //2024/03/06
             }
         }
         //ゲーム画面の描画を停止(Flip/Drawを自動で実行するのを停止)
-        dev.graphics[0].setInterval(0);//BG
-        dev.graphics[1].setInterval(0);//SPRITE
-        work2.setInterval(0);//<-dev.g2　FG
+        //dev.graphics[0].setInterval(0);//BG
+        //dev.graphics[1].setInterval(0);//SPRITE
+        //work2.setInterval(0);//<-dev.g2　FG
+        dev.pauseBGSP();
 
         work2.putFunc(o);
         work2.draw();
+
+        state.scene.pauseTCW();//TweenOpenCloseWindow Effect動作抑止
 
         let dpara = [
             { keynum:38, text:["0.5s Ext.", (5 + state.Game.player.base.VIT * 0.5) + "s->" + (5 + (state.Game.player.base.VIT+1) * 0.5) + "s" ],
@@ -177,14 +180,17 @@ function sceneLvUp(state) { //2024/03/06
         if ( diag.step(kstate) == 0 ) {
             if (ret_code != 0) {
 
-                dev.graphics[0].setInterval(1);//BG
-                dev.graphics[1].setInterval(1);//SPRITE
-                work2.setInterval(1);//<-dev.g2　FG
+                //dev.graphics[0].setInterval(1);//BG
+                //dev.graphics[1].setInterval(1);//SPRITE
+                //work2.setInterval(1);//<-dev.g2　FG
+                dev.resumeBGSP();
 
                 state.obUtil.keyitem_enhance_check();
 
                 let w = state.obUtil.player_objv(work);
-                diag.close(dev.graphics[2], w.x, w.y, 20)
+                diag.close(dev.graphics[2], w.x, w.y, 20);
+
+                state.scene.resumeTCW();
 
                 return ret_code;
             }

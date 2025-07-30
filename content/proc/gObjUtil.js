@@ -3,25 +3,25 @@
 
 function gObjectUtility(state) {
     
-    let dev = state.System.dev;
+    const dev = state.System.dev;
 
     this.item = state.obCtrl.item;
     this.itemstack = state.obCtrl.itemstack;
 
-    let ch_ptn = state.Database.chrPattern;//character();
-    let motion_ptn = state.Database.motionPattern;//motionPattern();
+    const ch_ptn = state.Database.chrPattern;//character();
+    const motion_ptn = state.Database.motionPattern;//motionPattern();
 
-    let msglog = new textbufferControl(25);
-    let msgview = new textbufferControl(26);
-    let msgcnsl = new textbufferControl(21);
+    const msglog = new textbufferControl(25);
+    const msgview = new textbufferControl(26);
+    const msgcnsl = new textbufferControl(21);
 
     this.messagelog = msglog;
     this.messageview = msgview;
     this.messageconsole = msgcnsl;
 
-    let tutcnsl = new textbufferControl(5);
+    const tutcnsl = new textbufferControl(5);
     this.tutorialconsole = tutcnsl;
-    let tutComment = tutorialCommentTable();//return comment [[],[],[]];
+    const tutComment = tutorialCommentTable();//return comment [[],[],[]];
     //this.tutTable = tutCheck;
     let tutDtime = 0;
     this.tutorialDisplayTime = tutDtime;
@@ -99,7 +99,7 @@ function gObjectUtility(state) {
     this.list = function(){
 
         let st = [];
-        let obj = state.obCtrl.objList;
+        const obj = state.obCtrl.objList;
 
         for (let j=0; j < obj.length; j++){
             let n = "   "+String(j);
@@ -125,7 +125,7 @@ function gObjectUtility(state) {
     this.lookObj = function(num){
 
         let st = [];
-        let obj = state.obCtrl.objList;
+        const obj = state.obCtrl.objList;
 
         if (obj[num] instanceof Object){
 
@@ -162,7 +162,7 @@ function gObjectUtility(state) {
     this.lookObjv = function(scrn, num, x, y){
 
         let result = false;
-        let obj = state.obCtrl.objList;
+        const obj = state.obCtrl.objList;
 
         if (obj[num] instanceof Object){
 
@@ -185,7 +185,7 @@ function gObjectUtility(state) {
 
     this.player_objv = function(scrn){
 
-        let obj = state.obCtrl.objList;
+        const obj = state.obCtrl.objList;
         let rc = {x:0, y:0};
 
         for (let o of obj) {
@@ -203,7 +203,7 @@ function gObjectUtility(state) {
     this.lookpick = function(scrn, num, x, y){
 
         let result = false;
-        let obj = state.obCtrl.objList;
+        const obj = state.obCtrl.objList;
 
         if (obj[num] instanceof Object){
             /*
@@ -249,7 +249,7 @@ function gObjectUtility(state) {
 
         this.item = state.obCtrl.item;
 
-        let helptext = {51:"INT", 52:"MND", 53:"VIT", 56:"STR", 57:"DEX"};
+        const helptext = {51:"INT", 52:"MND", 53:"VIT", 56:"STR", 57:"DEX"};
 
         let xpos = dev.layout.keyitem.x;
         let ypos = dev.layout.keyitem.y;

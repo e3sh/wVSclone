@@ -3,7 +3,8 @@ function sceneControl(state) {
     //sceneが増えてきてmainがすっきりとしなくなったので分離の為作成。2011/05/04
     //let fcnt = 0;
 
-    let scrn = state.System.dev.graphics[4];//Wipescreen
+    //let scrn = state.System.dev.graphics[4];//Wipescreen
+    const scrn = state.System.dev.graphics[state.Constant.layer.EFFECT];//Wipescreen
 
     let titleSce = [];
 
@@ -23,6 +24,7 @@ function sceneControl(state) {
     let wipemode = "fade";
 
     let twcw = [];
+    let twcw_enable = true;
 
     //let clRect = function(x,y,w,h){this.draw = function(device){ device.clearRect(x,y,w,h);}}
 
@@ -81,8 +83,10 @@ function sceneControl(state) {
             wipeEffectCount-(3 * 60/(1000/state.System.deltaTime())) :
             0;
 
-        for (let i in twcw){
-            if (twcw[i].running) twcw[i].step();
+        if (twcw_enable){
+            for (let i in twcw){
+                if (twcw[i].running) twcw[i].step();
+            }
         }
     }
 
@@ -98,14 +102,16 @@ function sceneControl(state) {
 
         sceneList[runscene].draw();
 
-        for (let i in twcw){
-            if (twcw[i].running){
-                twcw[i].draw();
-            } else {
-                twcw.splice(i,1);
-                //delete twcw[i]; //これでは配列要素は減らない
-                //console.log(twcw.length);
-            } 
+        if (twcw_enable){
+            for (let i in twcw){
+                if (twcw[i].running){
+                    twcw[i].draw();
+                } else {
+                    twcw.splice(i,1);
+                    //delete twcw[i]; //これでは配列要素は減らない
+                    //console.log(twcw.length);
+                } 
+            }
         }
 
         if (state.Config.debug) {
@@ -187,7 +193,7 @@ function sceneControl(state) {
 			center_x = rect.x+rect.w/2;
 			center_y = rect.y+rect.h/2;
 
-            if (!Boolean(close)){
+            if (!Boolean(close)){ //default close else open
                 w = rect.w;
                 h = rect.h;
 
@@ -240,5 +246,15 @@ function sceneControl(state) {
 
         twcw.push(tcw);
     }
+
+    this.pauseTCW = function(){
+        twcw_enable = false;
+    }
+
+    this.resumeTCW = function(){
+        twcw_enable = true;
+    }
+
+
 }
 

@@ -2,13 +2,15 @@
 //
 function sceneResult(state) {
     
-    let dev = state.System.dev;
+    const dev = state.System.dev;
     //宣言部
-    let work = dev.graphics[3];//メニュー(最上面) UI
-    let work2 = dev.graphics[2];//メイン描画面(FG)
+    const work = dev.graphics[state.Constant.layer.UI];//メニュー(最上面) UI
+    const work2 = dev.graphics[state.Constant.layer.BUI];//メイン描画面(FG)
 	//let text = dev.text;
     //let text = dev.graphics[3];//文字表示面 UI
  
+    const mapsc = state.mapsc;
+
     this.init = scene_init;
     this.reset = scene_reset;
     this.step = scene_step;
@@ -109,9 +111,10 @@ function sceneResult(state) {
             }
         }
         //ゲーム画面の描画を停止(Flip/Drawを自動で実行するのを停止)
-        dev.graphics[0].setInterval(0);//BG
-        dev.graphics[1].setInterval(0);//SPRITE
-        work2.setInterval(0);//<-dev.g2　FG
+        //dev.graphics[0].setInterval(0);//BG
+        //dev.graphics[1].setInterval(0);//SPRITE
+        //work2.setInterval(0);//<-dev.g2　FG
+        dev.pauseBGSP();
 
         work2.putFunc(o);
         work2.draw();
