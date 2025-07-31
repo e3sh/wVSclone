@@ -9,6 +9,9 @@ function gameSceneUI_minimap(state){
 
     //宣言部
     const dev = state.System.dev;
+	
+    const UI = dev.graphics[state.Constant.layer.UI];
+	const EFFECT = dev.graphics[state.Constant.layer.EFFECT];
 
 	this.reset = game_reset;
 	this.draw = game_draw;
@@ -130,13 +133,13 @@ function gameSceneUI_minimap(state){
 
 		if (mapviewflag) {
 			//obCtrl.drawPoint(dev.graphics[4], state.Game.lamp);
-			dev.graphics[3].putFunc(SubmapframeDraw);
+			UI.putFunc(SubmapframeDraw);
 			if (state.Game.map) {
-				dev.graphics[state.Constant.layer.UI].putFunc(SubmapDraw);
-				dev.graphics[state.Constant.layer.UI].put("Map",dev.layout.map.x + 36, dev.layout.map.y + 12);
+				UI.putFunc(SubmapDraw);
+				UI.put("Map",dev.layout.map.x + 36, dev.layout.map.y + 12);
 			}
 			if (state.Game.lamp) {
-				dev.graphics[state.Constant.layer.UI].put("Lamp",dev.layout.map.x + 12, dev.layout.map.y + 12);
+				UI.put("Lamp",dev.layout.map.x + 12, dev.layout.map.y + 12);
 			}
 		}
 	}
@@ -165,7 +168,7 @@ function gameSceneUI_minimap(state){
         col[t.ITEM    ] = "yellow";
         col[t.ETC     ] = "green";
 
-        if (!Boolean(wscreen)) wscreen = dev.graphics[state.Constant.layer.EFFECT];
+        if (!Boolean(wscreen)) wscreen = EFFECT;
 
         let nt = Date.now();
 

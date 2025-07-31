@@ -4,8 +4,8 @@ function sceneLvUp(state) { //2024/03/06
     
     const dev = state.System.dev;
     //宣言部
-    const work = dev.graphics[state.Constant.layer.UI];//メニュー(最上面)
-    const work2 = dev.graphics[state.Constant.layer.BUI];//メイン描画面(FG)
+    const UI_layer = dev.graphics[state.Constant.layer.UI];
+    const BUI_layer = dev.graphics[state.Constant.layer.BUI];
 
     //let keys = dev.key_state;
 
@@ -38,12 +38,12 @@ function sceneLvUp(state) { //2024/03/06
 
         ret_code = 0;
 
-        work2.clear();
+        BUI_layer.clear();
 
         let o = {};
 
-        o.cw = work2.cw;
-        o.ch = work2.ch;
+        o.cw = BUI_layer.cw;
+        o.ch = BUI_layer.ch;
 
         o.draw = function (device) {
 
@@ -62,11 +62,11 @@ function sceneLvUp(state) { //2024/03/06
         //ゲーム画面の描画を停止(Flip/Drawを自動で実行するのを停止)
         //dev.graphics[0].setInterval(0);//BG
         //dev.graphics[1].setInterval(0);//SPRITE
-        //work2.setInterval(0);//<-dev.g2　FG
+        //BUI_layer.setInterval(0);//<-dev.g2　FG
         dev.pauseBGSP();
 
-        work2.putFunc(o);
-        work2.draw();
+        BUI_layer.putFunc(o);
+        BUI_layer.draw();
 
         state.scene.pauseTCW();//TweenOpenCloseWindow Effect動作抑止
 
@@ -140,8 +140,8 @@ function sceneLvUp(state) { //2024/03/06
 
         if (diag.step(kstate) == 0) keylock = true;
 
-        work2.draw();
-        work2.reset();
+        BUI_layer.draw();
+        BUI_layer.reset();
 
         wtxt.push("LevelUp#" + state.Game.player.spec.ETC);
         wtxt.push("= SELECT =");
@@ -172,7 +172,7 @@ function sceneLvUp(state) { //2024/03/06
 
             //dev.graphics[0].setInterval(1);//BG
             //dev.graphics[1].setInterval(1);//SPRITE
-            //work2.setInterval(1);//<-dev.g2　FG
+            //BUI_layer.setInterval(1);//<-dev.g2　FG
         }
 
         if (ret_code != 0) diag.effect();
@@ -182,12 +182,12 @@ function sceneLvUp(state) { //2024/03/06
 
                 //dev.graphics[0].setInterval(1);//BG
                 //dev.graphics[1].setInterval(1);//SPRITE
-                //work2.setInterval(1);//<-dev.g2　FG
+                //BUI_layer.setInterval(1);//<-dev.g2　FG
                 dev.resumeBGSP();
 
                 state.obUtil.keyitem_enhance_check();
 
-                let w = state.obUtil.player_objv(work);
+                let w = state.obUtil.player_objv(UI_layer);
                 diag.close(dev.graphics[2], w.x, w.y, 20);
 
                 state.scene.resumeTCW();
@@ -200,19 +200,19 @@ function sceneLvUp(state) { //2024/03/06
 
     function scene_draw() {
 
-        let w = state.obUtil.player_objv(work);
+        let w = state.obUtil.player_objv(UI_layer);
 
-        work.fill(w.x-120,w.y-100,240,200,0);
+        UI_layer.fill(w.x-120,w.y-100,240,200,0);
 
-        state.obUtil.player_objv(work);
+        state.obUtil.player_objv(UI_layer);
 
-        diag.draw(work, w.x, w.y);
+        diag.draw(UI_layer, w.x, w.y);
 
         for (let s in wtxt) {
-            work.putchr8(wtxt[s], w.x -35, w.y + 16*s + 32 );
+            UI_layer.putchr8(wtxt[s], w.x -35, w.y + 16*s + 32 );
         }
-        //stbar.draw(work, w.x -35, w.y + 48);
-        guide_cursor.draw(work, w.x, w.y, 32);
+        //stbar.draw(UI_layer, w.x -35, w.y + 48);
+        guide_cursor.draw(UI_layer, w.x, w.y, 32);
 
         //表示
     }

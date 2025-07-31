@@ -4,7 +4,7 @@ function scenePause(state) {
 
     const dev = state.System.dev;
     //宣言部
-    const work = dev.graphics[state.Constant.layer.UI];
+    const UI_layer = dev.graphics[state.Constant.layer.UI];
  
     //let keys = dev.key_state;
 
@@ -44,22 +44,22 @@ function scenePause(state) {
 		//dev.graphics[2].setInterval(0);//FG
         dev.pauseBGSP();
     
-        //work.setInterval(0);//UI
+        //UI_layer.setInterval(0);//UI
 
         ret_code = 0;
 
-        //work.fill(DSP_X - 100, DSP_Y, 272, 100, "rgb(32,0,0)");
+        //UI_layer.fill(DSP_X - 100, DSP_Y, 272, 100, "rgb(32,0,0)");
 
-        work.putchr(" == PAUSE ==", DSP_X - 50, DSP_Y);
-        work.putchr("Push <Z>key or [Space] ", DSP_X - 100, DSP_Y + 20);
-        //work.fill(DSP_X - 50, DSP_Y + 40, 8*18, 18, "rgb(0,0,0)");
-        work.putchr8("   Return game.", DSP_X - 50, DSP_Y + 40);
-        work.kprint("　　　ゲームに戻る", DSP_X - 50, DSP_Y + 50);
+        UI_layer.putchr(" == PAUSE ==", DSP_X - 50, DSP_Y);
+        UI_layer.putchr("Push <Z>key or [Space] ", DSP_X - 100, DSP_Y + 20);
+        //UI_layer.fill(DSP_X - 50, DSP_Y + 40, 8*18, 18, "rgb(0,0,0)");
+        UI_layer.putchr8("   Return game.", DSP_X - 50, DSP_Y + 40);
+        UI_layer.kprint("　　　ゲームに戻る", DSP_X - 50, DSP_Y + 50);
 
-        work.putchr("Push <@>key /", DSP_X - 100, DSP_Y + 60);
-        //work.fill(DSP_X - 50, DSP_Y + 80, 8*18, 18, "rgba(0,0,0)"); 
-        work.putchr8(" Save and Quit.", DSP_X - 50, DSP_Y + 80);
-        work.kprint("中断してタイトルに戻る", DSP_X - 50, DSP_Y + 90); 
+        UI_layer.putchr("Push <@>key /", DSP_X - 100, DSP_Y + 60);
+        //UI_layer.fill(DSP_X - 50, DSP_Y + 80, 8*18, 18, "rgba(0,0,0)"); 
+        UI_layer.putchr8(" Save and Quit.", DSP_X - 50, DSP_Y + 80);
+        UI_layer.kprint("中断してタイトルに戻る", DSP_X - 50, DSP_Y + 90); 
 
         let res = {load: true, ready:true, data:state.Game, title:"STAT/INV"};
         res.data.stage = state.mapsc.stage;
@@ -67,7 +67,7 @@ function scenePause(state) {
         if (res.load){
             let t = state.Game.dataview2(res);
             for (let i in t){
-                work.kprint(t[i],8, i*8 + 8);
+                UI_layer.kprint(t[i],8, i*8 + 8);
             }
         }
         /*
@@ -86,16 +86,16 @@ function scenePause(state) {
         for (let i=51; i<59; i++){
             if (Boolean(state.obCtrl.item[i])){
                 if (state.obCtrl.item[i] > 0) {
-                    work.put(itemname[i-51].sp, 12, ypos);
+                    UI_layer.put(itemname[i-51].sp, 12, ypos);
                     ypos -= 24;
                 }
             }
         }
         */
-        state.obUtil.keyitem_view_draw(work);
+        state.obUtil.keyitem_view_draw(UI_layer);
 
-        work.draw();
-        //work.reset();
+        UI_layer.draw();
+        //UI_layer.reset();
         menuvf = false;
 
         state.Game.cold = true;
@@ -140,10 +140,10 @@ function scenePause(state) {
             if (state.Game.save() == 0) {
 	            //alert("ゲーム中断セーブ実施しました。\nタイトルに戻ります。");
                 dev.sound.volume(1.0);
-                dev.sound.change(9);
+                dev.sound.change(state.Constant.sound.CURSOR);
                 dev.sound.play();
                         
-                return 2;//Title
+                return state.Constant.scene.TITLE;//Title
             } else {
                 alert("ローカルストレージが使えません。\n中断セーブ出来なかったので、\nゲーム継続します。");
                 zkey = true;
@@ -155,17 +155,17 @@ function scenePause(state) {
             //obCtrl.SIGNAL = 0;
 
             dev.sound.volume(1.0);
-            work.fill(DSP_X - 100, DSP_Y, 12 * 24, 20 * 5);
-            work.draw();
+            UI_layer.fill(DSP_X - 100, DSP_Y, 12 * 24, 20 * 5);
+            UI_layer.draw();
 
             //dev.graphics[0].setInterval(1);//BG　WORK2
             //dev.graphics[1].setInterval(1);//SPRITE
             //dev.graphics[2].setInterval(1);//FG
             dev.resumeBGSP();
             //dev.graphics[3].setInterval(0);//UI
-            //work.setInterval(1);//UI
+            //UI_layer.setInterval(1);//UI
 
-            return 1;//GameScene
+            return state.Constant.scene.MAIN;//GameScene
         }
 
         if (arrowkey){
@@ -222,10 +222,10 @@ function scenePause(state) {
                             state.Game.player.level = (state.Game.player.level++ >= 3) ? 0: state.Game.player.level;
                             break;
                         case 7:
-                            ret_code = 8; //sceneOption
+                            ret_code = state.Constant.scene.OPTION; //sceneOption
                             break;
                         case 8:
-                            ret_code = 7; //sceneStatusDisp
+                            ret_code = state.Constant.scene.STATUS; //sceneStatusDisp
                             break;
                         case 9:
                             state.Config.viewlog = (!state.Config.viewlog);
@@ -242,7 +242,7 @@ function scenePause(state) {
                             state.Game.player.hp += 10;
                             if (state.Game.player.hp > state.Game.player.maxhp)
                                 state.Game.player.hp = state.Game.player.maxhp;
-                            dev.sound.effect(10);
+                            dev.sound.effect(state.Constant.sound.USE);
                             break;
                         case 2://get Lamp
                             state.obCtrl.get_item(26);
@@ -279,32 +279,32 @@ function scenePause(state) {
         }
 
         if (numkey || arrowkey){
-            work.reset();
+            UI_layer.reset();
 
-            work.fill(0, 264, 400, 30);
-            work.fill(0, 240, 8 * 22, 8 * 11);//, "navy");
+            UI_layer.fill(0, 264, 400, 30);
+            UI_layer.fill(0, 240, 8 * 22, 8 * 11);//, "navy");
 
             if (Boolean(tutCtable[tutCn])){
                 let c=(Boolean(state.obUtil.tutorialDone[tutCn]))?":":".";
                 for (let i in tutCtable[tutCn]){
-                    work.kprint(tutCn + c + i + " " + tutCtable[tutCn][i], 0, 264 + 10 * i);
+                    UI_layer.kprint(tutCn + c + i + " " + tutCtable[tutCn][i], 0, 264 + 10 * i);
                 }
                 for (let i=0; i<5; i++){
-                    work.kprint(tutCtable[100+i][0], 100, 56 + 8 * i);
+                    UI_layer.kprint(tutCtable[100+i][0], 100, 56 + 8 * i);
                 }
-                state.obUtil.keyitem_view_draw(work ,true);
+                state.obUtil.keyitem_view_draw(UI_layer ,true);
             }else{
-                work.kprint(tutCn + ".: Message Empty.", 0, 264);
+                UI_layer.kprint(tutCn + ".: Message Empty.", 0, 264);
             }
 
-            //work.fill(0, 240, 8 * 22, 8 * 11);//, "navy");
+            //UI_layer.fill(0, 240, 8 * 22, 8 * 11);//, "navy");
 
             if (menuvf){
                 let arr = [];
 
                 const debugmode_view =()=>{
-                    work.fill(0, 240, 8 * 22, 8 * 11, "navy");
-                    work.putchr8("Input ["+ inp +"]" + (dppmode?" PPmode":""), 16, 240);
+                    UI_layer.fill(0, 240, 8 * 22, 8 * 11, "navy");
+                    UI_layer.putchr8("Input ["+ inp +"]" + (dppmode?" PPmode":""), 16, 240);
 
                     if (dppmode) {
                         arr.push("1: Heal HP :" + state.Game.player.hp + "/" + state.Game.player.maxhp); 
@@ -330,12 +330,12 @@ function scenePause(state) {
                         arr.push("0: Menu Display   :" + (menuvf?"ON":"OFF"));
                     }
                     for (let i in arr){
-                        work.putchr8(arr[i], 0, 248 + i * 8);
+                        UI_layer.putchr8(arr[i], 0, 248 + i * 8);
                     }
                 }
                 if (state.Constant.DEBUGMODE_ENABLE) {debugmode_view();} else {
-                    work.fill(0, 240, 8 * 22, 8 * 11, "gray");
-                    work.putchr8("DEBUGMODE_DISABLE", 16, 248);
+                    UI_layer.fill(0, 240, 8 * 22, 8 * 11, "gray");
+                    UI_layer.putchr8("DEBUGMODE_DISABLE", 16, 248);
                 }
 
                 //savedata check
@@ -343,12 +343,12 @@ function scenePause(state) {
                 if (res.load){
                     let t = state.Game.dataview2(res);
                     for (let i in t){
-                        work.kprint(t[i],8, i*8 + 8);
+                        UI_layer.kprint(t[i],8, i*8 + 8);
                     }
-                    work.draw();
+                    UI_layer.draw();
                 }
             }
-            work.draw();
+            UI_layer.draw();
             keywait = 10;
         }
 

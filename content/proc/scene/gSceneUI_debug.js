@@ -13,6 +13,7 @@ function gameSceneUI_debug(state){
 	const BG = dev.graphics[state.Constant.layer.BG];
     const UI = dev.graphics[state.Constant.layer.UI];
     const FG = dev.graphics[state.Constant.layer.FG];
+	const MSG = dev.graphics[state.Constant.layer.MSG];
 
 	this.reset = game_reset;
 	this.draw = game_draw;
@@ -59,13 +60,13 @@ function gameSceneUI_debug(state){
 			wtxt = read_debugStates();
 			if (state.Config.viewlog) wtxt = wtxt.concat(state.obUtil.messagelog.read()); 
 			//let wtxt = read_debugStates().concat(obCtrl.messagelog.read());
-			for (let s in wtxt) FG.putchr8(wtxt[s], dev.layout.debugstatus.x, dev.layout.debugstatus.y + 8 * s);
+			for (let s in wtxt) MSG.putchr8(wtxt[s], dev.layout.debugstatus.x, dev.layout.debugstatus.y + 8 * s);
 
 			//wtxt = obCtrl.messagelog.read();
 			//for (let s in wtxt) work3.putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 
 			wtxt = state.obUtil.messageview.read();
-			if (state.Config.viewlog) for (let s in wtxt) FG.kprint(wtxt[s], dev.layout.debugmessage.x, dev.layout.debugmessage.y + 8 * s);
+			if (state.Config.viewlog) for (let s in wtxt) MSG.kprint(wtxt[s], dev.layout.debugmessage.x, dev.layout.debugmessage.y + 8 * s);
 			//if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
 		}else{
 			wtxt = state.obUtil.messageconsole.read();

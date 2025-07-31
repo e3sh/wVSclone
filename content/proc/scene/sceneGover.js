@@ -4,8 +4,8 @@ function sceneGover(state) {
     const dev = state.System.dev;
 
     //宣言部
-    const work = dev.graphics[state.Constant.layer.UI]; //文字表示面で使用
-    const work2 = dev.graphics[state.Constant.layer.BUI]; //メイン画面
+    const UI_layer = dev.graphics[state.Constant.layer.UI]; //文字表示面で使用
+    const BUI_layer = dev.graphics[state.Constant.layer.BUI]; //メイン画面
 
     //let inp = dev.mouse_state;
     //let keys = dev.key_state;
@@ -51,7 +51,7 @@ function sceneGover(state) {
     m.w = 120;
     m.h = 16
     m.sel = false;
-    m.func = function () { return 2; };
+    m.func = function () { return state.Constant.scene.TITLE; };
 
     menu.push(m);
 
@@ -72,12 +72,12 @@ function sceneGover(state) {
         wipecnt = 2;
         ret_code = 0;
 
-//        work2.clear();
+//        BUI_layer.clear();
 
         let o = {};
 
-        o.cw = work2.cw;
-        o.ch = work2.ch;
+        o.cw = BUI_layer.cw;
+        o.ch = BUI_layer.ch;
 
         o.draw = function (device) {
 
@@ -98,9 +98,9 @@ function sceneGover(state) {
         //dev.graphics[1].setInterval(0);//SPRITE
         dev.pauseBGSP();
 
-        work2.setInterval(0);//<-dev.g2　FG
-        work2.putFunc(o);
-        work2.draw();
+        BUI_layer.setInterval(0);//<-dev.g2　FG
+        BUI_layer.putFunc(o);
+        BUI_layer.draw();
 
         state.Game.cold = true;
 
@@ -166,7 +166,7 @@ function sceneGover(state) {
             zkey = zkey || xkey || ckey; //any key
 
             if (keylock) {
-                dev.sound.effect(9);
+                dev.sound.effect(state.Constant.sound.CURSOR);
             }
         }
 //        if ((mstate.button == 0) && (!keylock)) {
@@ -194,10 +194,10 @@ function sceneGover(state) {
 
             let o = {};
 
-            o.cw = work2.cw;
-            o.ch = work2.ch;
+            o.cw = BUI_layer.cw;
+            o.ch = BUI_layer.ch;
             o.y1 = wipecnt + 1;
-            o.y2 = work2.ch - wipecnt - 2;
+            o.y2 = BUI_layer.ch - wipecnt - 2;
 
             o.draw = function (device) {
 
@@ -217,15 +217,15 @@ function sceneGover(state) {
                 //    device.stroke();
                 device.stroke();
             }
-            work2.putFunc(o);
+            BUI_layer.putFunc(o);
 
-            work2.draw();
-            work2.reset();
+            BUI_layer.draw();
+            BUI_layer.reset();
 
             wipecnt += 3 * (60/(1000/state.System.deltaTime()));
 
-            //if (work2.ch / 2 - wipecnt < 0) { return ret_code; }
-            if (wipecnt > work2.ch/3) wipef = false;//return ret_code; }
+            //if (BUI_layer.ch / 2 - wipecnt < 0) { return ret_code; }
+            if (wipecnt > BUI_layer.ch/3) wipef = false;//return ret_code; }
         }
 
         for (i in menu) {
@@ -259,7 +259,7 @@ function sceneGover(state) {
         for (i in wd) {
             wt = wt + "" + wd[i];
         }
-        work.putchr("Score:" + wt, 240, 0);
+        UI_layer.putchr("Score:" + wt, 240, 0);
 */
         wtxt.push("== Game Over ==");
         wtxt.push("---------------");
@@ -284,10 +284,10 @@ function sceneGover(state) {
                     device.fillStyle = this.c;
                     device.fillRect(this.x, this.y, this.w, this.h);
                 }
-                work.putFunc(o);
+                UI_layer.putFunc(o);
             }
 
-            work.putchr(menu[i].title, menu[i].x, menu[i].y);
+            UI_layer.putchr(menu[i].title, menu[i].x, menu[i].y);
 
         }
 
@@ -302,11 +302,11 @@ function sceneGover(state) {
                 device.fillStyle = "navy";
                 device.fillRect(this.x, this.y, this.w, this.h);
             }
-            work.putFunc(o);
+            UI_layer.putFunc(o);
 
-            work.putchr(wtxt[s], 320-72, 132 + 16 * s);
-            //			work.putchr8(wtxt[s],0,0 + 8*s);
-            //		        work.print(wtxt[s],0,0 + 16*s +200);	
+            UI_layer.putchr(wtxt[s], 320-72, 132 + 16 * s);
+            //			UI_layer.putchr8(wtxt[s],0,0 + 8*s);
+            //		        UI_layer.print(wtxt[s],0,0 + 16*s +200);	
         }
 
         //表示

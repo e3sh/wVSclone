@@ -109,32 +109,34 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
 
                 let wid = "Get Item." + msg.src;
 
-                if (msg.src == 35) {
+                if (msg.src == state.Constant.item.COIN) {
                     wid = sobj.score + "pts.";
-                    dev.sound.effect(11); //get音
+                    dev.sound.effect(state.Constant.sound.GET); //get音
                     mapsc.add(x, y, 0, 20, 39, wid); //43green
                 }
 
-                if (msg.src == 21) {
+                if (msg.src == state.Constant.item.EXTEND) {
                     wid = "Extend!";
                     mapsc.add(x, y, 0, 20, 39, wid);
                 }
 
-                if (msg.src == 22) {
+                if (msg.src == state.Constant.item.KEY) {
                     wid = "GetKey!";
-                    dev.sound.effect(11); //get音
+                    dev.sound.effect(state.Constant.sound.GET); //get音
                     mapsc.add(x, y, 0, 20, 39, wid);
                 }
 
                 if (((msg.src >= 15) && (msg.src <= 19)) || (msg.src==50)){
                     state.Game.player.stack.push({ch:msg.src, id:msg.dst});
                     wid = "Weapon!"; 
-                    dev.sound.effect(11); //get音
+                    dev.sound.effect(state.Constant.sound.GET); //get音
                     mapsc.add(x, y, 0, 20, 39, wid);
                 }
 
                 let f = false;
-                if ((msg.src == 23) || (msg.src == 24) || (msg.src == 25)) {
+                if ((msg.src == state.Constant.item.BOMB) || 
+                    (msg.src == state.Constant.item.SHIELD) || 
+                    (msg.src == state.Constant.item.LIFEUP)) {
                     //dev.sound.effect(9); //cursor音
                     f = true;
                 }

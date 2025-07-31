@@ -4,7 +4,7 @@ function sceneStatusDisp(state) {
 
     const dev = state.System.dev;
     //宣言部
-    const work = dev.graphics[state.Constant.layer.UI];
+    const UI_layer = dev.graphics[state.Constant.layer.UI];
  
     //let keys = dev.key_state;
 
@@ -46,27 +46,27 @@ function sceneStatusDisp(state) {
         //type, inview, inworld, status,mp,chr
         let c = 0;
 
-        work.reset();
-        work.clear();
+        UI_layer.reset();
+        UI_layer.clear();
 
-        work.putchr8(s, 0,0 );
+        UI_layer.putchr8(s, 0,0 );
         for (let i in st){
 
             if (i >= (page-1)*200){
                 let s = st[(page-1)*200 + i%200];
                 let x = Math.floor(c/50)*160;
                 let y = (c%50)*8+8;
-                //work.putchr8(s ,x ,y );
+                //UI_layer.putchr8(s ,x ,y );
                 if (invt) {
-                    if (state.obUtil.lookpick(work, i, x + 48+8, y)){
+                    if (state.obUtil.lookpick(UI_layer, i, x + 48+8, y)){
                         s = s.substring(0, 6);
                     }
                 }
                 if (i != sel){
-                    work.putchr8(s ,x ,y );
+                    UI_layer.putchr8(s ,x ,y );
                 }else{
-                    //work.putchr("["+st[(page-1)*200 + i%200]+"]",Math.floor(c/50)*160,(c%50)*8+8);
-                    //work.putchr8c(s,x ,y ,2 );
+                    //UI_layer.putchr("["+st[(page-1)*200 + i%200]+"]",Math.floor(c/50)*160,(c%50)*8+8);
+                    //UI_layer.putchr8c(s,x ,y ,2 );
 
                     bar = {}
 
@@ -87,14 +87,14 @@ function sceneStatusDisp(state) {
                         device.rect(this.x, this.y, this.l*8, 8);
                         device.stroke();
                     }
-                    work.putFunc(bar);
-                    work.putchr8c(s,x ,y ,2 );
+                    UI_layer.putFunc(bar);
+                    UI_layer.putchr8c(s,x ,y ,2 );
                 }
                 c++;
                 if (c>200) break;
             }
         }
-        work.draw();
+        UI_layer.draw();
     }
     
     function obj_draw(num){
@@ -103,30 +103,30 @@ function sceneStatusDisp(state) {
 
         let c=0;
 
-        work.reset();
-        work.clear();
+        UI_layer.reset();
+        UI_layer.clear();
 
         let s = "== ObjectNo.[" + num +"] =="; 
-        work.putchr8(s, 0,0 );
+        UI_layer.putchr8(s, 0,0 );
 
         let st = state.obUtil.lookObj(num);
         for (let i in st){
             let s = String(st[i]);
 
             if (!s.includes("object") && !s.includes("function")){
-                work.putchr8(String(st[i]).substring(0, 39),Math.floor(c/COL)*320,(c%COL)*8+8 );
+                UI_layer.putchr8(String(st[i]).substring(0, 39),Math.floor(c/COL)*320,(c%COL)*8+8 );
                 c++;
             }
             if (c>100) break;
         }
 
-        state.obUtil.lookObjv(work, num, 240, 80);
+        state.obUtil.lookObjv(UI_layer, num, 240, 80);
 
-        if (state.obUtil.lookpick(work, num, Math.floor(c/COL)*320+8, ((c+2)%COL)*8+16)){
-            work.putchr8("pickitem/thisitem",Math.floor(c/COL)*320+8, ((c+1)%COL)*8+8 );
+        if (state.obUtil.lookpick(UI_layer, num, Math.floor(c/COL)*320+8, ((c+2)%COL)*8+16)){
+            UI_layer.putchr8("pickitem/thisitem",Math.floor(c/COL)*320+8, ((c+1)%COL)*8+8 );
         };
 
-        work.draw();
+        UI_layer.draw();
     }
 
     //処理部
@@ -141,7 +141,7 @@ function sceneStatusDisp(state) {
 		//dev.graphics[2].setInterval(0);//FG
         dev.pauseBGSP();
 
-        work.setInterval(0);//UI
+        UI_layer.setInterval(0);//UI
 
         ret_code = 0;
 
@@ -191,16 +191,16 @@ function sceneStatusDisp(state) {
 
         // select key function section
         if (zkey) {
-            work.reset();
-            work.clear();
-            work.draw();
+            UI_layer.reset();
+            UI_layer.clear();
+            UI_layer.draw();
 
             //dev.graphics[0].setInterval(1);//BG　WORK2
             //dev.graphics[1].setInterval(1);//SPRITE
             //dev.graphics[2].setInterval(1);//FG
-            //work.setInterval(6);//UI
+            //UI_layer.setInterval(6);//UI
 
-            return 6;//return scenePause
+            return state.Constant.scene.PAUSE;//return scenePause
         }
 
         if (ckey) {
@@ -256,6 +256,6 @@ function sceneStatusDisp(state) {
     }
 
     function scene_draw() {
-        //work.reset();
+        //UI_layer.reset();
     }
 }

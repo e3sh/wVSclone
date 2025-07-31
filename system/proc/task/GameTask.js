@@ -52,8 +52,9 @@ class GameTask_Debug extends GameTask {
             st = " " + i + "(" 
             + g.screen[i].getInterval() + ")" 
             + g.screen[i].getBackgroundcolor() + "/"
-            + g.screen[i].max() + "/" 
-            + g.screen[i].count(); 
+            //+ g.screen[i].max() + "/" 
+            //+ g.screen[i].count()
+            ; 
             sl.push(st);
             }
 

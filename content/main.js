@@ -19,11 +19,14 @@ function main_r(sw) {
 		//offscreen : sw, //offscreenCanvas Use Select "use" or etc / default use
 		screen: [
 	//  { canvasId: "Layer0", resolution: { w: 1920, h: 1280 } },
-			{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//BGSurface / systemCanvas Resolution
-			{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//SPSurface
-        	{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//FGSurface
-       		{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//UISurface
-        	{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } } //Effect
+			{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//0:BGSurface / systemCanvas Resolution
+			{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//1:SPSurface
+        	{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//2:FGSurface
+       		{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//3:UISurface(FSP)
+        	{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//4:Effect(BUI)
+        	{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//5:(UI)
+        	{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } },//6:(EFFECT)
+        	{ resolution: { w: VIEW_WIDTH, h: VIEW_HEIGHT, x:OFFSET_X, y:OFFSET_Y } } //7:(MSG)
 		]
 	}
 

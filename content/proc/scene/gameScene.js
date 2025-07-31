@@ -8,12 +8,12 @@ function gameScene(state){
     //宣言部
     const dev = state.System.dev;
 
-	const work = dev.graphics[state.Constant.layer.SP];//1 SP
-    const work2 = dev.graphics[state.Constant.layer.BG];//0 BG
-    const work3 = dev.graphics[state.Constant.layer.UI];//3 UI
-    const forgroundBG = dev.graphics[state.Constant.layer.FG];//2 FG
+	const BG_layer = dev.graphics[state.Constant.layer.BG];//0 BG
+	const SP_layer = dev.graphics[state.Constant.layer.SP];//1 SP
+	const FG_layer = dev.graphics[state.Constant.layer.FG];//2 FG
+	const UI_layer = dev.graphics[state.Constant.layer.UI];//3 UI
 
-	work2.backgroundcolor = "black";
+	BG_layer.backgroundcolor = "black";
 
 	this.init = game_init;
 	this.reset = game_reset;
@@ -52,7 +52,7 @@ function gameScene(state){
 
 	function game_init(){
 
-		//obCtrl = new gObjectControl(work, state);//stateへ統合
+		//obCtrl = new gObjectControl(SP_layer, state);//stateへ統合
 		//mapsc = new mapSceControl();//stateへ統合(別Sceneでmap確認できるようにmapviewscene)
 
 		mapsc.init();
@@ -74,10 +74,10 @@ function gameScene(state){
 		dev.clearBGSP();
 		dev.resumeBGSP();
 
-		dev.graphics[3].setInterval(0);//UI
+		UI_layer.setInterval(0);//UI
 
-		work2.clear();
-	    work3.clear();
+		BG_layer.clear();
+	    UI_layer.clear();
 
 		//フロアチェンジ前の座標がSubmapが見たことにされる為、1度表示されて正しい座標に移動後から壁のlookfを有効にする。	
 		drawexecute = false;
@@ -110,7 +110,7 @@ function gameScene(state){
 	        mapsc.change(state.Game.nowstage);
 	        mapsc.reset(state.System.time()); //初期マップ展開
 
-	        dev.sound.change(0); //start music
+	        dev.sound.change(state.Constant.sound.START); //start music
 	        dev.sound.play();
 	    }
 
@@ -132,7 +132,7 @@ function gameScene(state){
 
 	        //mapsc.start(true); //マップ初期配置のものを展開する。
 
-			dev.sound.change(1); //normal bgm
+			dev.sound.change(state.Constant.sound.NORMAL_BGM); //normal bgm
 	        dev.sound.play();
 	    }
 
@@ -176,8 +176,8 @@ function gameScene(state){
 //	        if (mapsc.flame < 120000) {
 				let wsn = 1; //NormalBGM
 //				if (state.Game.nowstage%15 == 0) wsn = 16;//BattleBGM
-				if (obCtrl.rollcall("boss")) wsn = 16;//BattleBGM 
-				if (obCtrl.rollcall("timeover")) wsn = 3;//timeover sound 
+				if (obCtrl.rollcall("boss")) wsn = state.Constant.sound.BOSS;//BattleBGM 
+				if (obCtrl.rollcall("timeover")) wsn = state.Constant.sound.TIMEOVER;//timeover sound 
 	            dev.sound.change(wsn);
 //	        } else {
 //	            dev.sound.change(3);// timeover sound
@@ -189,7 +189,7 @@ function gameScene(state){
 		if ( sndcf && obCtrl.rollcall("warning")){
 			obCtrl.tutTable(3);//TIMEついて説明
 			//dev.sound.effect(2);
-			dev.sound.change(2);//dev.sound.change(2); //Warning sound
+			dev.sound.change(state.Constant.sound.WARNING);//dev.sound.change(2); //Warning sound
 	        if (obCtrl.rollcall("mayura")) dev.sound.play();
 	        //dev.sound.next(3);
 
@@ -234,7 +234,7 @@ function gameScene(state){
 				this.reset_enable = false;
 				mapsc.pauseOn(state.System.time());
 				
-				return 6;//pause
+				return state.Constant.scene.PAUSE;//pause
 	        }
 
 			/*
@@ -261,14 +261,14 @@ function gameScene(state){
 	                obCtrl.interrapt = false;
 	                obCtrl.SIGNAL = 0;
 
-	                obCtrl.draw(work2);
+	                obCtrl.draw(BG_layer);
 
 	                //scenechange = true;
 
-	                dev.sound.change(4);//Stageclear
+	                dev.sound.change(state.Constant.sound.STAGECLEAR);//Stageclear
 	                dev.sound.play();
 
-	                return 5; //result
+	                return state.Constant.scene.RESULT; //result
 	        }
 
 	        if (obCtrl.SIGNAL == state.Constant.signal.LVLUP) {//LevelUp要求
@@ -286,7 +286,7 @@ function gameScene(state){
 				this.reset_enable = false;
 				mapsc.pauseOn(state.System.time());
 
-				return 9; //Lvup
+				return state.Constant.scene.LEVELUP; //Lvup
 			}
 
 	        if (obCtrl.SIGNAL == state.Constant.signal.DEAD) {//リスターとシグナルが来た(自機が死んで3.0sec位あと）
@@ -304,7 +304,7 @@ function gameScene(state){
 
 	                mapsc.counterReset(state.System.time());
 
-					dev.sound.change(0); //normal bgm
+					dev.sound.change(state.Constant.sound.NORMAL_BGM); //normal bgm
 					dev.sound.play();
 
 	                sndcf = true;
@@ -317,7 +317,7 @@ function gameScene(state){
                     state.Result.obCount = obCtrl.obCount;
                     state.Result.total = obCtrl.total;
 
-                    obCtrl.draw(work2);
+                    obCtrl.draw(BG_layer);
 
                     //scenechange = true;
 
@@ -325,10 +325,10 @@ function gameScene(state){
                         localStorage.setItem("highscore", new String(state.Result.highscore));
                     }
 
-                    dev.sound.change(6); //gameover sound
+                    dev.sound.change(state.Constant.sound.GAMEOVER); //gameover sound
                     dev.sound.play();
 
-	                return 3; //gover
+	                return state.Constant.scene.GAMEOVER; //gover
 	            }
 	        }
 	    } else {　//not Interrapt
@@ -339,23 +339,23 @@ function gameScene(state){
 			//let wchk = false;
 			for (let i in obCtrl.item) {
 			//	
-				if (i == 21) {//extend
-					if (obCtrl.item[21] > 0) {
-						obCtrl.item[21] = 0;
+				if (i == state.Constant.item.EXTEND) {//extend
+					if (obCtrl.item[state.Constant.item.EXTEND] > 0) {
+						obCtrl.item[state.Constant.item.EXTEND] = 0;
 						dead_cnt--;
-						dev.sound.effect(11); //get音
+						dev.sound.effect(state.Constant.sound.GET); //get音
 					}
 				}
-				if (i == 26) {//lamp
-					if (obCtrl.item[26] > 0) {
-						obCtrl.item[26] = 0;
+				if (i == state.Constant.item.LAMP) {//lamp
+					if (obCtrl.item[state.Constant.item.LAMP] > 0) {
+						obCtrl.item[state.Constant.item.LAMP] = 0;
 						lampf = true;
 						//dev.sound.effect(9); //cursor音
 					}
 				}
-				if (i == 27) {//map
-					if (obCtrl.item[27] > 0) {
-						obCtrl.item[27] = 0;
+				if (i == state.Constant.item.MAP) {//map
+					if (obCtrl.item[state.Constant.item.MAP] > 0) {
+						obCtrl.item[state.Constant.item.MAP] = 0;
 						mapdisp = false; //falseで表示
 						//dev.sound.effect(9); //cursor音
 						for (let i in mapChip){
@@ -383,9 +383,9 @@ function gameScene(state){
 		debugDisp.colDraw(mapChip);
 		
         //==この↑は背景描画
-		obCtrl.drawShadow(work2);//objectのshadowを背景面に反映(work2:BG)
-	    obCtrl.draw(work);//work:SP
-	    obCtrl.draw(forgroundBG, true); //prioritySurface = true の物を別Screenに描画する処理(通常のDrawではパスされる。）
+		obCtrl.drawShadow(BG_layer);//objectのshadowを背景面に反映(BG_layer:BG)
+	    obCtrl.draw(SP_layer);//SP_layer:SP
+	    obCtrl.draw(FG_layer, true); //prioritySurface = true の物を別Screenに描画する処理(通常のDrawではパスされる。）
 
 		//if (state.Game.lamp) obCtrl.drawPoint(dev.graphics[4], state.Game.lamp);//rader UIDisp内MinimapDispで処理
 	    
@@ -400,7 +400,7 @@ function gameScene(state){
 		/*全体画面の背景表示は都度更新も随時更新もあまり負荷変らない為、随時更新で処理する。
 		if (!dev.gs.changestate) return;
 		
-		dev.graphics[0].reset(); //work2
+		dev.graphics[0].reset(); //BG_layer
 		dev.graphics[0].clear();
 
 		dev.graphics[2].reset(); //ForgroundBF
@@ -432,7 +432,7 @@ function gameScene(state){
 							shifty = Math.trunc((w.y - w.sy - dev.gs.viewheight/2) /24);
 
 							if (mc.no == 1){
-								forgroundBG.fill(
+								FG_layer.fill(
 									w.x + shiftx,
 									w.y + shifty,
 									mc.w, 
@@ -440,7 +440,7 @@ function gameScene(state){
 									obCtrl.ceilshadow
 								);
 							}else{
-								forgroundBG.putPattern(
+								FG_layer.putPattern(
 									tex_bg, bgData[mc.no], 
 									w.x + shiftx,// - Math.abs(shiftx)/2,
 									w.y + shifty,// - Math.abs(shifty)/2,
@@ -450,7 +450,7 @@ function gameScene(state){
 							}
 
 						} else {
-							work2.putPattern(
+							BG_layer.putPattern(
 								tex_bg, bgData[mc.no], 
 								w.x, 
 								w.y, 
@@ -458,7 +458,7 @@ function gameScene(state){
 							);
 						}
 						}
-						//work2.putchr(Number(mc.no).toString(), w.x, w.y);
+						//BG_layer.putchr(Number(mc.no).toString(), w.x, w.y);
 					} else {
 						let cl = {}
 						cl.x = w.x;
@@ -475,8 +475,8 @@ function gameScene(state){
 							device.stroke();
 						}
 
-						work2.putFunc(cl);
-						//work2.putchr(Number(mc.no).toString(), w.x, w.y);
+						BG_layer.putFunc(cl);
+						//BG_layer.putchr(Number(mc.no).toString(), w.x, w.y);
 					}
 				}
 			} else {
@@ -518,8 +518,8 @@ function gameScene(state){
 						//device.lineWidth = 1;
 						device.fillRect(this.x, this.y, this.w, this.h);
 					}
-					work2.putFunc(cl);
-					//work2.putchr(Number(mc.no).toString(), w.x, w.y);
+					BG_layer.putFunc(cl);
+					//BG_layer.putchr(Number(mc.no).toString(), w.x, w.y);
 					}
 				}
 			}

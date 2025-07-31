@@ -22,6 +22,8 @@ function sce_player( gObjc ) {
     let SHIELD_TIME = SHIELD_TIME_BASE;
     const TRIG_WAIT = 20;
 
+    const state = gObjc.state;
+
     let op = {
         ptr: 0,
         x: Array(40),
@@ -389,7 +391,7 @@ function sce_player( gObjc ) {
             if (o.shot == 0) {
                 o.shot = 1;
 
-                o.sound.effect(7); //スイング音
+                o.sound.effect(state.Constant.sound.SWING); //スイング音
                 o.triger = 15;
                 let t = o.vector;
                 o.vector = o.turlet.vector(); 
@@ -427,14 +429,14 @@ function sce_player( gObjc ) {
                     let w = o.itemstack.pop();
 
                     if (w == 23) {　//BOMB
-                        o.sound.effect(13);
+                        o.sound.effect(state.Constant.sound.BOMB);
                         o.bomb3(o.spec.INT*2);
                         o.set_object_ex(6, o.x, o.y, 0, 47); //Bomb爆発演出(赤)
                         o.item[23]--;
                     }
 
                     if (w == 24) {　//SHIELD
-                        o.sound.effect(10);
+                        o.sound.effect(state.Constant.sound.USE);
                         if (!o.gameState.player.barrier) o.before_hp = o.hp;
 
                         SHIELD_TIME = SHIELD_TIME_BASE + o.spec.VIT*30;
@@ -445,7 +447,7 @@ function sce_player( gObjc ) {
                     if (w == 25) {　//LIFE
                         let rhp = 3 + o.spec.MND;
 
-                        o.sound.effect(10);
+                        o.sound.effect(state.Constant.sound.USE);
                         if (o.frame <= SHIELD_TIME) {
                             o.before_hp += rhp;
                             o.maxhp++;
@@ -753,7 +755,7 @@ function sce_player( gObjc ) {
             if (!Boolean(o.item[1])) o.get_item(1);//魔法陣の説明
             //o.set_object_ex(20, o.x, o.y, 0, 43, "Lvup");
             //o.spec.ETC++;
-            o.sound.effect(14);
+            o.sound.effect(state.Constant.sound.LEVELUP);
             delay_st = o.alive;
             //o.SIGNAL(1709);//LVUP
             lvupf = true;
@@ -799,7 +801,7 @@ function sce_player( gObjc ) {
                 portalwarp.vy =  o.starty - o.y;
                 portalwarp.cnt = 0;
 
-                o.sound.effect(17);//jump音
+                o.sound.effect(state.Constant.sound.JUMP);//jump音
 
                 o.portalflag = false;
             }else{
@@ -881,8 +883,8 @@ function sce_player( gObjc ) {
             o.display_size = 1.3;
             o.change_sce("effect_bomb_x");//7
 
-            o.sound.change(5);
-            o.sound.play(5);
+            o.sound.change(state.Constant.sound.DEAD);
+            o.sound.play();
 
             o.superviser.ceildelay += 1500;//死亡時に部屋の明かりが消える時間を遅延
 

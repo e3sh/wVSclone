@@ -4,6 +4,7 @@
 //=============================================================
 function gObjectClass(obCtrl) {
     this.objCtrl = obCtrl;//ParentClass(ObjectControl)
+    this.state = obCtrl.state;
 
     this.x; 			// X座標
     this.y; 			// Y座標
@@ -362,6 +363,8 @@ gObjectClass.prototype = {
 
     sc_move : function()
     {
+        const state = this.state;
+
         const PLAYER=98, FRIEND = 0, BULLET_P= 1;
         const ENEMY = 2, BULLET_E=3;
         const ITEM  = 4, ETC    = 5;
@@ -373,7 +376,7 @@ gObjectClass.prototype = {
             switch (this.type) {//自身のタイプが...
             case BULLET_P : //自弾
             case BULLET_E : //敵弾
-                if (onst) this.sound.effect(12); //hit音
+                if (onst) this.sound.effect(state.Constant.sound.HIT); //hit音
                 this.change_sce("effect_vanish"); 
                 this.damageflag = false;
                 //↑ここで弾を消しているので削除すると弾が消えなくなる。2023/01/20消してしまってbugったので記録。
@@ -381,12 +384,12 @@ gObjectClass.prototype = {
             case ENEMY : //敵
                 //this.display_size *= 2; //爆発を大きくする
                 this.change_sce("effect_bomb_x");//7
-                if (onst) this.sound.effect(8); //爆発音 
+                if (onst) this.sound.effect(state.Constant.sound.DAMAGE); //爆発音 
                 
                 //this.pick[35] = Math.floor(Math.random() * 3) + 1;
                 for (let i = 0, loopend = Math.floor(Math.random() * 3) + 1; i < loopend; i++) {//Coin
                     //this.set_object_ex(35, this.x, this.y, Math.floor(Math.random() * 360), "item_movingstop");
-                    this.pick.push(35);//Coin
+                    this.pick.push(state.Constant.item.COIN);//Coin
                 }
                 //敵が拾ったアイテムを落とす。
                 let itemf = false;
@@ -415,7 +418,7 @@ gObjectClass.prototype = {
                         } 
                         if (this.crash.type == PLAYER) {//自分の場合
                             if ((this.chr != 21) && (this.chr != 22)) {//1up or Key
-                                this.sound.effect(9); //cursor音
+                                this.sound.effect(state.Constant.sound.CURSOR); //cursor音
                             }
                             this.get_item(this.chr, this.id);
                         }

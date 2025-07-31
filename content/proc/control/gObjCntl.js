@@ -11,6 +11,8 @@ function gObjectControl(scrn, state) {
     this.interrapt = false;
     this.SIGNAL = 0;
 
+    this.state = state;
+
     //以下はコンティニューでもリセット
     //ここらへんもStateGameに持たせるべきか？
 
@@ -909,7 +911,7 @@ function gObjectControl(scrn, state) {
             state.Game.player.stack.push({ch:num, id:0});
         }
 
-        dev.sound.effect(11); //get音
+        dev.sound.effect(state.Constant.sound.GET); //get音
 
         state.obUtil.messageconsole.write(this.itemTable[num] + ".GET");
     };

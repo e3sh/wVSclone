@@ -5,11 +5,11 @@ function sceneConfig(state) {
     const dev = state.System.dev;
 
     //宣言部
-    const work = dev.graphics[state.Constant.layer.UI];
-    const work2 = dev.graphics[state.Constant.layer.BUI];
+    const UI = dev.graphics[state.Constant.layer.UI];
+    const BUI = dev.graphics[state.Constant.layer.BUI];
 
     //let text = dev.text;
-    const text = dev.graphics[state.Constant.layer.FG]; 
+    const text = dev.graphics[state.Constant.layer.BUI]; 
 
     //let inp = dev.mouse_state;
     //const  keys = dev.key_state;
@@ -305,7 +305,7 @@ function sceneConfig(state) {
     m = new btn();
     m.setup("Exit.", 100, 360, 120, 16);
     m.msg = "Exit.";
-    m.jp = 2; //Return Scene
+    m.jp = state.Constant.scene.TITLE; //Return Scene
     m.func = function () {
         return this.jp;
     };
@@ -346,9 +346,9 @@ function sceneConfig(state) {
         wipecnt = 0;
         cur_cnt = 0;
 
-        work2.setBackgroundcolor("navy");
-        work2.reset();
-        work2.clear("navy");
+        BUI.setBackgroundcolor("navy");
+        BUI.reset();
+        BUI.clear("navy");
 
         for (i in w_number) {
             if (Boolean(w_number[i])) {
@@ -458,7 +458,7 @@ function sceneConfig(state) {
             }
             */
             if (keylock) {
-                dev.sound.effect(9);
+                dev.sound.effect(state.Constant.sound.CURSOR);
             }
         }
 
@@ -472,7 +472,7 @@ function sceneConfig(state) {
 
                     let n = menu[i].func();
                     if (n != 0) {
-                        work2.setBackgroundcolor("black");
+                        BUI.setBackgroundcolor("black");
                         return n;
                     }
                 }
@@ -545,7 +545,7 @@ function sceneConfig(state) {
         if (sndtst != w_number[4]) {
             if ((w_number[4] >= 0) && (w_number[4] <18)) {//Sound No 
                 dev.sound.change(Math.floor(w_number[4]));
-                dev.sound.play(0);
+                dev.sound.play();
             }
             sndtst = w_number[4];
         }
@@ -670,13 +670,13 @@ function sceneConfig(state) {
     function scene_draw() {
 
         for (let s in wtxt) {
-            //work.putchr(wtxt[s], 0, 60 + 16 * s);
-            work.kprint(wtxt[s], 0, 60 + 16 * s);
+            //UI.putchr(wtxt[s], 0, 60 + 16 * s);
+            UI.kprint(wtxt[s], 0, 60 + 16 * s);
         }
 
         for (let i in menu) {
             if (menu[i].lamp) {
-                work.fill(menu[i].x, menu[i].y, menu[i].w, menu[i].h,"orange" );
+                UI.fill(menu[i].x, menu[i].y, menu[i].w, menu[i].h,"orange" );
                 /*
                 let o = {}
                 o.x = menu[i].x;
@@ -688,17 +688,17 @@ function sceneConfig(state) {
                     device.fillStyle = "orange";
                     device.fillRect(this.x, this.y, this.w, this.h);
                 }
-                work.putFunc(o);
+                UI.putFunc(o);
                 */
             }
 
             if (menu[i].select) {
-                if (!menu[i].lamp) work.fill(menu[i].x - 10, menu[i].y-1 , menu[i].w, 8,"blue" );
-                //work.fill(menu[i].x - 4 -6 , menu[i].y - 1 , menu[i].title.length*6 + 12,8,"blue" );
-                work.kprint(menu[i].title, menu[i].x - 4, menu[i].y - 1);
+                if (!menu[i].lamp) UI.fill(menu[i].x - 10, menu[i].y-1 , menu[i].w, 8,"blue" );
+                //UI.fill(menu[i].x - 4 -6 , menu[i].y - 1 , menu[i].title.length*6 + 12,8,"blue" );
+                UI.kprint(menu[i].title, menu[i].x - 4, menu[i].y - 1);
             } else {
-                //if (!menu[i].lamp) work.fill(menu[i].x, menu[i].y, menu[i].w, menu[i].h,"black" );
-                work.kprint(menu[i].title, menu[i].x, menu[i].y);
+                //if (!menu[i].lamp) UI.fill(menu[i].x, menu[i].y, menu[i].w, menu[i].h,"black" );
+                UI.kprint(menu[i].title, menu[i].x, menu[i].y);
             }
         }
 

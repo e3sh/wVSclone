@@ -4,8 +4,8 @@ function sceneResult(state) {
     
     const dev = state.System.dev;
     //宣言部
-    const work = dev.graphics[state.Constant.layer.UI];//メニュー(最上面) UI
-    const work2 = dev.graphics[state.Constant.layer.BUI];//メイン描画面(FG)
+    const UI_layer = dev.graphics[state.Constant.layer.UI];//メニュー(最上面) UI
+    const BUI_layer = dev.graphics[state.Constant.layer.BUI];//メイン描画面(FG)
 	//let text = dev.text;
     //let text = dev.graphics[3];//文字表示面 UI
  
@@ -40,7 +40,7 @@ function sceneResult(state) {
         x: 320-80 ,y: 280 ,w: 120 ,h: 16,
         sel: false,
         func: function () {
-            return 11; //GameScene:1 + ContinueFlag:+10
+            return state.Constant.scene.MAIN + 10; //GameScene:1 + ContinueFlag:+10
         }
     };
     menu.push(m);
@@ -89,12 +89,12 @@ function sceneResult(state) {
         wipecnt = 2;
         ret_code = 0;
 
-        //        work2.clear();
+        //        BUI_layer.clear();
 
         let o = {};
 
-        o.cw = work2.cw;
-        o.ch = work2.ch;
+        o.cw = BUI_layer.cw;
+        o.ch = BUI_layer.ch;
 
         o.draw = function (device) {
 
@@ -113,11 +113,11 @@ function sceneResult(state) {
         //ゲーム画面の描画を停止(Flip/Drawを自動で実行するのを停止)
         //dev.graphics[0].setInterval(0);//BG
         //dev.graphics[1].setInterval(0);//SPRITE
-        //work2.setInterval(0);//<-dev.g2　FG
+        //BUI_layer.setInterval(0);//<-dev.g2　FG
         dev.pauseBGSP();
 
-        work2.putFunc(o);
-        work2.draw();
+        BUI_layer.putFunc(o);
+        BUI_layer.draw();
 
         let dpara = [
             { keynum:38, text:"up", icon:"Mayura1", func:nop , x:320-80, y:200, w:120, h:50, keyon:false }//upkey
@@ -265,7 +265,7 @@ function sceneResult(state) {
                     }
                 }
                 if (!soundf&&(state.Game.nowstage%15 == 0)) {
-                    dev.sound.effect(15);//Fanfare
+                    dev.sound.effect(state.Constant.sound.FANFARE);//Fanfare
                     state.obUtil.keyitem_reset();
                     soundf = true;
                 }
@@ -283,10 +283,10 @@ function sceneResult(state) {
 
             let o = {};
 
-            o.cw = work2.cw;
-            o.ch = work2.ch;
+            o.cw = BUI_layer.cw;
+            o.ch = BUI_layer.ch;
             o.y1 = wipecnt + 1;
-            o.y2 = work2.ch - wipecnt - 2; 
+            o.y2 = BUI_layer.ch - wipecnt - 2; 
 
             o.draw = function (device) {
 
@@ -306,16 +306,16 @@ function sceneResult(state) {
                 //    device.stroke();
                 device.stroke();
             }
-            work2.putFunc(o);
-            //state.obCtrl.keyitem_view_draw(work2);
+            BUI_layer.putFunc(o);
+            //state.obCtrl.keyitem_view_draw(BUI_layer);
 
-            work2.draw();
-            work2.reset();
+            BUI_layer.draw();
+            BUI_layer.reset();
 
             wipecnt += 3 * (60/(1000/state.System.deltaTime()));
 
-            //if (work2.ch / 2 - wipecnt < 0) { return ret_code; }
-            if (wipecnt > work2.ch/3) wipef = false;//return ret_code; }
+            //if (BUI_layer.ch / 2 - wipecnt < 0) { return ret_code; }
+            if (wipecnt > BUI_layer.ch/3) wipef = false;//return ret_code; }
         }
 
         for (i in menu) {
@@ -351,9 +351,9 @@ function sceneResult(state) {
 
     function scene_draw() {
 
-        let w = state.obUtil.player_objv(work);
-        work.fill(w.x-16,w.y-16,32,32,0);
-        state.obUtil.player_objv(work);
+        let w = state.obUtil.player_objv(UI_layer);
+        UI_layer.fill(w.x-16,w.y-16,32,32,0);
+        state.obUtil.player_objv(UI_layer);
 
         for (let i in menu) {
 
@@ -372,19 +372,19 @@ function sceneResult(state) {
                     device.fillStyle = this.c;
                     device.fillRect(this.x, this.y, this.w, this.h);
                 }
-                work.putFunc(o);
+                UI_layer.putFunc(o);
             }
 
-            work.putchr(menu[i].title, menu[i].x, menu[i].y);
+            UI_layer.putchr(menu[i].title, menu[i].x, menu[i].y);
 
         }
 
         for (let s in wtxt) {
             let ox = Math.trunc(wtxt[s].length*12)/2;
-            work.putchr(wtxt[s], 320-ox, 120 + 16 * s );
+            UI_layer.putchr(wtxt[s], 320-ox, 120 + 16 * s );
         }
 
-        diag.draw(work);
+        diag.draw(UI_layer);
         //表示
 
     }

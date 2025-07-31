@@ -4,7 +4,7 @@ function sceneOption(state) {
 
     const dev = state.System.dev;
     //宣言部
-    const work = dev.graphics[state.Constant.layer.UI];
+    const UI_layer = dev.graphics[state.Constant.layer.UI];
 
     //let keys = dev.key_state;
 
@@ -19,7 +19,7 @@ function sceneOption(state) {
 
     let mobvf = true;
 
-    let ret_code = 6; //scenePause
+    let ret_code = state.Constant.scene.PAUSE; //scenePause
     let retmf = false; //return mode false:pause true:gameS
 
     let sel = 0;
@@ -39,12 +39,12 @@ function sceneOption(state) {
 		//dev.graphics[2].setInterval(0);//FG
         dev.pauseBGSP();
 
-        work.setInterval(0);//UI
+        UI_layer.setInterval(0);//UI
 
         sel = 0;
         nowstage = state.Game.nowstage;
 
-        ret_code = 6; //scenePause
+        ret_code = state.Constant.scene.PAUSE; //scenePause
         retmf = false; //return mode false:pause true:gameS
     }
 
@@ -113,9 +113,9 @@ function sceneOption(state) {
         // select key function section
         if (zkey) {
 
-            work.reset();
-            work.clear();
-            work.draw();
+            UI_layer.reset();
+            UI_layer.clear();
+            UI_layer.draw();
 
             if (retmf){
                 //dev.graphics[0].setInterval(1);//BG　WORK2
@@ -194,7 +194,7 @@ function sceneOption(state) {
                 }
             }
             retmf = true;
-            ret_code = 2;// TITLE;
+            ret_code = state.Constant.scene.TITLE;// TITLE;
 
             if (s < 0) s = 0;
             nowstage = s;
@@ -205,8 +205,8 @@ function sceneOption(state) {
         for (let i in kstate){
             if (kstate[i]) s = s + "[" + i + "]";
         }
-        work.reset();
-        work.clear();
+        UI_layer.reset();
+        UI_layer.clear();
 
         let st = [];
         st.push("INPUT KEY:" + s);
@@ -221,23 +221,23 @@ function sceneOption(state) {
         //st.push("R: -//MAP_RESET" );
 
         for (let i in st){
-            work.kprint(st[i] ,0 ,0 + i*8 );
+            UI_layer.kprint(st[i] ,0 ,0 + i*8 );
         }
 
         mapDraw();
         if (mobvf) charDraw(sel);
         if (cmapdf) cmapDraw();
-        work.kprint("Stage:" + state.mapsc.chacheUseStatus() ,150 ,0);
-        work.kprint("Stage:" + nowstage ,150 ,8);
+        UI_layer.kprint("Stage:" + state.mapsc.chacheUseStatus() ,150 ,0);
+        UI_layer.kprint("Stage:" + nowstage ,150 ,8);
 
-        work.draw();
+        UI_layer.draw();
 
         return 0;
         //進行
     }
 
     function scene_draw() {
-        //work.reset();
+        //UI_layer.reset();
     }
 
         // drawPoint ==================================
@@ -290,14 +290,14 @@ function sceneOption(state) {
 
                 if ( i == sel) {
                     s = "  :[SELECT]";
-                    //work.fill(150 + o.x/8, o.y/8, 16, 16, "green");
+                    //UI_layer.fill(150 + o.x/8, o.y/8, 16, 16, "green");
                     z = 1.0;
                 }
 
-                work.put(c, x, y, 0,0,255, z);
-                work.kprint(s, x, y);
+                UI_layer.put(c, x, y, 0,0,255, z);
+                UI_layer.kprint(s, x, y);
 
-                work.put(c,
+                UI_layer.put(c,
                     150 + Math.floor(o.x/8), Math.floor(o.y/8),
                     0,0,255,
                     z);
@@ -310,7 +310,7 @@ function sceneOption(state) {
 
             for (let i in obj) {
                 let o = obj[i];
-                work.kprint("e" + o.ch, 150 + o.x/8, o.y/8);
+                UI_layer.kprint("e" + o.ch, 150 + o.x/8, o.y/8);
             }
                 */
             
@@ -332,7 +332,7 @@ function sceneOption(state) {
 
                 if (mc.visible) {
                 //    let c = ["dimgray", "steelblue", "orange"];
-                    work.fill(150 + mc.x/8, mc.y/8, mc.w/8-1, mc.h/8-1, c[mc.type -10]);
+                    UI_layer.fill(150 + mc.x/8, mc.y/8, mc.w/8-1, mc.h/8-1, c[mc.type -10]);
                 }
             }
         }
@@ -342,7 +342,7 @@ function sceneOption(state) {
 
             for (let i in cmap){ // xline
                 for (let j in cmap[i]){ //yline
-                    work.fill(150 + 12 + i*4, 12 + j*4, 3, 3, (cmap[i][j])?"blue":"darkblue");
+                    UI_layer.fill(150 + 12 + i*4, 12 + j*4, 3, 3, (cmap[i][j])?"blue":"darkblue");
                 }
             }
        } 

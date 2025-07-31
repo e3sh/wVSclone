@@ -4,8 +4,8 @@ function sceneTitle(state) {
 
     const dev = state.System.dev;
     //宣言部
-    const work = dev.graphics[state.Constant.layer.UI];
-    const work2 = dev.graphics[state.Constant.layer.BUI];
+    const UI_layer = dev.graphics[state.Constant.layer.UI];
+    const BUI_layer = dev.graphics[state.Constant.layer.BUI];
     //let ForgroundBG = dev.graphics[2];
 
     //let inp = dev.mouse_state;
@@ -36,7 +36,7 @@ function sceneTitle(state) {
 
     let menu = [];
     let mttl = ["NewGame", "LoadGame", "Config"];
-	let mjmp = [1, 11, 4];
+	let mjmp = [state.Constant.scene.MAIN, state.Constant.scene.MAIN+10, state.Constant.scene.CONFIG];
 
 	for (let i=0; i < mttl.length;i++){
 	    m = {};
@@ -98,8 +98,8 @@ function sceneTitle(state) {
         cur_cnt = 0;
         ret_code = 0;
 
-        work2.reset();
-        work2.clear("black");
+        BUI_layer.reset();
+        BUI_layer.clear("black");
         //ForgroundBG.clear();
         wtxt = [];
         
@@ -115,45 +115,45 @@ function sceneTitle(state) {
         const DSP_X = 320;
         const DSP_Y = 128;
           
-        work2.put("Mayura1",DSP_X -32 ,DSP_Y +40);
-        work2.put("Unyuu1", DSP_X -32     ,DSP_Y +72);
-        work2.put("Unyuu3", DSP_X -32 -32 ,DSP_Y +72);
+        BUI_layer.put("Mayura1",DSP_X -32 ,DSP_Y +40);
+        BUI_layer.put("Unyuu1", DSP_X -32     ,DSP_Y +72);
+        BUI_layer.put("Unyuu3", DSP_X -32 -32 ,DSP_Y +72);
         /*
-        work2.put("Spear", DSP_X - 132 + 0 -16, DSP_Y +72);
-        work2.put("Wand" , DSP_X - 132 +64 -16, DSP_Y +72);
-        work2.put("Axe"  , DSP_X - 132 +80 -16, DSP_Y +72);
-        work2.put("Boom" , DSP_X - 132 +96 -16, DSP_Y +72);
-        work2.put("Knife", DSP_X - 132 +112-16, DSP_Y +72);
-        work2.put("Bow"  , DSP_X - 132 +32 -16, DSP_Y +72);
+        BUI_layer.put("Spear", DSP_X - 132 + 0 -16, DSP_Y +72);
+        BUI_layer.put("Wand" , DSP_X - 132 +64 -16, DSP_Y +72);
+        BUI_layer.put("Axe"  , DSP_X - 132 +80 -16, DSP_Y +72);
+        BUI_layer.put("Boom" , DSP_X - 132 +96 -16, DSP_Y +72);
+        BUI_layer.put("Knife", DSP_X - 132 +112-16, DSP_Y +72);
+        BUI_layer.put("Bow"  , DSP_X - 132 +32 -16, DSP_Y +72);
 
-        work2.put("Ball1" , DSP_X - 100 + 0 -16, DSP_Y +104);
-        work2.put("BallB1", DSP_X - 100 + 16 - 16, DSP_Y +104);
-        work2.put("BallS1", DSP_X - 100 + 32 - 16, DSP_Y +104);
-        work2.put("BallL1", DSP_X - 100 + 48 - 16, DSP_Y +104);
-        work2.put("Lamp"  , DSP_X - 100 + 72 - 16, DSP_Y +104);
-        work2.put("Map"   , DSP_X - 100 + 96 - 16, DSP_Y +104);
+        BUI_layer.put("Ball1" , DSP_X - 100 + 0 -16, DSP_Y +104);
+        BUI_layer.put("BallB1", DSP_X - 100 + 16 - 16, DSP_Y +104);
+        BUI_layer.put("BallS1", DSP_X - 100 + 32 - 16, DSP_Y +104);
+        BUI_layer.put("BallL1", DSP_X - 100 + 48 - 16, DSP_Y +104);
+        BUI_layer.put("Lamp"  , DSP_X - 100 + 72 - 16, DSP_Y +104);
+        BUI_layer.put("Map"   , DSP_X - 100 + 96 - 16, DSP_Y +104);
         */
-        //work2.put("TrBox", 320 - 50 + 0 - 8, 304);
-        work2.put("Key"   , DSP_X - 50 + 16 , DSP_Y +104);
+        //BUI_layer.put("TrBox", 320 - 50 + 0 - 8, 304);
+        BUI_layer.put("Key"   , DSP_X - 50 + 16 , DSP_Y +104);
         
-        work2.putchr("Player", DSP_X, DSP_Y  + 40 );
-        work2.putchr("Enemy" , DSP_X, DSP_Y  + 72 );
+        BUI_layer.putchr("Player", DSP_X, DSP_Y  + 40 );
+        BUI_layer.putchr("Enemy" , DSP_X, DSP_Y  + 72 );
         
-        //work2.putchr("Weapon", DSP_X, DSP_Y  + 72 -8);
-        //work2.putchr("Item"  , DSP_X, DSP_Y  +104 -8);
-        work2.putchr("Key"   , DSP_X, DSP_Y  +100 );
+        //BUI_layer.putchr("Weapon", DSP_X, DSP_Y  + 72 -8);
+        //BUI_layer.putchr("Item"  , DSP_X, DSP_Y  +104 -8);
+        BUI_layer.putchr("Key"   , DSP_X, DSP_Y  +100 );
         
 
-        work2.put("TitleLogo", DSP_X, DSP_Y);
-        work2.kprint("土日ダンジョン　令和版",DSP_X +50, DSP_Y + 20)
+        BUI_layer.put("TitleLogo", DSP_X, DSP_Y);
+        BUI_layer.kprint("土日ダンジョン　令和版",DSP_X +50, DSP_Y + 20)
 
-        //work2.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
+        //BUI_layer.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
         
         for (let s in wtxt) {
-            //work2.putchr(wtxt[s], 0, DSP_Y  - 80 + 16 * s);        
+            //BUI_layer.putchr(wtxt[s], 0, DSP_Y  - 80 + 16 * s);        
         }
 
-        work2.draw();
+        BUI_layer.draw();
 
         if (state.Game.load() == 0) {
             menu[1].title = "LoadGame";
@@ -177,9 +177,9 @@ function sceneTitle(state) {
         if (res.load){
         let t = state.Game.dataview2(res);
             for (let i in t){
-                work2.kprint(t[i],8, i*8 + 8);
+                BUI_layer.kprint(t[i],8, i*8 + 8);
             }
-            work2.draw();
+            BUI_layer.draw();
         }
         //cnt = 0;
 
@@ -189,7 +189,7 @@ function sceneTitle(state) {
 
     function scene_step(g, input) {
 
-        work2.draw();
+        BUI_layer.draw();
 
         wtxt = [];
 
@@ -223,7 +223,7 @@ function sceneTitle(state) {
             }
 
             if (keylock) {
-                dev.sound.effect(9);
+                dev.sound.effect(state.Constant.sound.CURSOR);
             }
 
         }
@@ -257,10 +257,10 @@ function sceneTitle(state) {
             /*
             let o = {};
 
-            o.cw = work2.cw;
-            o.ch = work2.ch;
-            o.y1 = work2.ch / 2 - wipecnt
-            o.y2 = work2.ch / 2 + wipecnt
+            o.cw = BUI_layer.cw;
+            o.ch = BUI_layer.ch;
+            o.y1 = BUI_layer.ch / 2 - wipecnt
+            o.y2 = BUI_layer.ch / 2 + wipecnt
 
             o.draw = function (device) {
 
@@ -276,14 +276,14 @@ function sceneTitle(state) {
                 device.lineTo(this.cw, this.y2);
                 device.stroke();
             }
-            work2.putFunc(o);
+            BUI_layer.putFunc(o);
 
-            work2.draw();
-            work2.reset();
+            BUI_layer.draw();
+            BUI_layer.reset();
 
             wipecnt += 4;
 
-            if (work2.ch / 2 - wipecnt < 0) { return ret_code; }
+            if (BUI_layer.ch / 2 - wipecnt < 0) { return ret_code; }
             */
         }
 
@@ -322,12 +322,12 @@ function sceneTitle(state) {
                     device.fillStyle = "orange";
                     device.fillRect(this.x, this.y, this.w, this.h);
                 }
-                work.putFunc(o);
+                UI_layer.putFunc(o);
 
-                work.putchr(menu[i].title, menu[i].x - 4, menu[i].y -1);
+                UI_layer.putchr(menu[i].title, menu[i].x - 4, menu[i].y -1);
 
             } else {
-                work.putchr(menu[i].title, menu[i].x - 4, menu[i].y -1);    
+                UI_layer.putchr(menu[i].title, menu[i].x - 4, menu[i].y -1);    
             }
         }
 
@@ -337,14 +337,14 @@ function sceneTitle(state) {
             }else{
                 psel.x -= 6;
             }
-            work.put("Unyuu3", psel.x, DSP_Y +40 +16);
+            UI_layer.put("Unyuu3", psel.x, DSP_Y +40 +16);
         }else{
             psel.x = 0;
         }
 
         if (state.System.blink()){ 
             //if (bvf) 
-            work.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 270);
+            UI_layer.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 270);
         }
         //表示
     }
