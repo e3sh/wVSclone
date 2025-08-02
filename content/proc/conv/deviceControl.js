@@ -38,16 +38,19 @@ function deviceControl( g ){
         dsp[0].setInterval(0);
         dsp[1].setInterval(0);
         dsp[2].setInterval(0);
+        dsp[3].setInterval(0);//BUI pause 
     }
     this.resumeBGSP = function(){
         dsp[0].setInterval(1);
         dsp[1].setInterval(1);
         dsp[2].setInterval(1);
+        dsp[3].setInterval(1);//BUI resume
     }
     this.clearBGSP = function(){
         dsp[0].reset(); dsp[0].clear(); dsp[0].draw();//BG　WORK2
 		dsp[1].reset(); dsp[1].clear(); dsp[1].draw();//SPRITE
 		dsp[2].reset(); dsp[2].clear(); dsp[2].draw();//FG
+		dsp[3].reset(); dsp[3].clear(); dsp[3].draw();//BUI
     }
     
     this.kanji = new fontPrintControl(

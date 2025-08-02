@@ -114,10 +114,35 @@ function gObjectUtility(state) {
             //let s = "" + o.type + "," + Math.trunc(o.x) + "," + Math.trunc(o.y) + ","  + o.status + "," + o.mp;
             //type, inview, hp, status,mp,chr
             let n = "   "+String(i);
-            let s = n.substring(n.length-3) + ":" + o.type + "," + inv + "," + o.hp + ","  + o.status + "," + o.mp + "," +o.chr;
-            
+            //let s = n.substring(n.length-3) + ":" + o.type + "," + inv + "," + o.hp + ","  + o.status + "," + o.mp + "," + o.chr;
+            let s = n.substring(n.length-3) + inv + ch_ptn[o.chr].comment + "," + o.hp + "," + o.status;
+
             st[i] = s;
             //st.push(s);
+        }        
+        return st;
+    }
+
+    this.list_inview = function(){
+
+        let st = [];
+        const obj = state.obCtrl.objList;
+
+        let t = "DISPLAY SPRITE OBJECTS/";
+        st.push(t);
+
+        // type ,x ,y ,status, mp
+        for (let i in obj) {
+            let o = obj[i];
+            if (o.normal_draw_enable || o.custom_draw_enable){
+                if (o.gt.in_view(o.x, o.y)){
+                    let n = "   "+String(i);
+                    //let s = n.substring(n.length-3) + ":" + o.type + "," + ch_ptn[o.chr].comment + "," + o.hp + ","  + o.status + "," + o.mp + ",";
+                    let s = n.substring(n.length-3) + ":" + ch_ptn[o.chr].comment;
+
+                    st.push(s);
+                } 
+            }
         }        
         return st;
     }
@@ -177,6 +202,10 @@ function gObjectUtility(state) {
                     o.display_size
                 );
                 result = true;
+
+                if (!o.normal_draw_enable){
+                    scrn.putchr8("[DUMMY]", x-28, y+16);
+                }
             }
         }
 

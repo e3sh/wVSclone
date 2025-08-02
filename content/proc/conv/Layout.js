@@ -33,6 +33,11 @@ function gameLayout() {
         y: DSP_SP_Y + 150
     }
 
+    this.debugspriteobject ={
+        x: DSP_SP_X + 160,
+        y: DSP_SP_Y + 0
+    }
+
     // Zanki
     this.zanki = {
         x: DSP_SP_X + 20,

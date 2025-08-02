@@ -472,7 +472,7 @@ function sceneConfig(state) {
 
                     let n = menu[i].func();
                     if (n != 0) {
-                        BUI.setBackgroundcolor("black");
+                        BUI.setBackgroundcolor("");
                         return n;
                     }
                 }

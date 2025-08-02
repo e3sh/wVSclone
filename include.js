@@ -65,6 +65,7 @@ let w = [
 //処理部
  "content/proc/control/gObjCntl.js",
  "content/proc/control/gObjCmdc.js",
+ "content/proc/control/gObjUtil.js",
  "content/proc/class/gObjClass.js",
  "content/proc/control/mapSceCntl.js",
  "content/proc/control/sceneControl.js",
@@ -87,13 +88,12 @@ let w = [
  "content/proc/state/stateSystem.js", 
  "content/proc/state/stateGame.js",
  "content/proc/control/stateControl.js",
- "content/proc/gObjUtil.js",
  "content/proc/CL4TreeM.js",
 //tasks
  "content/MainLoopTask.js",
  "system/proc/task/GameTask.js",
 //patch(coremin更新せずに追加変更を反映)
-// "system/proc/offScreenTypeC.js",
+ "system/proc/offScreenTypeC.js",
 
  //メイン
  "content/main.js"

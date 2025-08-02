@@ -81,6 +81,13 @@ function gameSceneUI_debug(state){
 				UI.fill(dev.layout.items.x + i * 3 + 16, dev.layout.items.y, 2, 2, wcol[w]);
 			}
 		}
+
+		if (state.Config.debug) {
+			wtxt = state.obUtil.list_inview();
+			if (state.Config.viewlog) for (let s in wtxt) MSG.kprint(wtxt[s], dev.layout.debugspriteobject.x, dev.layout.debugspriteobject.y + 8 * s);
+			//if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+		}
+
 	}
 
 	function BGDraw(mapChip) {

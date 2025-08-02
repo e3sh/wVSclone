@@ -33,7 +33,7 @@ context.drawImage(offscreenCanvas, 0, 0);
     //element.height = h;
 
     let efcnt = 0; //CallFunctionCount(Debug)
-    let efmax = 0; //(Reserve)
+    let efmax = 0; //CountMax(Debug) 
     
     let device = element.getContext("2d");
 
@@ -296,6 +296,8 @@ context.drawImage(offscreenCanvas, 0, 0);
     //----------------------------------------------------------
     this.max = function () {
         //dummy
+        if (efcnt > efmax) efmax = efcnt;
+
         return efmax;
     }
 

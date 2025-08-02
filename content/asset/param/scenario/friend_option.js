@@ -34,6 +34,9 @@ function sce_friend_option(mode) {
         o.type = 5; //　その他
         o.frame = 0;
 
+        o.chr = 99; //option
+        o.mp = 26; //Dummy(Ball) normal_draw_disable; 
+
         o.autotrig = 10;//AutoWeapon wait counter
         o.autoshot = 0;//Autowapon trig ok:0 ng:1
 

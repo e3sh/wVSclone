@@ -22,10 +22,10 @@ function ConstantData(){
         SP:1,
         FG:2,
         FSP:2,
-        BUI:2,
-        UI:3,
-        EFFECT:4,
-        MSG:4 //(screen.length-1)
+        BUI:3,
+        UI:4,
+        EFFECT:5,
+        MSG:6 //(screen.length-1)
     }
 
     this.signal = {
@@ -83,26 +83,24 @@ function ConstantData(){
 
     this.DEBUGMODE_ENABLE = true;//false;
 }
+//BG:0 SP:1 FG:2 FSP:2 BUI:3 UI:4 EFFECT:5 MSG:6
 
-//now  BG:0 SP:1 FG:2 FSP:2 BUI:2 UI:3 EFFECT:4 MSG:4
-//next BG:0 SP:1 FG:2 FSP:2 BUI:3 UI:4 EFFECT:5 MSG:6
-
-//task_Debug 4 MSG
-//task_Load 4 MSG
-//task_Device 4 MSG
+//task_Debug    MSG
+//task_Load     MSG
+//task_Devic    MSG
 
 //task_main 
-// sceneControl 4 EFFECT
-// gameScene 0 1 2 3 BG SP FG UI
-// _UIdebug 0:BGcollision 2:debugtext 3:itemstacklist BG UI MSG 
-// _UIminimap 3:map 4:point UI EFFECT
-// _UIstateinv 2:tcw 3 4:point/blink/hpbar BUI UI EFFECT
-// sceneCongig 0 2 3 BUI UI
-// sceneGover 2 3 BUI UI
-// sceneLvUp 2 3 BUI UI
-// sceneOption 3 UI
-// scenePause 3 UI
-// sceneResult 2 3 BUI UI
-// sceneStatusDisp 3 UI
-// sceneTitle 0 3 BUI UI
+// sceneControl     EFFECT
+// gameScene        BG SP FG UI
+// _UIdebug         BG BUI UI MSG 
+// _UIminimap       UI EFFECT
+// _UIstateinv      BUI UI EFFECT
+// sceneCongig      BUI UI
+// sceneGover       BUI UI
+// sceneLvUp        BUI UI
+// sceneOption      UI
+// scenePause       UI
+// sceneResult      BUI UI
+// sceneStatusDisp  UI
+// sceneTitle       BUI UI
 

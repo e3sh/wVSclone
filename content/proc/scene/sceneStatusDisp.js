@@ -49,7 +49,8 @@ function sceneStatusDisp(state) {
         UI_layer.reset();
         UI_layer.clear();
 
-        UI_layer.putchr8(s, 0,0 );
+        //UI_layer.putchr8(s, 0,0 );
+        UI_layer.kprint(s, 0,0 );
         for (let i in st){
 
             if (i >= (page-1)*200){
@@ -57,13 +58,14 @@ function sceneStatusDisp(state) {
                 let x = Math.floor(c/50)*160;
                 let y = (c%50)*8+8;
                 //UI_layer.putchr8(s ,x ,y );
+                UI_layer.kprint(s ,x ,y );
                 if (invt) {
                     if (state.obUtil.lookpick(UI_layer, i, x + 48+8, y)){
-                        s = s.substring(0, 6);
+                        s = s.substring(0, 8);
                     }
                 }
                 if (i != sel){
-                    UI_layer.putchr8(s ,x ,y );
+                    //UI_layer.putchr8(s ,x ,y );
                 }else{
                     //UI_layer.putchr("["+st[(page-1)*200 + i%200]+"]",Math.floor(c/50)*160,(c%50)*8+8);
                     //UI_layer.putchr8c(s,x ,y ,2 );
@@ -78,17 +80,18 @@ function sceneStatusDisp(state) {
                         device.beginPath();
                         device.fillStyle = "navy";
                         device.lineWidth = 1;
-                        device.fillRect(this.x, this.y, this.l*8, 8);
+                        device.fillRect(this.x, this.y, this.l*6, 8);
                         device.stroke();
             
                         device.beginPath();
                         device.strokeStyle = "white"; 
                         device.lineWidth = 1;
-                        device.rect(this.x, this.y, this.l*8, 8);
+                        device.rect(this.x, this.y, this.l*6, 8);
                         device.stroke();
                     }
                     UI_layer.putFunc(bar);
-                    UI_layer.putchr8c(s,x ,y ,2 );
+                    //UI_layer.putchr8c(s,x ,y ,2 );
+                    UI_layer.kprint(s, x ,y);
                 }
                 c++;
                 if (c>200) break;

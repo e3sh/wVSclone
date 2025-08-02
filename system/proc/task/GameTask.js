@@ -21,6 +21,9 @@ class GameTask_Debug extends GameTask {
 
     draw(g){
         const SC_NUM = g.screen.length;
+
+        const dsp_x = 280;
+        const dsp_y = 320;
         
         let st;  
         let r = g.fpsload.result();
@@ -38,13 +41,12 @@ class GameTask_Debug extends GameTask {
             ws = String(g.time()).substring(0, 10);
             sl.push("run(ms):" + ws);   
 
-            this.fontsc.useScreen(4);
             for(let i=0; i < sl.length; i++){
-                this.fontsc.putchr(sl[i], 320, 320+ i*8);
+                this.fontsc.putchr(sl[i], dsp_x, dsp_y+ i*8);
             }
 
             sl = [];
-            sl.push("sc(intv)bgcolor");  
+            sl.push("sc(i)bgCol/max/cnt");  
 
             st = "";
             for (let i=0 ; i < SC_NUM ;i++){
@@ -52,14 +54,14 @@ class GameTask_Debug extends GameTask {
             st = " " + i + "(" 
             + g.screen[i].getInterval() + ")" 
             + g.screen[i].getBackgroundcolor() + "/"
-            //+ g.screen[i].max() + "/" 
-            //+ g.screen[i].count()
+            + g.screen[i].max() + "/" 
+            + g.screen[i].count()
             ; 
             sl.push(st);
             }
 
             for(let i=0; i < sl.length; i++){
-                this.fontsc.putchr(sl[i], 480, 320+ i*8);
+                this.fontsc.putchr(sl[i], dsp_x+120, dsp_y+ i*8);
             }
         }
     }
@@ -277,7 +279,6 @@ class GameTask_Device extends GameTask {
 
         const s = new ConstantData();
         const MSG = s.layer.MSG;
-;
         this.scrn = g.screen[MSG];
         g.font[USEFONT].useScreen(MSG);
         this.fontsc =  g.font[USEFONT];

@@ -38,7 +38,7 @@ function sceneLvUp(state) { //2024/03/06
 
         ret_code = 0;
 
-        BUI_layer.clear();
+        //BUI_layer.clear();
 
         let o = {};
 

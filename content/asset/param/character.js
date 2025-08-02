@@ -34,33 +34,33 @@ function character(){
 	[ 0, 1, 10, PLAYER	, 16, 16, 24, 16, 0, 0,"Player"],
 
 //自弾
-	[6, 26,  8, BULLET_P, 16, 16, 16, 16, "common_vset6"			, 0,"自弾"],
-	[7, 26,  8, BULLET_P, 16, 16, 16, 16, "pl_bullet_rotate_circle"	, 0,"自弾"],
-	[11, 7,  8, BULLET_P, 16, 16, 32, 32, 18						, 0,"誘爆用ダメージ（敵機のダメージ用）"],
+	[6, 26,  8, BULLET_P, 16, 16, 16, 16, "common_vset6"			, 0,"pBullet1"],
+	[7, 26,  8, BULLET_P, 16, 16, 16, 16, "pl_bullet_rotate_circle"	, 0,"pBullet2"],
+	[11, 7,  8, BULLET_P, 16, 16, 32, 32, 18						, 0,"(Damege)"],
 
 //武器動作(Player用)
-	[10, 42, 2, BULLET_P, 8, 24, 32, 32, "friend_rotate"	, 0,"支援機(sword)"],
-	[36, 35, 2, BULLET_P, 8, 24, 48, 48, "friend_straight"	, 0,"支援機2(Spear)"],
+	[10, 42, 2, BULLET_P, 8, 24, 32, 32, "friend_rotate"	, 0,"(sword)"],
+	[36, 35, 2, BULLET_P, 8, 24, 48, 48, "friend_straight"	, 0,"(Spear)"],
 	[37, 36, 1, BULLET_P, 8,  8, 16, 16, 20//pl_bullet_horming "friend_boom"		
-	, 0,"支援機3(Boom)"],
-	[38, 40, 3, BULLET_P, 16, 8, 24, 24, "friend_rotate_full",0,"支援機4(axe)"],
-	[39, 41, 1, BULLET_P, 8, 16, 24, 24, "friend_rotate"	, 0,"支援機5(wand)"],
+	, 0,"(Boom)"],
+	[38, 40, 3, BULLET_P, 16, 8, 24, 24, "friend_rotate_full",0,"(axe)"],
+	[39, 41, 1, BULLET_P, 8, 16, 24, 24, "friend_rotate"	, 0,"(wand)"],
 
 //敵
-	[ 1, 4,  8,	ENEMY	, 16, 16, 24, 16, 0, 10,"通常"],
+	[ 1, 4,  8,	ENEMY	, 16, 16, 24, 16, 0, 10,"Normal"],
 	[14, 4, 90, ENEMY	, 16, 16, 24, 24, 0, 50,"Boss_?", true],
-    [30, 7,  1, BULLET_E,  8,  8,  6,  6,33,  0,"全方位弾ボス"],
-	[33,31,240, ENEMY	, 16, 16, 24, 24, 0, 10,"timeover"],
-    [34, 4,120, ENEMY	, 16, 16, 32, 32, 0, 30,"enemy boss x", true],
+    [30, 7,  1, BULLET_E,  8,  8,  6,  6,33,  0,"AllrangeBoss"],
+	[33,31,240, ENEMY	, 16, 16, 24, 24, 0, 10,"TimeOver"],
+    [34, 4,120, ENEMY	, 16, 16, 32, 32, 0, 30,"Boss X", true],
 
 //敵弾
-	[ 2, 7, 1, BULLET_E	, 4, 4,  6,  6, 4,  0,""],
-	[ 3, 7, 2, BULLET_E	, 4, 4,  6,  6, 4,  0,""],
-	[ 4, 7, 4, ENEMY	, 4, 4,  6,  6,14, 10,""],
-	[ 5, 7, 1, BULLET_E	, 4, 4,  6,  6, 4,  0,""],
-	[ 8,46, 1, BULLET_E	, 4, 4,  6,  6, "en_bullet_homing", 0,""],
-	[12, 7, 1, BULLET_E	, 4, 4,  6,  6,18,  0,"ランダム弾"],
-	[32, 7, 5, BULLET_E	, 8, 8, 16, 16,49,  0,"敵誘導Laser用"],
+	[ 2, 7, 1, BULLET_E	, 4, 4,  6,  6, 4,  0,"eBullet1"],
+	[ 3, 7, 2, BULLET_E	, 4, 4,  6,  6, 4,  0,"eBullet2"],
+	[ 4, 7, 4, ENEMY	, 4, 4,  6,  6,14, 10,"eBullet?"],
+	[ 5, 7, 1, BULLET_E	, 4, 4,  6,  6, 4,  0,"eBullet3"],
+	[ 8,46, 1, BULLET_E	, 4, 4,  6,  6, "en_bullet_homing", 0,"hormingBullet"],
+	[12, 7, 1, BULLET_E	, 4, 4,  6,  6,18,  0,"RandamBullet"],
+	[32, 7, 5, BULLET_E	, 8, 8, 16, 16,49,  0,"HormingLaser"],
 
 //武器動作(敵用)
 	[41, 42, 2, BULLET_E,  8, 24, 16, 16, "friend_rotate"		, 0,"(sword)"],
@@ -83,8 +83,8 @@ function character(){
 	[25, 30, 1, ITEM	,  8, 8,  16, 16, 30,   8,"(L)"],
 	[26, 33, 1, ITEM	, 12, 12, 24, 24, 30,  10,"Lamp"	,true],
 	[27, 34, 1, ITEM	, 12, 12, 24, 24, 30,  10,"Map"		,true],
-	[35, 32, 1, ITEM	,  8, 8,  16, 16, 30,  10,"[o]コイン"],
-	[40, 39, 1, ENEMY	, 12, 12, 24, 24, 30, 100,"宝箱"],
+	[35, 32, 1, ITEM	,  8, 8,  16, 16, 30,  10,"Coin"],
+	[40, 39, 1, ENEMY	, 12, 12, 24, 24, 30, 100,"TresureBox"],
 
 	//ch_ptn:map/ 0-12:use,13:free,14-27:use,28-29:free,30:use,31:free,32-50:use,51-99:free,100:use,101-102:free,103:use,
 	//46-50 
@@ -102,11 +102,13 @@ function character(){
 	[57, 56, 1, ITEM	, 12, 12, 24, 24, 30, 100,"RingB"	,true],
 	[58, 57, 1, ITEM	, 12, 12, 24, 24, 30, 100,"Mirror"	,true],
 
+	//option chr_ptn(mp dummy)
+	[99, 26, 1, ETC		, 8, 8, 16, 16, 30, 0,"Option"],
 	//InformationCursor処理用
-	[100, 45, 1, ETC	, 8, 8, 16, 16, "effect_informationCursor", 0,"InformationCursor"],
+	[100, 45, 1, ETC	, 8, 8, 16, 16, "effect_informationCursor", 0,"InfoCursor"],
 
 //以下ExtEventの処理用//今の運用では使用しない方法でも同様なことはできる為、過去互換用
-	[103, 8, 1, BULLET_E, 8, 8, 6, 6, 103,  0,"5Wayで使用されている様子"],
+	[103, 8, 1, BULLET_E, 8, 8, 6, 6, 103,  0,"5Way"],
 //Dummy
 	[  9,11, 1,	  ITEM, 16, 8, 32, 16,  4,100,"Dummy"]
     ];
