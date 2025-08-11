@@ -343,6 +343,7 @@ function gameScene(state){
 					if (obCtrl.item[state.Constant.item.EXTEND] > 0) {
 						obCtrl.item[state.Constant.item.EXTEND] = 0;
 						dead_cnt--;
+						state.Game.player.zanki = 2 - dead_cnt;
 						dev.sound.effect(state.Constant.sound.GET); //get音
 					}
 				}
