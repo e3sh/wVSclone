@@ -1,0 +1,13 @@
+electron-app
+
+cmd> cd <targetDirectory>
+
+cmd> npm init -y
+cmd> npm install -D electron
+
+-> package.json entrypoint filename rewrite main: boot.js
+
+-> run
+cmd> npx electron .
+
+->package

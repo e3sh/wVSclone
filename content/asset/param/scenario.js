@@ -218,17 +218,8 @@ function scenario( gObjc) {
     sc_init["friend_rotate"] = w.init;
     sc_move["friend_rotate"] = w.move;
 
-    //　味方（支援機）の発進
-    //-----------------------------------------------------------------------
-    w = new sce_friend_start();
-
-    sc_init[17] = w.init;
-    sc_move[17] = w.move;
-
-    //alias
-    sc_init["friend_start"] = w.init;
-    sc_move["friend_start"] = w.move;
-
+    // [17] blank
+    
     //　ランダムでのばら撒き弾(出現後ランダム左右50度に角度を変える。
     //-----------------------------------------------------------------------
     w = new sce_en_bullet_random();
@@ -263,19 +254,7 @@ function scenario( gObjc) {
     sc_init["pl_bullet_homing"] = w.init;
     sc_move["pl_bullet_homing"] = w.move;
 
-    //自機ホーミング弾Ver.2を使用(横からでてから前に飛ぶ）
-
-    //支援機の動作２
-    //-----------------------------------------------------------------------
-    w = new sce_friend_sidearm();
-    
-    //現在未使用(2024/03/14)
-    sc_init[21] = w.init;
-    sc_move[21] = w.move;
-
-    //alias
-    sc_init["friend_sidearm"] = w.init;
-    sc_move["friend_sidearm"] = w.move;
+    //[22] blank
 
     // vset 0 
     //-----------------------------------------------------------------------

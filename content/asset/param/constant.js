@@ -1,6 +1,6 @@
 function ConstantData(){
 
-    this.objtype = {
+    this.objtype = Object.freeze({
         // mob    
         PLAYER:98,  FRIEND:0,   BULLET_P:1, 
         ENEMY:2,    BULLET_E:3,
@@ -15,9 +15,9 @@ function ConstantData(){
         CEIL:13, 
         CIRCLE:14, 
         STONEB:16
-    }
+    });
 
-    this.layer = {
+    this.layer = Object.freeze({
         BG:0, 
         SP:1,
         FG:2,
@@ -26,17 +26,17 @@ function ConstantData(){
         UI:4,
         EFFECT:5,
         MSG:6 //(screen.length-1)
-    }
+    });
 
-    this.signal = {
+    this.signal = Object.freeze({
         PAUSE: 1,
         RESULT: 835,
         LVLUP: 1709,
         DEAD: 4649,
         BOSS: 6055
-    }
+    });
 
-    this.scene = {
+    this.scene = Object.freeze({
         MAIN: 1,        
         TITLE: 2,
         GAMEOVER: 3,
@@ -46,9 +46,9 @@ function ConstantData(){
         STATUS: 7,
         OPTION: 8,
         LEVELUP: 9
-    }
+    });
 
-    this.item = {
+    this.item = Object.freeze({
         BALL: 20,
         COIN: 35,
         KEY: 22,
@@ -58,9 +58,9 @@ function ConstantData(){
         EXTEND: 21,
         LAMP: 26,
         MAP: 27         
-    }
+    });
 
-    this.sound = {
+    this.sound = Object.freeze({
         START: 0,
         NORMAL_BGM: 1,
         TIMEOVER: 3,
@@ -79,7 +79,7 @@ function ConstantData(){
         DAMAGE: 8,
         CURSOR: 9,
         FANFARE: 15
-    }
+    });
 
     this.DEBUGMODE_ENABLE = true;//false;
 }
