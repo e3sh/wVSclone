@@ -40,6 +40,7 @@ function main_r(sw) {
 	game.task.add(new GameTask_Debug("debug"));
 	game.task.add(new GameTask_Device("device"));
 
+	//game.screen[0].setBackgroundcolor("red");
 	game.run();
 }
 

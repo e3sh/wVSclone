@@ -23,8 +23,11 @@ let w = [
     "system/proc/func/fontPrintControl.js",
     "system/proc/task/GameTaskClass.js",
     */
+    //Content Security Policy directive: "script-src 'self'" Under 2Line NG 
     //"https://e3sh.github.io/WebGameCoreSystem/coremin.js",
-    "system/coremin.js",
+    //"https://e3sh.github.io/WebGameCoreSystem/gamecore.js",
+    //"system/coremin.js",
+    "system/gamecore.js",
  //画面表示や入力関係処理部(compatible-convert)
  "content/proc/conv/deviceControl.js",
  "content/proc/conv/screen.js",
@@ -61,7 +64,7 @@ let w = [
  "content/asset/param/scenario/exevent.js",
  "content/asset/param/tutorialCommentTable.js",
 //イメージ、サウンドアセット
- "content/GameAssetManager.js",
+ "content/GameAssetSetup.js",
 //処理部
  "content/proc/control/gObjCntl.js",
  "content/proc/control/gObjCmdc.js",
@@ -93,7 +96,6 @@ let w = [
  "content/MainLoopTask.js",
  "system/proc/task/GameTask.js",
 //patch(coremin更新せずに追加変更を反映)
- "system/proc/offScreenTypeC.js",
 
  //メイン
  "content/main.js"

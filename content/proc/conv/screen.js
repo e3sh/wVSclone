@@ -4,29 +4,39 @@
 //=============================================================
 function Screen(g,num) {//g.screen（DisplayControll）[num]
 
-    let scrn = g.screen[num];
-    //document.getElementById("console").innerHTML = g.asset.Image;
-    //キャラクタパターンテクスチャー
-    //let tex_p = g.asset.image["SPGraph"].img;
+    const scrn = g.screen[num];
 
-    this.cw = scrn.cw;
-    this.ch = scrn.ch;
-    
-    let fcolor = ["8x8white", "8x8red", "8x8green", "8x8blue", "stfont"];
+    const cw = scrn.cw;
+    const ch = scrn.ch;
 
-    let sp_ptn = spdata();
+    const fcolor = ["8x8white", "8x8red", "8x8green", "8x8blue", "stfont"];
+    const sp_ptn = spdata();
 
-    this.view = scrn.view;
-    this.flip = scrn.flip;
+    const flip = scrn.flip;
+    const view = scrn.view;
+
+    this.cw = cw;
+    this.ch = ch;
+
+    this.view = view;
+    this.flip = flip;
 
     //this.interval = scrn.interval; // 自動更新での更新間隔(0:自動更新なし　1:毎回　2～:間隔)
     //this.backgroundcolor = scrn.backgroundcolor; //defaultBackgroundcolor;
 
-    this.setInterval = scrn.setInterval;
-    this.setBackgroundcolor = scrn.setBackgroundcolor;
+    const setI = scrn.setInterval;
+    const setBgc = scrn.setBackgroundcolor;
 
-    this.getInterval = scrn.getIntarval;
-    this.getBackgroundcolor = scrn.getBackgroundcolor;
+    const getI = scrn.getIntarval;
+    const getBgc = scrn.getBackgroundcolor;
+
+    this.setInterval = setI;
+    this.setBackgroundcolor = setBgc;
+
+    this.getInterval = getI;
+    this.getBackgroundcolor = getBgc;
+
+    this.baseDcc = scrn; //gameCore.screen(SelectLayerobject)
 
     //-------------------------------------------------------------
     ///スプライト描画
@@ -148,6 +158,7 @@ function Screen(g,num) {//g.screen（DisplayControll）[num]
     }
     //-------------------------------------------------------------
     this.putPattern = scrn.putPattern;
+    //this.print = (...values)=>{ console.log("a"+ this ); scrn.print(...values); };
     this.print = scrn.print;
     this.putImage = scrn.putImage;
     this.putImage2 = scrn.drawImgXYWH;
