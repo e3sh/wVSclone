@@ -61,6 +61,18 @@ function SpfontSetup(game){
 
 	return;
 
+	/**
+	 * 
+	 * @param {number} sx 
+	 * @param {number} sy 
+	 * @param {number} sw 
+	 * @param {number} sh 
+	 * @returns {FontPtnArray} SpFontPatternArray
+	 * @description
+	 * スプライトフォントのパターンを、指定された開始位置とサイズで<br>\
+	 * 切り出すための配列を生成します。<br>\
+	 * これにより、ビットマップフォントの文字パターンを定義できます。
+	 */
 	function FontPtnCutArray(sx, sy, sw, sh){
 		//sx:開始左端 sy:開始上端 sw:Font幅 sh:Font高さ
 		let sp = [];

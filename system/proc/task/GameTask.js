@@ -1,86 +1,220 @@
+/**
+ * GameTaskDebug
+ * @class
+ * @classdesc
+ * ゲームのデバッグ情報をのうち、GameCore分を表示するためのタスクです。<br>\
+ * FPS、パフォーマンス状態/スクリーン状態などの統計情報やグラフを、<br>\
+ * デバッグ表示が有効時に画面にリアルタイムで出力します。
+ */
 class GameTask_Debug extends GameTask {
-
+    /**
+     * @param {TaskId} id タスクID
+     * @description
+     * `GameTask_Debug`インスタンスを初期化します。<br>\
+     * 基本の`GameTask`コンストラクタを呼び出し、タスクIDを設定します。<br>\
+     */
     constructor(id){
         super(id);
     }
 
     fontsc;
+    scrn;
 
+    /**
+     * @method
+     * @param {GameCore} g GameCoreインスタンス
+     * @description
+     * デバッグ表示に使用するフォントとスクリーンバッファを設定します。<br>\
+     */
     init(g){
         const USEFONT = "6x8";// "8x8white";
 
         const s = new ConstantData();
         const MSG = s.layer.MSG;
 
+        this.scrn = g.screen[MSG];
+
         g.font[USEFONT].useScreen(MSG);
         this.fontsc =  g.font[USEFONT];
     }
-
-    step(g) {
-    }
-
+    /**
+     * @method
+     * @param {GameCore} g GameCoreインスタンス
+     * @description
+     * デバッグ情報を画面に描画します。<br>\
+     * FPS、処理負荷（ワークロード）、スクリーン状態などのデータを整形して表示します。
+     */
     draw(g){
         const SC_NUM = g.screen.length;
 
-        const dsp_x = 280;
-        const dsp_y = 320;
-        
-        let st;  
-        let r = g.fpsload.result();
+        const dsp_x = 400;
+        const dsp_y =  40;
+
+        const dsp_w = 120;
+        const dsp_h = 200;
+
+        //this.scrn.fill(dsp_x, dsp_y, dsp_w, dsp_h, "gray");
+
+        //let st;  
+        //let r = g.fpsload.result();
 
         if (g.state.Config.debug){
+
+            this.scrn.fill(dsp_x, dsp_y, dsp_w, dsp_h, "rgba(96,96,96,0.3");
+
             let sl = [];
             let r = g.fpsload.result();
-            sl.push("fps:" +  Math.trunc(r.fps));
+            sl.push(`fps:${Math.trunc(r.fps)}`);
             sl.push("ave :load/intv/" ); 
-            sl.push("    :" + String(r.workload.ave).substring(0,4) +
-                "/" + String(r.interval.ave).substring(0,4) +  "ms");
-            sl.push("workload :"+ String((r.workload.ave / r.interval.ave)*100).substring(0,5) + "%");
-            let ws = String(g.deltaTime()).substring(0, 5);
-            sl.push("deltaTime:"+ ws + "ms");
-            ws = String(g.time()).substring(0, 10);
-            sl.push("run(ms):" + ws);   
+            sl.push(`    :${String(r.workload.ave).substring(0,4)}/${String(r.interval.ave).substring(0,4)}ms`);
+            sl.push(`workload :${String((r.workload.ave / r.interval.ave)*100).substring(0,5)}%`);
+            sl.push(`deltaTime:${String(g.deltaTime()).substring(0, 5)}ms`);
+            sl.push(`run(ms):${String(g.time()).substring(0, 10)}`);   
 
             for(let i=0; i < sl.length; i++){
-                this.fontsc.putchr(sl[i], dsp_x, dsp_y+ i*8);
+                this.fontsc.putchr(sl[i], dsp_x, dsp_y+80 + i*8);
             }
 
             sl = [];
             sl.push("sc(i)bgCol/max/cnt");  
 
-            st = "";
+            //st = "";
             for (let i=0 ; i < SC_NUM ;i++){
-            //st = "sc[" + i + "]" 
-            st = " " + i + "(" 
-            + g.screen[i].getInterval() + ")" 
-            + g.screen[i].getBackgroundcolor() + "/"
-            + g.screen[i].max() + "/" 
-            + g.screen[i].count()
-            ; 
-            sl.push(st);
+                sl.push(
+                ` ${i}(${g.screen[i].getInterval()})${g.screen[i].getBackgroundcolor()}/${g.screen[i].max()}/${g.screen[i].count()}`
+                );
+            }
+            for(let i=0; i < sl.length; i++){
+                this.fontsc.putchr(sl[i], dsp_x, dsp_y + 134 + i*8);
             }
 
-            for(let i=0; i < sl.length; i++){
-                this.fontsc.putchr(sl[i], dsp_x+120, dsp_y+ i*8);
+            this.scrn.putFunc(new pfmclass(r, dsp_x + 60, dsp_y +40, 2));
+        }
+        /**
+         * putFunc(performanceMater)class
+         * @method
+         * @param {resultlog} result GameCore.fpsload.result
+         * @param {number} x circlecenter 
+         * @param {number} y circlecenter
+         * @param {number} m 半径倍率
+         * @description
+         * resultlogを円で描画して表現します\
+         * 折れ線外周はdeltaTime/折れ線内周は処理時間(workload.log)\
+         * 最内周はworkload.min/内周はworkload.max/外周はinterval.ave\
+         * グラフ内径が経過時間なので時間が掛かる(FPSが下がる)とグラフは大きくなります
+         */
+        function pfmclass(result, x, y, m){
+
+            let pdata = [];
+            let cdata = [];
+
+            pdata.push(result.interval.log);
+            pdata.push(result.workload.log);
+
+            //cdata.push(result.interval.max);
+            //cdata.push(result.interval.min);
+            cdata.push(result.interval.ave);
+            cdata.push(result.workload.max);
+            cdata.push(result.workload.min);
+            //cdata.push(result.workload.ave);
+
+            this.data = pdata;
+            this.dcdt = cdata;
+            this.cx = x;
+            this.cy = y;
+
+            let r = (Math.PI*2)/result.fps;
+            this.wx = x + Math.cos(r*result.logpointer)*result.interval.ave*m;
+            this.wy = y + Math.sin(r*result.logpointer)*result.interval.ave*m;
+
+            this.ix = x + Math.cos(r*result.logpointer)*result.workload.max*m;
+            this.iy = y + Math.sin(r*result.logpointer)*result.workload.max*m;
+
+            let c = (Math.trunc(
+                (result.workload.log[result.logpointer]/
+                result.interval.ave)*35)
+                );
+            this.wp = `rgb(${80+c*5},155,0)`; 
+
+            this.draw =(device)=>{
+
+                for (let d of this.dcdt){
+                    device.beginPath();
+                    device.lineWidth = 1;
+                    device.strokeStyle = "green";
+
+                    device.arc(this.cx, this.cy, d*m, 0, Math.PI*2, true);
+                    device.stroke();
+                }
+
+                for (let d of pdata){
+                    let x = this.cx;
+                    let y = this.cy;
+
+                    let r = (Math.PI*2)/d.length;
+                
+                    device.beginPath();
+                    device.lineWidth = 1;
+                    device.strokeStyle = "limegreen";
+
+                    for (let i=0; i<d.length; i++){
+                        x = this.cx + Math.cos(r*i)*d[i]*m;
+                        y = this.cy + Math.sin(r*i)*d[i]*m;
+                    
+                        if (i==0) {
+                            device.moveTo(x,y);
+                        }else{
+                            device.lineTo(x,y);
+                            device.stroke(); 
+                        }
+                    }
+                    device.closePath();
+                    device.stroke();                
+                }
+
+                device.beginPath();
+                device.lineWidth = 3;
+                device.strokeStyle = this.wp;
+                device.moveTo(this.ix, this.iy);
+                device.lineTo(this.wx, this.wy);
+                device.closePath();
+                device.stroke(); 
             }
         }
     }
 }
-
+/**
+ * @class
+ * @classdesc
+ * ゲームのロード処理と初期情報の表示を管理するタスクです。<br>\
+ * アセットロード状態や入力デバイス情報を表示し、<br>\
+ * ユーザー入力または時間経過でメインゲームへの移行を制御します。
+ */
 class GameTask_Load extends GameTask {
-
+    /**
+     * 
+     * @param {TaskId} id タスクID
+     * @description
+     * `GameTask_Load`インスタンスを初期化します。<br>\
+     * 基本的な`GameTask`設定を行い、内部変数を準備します。
+     */
     constructor(id){
         super(id);
     }
         scrn;
         fontsc;
         str;
-        //cnt;
         infoflg;
         infodly;
 
         fsf;//firstStep excuted flag
-
+    /**
+     * @method
+     * @param {GameCore} g GameCoreインスタンス
+     * @description
+     * ロード画面表示に使用するスクリーンとフォントを設定します。<br>\
+     * 情報表示の遅延時間などの初期状態を準備します。
+     */
     init(g){
         const USEFONT = "6x8";// "8x8white";
         
@@ -96,7 +230,14 @@ class GameTask_Load extends GameTask {
 
         this.fsf = false;
     }
-
+    /**
+     * @method
+     * @param {GameCore} g GameCoreインスタンス
+     * @description
+     * ロード処理の進行を管理します。<br>\
+     * 入力（キーボード、マウス、タッチパッド）を検出してテストモードに切り替えたり、<br>\
+     * ゲーム開始のトリガーを判定したりします。
+     */
     step(g) {
         if (!this.fsf) this.infodly = g.time();
 
@@ -104,8 +245,8 @@ class GameTask_Load extends GameTask {
         let mstate = g.mouse.check();
         let tstate = g.touchpad.check();
 
-        if (typeof g.state.Config.debug !== 'undefined') g.state.Config.debug = true;
-        g.state.Config.debug = this.infoflg;
+        //if (typeof g.state.Config.debug !== 'undefined') g.state.Config.debug = true;
+        //g.state.Config.debug = this.infoflg;
 
         let startflag = false; 
 
@@ -154,7 +295,14 @@ class GameTask_Load extends GameTask {
 
         this.fsf = true;
     }
-
+    /**
+     * @method
+     * @param {GameCore} g GameCoreインスタンス
+     * @description
+     * ロード情報を画面に描画します。<br>\
+     * アセットロード状況、入力デバイスの状態、ゲーム開始のプロンプトなどを、<br>\
+     * アニメーション効果を付けて表示します。
+     */
     draw(g){
         const LINEH = 8;
         const DELAY = this.infodly;//1000;
@@ -257,23 +405,44 @@ class GameTask_Load extends GameTask {
         }
     }
 }
-
+/**
+ * @class
+ * @classdesc
+ * 入力デバイス（ゲームパッド、タッチパッド、マウス）の管理と<br>\
+ * フルスクリーン切り替えを処理するタスクです。<br>\
+ * これらのデバイスからの入力情報を画面に視覚的に表示します。
+ */
 class GameTask_Device extends GameTask {
-
+    /**
+     * 
+     * @param {TaskId} id タスクID
+     * @description
+     * `GameTask_Device`インスタンスを初期化します。<br>\
+     * フルスクリーン切り替えのユーティリティ関数を定義します。
+     */
     constructor(id){
         super(id);
     }
-        scrn;
-        fontsc;
-        toggleFullScreen = function() {
-            if (!document.fullscreenElement) {
-              document.documentElement.requestFullscreen();
-            } else if (document.exitFullscreen) {
-                document.exitFullscreen();
-            }
+    scrn;
+    fontsc;
+    /**
+     * @description
+     * HTMLのFullscreen APIを利用して、ブラウザのフルスクリーンモードを切り替えます。
+     */
+    toggleFullScreen = function() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else if (document.exitFullscreen) {
+            document.exitFullscreen();
         }
-        keylock = 0;
- 
+    }
+    //    keylock = 0;
+    /**
+     * @method
+     * @param {GameCore} g GameCoreインスタンス 
+     * @description
+     * デバイスタスクの描画に使用するスクリーンとフォントを設定します。
+     */
     init(g){
         const USEFONT = "6x8";// "8x8white";
 
@@ -283,12 +452,18 @@ class GameTask_Device extends GameTask {
         g.font[USEFONT].useScreen(MSG);
         this.fontsc =  g.font[USEFONT];
     }
-
+    /**
+     * @method
+     * @param {GameCore} g GameCoreインスタンス 
+     * @description
+     * キーボード、ゲームパッドの入力をチェックし、フルスクリーン切り替えのロジックを処理します。<br>\
+     * 仮想ゲームパッドの入力も更新します。
+     */
     step(g) {
         let ks = g.keyboard.state();
         let homekey = false; if (Boolean(ks[36])) homekey = true;
 
-		let r = g.gamepad.check();
+		g.gamepad.check();
 		let backbtn = g.gamepad.btn_back;
 
         let fullscr = (homekey || backbtn)?true:false;
@@ -299,9 +474,14 @@ class GameTask_Device extends GameTask {
 		}
 
         g.vgamepad.check(g.mouse, g.touchpad);
-
     }
-
+    /**
+     * @method
+     * @param {GameCore} g GameCoreインスタンス 
+     * @description
+     * 仮想ゲームパッド、タッチパッド、マウスの視覚的なインジケータを画面に描画します。<br>\
+     * これにより、各入力デバイスの動作をデバッグし視覚的に確認できます。
+    */
     draw(g){
         g.vgamepad.draw(this.scrn);
         g.touchpad.draw(this.scrn); 

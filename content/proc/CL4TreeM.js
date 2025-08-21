@@ -1,3 +1,9 @@
+/**
+ * @file This file provides a 2D collision detection utility based on a linear quadtree.
+ *       It includes a polyfill for Object.prototype.__defineGetter__ and __defineSetter__
+ *       to ensure compatibility with older JavaScript environments where these methods
+ *       might be absent, ensuring the proper functioning of object properties like `objectNum`.
+ */
 try {
    if (!Object.prototype.__defineGetter__ && Object.defineProperty({},"x",{get: function(){return true}}).x) {
 	  Object.defineProperty(Object.prototype, "__defineGetter__",
@@ -14,15 +20,83 @@ try {
 	  }});
    }
 } catch(defPropException) {/*Do nothing if an exception occurs*/};
-
-/*
- * utility classes
+/**
+ * CLinear4TreeManager は、2次元空間におけるオブジェクトの衝突判定を効率的に行うための線形四分木（Linear Quadtree）マネージャーです。
+ * このユーティリティは、広大なゲームマップや多数のオブジェクトが存在する環境において、
+ * すべてのオブジェクトペアに対して直接衝突判定を行うよりも、大幅にパフォーマンスを向上させることができます。
+ *
+ * @description
+ * 四分木は、空間を再帰的に四分割していくデータ構造であり、オブジェクトが存在する領域のみを細かく分割することで、
+ * 衝突の可能性のあるオブジェクトの検索範囲を限定します。
+ * CLinear4TreeManager は、その四分木を線形配列として管理することで、メモリ効率とアクセス速度を最適化しています。
+ *
+ * 衝突判定のアルゴリズムについては、以下のリソースを参考にしています:
+ * 
+ * ユーティリティは、オブジェクトのバウンディングボックスに基づいてモートン数 (Morton Number) を計算し、
+ * それを元にオブジェクトを適切なツリーセルに登録します。
+ * その後、`getAllCollisionList()` メソッドを呼び出すことで、衝突の可能性のあるオブジェクトのペアのリストを取得できます。
+ *
+ * @see http://marupeke296.com/COL_2D_No8_QuadTree.html
+ * @see http://marupeke296.com/COLSmp_2D_No9_QuadTree_Imp.html
+ * @example
+ * // CLinear4TreeManager の基本的な使用例
+ *
+ * // 1. マネージャーのインスタンスを作成します
+ * const manager = new CLinear4TreeManager();
+ *
+ * // 2. マネージャーを初期化します
+ * //    level: 四分木の深さ (9未満)。値が大きいほど精度が高まりますが、処理負荷も増えます。
+ * //    left, top, right, bottom: 衝突判定を行う空間の境界座標。
+ * //    この例では、幅1024、高さ768の領域をレベル5で管理します。
+ * manager.init(5, 0, 0, 1024, 768); //
+ *
+ * // 3. 衝突判定の対象となるオブジェクトを準備します
+ * //    ここでは、仮想的なゲームオブジェクトを想定します。
+ * const player = { id: 'player', x: 100, y: 100, width: 32, height: 32 };
+ * const enemy1 = { id: 'enemy1', x: 120, y: 110, width: 24, height: 24 };
+ * const enemy2 = { id: 'enemy2', x: 500, y: 300, width: 48, height: 48 };
+ *
+ * // 4. 各ゲームオブジェクトに対して OBJECT_FOR_TREE ラッパーを作成し、マネージャーに登録します
+ * //    OBJECT_FOR_TREE は、ツリー内での管理に必要なプロパティを持ちます。
+ * //    登録する実際のゲームオブジェクトは、oft.obj プロパティに格納すると便利です (内部の衝突リストで参照されます)。
+ * const oftPlayer = manager.createObjectForTree(player.id); //
+ * oftPlayer.obj = player;
+ * manager.register(player.x, player.y, player.x + player.width, player.y + player.height, oftPlayer); //
+ *
+ * const oftEnemy1 = manager.createObjectForTree(enemy1.id);
+ * oftEnemy1.obj = enemy1;
+ * manager.register(enemy1.x, enemy1.y, enemy1.x + enemy1.width, enemy1.y + enemy1.height, oftEnemy1);
+ *
+ * const oftEnemy2 = manager.createObjectForTree(enemy2.id);
+ * oftEnemy2.obj = enemy2;
+ * manager.register(enemy2.x, enemy2.y, enemy2.x + enemy2.width, enemy2.y + enemy2.height, oftEnemy2);
+ *
+ * // 5. 全てのオブジェクトの登録が完了した後、衝突リストを取得します
+ * //    このリストには、衝突している可能性のあるオブジェクトのペアが含まれます。
+ * //    (注意: このメソッドが呼び出されると、マネージャー内の内部衝突リストはリセットされます)
+ * const collisionCandidates = manager.getAllCollisionList(); //
+ *
+ * // 6. 衝突リストを処理し、詳細な衝突判定を行います
+ * if (collisionCandidates) {
+ *   // collisionCandidates は配列として実装されており、2つおきにペアが格納されています
+ *   for (let i = 0; i < collisionCandidates.length; i += 2) {
+ *     const objA = collisionCandidates[i];   // 最初のオブジェクト
+ *     const objB = collisionCandidates[i+1]; // 2番目のオブジェクト
+ *
+ *     console.log(`衝突候補ペア: ${objA.id} と ${objB.id}`); //
+ *
+ *     // ここで実際の矩形衝突判定（AABBチェックなど）や、より複雑な判定ロジックを実装します。
+ *     // 例: AABB (Axis-Aligned Bounding Box) 衝突判定
+ *     if (objA.x < objB.x + objB.width &&
+ *         objA.x + objA.width > objB.x &&
+ *         objA.y < objB.y + objB.height &&
+ *         objA.y + objA.height > objB.y) {
+ *         console.log(`実際に衝突しました: ${objA.id} と ${objB.id}`);
+ *         // 衝突後の処理（ダメージを与える、エフェクトを再生するなど）
+ *     }
+ *   }
+ * }
  */
-
-// collision detector classes
-// @see http://marupeke296.com/COL_2D_No8_QuadTree.html
-// @see http://marupeke296.com/COLSmp_2D_No9_QuadTree_Imp.html
-
 function CLinear4TreeManager() {
     // private members
     let objectNum = 0;

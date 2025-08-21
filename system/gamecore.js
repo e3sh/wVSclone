@@ -1597,7 +1597,8 @@ class GameCore {
 
 				/**
 				 * @typedef {object} resultLog 計測結果
-				 * @property {number} FPS FPS
+				 * @property {number} fps FPS
+				 * @property {number} logpointer ログ配列の最新更新値へのインデックス値
 				 * @property {number[]} interval.log フレーム時間ログ
 				 * @property {number} interval.max　最大値
 				 * @property {number} interval.min　最小値
@@ -1648,6 +1649,7 @@ class GameCore {
 					let r = {};
 
 					r.fps = fps;
+					r.logpointer = log_cnt;
 
 					let wl = {};
 					wl.log = load_log;
@@ -2015,7 +2017,7 @@ class GameTask{
 	 */
 	living;
 	/**
-	 * task running proirity
+	 * task running proirityLevel
 	 * @type {number}
 	 * @todo function Not implemented
 	*/
@@ -2037,6 +2039,8 @@ class GameTask{
 		this.id = id
 		this.enable = true; // true : run step  false: pasue step
 		this.visible = true; // true: run draw  false: pasue draw
+
+		this.proirity = 0; //priorityLevel
 
 		this.preFlag = false;
 
@@ -2075,12 +2079,10 @@ class GameTask{
 	}
 	/**
 	 * @method
-	 * @param {number} num sortorder 
-	 * @todo priority control function Not implemented(2025/08/15) 
+	 * @param {number} num 実行優先レベル 
 	 * @description
 	 * タスクの実行優先順位を設定します。<br>\
-	 * ただし、この機能は現在未実装であり、<br>\
-	 * 将来の拡張のために予約されています。
+	 * 大きいほど実行時の優先順位が高くなります(降順で実行)
 	 */
 	setPriority(num){ this.proirity = num;}
 
@@ -2116,6 +2118,7 @@ class GameTask{
 	init(g){
 		//asset(contents) load
 		//呼び出しタイミングによってはconstuctorで設定してもよい。
+
 	}
 
 	/**
@@ -2130,6 +2133,9 @@ class GameTask{
 	pre(g){
     	//paramater reset etc
 	    //this.preFlag = true;　フラグの変更はTaskControlで実行されるので継承側でも実行する必要なし。
+
+
+
 	}
 
 	/**
@@ -2142,7 +2148,7 @@ class GameTask{
 	 * ゲームの進行に関わる計算や状態更新を行います。
 	 */ 
 	step(g){// this.enable が true時にループ毎に実行される。
-
+		//Extends先による
 	}
 
 	/**
@@ -2155,6 +2161,22 @@ class GameTask{
 	 * 画面へのグラフィック要素の描画を行います。
 	 */ 
 	draw(g){// this.visible が true時にループ毎に実行される。
+		//Extends先による
+	}
+
+	/**
+	 * 自分宛にsignalMessageが発行される毎に呼ばれる
+	 * @method
+	 * @param {GameCore} g GameCoreインスタンス
+	 * @param {TaskId} from 発行元タスクId
+	 * @param {number | string} id　signalMessage 
+	 * @param {*} desc 任意の追加情報
+	 * @description
+	 * `GameTaskControl`によって自TaskId宛のSignalMessageを受信した場合に<br>\
+	 * 呼び出される、割り込み処理ロジックです。<br>\
+	 */
+	signal(g, from, id, desc){
+		//if (from == "you") if (id == "Hello") console.log("Hi!"); 
 
 	}
 
@@ -2212,8 +2234,6 @@ class GameTask{
  * ゲーム内の個々のタスク（`GameTask`インスタンス）を管理するコントローラです。<br>\
  * タスクの追加、削除、読み込み、そしてゲームループにおける <br>\
  * `step`（更新）と`draw`（描画）の実行を制御します。
- * @todo priorityControl 実行は登録順で行われる。priorityプロパティによる実行順序制御は未実装
- * @todo 時間指定実行、一時実行タスクや割り込み制御なども標準機能である方がよいかもしれない
  */
 class GameTaskControl {
 	/**
@@ -2225,12 +2245,17 @@ class GameTaskControl {
 	 */
 	constructor(game) {
 
-		let task_ = [];
-
+		let task_ = []; //taskObject array
+	
 		let taskCount_ = 0;
 		let taskNamelist_ = "";
 
+		let signal_ = []; //signal_stack
+
 		const taskCheck =()=> {
+
+			task_.sort((a, b)=>{b.priority - a.priority}); //Fast LevelHi -LevelLow defalut:0 
+
 			taskCount_ = 0;
 			taskNamelist_ = "";
 
@@ -2238,6 +2263,17 @@ class GameTaskControl {
 				taskNamelist_ += n + " ";
 				taskCount_++;
 			}
+		}
+
+		const taskExistence = (taskid)=>{
+
+			let result = false;
+			for (let n in task_){
+				if (taskid == n){
+					result = true;
+				}
+			}
+			return result;
 		}
 
 		/**
@@ -2249,11 +2285,10 @@ class GameTaskControl {
 		 * 指定されたIDを持つ`GameTask`オブジェクトをタスクリストから取得して返します。<br>\
 		 * これにより、特定のタスクに直接アクセスし、<br>\
 		 * その状態やプロパティを参照・操作できます。
-		 * @todo 結果可否報告とエラーチェック
 		 */
 		this.read = function (taskid) {
 
-			return task_[taskid];
+			return taskExistence(taskid)?task_[taskid]: null;
 		};
 
 		/**
@@ -2284,16 +2319,21 @@ class GameTaskControl {
 		 * 指定されたIDを持つ`GameTask`オブジェクトを実行リストから削除します。<br>\
 		 * 削除前にタスクの`post`メソッドを呼び出して終了処理を行い、<br>\
 		 * その後、リストからタスクを破棄します。
-		 * @todo 結果可否報告とエラーチェック(無いtaskを削除した場合)
 		 */
 		this.del = function (taskid) {
-			//task post process
-			task_[taskid].post(); //deconstract
 
-			//task delete
-			delete task_[taskid];
+			let result = false;
+			if (taskExistence(taskid)){
+				//task post process
+				task_[taskid].post(); //deconstract
 
+				//task delete
+				delete task_[taskid];
+				result = true;
+			}
 			taskCheck();
+
+			return result;//削除に成功でtrue/なかったらfalse
 		};
 
 		/**
@@ -2305,12 +2345,36 @@ class GameTaskControl {
 		 * 指定されたIDの`GameTask`オブジェクトの`init`メソッドを明示的に実行します。<br>\
 		 * これは、タスクの追加時だけでなく、<br>\
 		 * 必要なタイミングでタスクの初期化を再度行いたい場合に利用できます。
-		 * @todo 結果可否報告とエラーチェック
 		 */
 		this.init = function (taskid) {
 
-			task_[taskid].init(game);
+			if (taskExistence(taskid)) task_[taskid].init(game);
+
+			taskCheck();
 		};
+
+		/**
+		 * set signal
+		 * @method 
+		 * @param {taskId} target 対象(送信先)のタスクID
+		 * @param {taskId} from 送信元のタスクID　
+		 * @param {number | string} id シグナルID(処理側で決定)
+		 * @param {*} desc (何を入れる/どう使うかなどは処理側で決定)　
+		 * @description
+		 * メッセージシグナルを登録します。 <br>\
+		 * 次のステップが処理される際に対象のタスクの<br>\
+		 * signalメソッドが呼び出されます。
+		 * @todo broadcastメッセージの実装（必要な場合)
+		*/
+		this.signal = function( target, from, id, desc){
+			signal_.push({target:target, from:from, id:id, desc:desc});
+		}
+
+		this.flash_signalstack = function(){signal_ = [];
+		}
+
+		this.get_signalstack = function(){return signal_;
+		}
 
 		/**
 		 * 実行リストにあるGameTaskのstepを呼ぶ(処理Op)
@@ -2324,6 +2388,15 @@ class GameTaskControl {
 		 */
 		this.step = function () {
 
+			//signal check
+			while (signal_.length > 0){
+				let s = signal_.pop();
+				if (taskExistence(s.target)){
+					task_[s.target].signal(game, s.from, s.id, s.desc);
+				}
+			}
+
+			//step
 			for (let i in task_) {
 				let w_ = task_[i];
 
@@ -2331,7 +2404,6 @@ class GameTaskControl {
 					w_.pre(game);
 					w_.preFlag = true;
 				}
-
 				if (w_.enable) {
 					w_.step(game);
 				}
@@ -2674,7 +2746,8 @@ class inputKeyboard {
         // a:'KeyA', s:'KeyS', d:'KeyD'
         // z:'KeyZ', x:'KeyX', c:'KeyC'
 
-        let keymap = [];
+        let keyCodemap = [];
+        let codemap = [];
 
         const keyStateReset = ()=> {
 
@@ -2703,18 +2776,13 @@ class inputKeyboard {
         keyStateReset();
 
         //windowsフォーカスが外れるとキー入力リセットさせとく(押しっぱなし状態となる為）
-        window.addEventListener("blur", function (event) { keymap = []; }, false);
+        window.addEventListener("blur", function (event) { keyCodemap = []; codemap = []; }, false);
 
         //KeyCode を使用するのはいつのまにか非推奨となっているので時間があるか使用不可になる前に書換要
         //@see　https://developer.mozilla.org/ja/docs/Web/API/KeyboardEvent
-        if (!Boolean(codesupportmode)){
-            window.addEventListener("keydown", function (event) { keymap[event.keyCode] = true; }, false);
-            window.addEventListener("keyup", function (event) { keymap[event.keyCode] = false; }, false);
-        }else{
-        //code対応用(アプリケーション側での対応も必要)
-            window.addEventListener("keydown", function (event) { keymap[event.code] = true; }, false);
-            window.addEventListener("keyup", function (event) { keymap[event.code] = false; }, false);
-        }
+        window.addEventListener("keydown", function (event) { keyCodemap[event.keyCode] = true; codemap[event.code] = true; }, false);
+        window.addEventListener("keyup", function (event) { keyCodemap[event.keyCode] = false; codemap[event.code] = false; }, false);
+        
         /**
          * 入力状態確認(状態確認用キープロパティの更新)
          * @method
@@ -2729,6 +2797,13 @@ class inputKeyboard {
         this.check = function(){
 
             keyStateReset();
+
+            let keymap;
+            if (!Boolean(codesupportmode)){
+                keymap = keyCodemap;
+            }else{
+                keymap = codemap;
+            }
 
             for (let i in keymap) {
 
@@ -2793,7 +2868,12 @@ class inputKeyboard {
          * これにより、キーの個別の状態を直接参照できます。
          */
         this.state = function () {
-
+            let keymap;
+            if (!Boolean(codesupportmode)){
+                keymap = keyCodemap;
+            }else{
+                keymap = codemap;
+            }
             return keymap;
         };
 
@@ -2817,6 +2897,18 @@ class inputKeyboard {
             }
             return result;
         };
+        
+        /**
+         * @method
+         * @param {boolean} [mode=true] code/KeyCode(NR)
+         * @description
+         * Select [keyCode/code] code使用する場合はtrue<br>\
+         * KeyCodeはMDN非推奨になっているので切替可能とした<br>\
+         * 起動時は作成したものの為に互換モードでKeyCodeで起動
+         */
+        this.codeMode = function(mode=true){
+            codesupportmode = mode;
+        }
     }
 }
 
