@@ -1,6 +1,7 @@
 function ConstantData(){
 
     this.objtype = Object.freeze({
+        //type （98:自機、0:味方、1:自弾、2:敵機、3:敵弾、4:アイテム、5:只の絵）
         // mob    
         PLAYER:98,  FRIEND:0,   BULLET_P:1, 
         ENEMY:2,    BULLET_E:3,
@@ -52,13 +53,29 @@ function ConstantData(){
         BALL: 20,
         COIN: 35,
         KEY: 22,
+
+        USEBLE: [23, 24, 25],
         BOMB: 23,
         SHIELD: 24,
         LIFEUP: 25,
+
         EXTEND: 21,
         LAMP: 26,
-        MAP: 27         
+        MAP: 27,     
+        WEAPONS: [15, 16, 17, 18, 19, 50],  
+
+        HELPTEXT:  { 51: "INT", 52: "MND", 53: "VIT", 56: "STR", 57: "DEX" },
+        KEYITEMS: [51, 52, 53, 54, 55, 56, 57, 58 ],
+        AMULET_R: 51,
+        AMULET_G: 52,
+        AMULET_B: 53,
+        RING_R: 56,
+        RING_B: 57,
+        CANDLE_B: 55,
+        CANDLE_R: 54,
+        MIRROR: 58
     });
+
 
     this.sound = Object.freeze({
         START: 0,

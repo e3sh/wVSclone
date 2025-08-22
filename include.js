@@ -47,6 +47,7 @@ let w = [
  "content/asset/param/stage/Stage_openfield.js",
  "content/asset/param/stage/Stage_greathall.js",
  "content/asset/param/stage/Stage_tuto.js",
+ "content/asset/param/stage/StageNameList.js",
   //"content/asset/param/stage/TestStage.js",
  //データ部(キャラクタの動きなどの設定）
  "content/asset/param/scenario.js",

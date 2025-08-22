@@ -20,26 +20,26 @@ function stateControl( g ){
 	this.Database = {
 		chrPattern: character(),
 		motionPattern: motionPattern(),
+		chrItemtable: characterItemnameTable()
 
+		//Condsantで持ってる
 		//objtype:{PLAYER:98, FRIEND:0, BULLET_P:1, ENEMY:2, BULLET_E:3, ITEM:4, ETC:5}
+
+		//ObCtrlで持ってる(生成時obCtrlが必要な為)
 		//scenario:
 
 		//mapscで持ってる
 		//map=mapsc
-
-
-		//未作成
-		//itemList: itemTable(),
-		//paramator
 	};
 
 	this.Utility = {
 		//export
 	}
 
+	//2025/08/22 obCtrl new引数変更 
 	//2025/06/25:obCtrl宣言はstate.Databaseを参照するのでするので後ろで実行
 	//2023/02/14:GameSceneから↓へ変更　この時点ではresetしていない。
-	this.obCtrl = new gObjectControl(this.System.dev.graphics[1], this);
+	this.obCtrl = new gObjectControl(this);
 	//↑第一引数にscreenを入れているのは移動時の画面サイズ取得の為なので適したscreenを指定する	
 
 	this.mapsc = new mapSceControl();

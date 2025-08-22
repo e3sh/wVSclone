@@ -141,6 +141,70 @@ function character(){
 
 		chr_ptn[ w[0] ] = ptn; 
 
+
+	}
+	return chr_ptn;
+
+	//ch_ptn:map/ 0-12:use,13:free,14-27:use,28-29:free,30:use,31:free,32-58:use,59-99:free,100:use,101-102:free,103:use,
+	/*
+	function useCheck(){
+		let f = true;
+		let st = 0;
+		let s = "ch_ptn:map/ ";
+		let ws = "";
+		for (let i =0; i<105; i++){
+			if (Boolean(chr_ptn[i]) == f) {
+				ws = st + "-" + i + ":" + ((f)?"use":"free");
+			}else{
+				s = s + ws + ",";
+				f = f?false:true;
+				st = i;
+				ws = i + ":" + ((f)?"use":"free");
+			}
+		}
+		return(s);
+	}
+	//console.log(useCheck());
+	*/
+}
+function characterItemnameTable(){
+	 
+    const ItemnameTable = { //state.Database.chrItemtable
+            //  (ITEMLIST) 
+            0: "操作説明",
+            1: "魔法陣説明",
+            2: "扉説明",
+            15: "杖", // MP38 Wand
+            16: "剣", // MP15 Knife
+            17: "戦斧", // MP37 Axe
+            18: "槍", // MP35 Spear
+            19: "ﾌﾞｰﾒﾗﾝ", // MP36 Boom
+            20: "球", // MP26 Ball1-3
+            21: "1UP", // MP 1 Mayura1-4
+            22: "鍵", // MP27 Key
+            23: "爆弾", // MP28 BallB1-3
+            24: "ﾊﾞﾘｱ", // MP29 BallS1-3
+            25: "回復", // MP30 BallL1-3
+            26: "ﾗﾝﾌﾟ", // MP33 Lamp
+            27: "地図", // MP34 Map
+            35: "ｺｲﾝ", // MP32 Coin1-4
+            40: "宝箱", // MP39 TrBox
+            50: "弓矢", // MP43 Bow
+            51: "AmuletR", // MP50 AmuletR
+            52: "AmuletG", // MP51,AmuletG
+            53: "AmuletB", // MP52,AmuletB
+            54: "ﾛｳｿｸR", // MP53,CandleR
+            55: "ﾛｳｿｸB", // MP54,CandleB
+            56: "指輪R", // MP55,RingR
+            57: "指輪B", // MP56,RingB
+            58: "鏡" // MP57,Mirror
+        };
+
+	return ItemnameTable;
+}
+
+
+
 	//追加すべきパラメータに関する考察
 	//キャラクタータイプに関してはファイルを分割することが出来るようにするか？
 	//jsonで読み込んでもよいし、ただの配列から読み込んでもいいかもしれない。xmlhttpreqestの
@@ -171,29 +235,3 @@ function character(){
 	//敵味方の弾についてはサブ属性として色々付けとけばいい。貫通とか爆発とか
 
 	//アイテムについては上記
-	}
-
-	//ch_ptn:map/ 0-12:use,13:free,14-27:use,28-29:free,30:use,31:free,32-58:use,59-99:free,100:use,101-102:free,103:use,
-	/*
-	function useCheck(){
-		let f = true;
-		let st = 0;
-		let s = "ch_ptn:map/ ";
-		let ws = "";
-		for (let i =0; i<105; i++){
-			if (Boolean(chr_ptn[i]) == f) {
-				ws = st + "-" + i + ":" + ((f)?"use":"free");
-			}else{
-				s = s + ws + ",";
-				f = f?false:true;
-				st = i;
-				ws = i + ":" + ((f)?"use":"free");
-			}
-		}
-		return(s);
-	}
-	//console.log(useCheck());
-	*/
-	return chr_ptn;
-}
- 

@@ -1,6 +1,17 @@
 // gObjCmdDec
-// ObjectControll  
-// obj command Decode 2023/04/05 
+// ObjectControll obj command Decode 2023/04/05- 
+/**
+ * @param {string} msg ObjCommand 
+ * @param {gObjectClass} sobj gObjectClassインスタンス
+ * @param {gObjectControl} obj gObjectControlインスタンス
+ * @param {stateControl} state g.state
+ * @param {scenario} sce scenarioインスタンス
+ * @returns {{boolean, boolean}} resultflag{command_execute, addlog_execute}
+ * @description
+ * `gObjectClass`から発行されたコマンドメッセージをデコードし、<br>\
+ * 対応する処理をオブジェクトコントロール（`objc`）に対して実行します。<br>\
+ * オブジェクト間の連携を担うハブ機能です。
+ */
 
 function ObjCmdDecode(msg, sobj, obj, state, sce){
 
@@ -126,7 +137,8 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                     mapsc.add(x, y, 0, 20, 39, wid);
                 }
 
-                if (((msg.src >= 15) && (msg.src <= 19)) || (msg.src==50)){
+                if (state.Constant.item.WEAPONS.includes(msg.src)){
+                    // ((msg.src >= 15) && (msg.src <= 19)) || (msg.src==50)){
                     state.Game.player.stack.push({ch:msg.src, id:msg.dst});
                     wid = "Weapon!"; 
                     dev.sound.effect(state.Constant.sound.GET); //get音
@@ -170,6 +182,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
             break;
 
         case "bomb2":
+            /*
             for (let i in obj) {
                 let o = obj[i];
     
@@ -186,6 +199,7 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                     o.change_sce(30);
                 }
             }
+            */
             break;
 
         case "bomb3":

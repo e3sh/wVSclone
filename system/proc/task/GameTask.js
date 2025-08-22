@@ -50,7 +50,7 @@ class GameTask_Debug extends GameTask {
         const dsp_x = 400;
         const dsp_y =  40;
 
-        const dsp_w = 120;
+        const dsp_w = 112;
         const dsp_h = 200;
 
         //this.scrn.fill(dsp_x, dsp_y, dsp_w, dsp_h, "gray");

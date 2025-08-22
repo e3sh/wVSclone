@@ -1,13 +1,33 @@
 // task ==================================================================
 
+/**
+ * @class
+ * @classdesc
+ * ゲームループのエントリーポイントとなるメインタスクです。<br>\
+ * 各種入力デバイスの状態を取得し、ゲームシーンの更新と描画を実行します。<br>\
+ * ゲーム全体の進行と各機能の連携を司る主要な制御タスクです。
+ */
 class taskMainLoop extends GameTask {
+    /**
+     * @constructor
+     * @param {TaskId} id タスクID "main" 
+     * @description
+     * インスタンスを初期化します。<br>\
+     * 基底の`GameTask`コンストラクタを呼び出し、タスクIDを設定します。
+     */
     constructor(id){
         super(id);
     }
 	
     state; 	scene;
     elm_dbg;  elm_lamp; elm_map;
-
+    /**
+     * @method
+     * @param {GameCore} g GameCoreインスタンス
+     * @description
+     * ゲームの状態（`stateControl`）とシーン管理（`sceneControl`）のインスタンスを生成し、<br>\
+     * それらを`GameCore`インスタンスにアタッチします。
+     */
     init(g){// task.add時に実行される。
 
         this.state = new stateControl(g);
@@ -18,11 +38,41 @@ class taskMainLoop extends GameTask {
         g.state = this.state;
     }
    
+    /**
+     * @method
+     * @param {GameCore} g GameCoreインスタンス
+     * @description
+     * タスクを非表示および無効に設定し、最初のステップ実行時に有効になるよう準備します。
+     */
     pre = function (g) {
         this.visible = false;
         this.enable = false;
     }
 
+    /**
+     * @typedef {object} inputMain 入力情報(メインタスク)
+     * @property {boolean} up　上　W
+     * @property {boolean} down　下　S
+     * @property {boolean} left　左　A
+     * @property {boolean} right　右　D
+     * @property {boolean} trigger.weapon　Z
+     * @property {boolean} trigger.useitem　X
+     * @property {boolean} trigger.jump　C
+     * @property {boolean} trigger.select　E
+     * @property {boolean} trigger.tgtlock　L_Ctrl
+     * @property {boolean} quit　Q
+     * @property {boolean} pause　P-start
+     * @property {boolean} start　(false)
+     * @property {boolean} back　@
+     * @property {object} keycode キーコードオブジェクト(inputKeyboard)
+     */
+    /**
+     * @method
+     * @param {GameCore} g GameCoreインスタンス
+     * @description
+     * キーボード、ゲームパッドなどの入力デバイスの状態をチェックし、<br>\
+     * その入力情報に基づいて現在のゲームシーンの`step`メソッドを呼び出します。
+     */
     step = function (g) {
 
         let kstate = this.state.System.dev.key_state.check();
@@ -64,7 +114,13 @@ class taskMainLoop extends GameTask {
 
         this.scene.step(g, input);
     }
-
+    /**
+     * @method
+     * @param {GameCore} g GameCoreインスタンス
+     * @description
+     * 現在のゲームシーンの`draw`メソッドを呼び出し、
+     * ゲーム画面全体を描画します。
+     */
     draw = function (g) {
         this.scene.draw(g);
     }

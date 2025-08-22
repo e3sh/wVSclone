@@ -54,24 +54,31 @@ function gameSceneUI_debug(state){
 		if (!scdispview) return;
 
 		//debug　true　の場合以下表示
+		const BGCOL = "rgba(96,96,96,0.3";
+		const BGRW = 120;
+
 		let wtxt;
 		if (state.Config.debug) {
 
 			wtxt = read_debugStates();
 			if (state.Config.viewlog) wtxt = wtxt.concat(state.obUtil.messagelog.read()); 
-			//let wtxt = read_debugStates().concat(obCtrl.messagelog.read());
-			for (let s in wtxt) MSG.putchr8(wtxt[s], dev.layout.debugstatus.x, dev.layout.debugstatus.y + 8 * s);
 
-			//wtxt = obCtrl.messagelog.read();
-			//for (let s in wtxt) work3.putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+			MSG.fill(dev.layout.debugstatus.x, dev.layout.debugstatus.y, 120, wtxt.length*8, BGCOL);
+			//for (let s in wtxt) MSG.putchr8(wtxt[s], dev.layout.debugstatus.x, dev.layout.debugstatus.y + 8 * s);
+			for (let s in wtxt) MSG.kprint(wtxt[s], dev.layout.debugstatus.x, dev.layout.debugstatus.y + 8 * s);
 
-			wtxt = state.obUtil.messageview.read();
-			if (state.Config.viewlog) for (let s in wtxt) MSG.kprint(wtxt[s], dev.layout.debugmessage.x, dev.layout.debugmessage.y + 8 * s);
-			//if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+			if (state.Config.viewlog){
+				wtxt = state.obUtil.messageview.read();
+				MSG.fill(dev.layout.debugmessage.x, dev.layout.debugmessage.y, 120, wtxt.length*8, BGCOL);
+				for (let s in wtxt) MSG.kprint(wtxt[s], dev.layout.debugmessage.x, dev.layout.debugmessage.y + 8 * s);
+			}
 		}else{
-			wtxt = state.obUtil.messageconsole.read();
-			if (state.Config.viewlog) for (let s in wtxt) FG.kprint(wtxt[s], dev.layout.debugmessage.x, dev.layout.debugmessage.y + 10 * s);
-			//if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+			if (state.Config.viewlog){
+				wtxt = state.obUtil.messageconsole.read();
+
+				FG.fill(dev.layout.debugmessage.x, dev.layout.debugmessage.y, 120, wtxt.length*10, BGCOL);
+				for (let s in wtxt) FG.kprint(wtxt[s], dev.layout.debugmessage.x, dev.layout.debugmessage.y + 10 * s);
+			}
 		}
 
 		if (state.Config.debug) {
@@ -83,9 +90,13 @@ function gameSceneUI_debug(state){
 		}
 
 		if (state.Config.debug) {
-			wtxt = state.obUtil.list_inview();
-			if (state.Config.viewlog) for (let s in wtxt) MSG.kprint(wtxt[s], dev.layout.debugspriteobject.x, dev.layout.debugspriteobject.y + 8 * s);
-			//if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+			if (state.Config.viewlog){
+				wtxt = state.obUtil.list_inview();
+
+				MSG.fill(dev.layout.debugspriteobject.x, dev.layout.debugspriteobject.y, 120, wtxt.length*8, BGCOL);
+				for (let s in wtxt) MSG.kprint(wtxt[s], dev.layout.debugspriteobject.x, dev.layout.debugspriteobject.y + 8 * s);
+				//if (state.Config.viewlog) for (let s in wtxt) dev.graphics[2].putchr8(wtxt[s], dev.layout.map_x, dev.layout.map_y + 150 + 8 * s);
+			}
 		}
 
 	}
