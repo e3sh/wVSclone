@@ -199,6 +199,7 @@ function sce_pl_bullet_rotate_circle(){
     //　自機弾を纏う(rotation) 回転(Ball用）
     //-----------------------------------------------------------------------
     RSPEED = 5;
+
     this.init = function (scrn, o) {
         o.vset(0);
 
@@ -214,9 +215,20 @@ function sce_pl_bullet_rotate_circle(){
     this.move = function (scrn, o) {
         let f = 0;
 
+        o.frame++;
+
         if (!Boolean(o.parent)) {
             o.change_sce(7);
             return 1;
+        }
+
+        let timeout = false;
+        if (o.frame < (600 + o.parent.spec.VIT*30)) {//10s + o.parent.spec.VIT*30; VIT*0.5s
+            o.type = o.state.Constant.objtype.FRIEND;
+
+        }else{
+            o.type = o.state.Constant.objtype.BULLET_P;
+            timeout = true;
         }
 
         o.vector = o.parent.vector;
@@ -237,11 +249,16 @@ function sce_pl_bullet_rotate_circle(){
         o.hr = (o.alive%500 > 250)? o.hr +1:o.hr -1; 
         let r = 50 + o.hr; 
 
-        o.x = o.parent.x + o.Cos(o.vector) * r;
-        o.y = o.parent.y + o.parent.shifty + o.Sin(o.vector) * r;
-         
-        o.vset(1);
-
+        if (!timeout){
+            o.x = o.parent.x + o.Cos(o.vector) * r;
+            o.y = o.parent.y + o.parent.shifty + o.Sin(o.vector) * r;
+            o.vset(1);    
+        }else{
+            let speed = Math.trunc(o.frame/100);
+            o.vx = o.Cos(o.vector) * speed;
+            o.vy = o.Sin(o.vector) * speed;
+            //o.vset(6);    
+        }
         if (o.status == 0){
             f = 1; //未使用ステータスの場合は削除  
         } 

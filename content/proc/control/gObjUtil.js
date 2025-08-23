@@ -345,7 +345,7 @@ class gObjectUtility {
          * 指定されたオブジェクトが持っているアイテム、またはオブジェクト自体がアイテムの場合、<br>\
          * そのアイテムのスプライトを画面に描画します（デバッグ表示用）。
          */
-        this.lookpick = function (scrn, num, x, y) {
+        this.lookpick = (scrn, num, x, y) => {
 
             let result = false;
             const obj = state.obCtrl.objList;
@@ -376,6 +376,7 @@ class gObjectUtility {
                         for (let i of o.pick) {
                             //scrn.put(spname[i], x, y);
                             mtnptn_put(scrn, x, y, ch_ptn[i].mp);
+                            //scrn.print("e"+ch_ptn[i].mp ,x,y);
                             x = x + 16;
                         }
                         result = true;
@@ -383,6 +384,7 @@ class gObjectUtility {
                 }
                 if (o.type == ITEM) {
                     mtnptn_put(scrn, x, y, o.mp); //, mpcnt, r, alpha, size){
+                    //scrn.print("i"+o.mp ,x,y);
 
                     //scrn.put(spname[o.chr], x, y);
                     result = true;
@@ -484,7 +486,7 @@ class gObjectUtility {
         };
 
         //draw functions
-        function cntl_draw(scrn, o) {
+        function cntl_draw (scrn, o) {
             //表示
             if (Boolean(motion_ptn[o.mp].wait)) {
                 o.mp_cnt_frm++;
@@ -509,8 +511,8 @@ class gObjectUtility {
             //mtnptn_put(scrn, x, y, mp,[mpcnt],[r],[alpha],[size])
             if (!Boolean(mpcnt)) mpcnt = 0;
             if (!Boolean(r)) r = 0;
-            if (!Boolean(alpha)) alpha = 0;
-            if (!Boolean(size)) size = 0;
+            if (!Boolean(alpha)) alpha = 255;
+            if (!Boolean(size)) size = 1.0;
 
             let ptn;
             try {
@@ -530,7 +532,7 @@ class gObjectUtility {
             };
 
             scrn.put(ptn, x, y, wvh, wr, alpha, size);
-            //scrn.putchr("mp:"+ o.mp, w.x, w.y);
+            //scrn.putchr8(`${ptn} ${wvh} ${wr} ${alpha} ${size}`, x, y);
         }
     }
 }

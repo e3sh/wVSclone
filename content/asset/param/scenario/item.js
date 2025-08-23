@@ -102,7 +102,7 @@ function sce_item_movingstop() {
         this.init = function (scrn, o) {
             o.vset(1);
 
-            o.wmapc = false; //衝突連続状態
+            o.wmapc = false; //接地していないtrue
             o.colcnt = 0;  //衝突状態カウント
    
             o.colcheck = true;
@@ -116,7 +116,7 @@ function sce_item_movingstop() {
     
         this.move = function (scrn, o) {
     
-            if (o.frame > 60 && !o.wmapc){
+            if (o.frame > 60 && !o.wmapc){//1秒後接地したら
                 o.colcheck = true;
                 //reset jump
                 o.jump = 0;
@@ -125,9 +125,9 @@ function sce_item_movingstop() {
                 o.shiftx = 0;
                 o.shifty = 0;
 
-                o.change_sce("common_vset0");
+                o.change_sce("common_vset0");//止まる
             }else{
-                if(!o.wmapc){
+                if(!o.wmapc){//1秒経過していない状態で接地していたら->ジャンプする
                     //set jump
                     o.wmapc = true;
     
@@ -138,11 +138,11 @@ function sce_item_movingstop() {
             }
             o.frame++;
 
-            if (o.jump == 1 ) {
+            if (o.jump == 1 ) {//ジャンプ中処理
                 o.shifty = o.shifty + o.jpvec;
                 o.jpvec = o.jpvec + 0.4 * o.vecfrm;
                 o.prioritySurface = true;
-                if (o.shifty > 0){
+                if (o.shifty > 0){//着地した
                     o.jump = 0;
                     o.shifty = 0;
                     o.prioritySurface = false;
@@ -157,12 +157,12 @@ function sce_item_movingstop() {
     
             if (o.mapCollision) {
                 //o.colcnt++;
-                if ((o.colcnt > 1)&&!o.wmapc) {//連続衝突するとジャンプして回避してみる
-                    o.wmapc = true;
+                if ((o.colcnt > 1)){//&&!o.wmapc) {//連続衝突するとジャンプして回避してみるx
+                    //o.wmapc = true;
     
-                    o.jump = 1;
-                    o.jpvec = -3;//-5.6 - 0.4 * o.vecfrm;;
-                    o.colcheck = false;
+                    //o.jump = 1;
+                    //o.jpvec = -3;//-5.6 - 0.4 * o.vecfrm;;
+                    //o.colcheck = false;
     
                     o.vector = Math.floor(Math.random() * 360);//適当な向きに飛ぶ
                     o.vset(1);

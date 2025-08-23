@@ -178,9 +178,9 @@ function sce_player( gObjc ) {
     this.init = function (scrn, o) {
         o.name = "mayura";
 
-        o.triger = 10;//Zkey Lockwait Counter
+        o.triger = 30;//Zkey Lockwait Counter
         o.shot = 0; //Zkey trig ok:0 ng:1
-        o.trigerSub = 10; //Xkey Lockwait Counter
+        o.trigerSub = 30; //Xkey Lockwait Counter
         o.shotSub = 0; //Xkey trig ok:0 ng:1
         o.autotrig = 10;//AutoWeapon wait counter
         o.autoshot = 0;//Autowapon trig ok:0 ng:1
@@ -399,26 +399,25 @@ function sce_player( gObjc ) {
                 switch (o.gameState.player.weapon) {
                     case 0:
                         o.set_object(39); //wand
-                        if ((powup > 0) || (o.config.shotfree)) {
+                        if ((powup > 0) || Boolean(o.config.shotfree)) {
                             o.set_object(6);//直進弾
                             o.set_object(7);//回転弾
-                            o.item[20]--;
-                            if (o.item[20] < 0) o.item[20] = 0;
-
+                            //o.item[20]--; defaultは無条件で走るのでここで減らさない
+                            //if (o.item[20] < 0) o.item[20] = 0;
                             o.triger = TRIG_WAIT;
                         }
                         //break;
                     default://自動攻撃の武器使用時はショットボタンは画面内アイテム回収/玉消費
-                        if ((powup > 0) || (o.config.shotfree)) {
+                        if ((powup > 0) || Boolean(o.config.shotfree)) {
                             o.collect2();
-                            o.item[20]--;
+                            if (!Boolean(o.config.shotfree)) o.item[20]--;
                             if (o.item[20] < 0) o.item[20] = 0;
 
                             o.triger = TRIG_WAIT;
                         }
                     break;   
                 }
-                t = o.vector;
+                o.vector = t;
             }
         }
 
@@ -428,23 +427,23 @@ function sce_player( gObjc ) {
                 if (o.itemstack.length > 0) {
                     let w = o.itemstack.pop();
 
-                    if (w == 23) {　//BOMB
+                    if (w == state.Constant.item.BOMB) {//BOMB
                         o.sound.effect(state.Constant.sound.BOMB);
                         o.bomb3(o.spec.INT*2);
                         o.set_object_ex(6, o.x, o.y, 0, 47); //Bomb爆発演出(赤)
-                        o.item[23]--;
+                        o.item[state.Constant.sound.BOMB]--;
                     }
 
-                    if (w == 24) {　//SHIELD
+                    if (w == state.Constant.item.SHIELD) {//SHIELD
                         o.sound.effect(state.Constant.sound.USE);
                         if (!o.gameState.player.barrier) o.before_hp = o.hp;
 
                         SHIELD_TIME = SHIELD_TIME_BASE + o.spec.VIT*30;
                         o.frame = 0;
-                        o.item[24]--;
+                        o.item[state.Constant.item.SHIELD]--;
                     }
 
-                    if (w == 25) {　//LIFE
+                    if (w == state.Constant.item.LIFEUP) {//LIFE
                         let rhp = 3 + o.spec.MND;
 
                         o.sound.effect(state.Constant.sound.USE);
@@ -467,7 +466,7 @@ function sce_player( gObjc ) {
                         }
                         o.gameState.player.maxhp = o.maxhp;
                         o.spec.HP = o.maxhp;
-                        o.item[25]--;
+                        o.item[state.Constant.item.LIFEUP]--;
                         o.set_object_ex(20, o.x, o.y, 0, 43, "+"+rhp );
                     }
 
@@ -494,23 +493,24 @@ function sce_player( gObjc ) {
                 o.shotSub = 1;
                 //Key Test
                 if (o.itemstack.length > 0) {
-                    let idx = o.itemstack[o.itemstack.length-1]-23; //o.itemstack.pop();
+                    const IX =state.Constant.item.BOMB;//23
+                    let idx = o.itemstack[o.itemstack.length-1]-IX; //o.itemstack.pop();
                     
                     let w;
-                    if (o.item[23+(idx+1)%3] > 0){
+                    if (o.item[IX+(idx+1)%3] > 0){
                         w = (idx+1)%3; //空欄ではない場合
                     }else{
                         w = (idx+2)%3; //空欄選択時さらに進める
                     }
                     o.itemstack.sort((a, b)=>{
-                        let wa = (a == w+23)?0:a;
-                        let wb = (b == w+23)?0:b;
+                        let wa = (a == w+IX)?0:a;
+                        let wb = (b == w+IX)?0:b;
 
                         return wb-wa;
                     });
 
                     //o.set_object_ex(20, o.x, o.y, 0, 43, "E"+(o.itemstack.length-1) );
-                    o.SIGNAL(7); //(any) UI force Reflash
+                    o.SIGNAL(o.signaltype.FORCE); //(any) UI force Reflash
                 }else{
                     //o.set_object_ex(20, o.x, o.y, 0, 43, "E--" );
                 }
@@ -521,9 +521,8 @@ function sce_player( gObjc ) {
         if (hkey) {
             if (o.shot == 0){
                 o.shot = 1;
-
                 if (!gObjc.ceilflag){//inTheWall HELP mode
-                    if (o.item[35]<10) o.item[35] += 10;
+                    if (o.item[state.Constant.item.COIN]<10) o.item[state.Constant.item.COIN] += 10;
                     o.portalflag = true;
                 }else{
                     o.set_object_ex(20, o.x, o.y, 0, 43, "Hi!" );
@@ -537,7 +536,7 @@ function sce_player( gObjc ) {
         if (o.input.pause) {
             if (o.shot == 0) {
                 o.shot = 1;
-                o.SIGNAL(1); //pause
+                o.SIGNAL(o.signaltype.PAUSE); //pause
                 o.triger = TRIG_WAIT;
             }
         }
@@ -610,9 +609,9 @@ function sce_player( gObjc ) {
         //武器持ち替え
         if (o.gameState.player.weapon != o.before_weapon) {
 
-            let ww = [15, 16, 17, 19, 18, 50];
+            //let ww = //[15, 16, 17, 19, 18, 50];
 
-            let w = ww[o.before_weapon];
+            let w = state.Constant.item.WEAPONS[o.before_weapon];
             let wv = ((o.vector + (o.before_weapon - 2)*18) + 180) % 360;
             //置いたときに重ならないように角度を変える
 

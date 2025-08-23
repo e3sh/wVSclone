@@ -31,6 +31,7 @@ function ConstantData(){
 
     this.signal = Object.freeze({
         PAUSE: 1,
+        FORCE: 7,
         RESULT: 835,
         LVLUP: 1709,
         DEAD: 4649,
@@ -62,7 +63,7 @@ function ConstantData(){
         EXTEND: 21,
         LAMP: 26,
         MAP: 27,     
-        WEAPONS: [15, 16, 17, 18, 19, 50],  
+        WEAPONS: [15, 16, 17, 19, 18, 50],  
 
         HELPTEXT:  { 51: "INT", 52: "MND", 53: "VIT", 56: "STR", 57: "DEX" },
         KEYITEMS: [51, 52, 53, 54, 55, 56, 57, 58 ],

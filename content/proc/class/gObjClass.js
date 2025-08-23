@@ -692,14 +692,20 @@ class gObjectClass {
                             if (this.crash.type == ENEMY) { //相手が敵の場合
                                 this.crash.pick.push(this.chr);
                             }
-                            if (this.crash.type == PLAYER) { //自分の場合
-                                if ((this.chr != 21) && (this.chr != 22)) { //1up or Key
+                            if ((this.crash.type == PLAYER)||(this.crash.type == FRIEND)) { //自分/味方の場合
+                                if ((this.chr != state.Constant.item.EXTEND) 
+                                    && (this.chr != state.Constant.item.KEY)) { //1up or Key
                                     this.sound.effect(state.Constant.sound.CURSOR); //cursor音
                                 }
                                 this.get_item(this.chr, this.id);
                             }
                         }
                     }
+                    break;
+                case FRIEND:
+                    if (onst) this.sound.effect(state.Constant.sound.HIT); //hit音
+                    this.change_sce("effect_vanish");
+                    this.damageflag = false;
                     break;
                 default:
                     break;

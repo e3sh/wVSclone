@@ -1,560 +1,434 @@
 ﻿//Scene
 //
-function sceneConfig(state) {
+/**
+ * @class
+ * @classdesc
+ * ゲームの設定オプションを管理するシーンです。<br>\
+ * ランプ使用、マップ使用、アイテムリセット、弾フリーなどの設定を<br>\
+ * ユーザーが変更、セーブ、ロード、リセットできる機能を提供します。
+ */
+class sceneConfig {
+    /**
+     * @constructor
+     * @param {stateControl} state GameCore.state
+     * @description
+     * `sceneConfig`インスタンスを初期化します。<br>\
+     * UI描画レイヤー、入力デバイス、各種設定パラメータ、<br>\
+     * そして設定メニューを構成するボタン群を準備します。 
+     */
+    constructor(state) {
 
-    const dev = state.System.dev;
+        const dev = state.System.dev;
 
-    //宣言部
-    const UI = dev.graphics[state.Constant.layer.UI];
-    const BUI = dev.graphics[state.Constant.layer.BUI];
+        //宣言部
+        const UI = dev.graphics[state.Constant.layer.UI];
+        const BUI = dev.graphics[state.Constant.layer.BUI];
 
-    //let text = dev.text;
-    const text = dev.graphics[state.Constant.layer.BUI]; 
+        const text = dev.graphics[state.Constant.layer.BUI];
+        /**
+         * @method
+         */
+        this.init = scene_init;
+        /**
+         * @method
+         */
+        this.reset = scene_reset;
+        /**
+         * @method
+         */
+        this.step = scene_step;
+        /**
+         * @method
+         */
+        this.draw = scene_draw;
 
-    //let inp = dev.mouse_state;
-    //const  keys = dev.key_state;
+        this.reset_enable = true;
+        this.score = 0;
+        this.config = state.Config;
 
-    this.init = scene_init;
-    this.reset = scene_reset;
-    this.step = scene_step;
-    this.draw = scene_draw;
+        let keylock;
+        let keywait = 0;
 
-    this.reset_enable = true;
-    this.score = 0;
-    this.config = state.Config;
+        let w_config = [];
+        let w_number = [];
+        let before_wn = [];
 
-    let keylock;
-    let keywait = 0;
+        let wtxt;
 
-    let w_config = [];
-    let w_number = [];
-    let before_wn = [];
+        let save_on = false;
+        let reset_on = false;
 
-    let wtxt;
+        let menusel = 0;
 
-    let save_on = false;
-    let reset_on = false;
+        let wipef;
+        let wipecnt;
 
-    let menusel = 0;
+        let sndtst;
+        //
+        /**
+         * @class
+         * @classdesc
+         * 設定メニューで使用される個々のUIボタンの基底クラスです。<br>\
+         * ボタンのタイトル、位置、サイズ、選択状態、クリック状態、<br>\
+         * およびクリック時に実行される関数を定義します。
+         */
+        class btn {
+            constructor() {
 
-    let wipef;
-    let wipecnt;
+                this.title = "button"; //button title
+                this.x = 0;
+                this.y = 0;
+                this.w = 100;
+                this.h = 16;
 
-    let sndtst;
-    //
-    function btn() {
+                this.select = false;
+                this.click = false;
 
-        this.title = "button"; //button title
-        this.x = 0;
-        this.y = 0;
-        this.w = 100;
-        this.h = 16;
+                /**
+                 * @method
+                 * @param {string} s ボタンのタイトル
+                 * @param {number} x 表示位置
+                 * @param {number} y 表示位置
+                 * @param {number} w 幅
+                 * @param {number} h 高さ
+                 * @description
+                 * ボタンのタイトル、表示位置（x, y）、幅（w）、高さ（h）を設定します。 
+                 */
+                this.setup = function (s, x, y, w, h) {
 
-        this.select = false;
-        this.click = false;
+                    this.title = s;
+                    this.x = x;
+                    this.y = y;
+                    this.w = w;
+                    this.h = h;
 
-        this.setup = function (s, x, y, w, h) {
-
-            this.title = s;
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
-
-            this.select = false;
-            this.click = false;
-            this.lamp = false;
-        }
-
-        this.status_reset = function () {
-            this.select = false;
-            this.click = false;
-        }
-
-        this.func = function () {
-            return 0;
-        }
-    }
-
-    function sel_menu() {
-
-        let res;
-        let bl = [];
-        this.button = bl;
-
-        let tmes;
-        let tmsx;
-        let tmsy;
-
-        this.setup = function (num, s, msg, x, y, msx, msy) {
-
-            res = num;
-
-            tmes = msg;
-            tmsx = msx;
-            tmsy = msy;
-
-            m = new btn();
-            m.setup(s, x, y, 120, 16);
-            m.msg = msg;
-
-            menu.push(m);
-            bl.push(m);
-
-            for (let j = 0; j < 2; j++) {
-                m = new btn();
-                m.setup(
-                    (j == 0) ? " Enable" : " Disable",
-                    x + 160 + 80 * j, 
-                    y, 80, 16
-                    );
-                m.msg = msg + ((j == 0) ? "有効" : "無効");
-                m.sw = (j == 0) ? true : false;
-                m.num = num;
-
-                menu.push(m);
-                bl.push(m);
+                    this.select = false;
+                    this.click = false;
+                    this.lamp = false;
+                };
+                /**
+                 * @method
+                 * @description
+                 * ボタンの選択状態（`select`）とクリック状態（`click`）を`false`にリセットします。
+                 */
+                this.status_reset = function () {
+                    this.select = false;
+                    this.click = false;
+                };
+                /**
+                 * @method
+                 * @returns {number} RetrunStatus
+                 * @description
+                 * ボタンがクリックされたときに実行される関数を定義するプレースホルダーです。<br>\
+                 * デフォルトでは0を返します。
+                 */
+                this.func = function () {
+                    return 0;
+                };
             }
         }
 
-        this.set = function(r){
+        /**
+         * @class
+         * @classdesc
+         * ON/OFF選択式のメニュー項目を管理するクラスです。<br>\
+         * 項目名とメッセージ、有効/無効の選択ボタンを生成し、<br>\
+         * 選択結果に応じて表示を更新します。
+         */
+        class sel_menu {
+            constructor() {
 
-            res = r;
+                let res;
+                let bl = [];
+                this.button = bl;
 
-        }
+                let tmes;
+                let tmsx;
+                let tmsy;
+                /**
+                 * @method
+                 * @param {boolean} num 初期選択状態(default)
+                 * @param {string} s ボタンタイトル
+                 * @param {string} msg メッセージ
+                 * @param {number} x ボタン位置
+                 * @param {number} y ボタン位置
+                 * @param {number} msx メッセージ位置
+                 * @param {number} msy メッセージ位置
+                 * @description
+                 * メニュー項目を設定します。<br>\
+                 * 項目のID、タイトル、表示メッセージ、位置、<br>\
+                 * および有効/無効ボタンを定義します。
+                 */
+                this.setup = function (num, s, msg, x, y, msx, msy) {
 
-        this.result = function () {
+                    res = num;
 
-            if ((bl[0].select) || (bl[1].select) || (bl[2].select)) {
+                    tmes = msg;
+                    tmsx = msx;
+                    tmsy = msy;
 
-                if (bl[1].click) {
-                    res = true;
-                    keylock = true;
-                    bl[1].click = false;
-                }
-
-                if (bl[2].click) {
-                    res = false;
-                    keylock = true;
-                    bl[2].click = false;
-                }
-
-                let restxt =  (bl[1].select || bl[2].select) ?"-":((res) ? "有効" : "無効");
-
-                text.reset();    
-                text.clear();
-                //text.print(tmes + restxt, tmsx+2, tmsy+1, "black");
-                //text.print(tmes + restxt, tmsx, tmsy, "white");
-                text.kprint(tmes + restxt, tmsx, tmsy);
-                //text.kputchr(tmes + restxt, tmsx, tmsy, 1.5);
-                text.draw();
-                //text.reset();
-            }
-
-            if (res) {
-                bl[1].lamp = true;
-                bl[2].lamp = false;
-            } else {
-                bl[1].lamp = false;
-                bl[2].lamp = true;
-            }
-
-
-
-            return res;
-        }
-    }
-
-    function sel_number() {
-
-            let res;
-            let bl = [];
-            this.button = bl;
-
-            let tmes;
-            let tmsx;
-            let tmsy;
-            let ts;
-
-            this.setup = function (num, s, msg, x, y, msx, msy) {
-
-                res = num;
-                
-                ts = s;
-                tmes = msg;
-                tmsx = msx;
-                tmsy = msy;
-
-                m = new btn();
-                m.setup(s, x, y, 120, 16);
-                m.msg = msg;
-
-                menu.push(m);
-                bl.push(m);
-
-                for (let j = 0; j < 2; j++) {
-                    m = new btn();
-                    m.setup((j == 0) ? "  -1" : "  +1",
-                x + 160 + 80 * j, y, 80, 16);
-                    m.msg = msg; //; + ((j == 0) ? "有効" : "無効");
-                    m.sw = (j == 0) ? -1 : 1;
-                    m.num = num;
+                    let m = new btn();
+                    m.setup(s, x, y, 120, 16);
+                    m.msg = msg;
 
                     menu.push(m);
                     bl.push(m);
-                }
-            }
 
-            this.set = function (r) {
+                    for (let j = 0; j < 2; j++) {
+                        let m = new btn();
+                        m.setup(
+                            (j == 0) ? " Enable" : " Disable",
+                            x + 160 + 80 * j,
+                            y, 80, 16
+                        );
+                        m.msg = msg + ((j == 0) ? "有効" : "無効");
+                        m.sw = (j == 0) ? true : false;
+                        m.num = num;
 
-                res = r;
-                bl[0].title = ts + res;
+                        menu.push(m);
+                        bl.push(m);
+                    }
+                };
+                /**
+                 * @method
+                 * @param {boolean} r 選択結果
+                 * @description
+                 * メニューの選択結果（`true`または`false`）を設定します。
+                 */
+                this.set = function (r) {
 
-            }
+                    res = r;
 
+                };
+                /**
+                 * @method
+                 * @returns {boolean} 選択状態
+                 * @description
+                 * メニュー項目の選択状態を処理し、選択結果を返します。<br>\
+                 * 選択されたボタンに応じて、内部の`res`値を更新し、<br>\
+                 * 画面上の表示（"有効" or "無効"）をリアルタイムで更新します。
+                 */
+                this.result = function () {
 
-            this.result = function () {
+                    if ((bl[0].select) || (bl[1].select) || (bl[2].select)) {
 
-                let o_res = res;
+                        if (bl[1].click) {
+                            res = true;
+                            keylock = true;
+                            bl[1].click = false;
+                        }
 
-                if ((bl[0].select) || (bl[1].select) || (bl[2].select)) {
+                        if (bl[2].click) {
+                            res = false;
+                            keylock = true;
+                            bl[2].click = false;
+                        }
 
-                    if (bl[1].click) {
-                        res += bl[1].sw;
-                        bl[1].click = false;
-                        keylock = true;
-                        bl[1].lamp = true;
-                        bl[2].lamp = false;
+                        let restxt = (bl[1].select || bl[2].select) ? "-" : ((res) ? "有効" : "無効");
 
+                        text.reset();
+                        text.clear();
+                        //text.print(tmes + restxt, tmsx+2, tmsy+1, "black");
+                        //text.print(tmes + restxt, tmsx, tmsy, "white");
+                        text.kprint(tmes + restxt, tmsx, tmsy);
+                        //text.kputchr(tmes + restxt, tmsx, tmsy, 1.5);
+                        text.draw();
+                        //text.reset();
                     }
 
-                    if (bl[2].click) {
-                        res += bl[2].sw;
-                        bl[2].click = false;
-                        keylock = true;
+                    if (res) {
+                        bl[1].lamp = true;
+                        bl[2].lamp = false;
+                    } else {
                         bl[1].lamp = false;
                         bl[2].lamp = true;
                     }
+                    return res;
+                };
+            }
+        }
+        /**
+         * @class
+         * @classdesc
+         * 数値選択式のメニュー項目を管理するクラスです。<br>\
+         * 項目名とメッセージ、-1と+1の増減ボタンを生成し、<br>\
+         * 選択結果に応じて表示を更新します。
+         */
+        class sel_number {
+            constructor() {
 
-                    if (res < 0) res = 0;
+                let res;
+                let bl = [];
+                this.button = bl;
 
+                let tmes;
+                let tmsx;
+                let tmsy;
+                let ts;
+                /**
+                 * @method
+                 * @param {number} num 初期値(default)
+                 * @param {string} s ボタンタイトル
+                 * @param {string} msg メッセージ
+                 * @param {number} x ボタン位置
+                 * @param {number} y ボタン位置
+                 * @param {number} msx メッセージ位置
+                 * @param {number} msy メッセージ位置
+                 * @description
+                 * 数値選択メニュー項目を設定します。<br>\
+                 * 項目のID、タイトル、表示メッセージ、位置、<br>\
+                 * および数値増減ボタン（-1, +1）を定義します。
+                 */
+                this.setup = function (num, s, msg, x, y, msx, msy) {
+
+                    res = num;
+
+                    ts = s;
+                    tmes = msg;
+                    tmsx = msx;
+                    tmsy = msy;
+
+                    let m = new btn();
+                    m.setup(s, x, y, 120, 16);
+                    m.msg = msg;
+
+                    menu.push(m);
+                    bl.push(m);
+
+                    for (let j = 0; j < 2; j++) {
+                        let m = new btn();
+                        m.setup((j == 0) ? "  -1" : "  +1",
+                            x + 160 + 80 * j, y, 80, 16);
+                        m.msg = msg; //; + ((j == 0) ? "有効" : "無効");
+                        m.sw = (j == 0) ? -1 : 1;
+                        m.num = num;
+
+                        menu.push(m);
+                        bl.push(m);
+                    }
+                };
+                /**
+                 * @method
+                 * @param {number} r 
+                 * @description
+                 * 数値の選択結果（`r`）を設定し、表示を更新します。<br>\
+                 * これにより、メニューに表示される数値が変更されます。
+                 */
+                this.set = function (r) {
+
+                    res = r;
                     bl[0].title = ts + res;
 
-                    text.reset();
-                    text.clear();
-                    //text.print(tmes + res, tmsx+2, tmsy+1, "black");
-                    //text.print(tmes + res, tmsx, tmsy, "white");
-                    text.kprint(tmes + res, tmsx, tmsy);
-                    //text.kputchr(tmes + res, tmsx, tmsy, 1.5);
-                    text.draw();
-                    //text.reset();
-                }
-                //     bl[1].lamp = false;
-                //    bl[2].lamp = false;
+                };
+                /**
+                 * @method
+                 * @returns {number} 選択値
+                 * @description
+                 * 数値選択の結果を処理し、選択された数値（`res`）を返します。<br>\
+                 * 増減ボタンがクリックされた場合、`res`を更新し、<br>\
+                 * 画面上の表示をリアルタイムで更新します。
+                 */
+                this.result = function () {
 
-                return res;
-            }
-    }
+                    let o_res = res;
 
-    let menu = []
-    let mttl = ["LampUse.", "MapUse.", "ItemReset.", "ShotFree.", "SoundTest.", "StartStage.", "DebugStatus", "BulletErace"];
-    let w_message = ["面の開始からランプを所持する:", "面の開始から地図を所持する:",
-	"死んだときにアイテム放出する:", "弾を消費しない。:", "サウンドテスト : ", "開始面 : ", "デバッグステータス表示:", "画面外からの弾を消す:"];
-    let mtyp = [0, 0, 0, 0, 1, 1, 0, 0];//menu type 0:select 1:number
+                    if ((bl[0].select) || (bl[1].select) || (bl[2].select)) {
 
-    w_number[5] = 1; //開始面初期値
+                        if (bl[1].click) {
+                            res += bl[1].sw;
+                            bl[1].click = false;
+                            keylock = true;
+                            bl[1].lamp = true;
+                            bl[2].lamp = false;
 
-    let confmenu = [];
+                        }
 
-    let menu_x = 60;
-    let menu_y = 108;
+                        if (bl[2].click) {
+                            res += bl[2].sw;
+                            bl[2].click = false;
+                            keylock = true;
+                            bl[1].lamp = false;
+                            bl[2].lamp = true;
+                        }
 
-    for (let i = 0; i < mttl.length ; i++) {
+                        if (res < 0) res = 0;
 
-        let wcm;
-        if (mtyp[i] == 0) {
-            wcm = new sel_menu();
-            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 20, menu_y + i * 20 + 8);
-        } else {
-            wcm = new sel_number();
-            wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, menu_x, menu_y + i * 20 + 8);
-        }
-        confmenu.push(wcm);
-    }
+                        bl[0].title = ts + res;
 
-    m = new btn();
-    m.setup("Save.", 100, 320, 120, 16); 
-    m.msg = "Save.";
-    m.func = function () {
-        save_on = true;
-        keylock = true;
-        return 0;
-    };
-    menu.push(m);
-
-    m = new btn();
-    m.setup("Reset.", 100, 340, 120, 16);
-    m.msg = "Reset.";
-    m.func = function () {
-        reset_on = true;
-        keylock = true;
-        return 0;
-    }
-    menu.push(m);
-
-    m = new btn();
-    m.setup("Exit.", 100, 360, 120, 16);
-    m.msg = "Exit.";
-    m.jp = state.Constant.scene.TITLE; //Return Scene
-    m.func = function () {
-        return this.jp;
-    };
-    menu.push(m);
-
-    //処理部
-    function scene_init() {
-        state.Config.reset();
-        state.Config.load();
-        //===================
-        w_config[0] = state.Config.lamp_use;
-        w_config[1] = state.Config.map_use;
-        w_config[2] = state.Config.itemreset;
-        w_config[3] = state.Config.shotfree;
-        w_config[4] = false;
-        w_config[5] = false;
-        w_config[6] = state.Config.debug;
-        w_config[7] = state.Config.bulletmode;
-
-        w_number[4] = 0;
-        w_number[5] = state.Config.startstage;
-
-        //初期化処理
-    }
-
-    function scene_reset() {
-        dev.pauseBGSP();
-        //dev.graphics[0].setInterval(0);//BG　WORK2
-		//dev.graphics[1].setInterval(0);//SPRITE
-		//dev.graphics[2].setInterval(0);//FG
-
-        for (let i in menu) {
-            menu[i].sel = false;
-            menu[i].lamp = false;
-        }
-
-        wipef = false;
-        wipecnt = 0;
-        cur_cnt = 0;
-
-        BUI.setBackgroundcolor("navy");
-        BUI.reset();
-        BUI.clear("navy");
-
-        for (i in w_number) {
-            if (Boolean(w_number[i])) {
-                before_wn[i] = w_number[i];
+                        text.reset();
+                        text.clear();
+                        text.kprint(tmes + res, tmsx, tmsy);
+                        text.draw();
+                    }
+                    return res;
+                };
             }
         }
 
-        for (let i = 0; i < mtyp.length; i++) {
+        const menu = [];
+        const mttl = ["LampUse.", "MapUse.", "ItemReset.", "ShotFree.", "SoundTest.", "StartStage.", "DebugStatus", "BulletErace"];
+        const w_message = ["面の開始からランプを所持する:", "面の開始から地図を所持する:",
+            "死んだときにアイテム放出する:", "弾を消費しない。:", "サウンドテスト : ", "開始面 : ", "デバッグステータス表示:", "画面外からの弾を消す:"];
+        const mtyp = [0, 0, 0, 0, 1, 1, 0, 0]; //menu type 0:select 1:number
 
+        w_number[5] = 1; //開始面初期値
+
+        const confmenu = [];
+
+        const menu_x = 60;
+        const menu_y = 108;
+
+        for (let i = 0; i < mttl.length; i++) {
+
+            let wcm;
             if (mtyp[i] == 0) {
-                
-                confmenu[i].set(w_config[i]);
+                wcm = new sel_menu();
+                wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, 20, menu_y + i * 20 + 8);
             } else {
-                //let wcm = new sel_number();
-                confmenu[i].set(w_number[i]);
+                wcm = new sel_number();
+                wcm.setup(i, mttl[i], w_message[i], menu_x, menu_y + i * 20, menu_x, menu_y + i * 20 + 8);
             }
+            confmenu.push(wcm);
         }
 
-        keylock = true;
+        let m = new btn();
+        m.setup("Save.", 100, 320, 120, 16);
+        m.msg = "Save.";
+        m.func = function () {
+            save_on = true;
+            keylock = true;
+            return 0;
+        };
+        menu.push(m);
 
-        menusel = 0;
-        keylock = 10;
+        m = new btn();
+        m.setup("Reset.", 100, 340, 120, 16);
+        m.msg = "Reset.";
+        m.func = function () {
+            reset_on = true;
+            keylock = true;
+            return 0;
+        };
+        menu.push(m);
 
-        //dev.sound.change(Math.floor(Math.random() * 6));
-        //dev.sound.play(0);
+        m = new btn();
+        m.setup("Exit.", 100, 360, 120, 16);
+        m.msg = "Exit.";
+        m.jp = state.Constant.scene.TITLE; //Return Scene
+        m.func = function () {
+            return this.jp;
+        };
+        menu.push(m);
 
-    }
-
-    function scene_step(g, input) {
-
-        wtxt = [];
-
-        //let mstate = inp.check_last();
-        //let kstate = keys.check();
-
-        //let x = mstate.x;
-        //let y = mstate.y;
-
-        let zkey = input.trigger.weapon;//false;
-        let lkey = false;
-        let rkey = false;
-
-        const c = input;//dev.directionM( kstate );
-
-        if (!keylock) {
-            //if (Boolean(kstate[37])) {
-                if (c.left) {// <-
-                //if (kstate[37]) {//<=
-                    lkey = true;
-                    keywait = 10;
-                }
-            //}
-            //if (Boolean(kstate[39])) {
-                if (c.right) {// ->
-                //if (kstate[39]) {//=>
-                    rkey = true;
-                    keywait = 10;
-                }
-            //}
-
-            //if (Boolean(kstate[38])) {
-                if (c.up) {//↑
-                //if (kstate[38]) {//↑
-                    menusel--;
-
-                    if (menusel < mttl.length * 3) {
-                        menusel--;
-                        menusel--;
-                    }
-                    if (menusel < 0) menusel = menu.length - 1;
-                    keylock = true;
-                    keywait = 10;
-                    text.reset();
-                    text.clear();
-                    text.draw();
-                }
-            //}
-
-            //if ((kstate[40])) {
-                if (c.down) {//↓
-                //if (kstate[40]) {//↓
-                    menusel++;
-
-                    if (menusel < mttl.length * 3) {
-                        menusel++;
-                        menusel++;
-                    }
-                    if (menusel > menu.length- 1) menusel = 0;
-                    keylock = true;
-                    keywait = 10
-                    text.reset();
-                    text.clear();
-                    text.draw();
-                }
-            //}
-            /*    
-            //zkey = false;
-            if (Boolean(kstate[90])) {
-                if (kstate[90]) {//↓
-                    zkey = true;
-                }
-            }
-            if (Boolean(kstate[32])) {
-                if (kstate[32]) {//↓
-                    zkey = true;
-                }
-            }
-            */
-            if (keylock) {
-                dev.sound.effect(state.Constant.sound.CURSOR);
-            }
-        }
-
-        if ((zkey||(lkey || rkey)) && (!keylock)) {
-//        if ((mstate.button == 0) && (!keylock)) {
-            for (let i in menu) {
-                menu[i].click = false;
-
-                if (menu[i].select) {
-                    menu[i].click = true;
-
-                    let n = menu[i].func();
-                    if (n != 0) {
-                        BUI.setBackgroundcolor("");
-                        return n;
-                    }
-                }
-            }
-        } else {
-            for (let i in w_number) {
-                if (Boolean(w_number[i])) {
-                    before_wn[i] = w_number[i];
-                }
-            }
-        }
-
-        if (keywait > 0) keywait--;
-        //if (mstate.button == -1) keylock = false;
-        if ((!zkey) && (keywait == 0)) keylock = false;
-
-        //if (mstate.button == -1) keylock = false;
-
-        let wi = -1;
-        let wmesel = menusel;
-
-        if (menusel < mttl.length * 3) {
-            wmesel = Math.floor(menusel / 3) * 3;
-
-        }
-
-        for (let i in menu) {
-            if (i == wmesel) {
-                menu[i].select = true;
-                wi = i;
-            } else {
-                menu[i].select = false;
-            }
-        }
-
-        if ((lkey || rkey) && (!keylock)) {
-            if (menusel < mttl.length * 3) {
-
-                let n = menusel;
-                if (lkey) n = n + 1;
-                if (rkey) n = n + 2;
-
-                menu[n].select = true;
-            }
-        }
-
-        wtxt.push("== Configration ==");
-        wtxt.push("-----------------%");
-
-        for (let i in confmenu) {
-            w_config[i] = confmenu[i].result();
-
-            if (mtyp[i] == 1) {
-
-                w_number[i] = w_config[i];
-            }
-        }
-
-        //===================
-        state.Config.lamp_use = w_config[0];
-        state.Config.map_use = w_config[1];
-        state.Config.itemreset = w_config[2];
-        state.Config.shotfree = w_config[3];
-        state.Config.debug = w_config[6];
-        state.Config.bulletmode = w_config[7];
-
-
-        if (!Boolean(sndtst)) sndtst = w_number[4];
-
-        if (sndtst != w_number[4]) {
-            if ((w_number[4] >= 0) && (w_number[4] <18)) {//Sound No 
-                dev.sound.change(Math.floor(w_number[4]));
-                dev.sound.play();
-            }
-            sndtst = w_number[4];
-        }
-
-        state.Config.startstage = w_number[5];
-
-        if (reset_on) {
-
+        //処理部
+        /**
+         * @description
+         * シーンの初期化処理を実行します。<br>\
+         * ゲームの設定をロードし、各設定項目に対応する初期値を準備します。
+         */
+        function scene_init() {
             state.Config.reset();
+            state.Config.load();
             //===================
             w_config[0] = state.Config.lamp_use;
             w_config[1] = state.Config.map_use;
@@ -568,28 +442,36 @@ function sceneConfig(state) {
             w_number[4] = 0;
             w_number[5] = state.Config.startstage;
 
-            text.clear();
-
-            //text.print("設定初期化しました。", 102, 281, "black");
-            //text.print("設定初期化しました。", 100, 280, "white");
-            text.kprint("設定初期化しました。", 100, 280);
-
-            if (Boolean(localStorage)) {
-                localStorage.clear();
-
-                //text.print("ローカルストレージクリア。", 102, 301, "black");
-                //text.print("ローカルストレージクリア。", 100, 300, "white");
-                text.kprint("ローカルストレージクリア。", 100, 300);
-            } else {
-
-                //text.print("ローカルストレージが使用できない?"
-                //        , 102, 301, "black");
-                //text.print("ローカルストレージが使用できない?"
-                //        , 100, 300, "white");
-                text.kprint("ローカルストレージが使用できない?", 100, 300);
+            //初期化処理
+        }
+        /**
+         * @description
+         * 設定シーンの状態をリセットし、UIを初期状態に戻します。<br>\
+         * 背景描画の停止、メニューボタンのリセット、設定値の再設定などを行います。
+         */
+        function scene_reset() {
+            dev.pauseBGSP();
+            //dev.graphics[0].setInterval(0);//BG　WORK2
+            //dev.graphics[1].setInterval(0);//SPRITE
+            //dev.graphics[2].setInterval(0);//FG
+            for (let i in menu) {
+                menu[i].sel = false;
+                menu[i].lamp = false;
             }
-            text.draw();
-            //text.reset();
+
+            wipef = false;
+            wipecnt = 0;
+            //let cur_cnt = 0;
+
+            BUI.setBackgroundcolor("navy");
+            BUI.reset();
+            BUI.clear("navy");
+
+            for (i in w_number) {
+                if (Boolean(w_number[i])) {
+                    before_wn[i] = w_number[i];
+                }
+            }
 
             for (let i = 0; i < mtyp.length; i++) {
 
@@ -602,106 +484,244 @@ function sceneConfig(state) {
                 }
             }
 
-            reset_on = false;
+            keylock = true;
+
+            menusel = 0;
+            keylock = 10;
+
+            //dev.sound.change(Math.floor(Math.random() * 6));
+            //dev.sound.play(0);
         }
+        /**
+         * 
+         * @param {Screen} g dev.graphics[x] 
+         * @param {inputMainTask} input input 
+         * @returns {number} sceneSelectNumber
+         * @description
+         * 設定画面の入力処理とUIの更新ロジックです。<br>\
+         * キーボード入力（方向キー、決定キーなど）を検出し、<br>\
+         * メニュー選択の移動、設定値の変更、セーブ/リセット/終了などのアクションを実行します。
+         */
+        function scene_step(g, input) {
 
-        if (save_on) {
-            text.clear();
-        
-            if (state.Config.save() == 0) {
+            wtxt = [];
 
-            //    text.print("設定をセーブしました。"//this.msg + localStorage.length
-            //, 102, 281, "black");
-            //    text.print("設定をセーブしました。"
-            //, 100, 280, "white");
-                text.kprint("設定をセーブしました。", 100, 280);
-            } else {
+            let zkey = input.trigger.weapon; //false;
+            let lkey = false;
+            let rkey = false;
 
-            //    text.print("ローカルストレージが使用できない?"
-            //            , 102, 281, "black");
-            //    text.print("ローカルストレージが使用できない?"
-            //            , 100, 280, "white");
-                text.kprint("ローカルストレージが使用できない?", 100, 280);
-            }
-            text.draw();
-            //text.reset();
-            
-            save_on = false;
-        }
-        return 0;
-        //進行
-    }
+            const c = input; 
 
-    function btn() {
-
-        //
-        this.title = "button"; //button title
-        this.x = 0;
-        this.y = 0;
-        this.w = 100;
-        this.h = 16;
-
-        this.select = false;
-        this.click = false;
-
-        this.setup = function (s, x, y, w, h) {
-
-            this.title = s;
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
-
-            this.select = false;
-            this.lamp = false;
-            this.click = false;
-        }
-
-        this.status_reset = function () {
-            this.select = false;
-            this.click = false;
-        }
-
-        this.func = function () {
-            return 0;
-        }
-    }
-
-    function scene_draw() {
-
-        for (let s in wtxt) {
-            //UI.putchr(wtxt[s], 0, 60 + 16 * s);
-            UI.kprint(wtxt[s], 0, 60 + 16 * s);
-        }
-
-        for (let i in menu) {
-            if (menu[i].lamp) {
-                UI.fill(menu[i].x, menu[i].y, menu[i].w, menu[i].h,"orange" );
-                /*
-                let o = {}
-                o.x = menu[i].x;
-                o.y = menu[i].y;
-                o.w = menu[i].w;
-                o.h = menu[i].h;
-                o.draw = function (device) {
-                    device.beginPath();
-                    device.fillStyle = "orange";
-                    device.fillRect(this.x, this.y, this.w, this.h);
+            if (!keylock) {
+                if (c.left) { // <-
+                    lkey = true;
+                    keywait = 10;
                 }
-                UI.putFunc(o);
-                */
+                if (c.right) { // ->
+                    rkey = true;
+                    keywait = 10;
+                }
+                if (c.up) { //↑
+                    menusel--;
+
+                    if (menusel < mttl.length * 3) {
+                        menusel--;
+                        menusel--;
+                    }
+                    if (menusel < 0) menusel = menu.length - 1;
+                    keylock = true;
+                    keywait = 10;
+                    text.reset();
+                    text.clear();
+                    text.draw();
+                }
+                if (c.down) { //↓
+                    menusel++;
+
+                    if (menusel < mttl.length * 3) {
+                        menusel++;
+                        menusel++;
+                    }
+                    if (menusel > menu.length - 1) menusel = 0;
+                    keylock = true;
+                    keywait = 10;
+                    text.reset();
+                    text.clear();
+                    text.draw();
+                }
+                if (keylock) {
+                    dev.sound.effect(state.Constant.sound.CURSOR);
+                }
             }
 
-            if (menu[i].select) {
-                if (!menu[i].lamp) UI.fill(menu[i].x - 10, menu[i].y-1 , menu[i].w, 8,"blue" );
-                //UI.fill(menu[i].x - 4 -6 , menu[i].y - 1 , menu[i].title.length*6 + 12,8,"blue" );
-                UI.kprint(menu[i].title, menu[i].x - 4, menu[i].y - 1);
+            if ((zkey || (lkey || rkey)) && (!keylock)) {
+                //        if ((mstate.button == 0) && (!keylock)) {
+                for (let i in menu) {
+                    menu[i].click = false;
+
+                    if (menu[i].select) {
+                        menu[i].click = true;
+
+                        let n = menu[i].func();
+                        if (n != 0) {
+                            BUI.setBackgroundcolor("");
+                            return n;
+                        }
+                    }
+                }
             } else {
-                //if (!menu[i].lamp) UI.fill(menu[i].x, menu[i].y, menu[i].w, menu[i].h,"black" );
-                UI.kprint(menu[i].title, menu[i].x, menu[i].y);
+                for (let i in w_number) {
+                    if (Boolean(w_number[i])) {
+                        before_wn[i] = w_number[i];
+                    }
+                }
             }
-        }
 
+            if (keywait > 0) keywait--;
+            if ((!zkey) && (keywait == 0)) keylock = false;
+
+            let wi = -1;
+            let wmesel = menusel;
+
+            if (menusel < mttl.length * 3) {
+                wmesel = Math.floor(menusel / 3) * 3;
+
+            }
+
+            for (let i in menu) {
+                if (i == wmesel) {
+                    menu[i].select = true;
+                    wi = i;
+                } else {
+                    menu[i].select = false;
+                }
+            }
+
+            if ((lkey || rkey) && (!keylock)) {
+                if (menusel < mttl.length * 3) {
+
+                    let n = menusel;
+                    if (lkey) n = n + 1;
+                    if (rkey) n = n + 2;
+
+                    menu[n].select = true;
+                }
+            }
+
+            wtxt.push("== Configration ==");
+            wtxt.push("-----------------%");
+
+            for (let i in confmenu) {
+                w_config[i] = confmenu[i].result();
+
+                if (mtyp[i] == 1) {
+
+                    w_number[i] = w_config[i];
+                }
+            }
+
+            //===================
+            state.Config.lamp_use = w_config[0];
+            state.Config.map_use = w_config[1];
+            state.Config.itemreset = w_config[2];
+            state.Config.shotfree = w_config[3];
+            state.Config.debug = w_config[6];
+            state.Config.bulletmode = w_config[7];
+
+
+            if (!Boolean(sndtst)) sndtst = w_number[4];
+
+            if (sndtst != w_number[4]) {
+                if ((w_number[4] >= 0) && (w_number[4] < 18)) { //Sound No 
+                    dev.sound.change(Math.floor(w_number[4]));
+                    dev.sound.play();
+                }
+                sndtst = w_number[4];
+            }
+
+            state.Config.startstage = w_number[5];
+
+            if (reset_on) {
+
+                state.Config.reset();
+                //===================
+                w_config[0] = state.Config.lamp_use;
+                w_config[1] = state.Config.map_use;
+                w_config[2] = state.Config.itemreset;
+                w_config[3] = state.Config.shotfree;
+                w_config[4] = false;
+                w_config[5] = false;
+                w_config[6] = state.Config.debug;
+                w_config[7] = state.Config.bulletmode;
+
+                w_number[4] = 0;
+                w_number[5] = state.Config.startstage;
+
+                text.clear();
+                text.kprint("設定初期化しました。", 100, 280);
+
+                if (Boolean(localStorage)) {
+                    localStorage.clear();
+                    text.kprint("ローカルストレージクリア。", 100, 300);
+                } else {
+                    text.kprint("ローカルストレージが使用できない?", 100, 300);
+                }
+                text.draw();
+                for (let i = 0; i < mtyp.length; i++) {
+
+                    if (mtyp[i] == 0) {
+
+                        confmenu[i].set(w_config[i]);
+                    } else {
+                        //let wcm = new sel_number();
+                        confmenu[i].set(w_number[i]);
+                    }
+                }
+
+                reset_on = false;
+            }
+
+            if (save_on) {
+                text.clear();
+
+                if (state.Config.save() == 0) {
+                    text.kprint("設定をセーブしました。", 100, 280);
+                } else {
+                    text.kprint("ローカルストレージが使用できない?", 100, 280);
+                }
+                text.draw();
+                //text.reset();
+                save_on = false;
+            }
+            return 0;
+            //進行
+        }
+        /**
+         * @description
+         * 設定画面のUI要素を描画します。<br>\
+         * メニュー項目、選択ランプ、ボタン、およびセーブ/リセット時のメッセージなどを表示します。
+         */
+        function scene_draw() {
+
+            for (let s in wtxt) {
+                //UI.putchr(wtxt[s], 0, 60 + 16 * s);
+                UI.kprint(wtxt[s], 0, 60 + 16 * s);
+            }
+
+            for (let i in menu) {
+                if (menu[i].lamp) {
+                    UI.fill(menu[i].x, menu[i].y, menu[i].w, menu[i].h, "orange");
+                }
+
+                if (menu[i].select) {
+                    if (!menu[i].lamp) UI.fill(menu[i].x - 10, menu[i].y - 1, menu[i].w, 8, "blue");
+                    UI.kprint(menu[i].title, menu[i].x - 4, menu[i].y - 1);
+                } else {
+                    UI.kprint(menu[i].title, menu[i].x, menu[i].y);
+                }
+            }
+
+        }
     }
 }
 

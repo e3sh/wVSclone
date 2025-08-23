@@ -131,17 +131,29 @@ class gameSceneUI_stateinv {
 		/**
 		 * @param {string[]} setupParam　バーの色名配列 
 		 * @description
-		 * 複数のステータス値をバー形式でメーターとして描画するクラスです。<br>\
-		 * 各バーは、設定された色とステータス値に応じた長さで表示されます。
+		 * ステータスバー（HP, MPなど）のメーターを描画するクラスです。<br>\
+		 * 指定されたステータス値に基づいて、色付きのバーを表示します。
 		 */
 		function statusBarMeter(setupParam) {
 			//setupParamater [barcolor, ...,}]
 			let status;
-
+			/**
+			 * @method
+			 * @param {*} ary 
+			 * @description
+			 * メーターとして表示するステータス値の配列を設定します。
+			 */
 			this.setStatusArray = function (ary) {
 				status = ary;
 			};
-
+			/**
+			 * @method
+			 * @param {*} device 
+			 * @param {*} x 
+			 * @param {*} y 
+			 * @description
+			 * 設定されたステータス値に基づいて、複数のバーメーターを画面に描画します。
+			 */
 			this.draw = function (device, x, y) {
 
 				let o = { s: status, b: setupParam, x: x, y: y };

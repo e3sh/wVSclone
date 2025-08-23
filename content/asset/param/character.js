@@ -35,7 +35,7 @@ function character(){
 
 //自弾
 	[6, 26,  8, BULLET_P, 16, 16, 16, 16, "common_vset6"			, 0,"pBullet1"],
-	[7, 26,  8, BULLET_P, 16, 16, 16, 16, "pl_bullet_rotate_circle"	, 0,"pBullet2"],
+	[7, 26,  8, BULLET_P, 10, 12, 10, 12, "pl_bullet_rotate_circle"	, 0,"pBullet2"],
 	[11, 7,  8, BULLET_P, 16, 16, 32, 32, 18						, 0,"(Damege)"],
 
 //武器動作(Player用)
