@@ -431,7 +431,7 @@ function sce_player( gObjc ) {
                         o.sound.effect(state.Constant.sound.BOMB);
                         o.bomb3(o.spec.INT*2);
                         o.set_object_ex(6, o.x, o.y, 0, 47); //Bomb爆発演出(赤)
-                        o.item[state.Constant.sound.BOMB]--;
+                        o.item[state.Constant.item.BOMB]--;
                     }
 
                     if (w == state.Constant.item.SHIELD) {//SHIELD
@@ -468,6 +468,13 @@ function sce_player( gObjc ) {
                         o.spec.HP = o.maxhp;
                         o.item[state.Constant.item.LIFEUP]--;
                         o.set_object_ex(20, o.x, o.y, 0, 43, "+"+rhp );
+                    }
+
+                    let totalitemcount = o.item[state.Constant.item.BOMB]
+                    +o.item[state.Constant.item.SHIELD]
+                    +o.item[state.Constant.item.LIFEUP];
+                    if (o.itemstack.length != totalitemcount){
+                        o.set_object_ex(20, o.x, o.y, 0, 43, "DEBUG:ICM!");
                     }
 
                     o.trigerSub = TRIG_WAIT;

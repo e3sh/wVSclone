@@ -146,9 +146,8 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
                 }
 
                 let f = false;
-                if ((msg.src == state.Constant.item.BOMB) || 
-                    (msg.src == state.Constant.item.SHIELD) || 
-                    (msg.src == state.Constant.item.LIFEUP)) {
+                //if ((msg.src == state.Constant.item.BOMB) || (msg.src == state.Constant.item.SHIELD) ||(msg.src == state.Constant.item.LIFEUP)) {
+                if (state.Constant.item.USEBLE.includes(msg.src)){
                     //dev.sound.effect(9); //cursor音
                     f = true;
                 }

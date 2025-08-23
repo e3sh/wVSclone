@@ -31,7 +31,10 @@ function ConstantData(){
 
     this.signal = Object.freeze({
         PAUSE: 1,
-        FORCE: 7,
+        ERROR: 3,
+        WARN: 5,
+        HALT: 7,
+        FORCE: 9,
         RESULT: 835,
         LVLUP: 1709,
         DEAD: 4649,

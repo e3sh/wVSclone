@@ -252,7 +252,6 @@ class gameScene {
 					state.Constant.signal.RESULT, //resultScene
 					state.Constant.signal.LVLUP, //LvUpScene
 					state.Constant.signal.DEAD, //Restart/Gover(zanki状態による)
-					state.Constant.signal.BOSS //未使用）Boss
 				];
 				//他数字は空き
 				// GameScene切り替え依頼をobjから行う場合にSIGNALで
