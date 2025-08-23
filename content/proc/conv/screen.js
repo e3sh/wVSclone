@@ -81,10 +81,10 @@ class Screen {
                 return;
             }
 
-            if (Boolean(m)) m=0;
-            if (Boolean(r)) r=0;
-            if (Boolean(alpha)) alpha=255;
-            if (Boolean(z)) z=1.0;
+            if (!Boolean(m)) m=0;
+            if (!Boolean(r)) r=0;
+            if (!Boolean(alpha)) alpha=255;
+            if (!Boolean(z)) z=1.0;
 
             let simple = ((m == 0) && (r == 0) && (alpha == 255));
             //simple = false;
