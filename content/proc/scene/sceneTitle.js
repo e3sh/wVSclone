@@ -55,6 +55,8 @@ class sceneTitle {
         let menusel = 0;
         let psel = {};
 
+        let itemV;
+
         const DSP_X = 320;
         const DSP_Y = 112;
 
@@ -176,6 +178,8 @@ class sceneTitle {
                 }
                 BUI_layer.draw();
             }
+
+            itemV = new titleItemListMap(state);
             //cnt = 0;
             //dev.sound.change(0);
             //reset処理を記述予定
@@ -312,11 +316,40 @@ class sceneTitle {
                 psel.x = 0;
             }
 
+            itemV.draw(640 - Math.trunc((psel.x/ (DSP_X - 32 - 32))*100),0);
+
             if (state.System.blink()) {
                 //if (bvf) 
                 UI_layer.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 270);
             }
             //表示
+        }
+    }
+}
+
+function titleItemListMap(state){
+
+    const UI_layer = state.System.dev.graphics[state.Constant.layer.UI];
+    const chPtn = state.Database.chrPattern;
+    const mtnPtn = state.Database.motionPattern;
+    const ITEM = state.Constant.objtype.ITEM;
+    const chItbl = state.Database.chrItemtable;
+
+    const itemTable = [];
+    for (let i in chPtn){
+        const c = chPtn[i]
+        if (c.type == ITEM){
+            itemTable.push(c);
+        }
+    }
+    this.draw = function(x, y){
+        
+        for (let i in itemTable){
+            const c = itemTable[i];
+
+
+            UI_layer.put(mtnPtn[c.mp].pattern[0][0], x+16, y + i*17+16 );
+            UI_layer.kprint(`     :${chItbl[c.cn]}`,x,y + i*17+16 );
         }
     }
 }

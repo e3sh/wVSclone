@@ -298,13 +298,14 @@ class gameSceneUI_stateinv {
 				//tutorialDisplay 
 				if (state.obUtil.tutorialDisplayTime > state.System.time()) {
 
+					//BUI_layer.kprint("wOpen",dev.layout.tutmsg.x - 1, dev.layout.tutmsg.y - 8 -1);
 					if (!opening) {
 						opening = true;
 						openstime = state.System.time() + 1000 / 3; //20f
 						state.scene.setTCW(
 							BUI_layer,
 							{ x: dev.layout.tutmsg.x - 1, y: dev.layout.tutmsg.y - 1, w: 386, h: 50 },
-							20, "open"
+							20, "open", "tutWin"
 						);
 					}
 
@@ -315,11 +316,12 @@ class gameSceneUI_stateinv {
 						closing = true;
 					}
 				} else {
+					//BUI_layer.kprint("wClose",dev.layout.tutmsg.x - 1, dev.layout.tutmsg.y - 8 -1);
 					if (closing) {
 						state.scene.setTCW(
 							BUI_layer,
 							{ x: dev.layout.tutmsg.x - 1, y: dev.layout.tutmsg.y - 1, w: 386, h: 50 },
-							20
+							20, false, "tutWin"
 						);
 						opening = false;
 						closing = false;

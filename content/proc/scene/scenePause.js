@@ -42,7 +42,7 @@ class scenePause {
         let ret_code = 0;
 
         let tutCn = 0;
-        const tutCtable = tutorialCommentTable();
+        const tutCtable = state.Database.tutCommentTable;
 
         const DSP_X = 320;
         const DSP_Y = 160;
@@ -62,9 +62,7 @@ class scenePause {
          * 
          */
         function scene_reset() {
-            //dev.graphics[0].setInterval(0);//BG　WORK2
-            //dev.graphics[1].setInterval(0);//SPRITE
-            //dev.graphics[2].setInterval(0);//FG
+
             dev.pauseBGSP();
 
             //UI_layer.setInterval(0);//UI

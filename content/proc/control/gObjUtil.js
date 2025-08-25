@@ -36,7 +36,7 @@ class gObjectUtility {
 
         const tutcnsl = new textbufferControl(5);
         this.tutorialconsole = tutcnsl;
-        const tutComment = tutorialCommentTable(); //return comment [[],[],[]];
+        const tutComment = state.Database.tutCommentTable; //return comment [[],[],[]];
 
         //this.tutTable = tutCheck;
         let tutDtime = 0;

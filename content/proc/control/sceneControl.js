@@ -36,16 +36,23 @@ class sceneControl {
         let wipemode = "fade";
 
         let twcw = [];
-        let twcw_enable = true;
+        let twcwEnable = true;
+        let twcwIdlist = [];
 
         for (let i in sceneList) {
             sceneList[i].init();
         }
 
         const TITLERC = 2;
+        const MAINRC = 0;
+        const LVUPRC = 9;
 
         let rc = TITLERC; // 最初のSceneはTitle
         let runscene = rc;
+
+        let sceneStartTime = 0;
+        let beforeSceneTime = 0;
+        let beforeSceneNo =0;
 
         /**
          * 全ての登録済みシーンの`reset_enable`フラグを`true`に設定します。<br>\
@@ -83,8 +90,13 @@ class sceneControl {
                     wipeEffectCount = scrn.cw / 2;
                     wipemode = "circle";
                 }
+
+                beforeSceneNo = runscene;
                 //移動してくるときにWipeEffect有りとなるのば、rc_code>=10の場合（TITLEからGameSceneの場合は関係なし)
                 runscene = rc;
+
+                beforeSceneTime = g.time() - sceneStartTime;
+                sceneStartTime = g.time();
 
                 // 該当Sceneの.reset_enableがfalseの場合はreset経由せずに直接戻る
                 if (sceneList[runscene].reset_enable) {
@@ -100,12 +112,31 @@ class sceneControl {
                 wipeEffectCount - (3 * 60 / (1000 / state.System.deltaTime())) :
                 0;
 
-            if (twcw_enable) {
+            if (twcwEnable) {
                 for (let i in twcw) {
                     if (twcw[i].running) twcw[i].step();
                 }
             }
         };
+        /**
+         * @method
+         * @returns {object} SceneStatus
+         * @example
+         *  result = scene.status();
+         *  result.now.title ,result.now.startTime, result.before.title, result.before.execTime 
+         * @description
+         * 現在と前回のシーンステータスを返します。<br>\
+         * ― 現在実行中ののシーン名と開始システムタイム<br>\
+         * ― 前回実行したシーン名と実行時間
+         */
+        this.status = function(){
+
+            return {
+                now:   { title:titleSce[rc], startTime:sceneStartTime},             
+                before:{ title:titleSce[beforeSceneNo], execTime:beforeSceneTime}
+                }
+        }
+
         /**
          * @method
          * @description
@@ -125,7 +156,7 @@ class sceneControl {
 
             sceneList[runscene].draw();
 
-            if (twcw_enable) {
+            if (twcwEnable) {
                 for (let i in twcw) {
                     if (twcw[i].running) {
                         twcw[i].draw();
@@ -156,6 +187,9 @@ class sceneControl {
                 };
                 if (state.System.blink()) scrn.putFunc(bar);
                 scrn.putchr8(st, bar.x, bar.y);
+
+                scrn.kprint("StartTime:" + Math.trunc(sceneStartTime),bar.x, bar.y+8); 
+                scrn.kprint("bs:" + titleSce[beforeSceneNo] + "/r:" + Math.trunc(beforeSceneTime),bar.x, bar.y+16); 
             }
         };
 
@@ -220,12 +254,32 @@ class sceneControl {
          * 指定された領域が徐々に閉じたり開いたりする視覚効果を生成します。
          */
         class tweenclosewindow {
-            constructor() {
+            constructor(id) {
 
                 let center_x, center_y, count, w, h, vw, vh;
                 let device;
 
+                /**
+                 * @member
+                 * @description
+                 * task runnning status
+                 */
                 this.running = false;
+
+                /**
+                 * @member
+                 * @description
+                 * tweenWindowId
+                 */
+                this.windowId = id;
+
+                /**
+                 * @member
+                 * @description
+                 * modeclose?
+                 */
+                this.close;
+
                 /**
                  * @method
                  * @param {Screen} dev dev.graphics[x]
@@ -247,12 +301,15 @@ class sceneControl {
 
                         vw = -(rect.w / c);
                         vh = -(rect.h / c);
+                        this.close = true;
+
                     } else {
                         w = 0;
                         h = 0;
 
                         vw = rect.w / c;
                         vh = rect.h / c;
+                        this.close = false;
                     }
                     count = c;
                     device = dev;
@@ -306,30 +363,51 @@ class sceneControl {
          * @param {Rect} rect 矩形領域
          * @param {number} count フレーム数
          * @param {boolean} [close] 開閉方向 defalt:close any:open 
+         * @param {stringn} [id] windowname 
          * @description
          * ウィンドウ開閉アニメーション（`tweenclosewindow`）を登録し、実行します。<br>\
          * 指定されたデバイス、矩形領域、フレーム数で新しいアニメーションインスタンスを作成します。
          */
-        this.setTCW = function (device, rect, count, close) {
+        this.setTCW = function (device, rect, count, close, id) {
 
-            const tcw = new tweenclosewindow();
-            tcw.set(device, rect, count, close);
+            let setup = true;
+            if (Boolean(id)){
+                if (Boolean(close)){
+                    //open
+                    if (twcwIdlist.includes(id)){
+                        setup = false; //open中に同じidのopen指示が来た時には登録しない
+                    }else{
+                        twcwIdlist.push(id);//リストに追加
+                    }
+                }else{
+                    //close
+                    for(let i in twcwIdlist){
+                        if (twcwIdlist[i] == id){twcwIdlist.splice(i)}
+                    }
 
-            twcw.push(tcw);
+                }
+            }
+
+            if (setup){
+                const tcw = new tweenclosewindow(id);
+                tcw.set(device, rect, count, close);
+
+                twcw.push(tcw);
+            }
         };
         /**
          * @method
          * 登録されている全てのウィンドウ開閉アニメーションを一時停止します。
          */
         this.pauseTCW = function () {
-            twcw_enable = false;
+            twcwEnable = false;
         };
         /**
          * @method
          * 一時停止中のウィンドウ開閉アニメーションを再開します。
          */
         this.resumeTCW = function () {
-            twcw_enable = true;
+            twcwEnable = true;
         };
 
 

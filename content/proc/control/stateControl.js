@@ -36,7 +36,8 @@ class stateControl {
 		this.Database = {
 			chrPattern: character(),
 			motionPattern: motionPattern(),
-			chrItemtable: characterItemnameTable()
+			chrItemtable: characterItemnameTable(),
+			tutCommentTable: tutorialCommentTable()
 			//Condsantで持ってる
 			//objtype:{PLAYER:98, FRIEND:0, BULLET_P:1, ENEMY:2, BULLET_E:3, ITEM:4, ETC:5}
 			//ObCtrlで持ってる(生成時obCtrlが必要な為)

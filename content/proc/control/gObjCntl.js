@@ -206,6 +206,9 @@ class gObjectControl {
                 this.obCount = []; //出現したキャラクタの総数
                 this.total = []; //種類別の倒した総数(主に敵）　倒した総数/出現した数で撃墜率などを算出で使用予定
                 this.item = [];
+                for (let i of state.Constant.item.USEBLE){
+                    this.item[i] = 0;    
+                }
                 this.itemstack = [];
 
                 tutoDone = []; //tutorialを見たフラグリセット
