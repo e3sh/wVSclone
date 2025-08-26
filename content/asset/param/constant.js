@@ -103,6 +103,8 @@ function ConstantData(){
     });
 
     this.DEBUGMODE_ENABLE = true;//false;
+
+    this.REVISION = "REV.Oct.26.2025";
 }
 //BG:0 SP:1 FG:2 FSP:2 BUI:3 UI:4 EFFECT:5 MSG:6
 

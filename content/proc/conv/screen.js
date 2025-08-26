@@ -65,7 +65,7 @@ class Screen {
          * @param {number} [r=0] 回転
          * @param {number} [alpha=255] アルファ値(透明度）[0:透明～255:不透明]
          * @param {number} [z=1.0] 拡大率
-         * @returns 
+         * @returns {void}
          * @description
          * スプライトを画面に描画します。<br>\
          * スプライト番号、位置、反転、回転、アルファ値、拡大率を指定し、<br>\

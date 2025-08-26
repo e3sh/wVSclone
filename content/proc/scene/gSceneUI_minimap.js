@@ -26,29 +26,10 @@ class gameSceneUI_minimap {
 		const UI = dev.graphics[state.Constant.layer.UI];
 		const EFFECT = dev.graphics[state.Constant.layer.EFFECT];
 
-		/**
-		 * @method
-		 */
-		this.reset = game_reset;
-		/**
-		 * @method
-		 */
-		this.draw = game_draw;
-		/**
-		 * @method
-		 */
-		this.check = renewcheck;
-		/**
-		 * @method
-		 */
-		this.rader = drawPoint;
-
 		this.reset_enable = true;
 
 		const obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);
 		const mapsc = state.mapsc; //= new mapSceControl();
-
-		let fdrawcnt = 0;
 
 		let mapChip = [];
 
@@ -132,11 +113,12 @@ class gameSceneUI_minimap {
 		//==========================================================================================
 		//処理部
 		/**
+		 * @method
 		 * @description
 		 * ミニマップ表示をリセットします。<br>\
 		 * 強制的に再描画するフラグを設定し、ミニマップの表示状態を初期化します。
 		 */
-		function game_reset() {
+		this.reset =()=>{
 
 			mapviewflag = false;
 			delaystartf = false;
@@ -148,11 +130,12 @@ class gameSceneUI_minimap {
 		}
 
 		/**
+		 * @method
 		 * @description
 		 * ミニマップとランプ表示の描画を制御します。<br>\
 		 * マップまたはランプが有効な場合、遅延後にミニマップを表示開始します。
 		 */
-		function game_draw() {
+		this.draw =()=>{
 
 			if (state.Game.map || state.Game.lamp) {
 				if (!delaystartf) {
@@ -182,13 +165,13 @@ class gameSceneUI_minimap {
 		}
 		/**
 		 * 
-		 * @param {boolean} refle 再描画フラグ
-		 * @returns
+		 * @param {boolean} refle 再描画フラグ(問い合わせ前)
+		 * @returns  再描画フラグ(問い合わせ後)
 		 * @description
 		 * ミニマップの更新が必要かをチェックし、必要なら再作成します。<br>\
 		 * マップが有効で、再描画フラグが立っている場合にミニマップを更新します。
 		 */
-		function renewcheck(refle) {
+		this.check =(refle)=>{
 
 			if (refle && state.Game.map) {
 				SubmapDraw.create();
@@ -200,14 +183,14 @@ class gameSceneUI_minimap {
 		}
 
 		/**
-		 * 
+		 * @method
 		 * @param {Screen} wscreen 表示画面
 		 * @param {boolean} flag lampフラグ(マップ持っててランプ持ってない場合は自分の位置のみ表示する為)
 		 * @description
 		 * ミニマップ上にプレイヤーや敵などのオブジェクトの位置を点として描画します。<br>\
 		 * オブジェクトのタイプに応じて色分けし、`lamp`フラグで表示対象を制御します。
 		 */
-		function drawPoint(wscreen, flag) {
+		this.rader =(wscreen, flag)=>{
 
 			const t = state.Constant.objtype;
 

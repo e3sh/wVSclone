@@ -132,8 +132,8 @@ class sceneControl {
         this.status = function(){
 
             return {
-                now:   { title:titleSce[rc], startTime:sceneStartTime},             
-                before:{ title:titleSce[beforeSceneNo], execTime:beforeSceneTime}
+                now:   { title:titleSce[rc], startTime:Math.trunc(sceneStartTime)},             
+                before:{ title:titleSce[beforeSceneNo], execTime:Math.trunc(beforeSceneTime)}
                 }
         }
 
@@ -397,6 +397,7 @@ class sceneControl {
         };
         /**
          * @method
+         * @description
          * 登録されている全てのウィンドウ開閉アニメーションを一時停止します。
          */
         this.pauseTCW = function () {
@@ -404,6 +405,7 @@ class sceneControl {
         };
         /**
          * @method
+         * @description
          * 一時停止中のウィンドウ開閉アニメーションを再開します。
          */
         this.resumeTCW = function () {

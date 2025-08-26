@@ -74,7 +74,7 @@ class stateGame {
             }
             /**
              * @method
-             * @param {number{}} status 能力値の配列
+             * @param {number[]} status 能力値の配列
              * @description
              * 能力値の配列から、`stateSpec`インスタンスの各プロパティに値を設定します。
              */

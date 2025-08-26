@@ -66,7 +66,7 @@ class sceneConfig {
         let sndtst;
         //
         /**
-         * @class
+         * @class sceneConfig.btn
          * @classdesc
          * 設定メニューで使用される個々のUIボタンの基底クラスです。<br>\
          * ボタンのタイトル、位置、サイズ、選択状態、クリック状態、<br>\
@@ -129,7 +129,7 @@ class sceneConfig {
         }
 
         /**
-         * @class
+         * @class sceneConfig.sel_menu
          * @classdesc
          * ON/OFF選択式のメニュー項目を管理するクラスです。<br>\
          * 項目名とメッセージ、有効/無効の選択ボタンを生成し、<br>\
@@ -248,7 +248,7 @@ class sceneConfig {
             }
         }
         /**
-         * @class
+         * @class sceneConfig.sel_number
          * @classdesc
          * 数値選択式のメニュー項目を管理するクラスです。<br>\
          * 項目名とメッセージ、-1と+1の増減ボタンを生成し、<br>\

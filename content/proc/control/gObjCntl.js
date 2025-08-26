@@ -213,6 +213,9 @@ class gObjectControl {
 
                 tutoDone = []; //tutorialを見たフラグリセット
 
+                msgcnsl.clear();
+                tutcnsl.clear();
+
                 msglog.write("ObjCtrl Init.");
             }
 
@@ -233,8 +236,6 @@ class gObjectControl {
 
             //this.item[35] = 0; //coinclear;
             msglog.write("ObjCtrl Run.");
-            msgcnsl.clear();
-            tutcnsl.clear();
         };
 
         //move ======================================

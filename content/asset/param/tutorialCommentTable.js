@@ -3,6 +3,8 @@ function tutorialCommentTable(){
 //tutorial no(text no)
 //1玉　2B　3S　4L　5Coin 6Key 7_1UP 8Lamp 9map 10+ 11A 12B 13X 14Y
 
+	const STAGENAME = stageNameList(); 
+
 	let t =[];
 
 	//基本操作
@@ -32,7 +34,7 @@ function tutorialCommentTable(){
 		,"アイテムの効果を強化できる。プレイ中は効果が継続"
 		]; //triger player.js
 
-	t[6] = ["「ボス」:５の倍数ステージでは、ボスが⑥鍵を持っている"
+	t[6] = [`「ボス」:ステージ${STAGENAME[5]},${STAGENAME[10]}では、ボスが⑥鍵を持っている`//5の倍数ステージ
 		];//triger GameScene.js
 
 	t[7] = ["「スピードアップ」:①の数に応じて自機の速度が向上"
@@ -57,11 +59,11 @@ function tutorialCommentTable(){
 		,"[H]キー(部屋の中では使用できません）"
 		];//triger player.js
 
-	t[13] = ["「ボス」:ステージ10に行くには"
+	t[13] = [`「ボス」:ステージ${STAGENAME[10]}に行くには`
 		,"いずれかの「アイテム:リング」が必要"
 		];//triger GameScene.js
 
-	t[14] = ["「大ボス」:ステージ15に行くには"
+	t[14] = [`「大ボス」:ステージ${STAGENAME[15]}に行くには`
 		,"いずれかの「アイテム:護符」と「アイテム:ミラー」が必要"
 		];//triger GameScene.js
 
@@ -141,7 +143,7 @@ function tutorialCommentTable(){
 	t[55] = ["「アイテム:キャンドル（青）」:部屋が明るくなる"];
 	t[56] = ["「アイテム:リング（赤）」:武器攻撃力強化(STR)"];
 	t[57] = ["「アイテム:リング（青）」:武器攻撃力強化(DEX)"];
-	t[58] = ["「アイテム:ミラー」:ステージ15へ行く為に必須"];
+	t[58] = [`「アイテム:ミラー」:ステージ${STAGENAME[15]}へ行く為に必須`];
 
 	t[100] = ["[STR] 武器攻撃力  (WEAPON DAMAGE)"];
 	t[101] = ["[DEX] 武器攻撃力  (WEAPON DAMAGE)"];

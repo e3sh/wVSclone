@@ -200,7 +200,7 @@ class sceneStatusDisp {
          * 
          * @param {*} g 
          * @param {*} input 
-         * @returns 
+         * @returns returncode normal=0
          * @description
          * ステータス表示画面の入力処理と表示内容の切り替えロジックです。<br>\
          * キーボード入力（Z, C, V, 数字キー、矢印キー）を検出し、<br>\

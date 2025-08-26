@@ -50,7 +50,7 @@ class scenePause {
         //処理部
         /**
          * @description
-         * 
+         * initialize
          */
         function scene_init() {
 
@@ -59,7 +59,7 @@ class scenePause {
         }
         /**
          * @description
-         * 
+         * reset
          */
         function scene_reset() {
 
@@ -101,7 +101,7 @@ class scenePause {
          * 
          * @param {*} g 
          * @param {*} input 
-         * @returns 
+         * @returns return_code normal 0;
          */
         function scene_step(g, input) {
 

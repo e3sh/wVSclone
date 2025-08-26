@@ -23,22 +23,6 @@ class sceneLvUp {
         const BUI_layer = dev.graphics[state.Constant.layer.BUI];
 
         //let keys = dev.key_state;
-        /**
-         * @method
-         */
-        this.init = scene_init;
-        /**
-         * @method
-         */
-        this.reset = scene_reset;
-        /**
-         * @method
-         */
-        this.step = scene_step;
-        /**
-         * @method
-         */
-        this.draw = scene_draw;
 
         this.reset_enable = true;
 
@@ -55,20 +39,22 @@ class sceneLvUp {
 
         //処理部
         /**
+         * @method
          * @description
          * シーンの初期化処理を実行します。<br>\
          * ガイドカーソルを準備します。
          */
-        function scene_init() {
+        this.init =()=>{
             //初期化処理
             guide_cursor = new arrowGuideCursor();
         }
         /**
+         * @method
          * @description
          * レベルアップシーンの状態をリセットし、描画を準備します。<br>\
          * 背景描画を停止し、レベルアップ選択肢のダイアログを初期化します。
          */
-        function scene_reset() {
+        this.reset =()=>{
 
             ret_code = 0;
 
@@ -150,7 +136,7 @@ class sceneLvUp {
             guide_cursor.param(1 | 2 | 0 | 8);
         }
         /**
-         * 
+         * @method
          * @param {Screen} g dev.graphics[x] 
          * @param {inputMainTask} input inputStatusObject 
          * @returns {number} sceneReturnStatus
@@ -158,7 +144,7 @@ class sceneLvUp {
          * レベルアップ画面の入力処理とステータス強化ロジックです。<br>\
          * キーボード入力で選択肢を操作し、選択された能力値を強化します。
          */
-        function scene_step(g, input) {
+        this.step =(g, input)=>{
             //進行
             wtxt = [];
             let kstate = input.keycode; //keys.check();
@@ -219,12 +205,13 @@ class sceneLvUp {
         }
 
         /**
+         * @method
          * @description
          * レベルアップ画面のUI要素を描画します。<br>\
          * プレイヤーのイラスト、ステータス強化選択肢のダイアログ、<br>\
          * およびガイドカーソルを表示します。
          */
-        function scene_draw() {
+        this.draw =()=>{
 
             let w = state.obUtil.player_objv(UI_layer);
 
@@ -244,7 +231,7 @@ class sceneLvUp {
         }
 
         /**
-         * @class
+         * @class sceneConfig.DialogControl
          * @classdesc
          * レベルアップ画面で能力値強化の選択肢を提供するダイアログ形式のUIを管理します。<br>\
          * 選択肢の表示、入力検出、選択された能力値の強化実行を制御します。
@@ -388,7 +375,7 @@ class sceneLvUp {
             }
         }
         /**
-         * @class
+         * @class sceneConfig.arrowGuideCursor
          * @classdesc
          * 選択可能な方向を視覚的にガイドするための矢印を描画するクラスです。<br>\
          * 指定された方向にアニメーションするカーソルを表示します。

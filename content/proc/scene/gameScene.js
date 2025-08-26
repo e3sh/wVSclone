@@ -29,23 +29,6 @@ class gameScene {
 
 		BG_layer.backgroundcolor = "black";
 
-		/**
-		 * @method gameScene.init
-		 */
-		this.init = game_init;
-		/**
-		 * @method gameScene.reset
-		 */
-		this.reset = game_reset;
-		/**
-		 * @method gameScene.step
-		 */
-		this.step = game_step;
-		/**
-		 * @method gameScene.draw
-		 */
-		this.draw = game_draw;
-
 		this.reset_enable = true;
 		this.score = 0;
 
@@ -82,7 +65,7 @@ class gameScene {
 		 * マップシーンとリザルトをロードし、<br>\
 		 * ゲーム内のアイテムオブジェクトを初期化します。
 		 */
-		function game_init() {
+		this.init =()=>{
 
 			mapsc.init();
 			state.Result.load();
@@ -107,7 +90,7 @@ class gameScene {
 		 * LvUp->	(HotReturn)		false
 		 * GameCoreのtaskとしてsceneを作成しtaskControl.signalが利用できるのではないか
 		 */
-		function game_reset(contflg) {
+		this.reset =(contflg)=>{
 
 			dev.clearBGSP();
 			dev.resumeBGSP();
@@ -172,6 +155,10 @@ class gameScene {
 				//mapsc.start(true); //マップ初期配置のものを展開する。
 				dev.sound.change(state.Constant.sound.NORMAL_BGM); //normal bgm
 				dev.sound.play();
+
+				let r = state.scene.status();
+				state.obUtil.tutorialDisplayTime = state.obUtil.tutorialDisplayTime + r.before.execTime;
+				//if (r.before.title == "Result") console.log("r:" + r.before.title + r.before.execTime);
 			}
 
 			tex_bg = dev.game.asset.image[mapsc.bgImage()].img;
@@ -206,7 +193,7 @@ class gameScene {
 		 * オブジェクトの更新、サウンド制御、アイテム取得処理、<br>\
 		 * マップ表示の切り替え、およびシーン切り替えシグナルの処理を行います。
 		 */
-		function game_step(g, input) {
+		this.step =(g, input)=>{
 
 			dev.gs.commit();
 
@@ -214,6 +201,12 @@ class gameScene {
 				this.reset_enable = true; // reset無しで戻ってきたときにtrueに変更
 				mapsc.pauseOff(state.System.time());
 				UIDisp.force_reflash();
+
+				let r = state.scene.status();
+				if ((r.before.title == "Pause")||(r.before.title == "LvUp")) {
+					//console.log("w:" + r.before.title + r.before.execTime);
+					state.obUtil.tutorialDisplayTime = state.obUtil.tutorialDisplayTime + r.before.execTime;
+				}
 			}
 
 			//StateGameに今の状態を反映
@@ -428,7 +421,7 @@ class gameScene {
 		 * マップチップ、背景、フォアグラウンド、デバッグ情報など、<br>\
 		 * 様々な要素を画面に描画します。
 		 */
-		function game_draw() {
+		this.draw =()=>{
 
 			BGDraw();
 			BGShadowDraw();
@@ -438,8 +431,6 @@ class gameScene {
 			obCtrl.drawShadow(BG_layer); //objectのshadowを背景面に反映(BG_layer:BG)
 			obCtrl.draw(SP_layer); //SP_layer:SP
 			obCtrl.draw(FG_layer, true); //prioritySurface = true の物を別Screenに描画する処理(通常のDrawではパスされる。）
-
-
 
 			//if (state.Game.lamp) obCtrl.drawPoint(dev.graphics[4], state.Game.lamp);//rader UIDisp内MinimapDispで処理
 			mmrefle = UIDisp.check(mmrefle);

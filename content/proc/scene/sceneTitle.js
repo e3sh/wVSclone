@@ -60,6 +60,8 @@ class sceneTitle {
         const DSP_X = 320;
         const DSP_Y = 112;
 
+        const VRC = state.Constant.REVISION;
+
         let menu = [];
         let mttl = ["NewGame", "LoadGame", "Config"];
         let mjmp = [state.Constant.scene.MAIN, state.Constant.scene.MAIN + 10, state.Constant.scene.CONFIG];
@@ -143,7 +145,8 @@ class sceneTitle {
             BUI_layer.putchr("Key", DSP_X, DSP_Y + 100);
 
             BUI_layer.put("TitleLogo", DSP_X, DSP_Y);
-            BUI_layer.kprint("土日ダンジョン　令和版", DSP_X + 50, DSP_Y + 20);
+
+            BUI_layer.kprint("土日ダンジョン　令和版 ", DSP_X + 50, DSP_Y + 20);
 
             //BUI_layer.putchr8("Press <z> key or [Space]key to", 320 - 100 - 8, 336);
             for (let s in wtxt) {
@@ -188,7 +191,7 @@ class sceneTitle {
          * 
          * @param {*} g 
          * @param {*} input 
-         * @returns 
+         * @returns returncode (nextScene)
          * @description
          * タイトル画面の入力処理と画面遷移ロジックです。<br>\
          * キーボード入力（方向キー、決定キーなど）を検出し、<br>\
@@ -312,6 +315,7 @@ class sceneTitle {
                     psel.x -= 6;
                 }
                 UI_layer.put("Unyuu3", psel.x, DSP_Y + 40 + 16);
+                UI_layer.putchr8(VRC, psel.x, DSP_Y + 24);
             } else {
                 psel.x = 0;
             }
@@ -336,10 +340,13 @@ function titleItemListMap(state){
     const chItbl = state.Database.chrItemtable;
 
     const itemTable = [];
+    let mCntWait = [];
+    let mCnt = []; 
+
     for (let i in chPtn){
         const c = chPtn[i]
         if (c.type == ITEM){
-            itemTable.push(c);
+            itemTable.push({ch:c, wait:0, pcnt:0});
         }
     }
     this.draw = function(x, y){
@@ -347,9 +354,19 @@ function titleItemListMap(state){
         for (let i in itemTable){
             const c = itemTable[i];
 
+            UI_layer.put(mtnPtn[c.ch.mp].pattern[c.pcnt][0], x+16, y + i*17+16 );
+            UI_layer.kprint(`     :${chItbl[c.ch.cn]}`,x,y + i*17+16 );
+            //UI_layer.kprint(`     :${chItbl[c.ch.cn]} ${c.wait} ${c.pcnt}`,x,y + i*17+16 );
 
-            UI_layer.put(mtnPtn[c.mp].pattern[0][0], x+16, y + i*17+16 );
-            UI_layer.kprint(`     :${chItbl[c.cn]}`,x,y + i*17+16 );
+            if (mtnPtn[c.ch.mp].pattern.length > 1) itemTable[i].wait++;
+            if (itemTable[i].wait > mtnPtn[c.ch.mp].wait){
+                itemTable[i].wait = 0;
+                
+                itemTable[i].pcnt++;
+                if (itemTable[i].pcnt >= mtnPtn[c.ch.mp].pattern.length) {
+                    itemTable[i].pcnt=0;
+                }
+            }
         }
     }
 }

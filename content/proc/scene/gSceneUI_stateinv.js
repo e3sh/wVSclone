@@ -27,9 +27,6 @@ class gameSceneUI_stateinv {
 		const UI_layer = dev.graphics[state.Constant.layer.UI];
 		const EFFECT_layer = dev.graphics[state.Constant.layer.EFFECT];
 
-		this.reset = game_reset;
-		this.draw = game_draw;
-
 		const obCtrl = state.obCtrl; //= new gObjectControl(dev.graphics1, state);//
 		const mapsc = state.mapsc; //= new mapSceControl();
 
@@ -214,17 +211,18 @@ class gameSceneUI_stateinv {
 		//==========================================================================================
 		//処理部
 		/**
+		 * @method
 		 * @description
 		 * UI表示をリセットします。<br>\
 		 * スコアエフェクトを初期化し、UIレイヤーをクリアし、<br>\
 		 * ミニマップの表示もリセットして強制再描画を行います。
 		 */
-		function game_reset() {
+		this.reset =()=>{
 			escore = new gs_score_effect(obCtrl.score);
 			//ehighscore = new gs_score_effect(state.Result.highscore);
 
-			dev.graphics[3].reset();
-			dev.graphics[3].clear(); //UI
+			BUI_layer.reset();
+			BUI_layer.clear(); //UI
 
 			minimapDisp.reset();
 
@@ -241,12 +239,13 @@ class gameSceneUI_stateinv {
 		let delaytime = 0;
 
 		/**
+		 * @method
 		 * @description
 		 * UI要素の描画を制御します。<br>\
 		 * チュートリアルメッセージ、HPバー、経験値バー、アイテム所持状況などを、<br>\
 		 * 必要に応じてアニメーションや更新制御を伴って描画します。
 		 */
-		function game_draw() {
+		this.draw =()=>{
 
 			if (state.Game.map || state.Game.lamp) {
 				if (!delaystartf) {

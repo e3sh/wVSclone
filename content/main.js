@@ -1,5 +1,16 @@
+/**
+ * @file:
+ * Guntlet/Roguelike ActionGame (javascript/HTML)
+ * Program entry point main_r()
+ * BaseEnging: wGameCoreSystem (privateGameLibraly)
+ */
+/**
+ * @description
+ * mainroutine - file:include.js
+ * main.html -> prepage_script -> main_r()
+ */
 // main
-function main_r(sw) {
+function main_r() {
 
 	//resolution
 	// VGA  640 * 480 (4:3) DCGA  640*400(16:10)
