@@ -94,7 +94,7 @@ class gameSceneUI_minimap {
 						//device.strokeStyle = (mc.type == 12) ? "orange" : "blue";
 						this.d.strokeStyle = c[mc.type - 10];
 						this.d.lineWidth = 1;
-						this.d.rect(this.x + mc.x / 20, this.y + mc.y / 20, 2, 2);
+						this.d.rect(mc.x / 20, mc.y / 20, 2, 2);
 						this.d.stroke();
 					}
 				}
