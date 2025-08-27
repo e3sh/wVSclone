@@ -377,8 +377,8 @@ class sceneConfig {
         m.msg = "キーアサイン設定をインポート";
         m.func = function () {
             //save_on = true;
-            state.Config.import();
-            text.kprint("テスト用のキーアサイン設定をインポートしました", 100, 288);
+            //state.Config.import();
+            text.kprint("（入力不能になるので無効）", 100, 288);
 
             keylock = true;
             return 0;
@@ -726,7 +726,7 @@ class sceneConfig {
                     UI.kprint(menu[i].title, menu[i].x, menu[i].y);
                 }
             }
-            keyassignDisplay(440, 100);
+            keyassignDisplay(424, 100);
 
         }
 

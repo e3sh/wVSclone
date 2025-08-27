@@ -56,7 +56,7 @@ function tutorialCommentTable(){
 		];//triger player.js
 
 	t[12] = ["「操作」:「石の中にいる！」場合の緊急脱出用"
-		,"[H]キー(部屋の中では使用できません）"
+		,"[V]キー(部屋の中では使用できません）"
 		];//triger player.js
 
 	t[13] = [`「ボス」:ステージ${STAGENAME[10]}に行くには`

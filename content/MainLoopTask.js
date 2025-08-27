@@ -66,6 +66,8 @@ class taskMainLoop extends GameTask {
      * @property {boolean} pause　P-start
      * @property {boolean} start　(false)
      * @property {boolean} back　@
+     * @property {boolean} vkey v
+     * @property {number} numkey 0-9 (not number -1)
      * @property {object} keycode キーコードオブジェクト(inputKeyboard)
      */
     /**

@@ -10,7 +10,7 @@
 class sceneStatusDisp {
     /**
      * @constructor
-     * @param {*} state
+     * @param {stateControl} state
      * @description
      * `sceneStatusDisp`インスタンスを初期化します。<br>\
      * メニュー表示フラグやデバッグモードフラグ、キーロック変数などを準備します。
@@ -22,23 +22,6 @@ class sceneStatusDisp {
         const UI_layer = dev.graphics[state.Constant.layer.UI];
 
         //let keys = dev.key_state;
-        /**
-         * @method
-         */
-        this.init = scene_init;
-        /**
-         * @method
-         */
-        this.reset = scene_reset;
-        /**
-         * @method
-         */
-        this.step = scene_step;
-        /**
-         * @method
-         */
-        this.draw = scene_draw;
-
         this.reset_enable = true;
 
         let menuvf = false;
@@ -133,7 +116,6 @@ class sceneStatusDisp {
             UI_layer.draw();
         }
         /**
-         * 
          * @param {number} num selectnumber 
          * @description
          * 指定されたインデックスのオブジェクトの詳細なプロパティを画面に描画します。<br>\
@@ -173,21 +155,23 @@ class sceneStatusDisp {
 
         //処理部
         /**
+         * @method
          * @description
          * シーンの初期化処理を実行します。<br>\
          * オブジェクト選択インデックス`sel`を0に設定します。
          */
-        function scene_init() {
+        this.init = ()=> {
             //初期化処理
             sel = 0;
         }
         /**
+         * @method
          * @description
          * テータス表示シーンの状態をリセットし、描画を準備します。<br>\
          * 背景描画を停止し、UIレイヤーの自動更新も停止して、<br>\
          * オブジェクトリストの初期表示を行います。
          */
-        function scene_reset() {
+        this.reset = ()=> {
 
             dev.pauseBGSP();
             UI_layer.setInterval(0); //UI
@@ -197,16 +181,16 @@ class sceneStatusDisp {
             list_draw(1);
         }
         /**
-         * 
-         * @param {*} g 
-         * @param {*} input 
+         * @method
+         * @param {GameCOre} g 
+         * @param {inputResult} input 
          * @returns returncode normal=0
          * @description
          * ステータス表示画面の入力処理と表示内容の切り替えロジックです。<br>\
          * キーボード入力（Z, C, V, 数字キー、矢印キー）を検出し、<br>\
          * 画面遷移、表示クリア、インベントリ表示切り替え、オブジェクト選択、ページ切り替えなどを実行します。
          */
-        function scene_step(g, input) {
+        this.step = (g, input)=> {
 
             keywait--;
             if (keywait > 0) return 0;
@@ -214,36 +198,36 @@ class sceneStatusDisp {
             // input key section
             let kstate = input.keycode; //dev.key_state.check();
 
-            let zkey = false; //exit button
-            if (Boolean(kstate[90])) { //[z]
-                if (kstate[90]) zkey = true;
-            }
-            if (Boolean(kstate[32])) { //[space]
-                if (kstate[32]) zkey = true;
-            }
+            let zkey = input.trigger.weapon; //exit button
+            //if (Boolean(kstate[90])) { //[z]
+            //zkey = input.weapon;
+            //}
+            //if (Boolean(kstate[32])) { //[space]
+            //    if (kstate[32]) zkey = true;
+            //}
 
-            let ckey = false; //dispalyclear
+            let ckey = input.trigger.jump;//false; //dispalyclear
             if (Boolean(kstate[67])) {
                 if (kstate[67]) { //ckey↓
                     ckey = true;
                 }
             }
 
-            let vkey = false; //inventry_view
+            let vkey = input.vkey;//false; //inventry_view
             if (Boolean(kstate[86])) {
                 if (kstate[86]) { //vkey↓
                     vkey = true;
                 }
             }
 
-            let numkey = false; //menu select num
-            let arrowkey = false; //list select 
-            for (let i in kstate) {
-                if (Boolean(kstate[i])) {
-                    numkey = ((i >= 48) && (i <= 57)) ? true : false; //Fullkey[0]-[9]
-                    arrowkey = ((i >= 37) && (i <= 40)) ? true : false; //Arrowkey
-                }
-            }
+            //let numkey = false; //menu select num
+            //let arrowkey = false; //list select 
+            //for (let i in kstate) {
+            //    if (Boolean(kstate[i])) {
+                    let numkey = (input.numkey != -1)? true: false;//((i >= 48) && (i <= 57)) ? true : false; //Fullkey[0]-[9]
+                    let arrowkey = (input.up || input.down || input.left || input.right) ? true : false; //Arrowkey
+            //    }
+            //}
 
             if (zkey || ckey || vkey || numkey || arrowkey) keywait = 8;
 
@@ -267,13 +251,13 @@ class sceneStatusDisp {
             }
 
             if (numkey) {
-                inp = -1;
-                for (let i in kstate) {
-                    if (Boolean(kstate[i])) {
-                        inp = i - 48;
-                        break;
-                    }
-                }
+                inp = Number(input.numkey)//-1;
+                //for (let i in kstate) {
+                //    if (Boolean(kstate[i])) {
+                //        inp = i - 48;
+                //        break;
+                //    }
+                //}
                 if (inp == 0) {
                     obj_draw(sel);
                 } else {
@@ -285,10 +269,10 @@ class sceneStatusDisp {
                 let s = sel;
                 for (let i in kstate) {
                     if (Boolean(kstate[i])) {
-                        s = s + ((i == 37) ? -50 : 0) //leftkey 
-                            + ((i == 38) ? -1 : 0) //upkey
-                            + ((i == 39) ? +50 : 0) //rightkey
-                            + ((i == 40) ? +1 : 0); //downkey
+                        s = s + ((input.left) ? -50 : 0) //leftkey 
+                            + ((input.up    ) ? -1 : 0) //upkey
+                            + ((input.right ) ? +50 : 0) //rightkey
+                            + ((input.down  ) ? +1 : 0); //downkey
                     }
                 }
                 if (s < 0) s = 0;
@@ -302,9 +286,11 @@ class sceneStatusDisp {
             //進行
         }
         /**
+         * @method
+         * @description
          * ステータス表示画面のUI要素を描画します。
          */
-        function scene_draw() {
+        this.draw = ()=>{
             //UI_layer.reset();
         }
     }

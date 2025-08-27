@@ -363,7 +363,7 @@ function sce_player( gObjc ) {
         if (o.vector > 180) { o.mp = 2; } else { o.mp = 1; }
         
         let hkey = false;//Debug Help action test 
-        if (Boolean(o.input.keycode[72])) { if (o.input.keycode[72]) hkey = true; }
+        if (o.input.vkey) { hkey = true; }
 
         //let pkey = false;//Debug pasue action test 
         //if (Boolean(o.input.keycode[80])) { if (o.input.keycode[80]) pkey = true; }

@@ -31,6 +31,8 @@ class stateConfig {
 
         this.keyAn;
 
+        this.code; 
+
         /**
          * @description
          * 全ての設定パラメータを初期値にリセットします。
@@ -50,7 +52,9 @@ class stateConfig {
             this.viewlog = false; //trueでdebug時にログ表示
             this.bulletmode = false; //trueで画面外から弾が飛んでこなくなる。
 
-            this.keyAn = {
+            const KEYCODE_MODE = true;
+
+            this.keyAn = (KEYCODE_MODE)?{
                 UP: [38, 87, 104],    //up    W tenkey8 code ArrowUp    Numpad8        
                 DOWN: [40, 83, 98],   //down  S tenkey2 code ArrowDown  Numpad2  
                 LEFT: [37, 65, 100],  //left  A tenkey4 code ArrowLeft  Numpad4      
@@ -62,6 +66,10 @@ class stateConfig {
                 PAUSE:  [80], //pkey code"keyP"
                 BACK:  [192],  //@key code"BracketLeft"
                 CTRL:   [17], //ctrlL code"ControlLeft"
+
+                VKEY:   [86],
+
+                NUMKEY:[48, 49, 50, 51, 52, 53, 54, 55, 56, 57],
 
                 GPAD_UP: 38,    //^
                 GPAD_DOWN: 40,  //v
@@ -77,6 +85,38 @@ class stateConfig {
                 GPAD_RB: 17
 
             }//this paramater not function (keyCode)(code)
+            :
+            {
+                UP: ["ArrowUp", "KeyW", "Numpad8"],    //up         
+                DOWN: ["ArrowDown", "KeyS", "Numpad2"], //down  
+                LEFT: ["ArrowLeft", "KeyA", "Numpad4"], //left      
+                RIGHT: ["ArrowRight", "KeyD", "Numpad6"], //right
+                WEAPON: ["KeyZ","Space"], //zkey
+                USEITEM:["KeyX"], //xkey
+                JUMP:   ["KeyC"], //ckey
+                SELECT: ["KeyE"], //ekey
+                PAUSE:  ["KeyP"], //pkey
+                BACK:  ["BracketLeft"],  //@key
+                CTRL:   ["ControlLeft"], //ctrlL
+
+                VKEY:   ["KeyV"],    
+
+                NUMKEY:["Digit0", "Digit1", "Digit2", "Digit3", "Digit4",
+                     "Digit5", "Digit6", "Digit7", "Digit8","Digit9"],
+
+                GPAD_UP: "ArrowUp",  
+                GPAD_DOWN: "ArrowDown",
+                GPAD_LEFT: "ArrowLeft",
+                GPAD_RIGHT: "ArrowRight",
+                GPAD_A: "KeyC", //C
+                GPAD_B: "KeyX", //X
+                GPAD_X: "KeyZ", //Z
+                GPAD_Y: "KeyE", //E
+                GPAD_START: "KeyP", //P
+                GPAD_BACK: "BracketLeft", //@
+            //  GPAD_LB: "ControlLeft", //ControlL
+                GPAD_RB: "ControlLeft" //ControlL
+            };
         }
 
         configReset();

@@ -111,12 +111,13 @@ class scenePause {
             let kstate = input.keycode;
             let zkey = (input.trigger.weapon) ? true : false;
 
-            let numkey = false; //menu select num
+            let numkey = (input.numkey != -1)? true:  false;//false; //menu select num
+            //if (numkey) console.log(input.numkey);
             let arrowkey = (input.up || input.down || input.left || input.right) ? true : false; //false; //list select 
 
             for (let i in kstate) {
                 if (Boolean(kstate[i])) {
-                    numkey = ((i >= 48) && (i <= 57)) ? true : false; //Fullkey[0]-[9]
+            //      numkey = ((i >= 48) && (i <= 57)) ? true : false; //Fullkey[0]-[9]
                 }
             }
 
@@ -163,19 +164,19 @@ class scenePause {
                 //HELPMESSAGE
             }
 
-            let inp = -1;
+            let inp = input.numkey;//-1;
             if (numkey) {
                 const debugmode_proc = () => {
                     for (let i in kstate) {
                         if (Boolean(kstate[i])) {
-                            inp = i - 48;
+                    //        inp = i - 48;
                             break;
                         }
                     }
                     ret_code = 0;
 
                     if (!dppmode) {
-                        switch (inp) {
+                        switch (Number(inp)) {
                             case 1:
                                 state.Config.debug = (!state.Config.debug);
                                 break;
@@ -205,13 +206,13 @@ class scenePause {
                                 state.Config.viewlog = (!state.Config.viewlog);
                                 break;
                             case 0:
-                                menuvf = (!menuvf);
+                                menuvf = (!menuvf); 
                                 break;
                             default:
                                 break;
                         }
                     } else {
-                        switch (inp) {
+                        switch (Number(inp)) {
                             case 1: //heal Hp
                                 state.Game.player.hp += 10;
                                 if (state.Game.player.hp > state.Game.player.maxhp)
@@ -231,9 +232,10 @@ class scenePause {
                                 state.obCtrl.get_item(22);
                                 break;
                             case 6: //get KeyItems
-                                for (let i = 51; i < 59; i++) {
-                                    if (!Boolean(state.obCtrl.item[i]))
-                                        state.obCtrl.get_item(i); // DEBUG fullItemTest  
+                                for (let i in state.Constant.item.KEYITEMS) {
+                                    let n = state.Constant.item.KEYITEMS[i];
+                                    if (!Boolean(state.obCtrl.item[n]))
+                                        state.obCtrl.get_item(n); // DEBUG fullItemTest  
                                 }
                                 break;
                             case 7: //get ExtendItem
@@ -248,7 +250,7 @@ class scenePause {
                     }
                 };
                 if (state.Constant.DEBUGMODE_ENABLE) { debugmode_proc(); } else {
-                    if (Boolean(kstate[48])) menuvf = (!menuvf);
+                    if (input.numkey == 0) menuvf = (!menuvf);
                 }
             }
 

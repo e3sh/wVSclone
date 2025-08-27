@@ -177,6 +177,18 @@ class deviceControl {
             input.pause = keychecksub(KEYASSIGN.PAUSE);
             input.start = keychecksub(KEYASSIGN.PAUSE);
             input.back  = keychecksub(KEYASSIGN.BACK);
+
+            input.vkey = keychecksub(KEYASSIGN.VKEY);
+
+            const kstate = this.key_state.check();
+            let index = -1;
+            for (let i in KEYASSIGN.NUMKEY){
+                if (Boolean(kstate[KEYASSIGN.NUMKEY[i]])){
+                    index = i;
+                    break;
+                }
+            }
+            input.numkey = index;
             input.keycode = this.key_state.check();
 
             return input;

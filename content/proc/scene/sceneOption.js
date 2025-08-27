@@ -21,23 +21,6 @@ class sceneOption {
         const UI_layer = dev.graphics[state.Constant.layer.UI];
 
         //let keys = dev.key_state;
-        /**
-         * @method
-         */
-        this.init = scene_init;
-        /**
-         * @method
-         */
-        this.reset = scene_reset;
-        /**
-         * @method
-         */
-        this.step = scene_step;
-        /**
-         * @method
-         */
-        this.draw = scene_draw;
-
         this.reset_enable = true;
 
         let keywait = 10;
@@ -55,19 +38,21 @@ class sceneOption {
 
         //処理部
         /**
+         * @method
          * @description
          * シーンの初期化処理を実行します。
          */
-        function scene_init() {
+        this.init = ()=>{
             //初期化処理
         }
         /**
+         * @method
          * @description
          * オプションシーンの状態をリセットします。<br>\
          * 背景描画を停止し、UI表示をクリアし、<br>\
          * 各種デバッグ表示フラグを初期化します。 
          */
-        function scene_reset() {
+        this.reset = ()=>{
             //dev.graphics[0].setInterval(0);//BG　WORK2
             //dev.graphics[1].setInterval(0);//SPRITE
             //dev.graphics[2].setInterval(0);//FG
@@ -82,7 +67,7 @@ class sceneOption {
             retmf = false; //return mode false:pause true:gameS
         }
         /**
-         * 
+         * @method
          * @param {Screen} g dev.graphics[x]
          * @param {inputMainTask} input inputResultObject
          * @returns {number} screenResultStatus
@@ -91,7 +76,7 @@ class sceneOption {
          * キーボード入力（Z, C, V, I, E, R, 数字キー、矢印キー）を検出し、<br>\
          * 画面クリア、MOB表示切り替え、マップ表示切り替え、マップエクスポートなどを実行します。
          */
-        function scene_step(g, input) {
+        this.step = (g, input)=> {
 
             keywait--;
             if (keywait > 0) return 0;
@@ -99,59 +84,22 @@ class sceneOption {
             // input key section
             let kstate = input.keycode; //dev.key_state.check();
 
-            let zkey = false; //exit button
-            if (Boolean(kstate[90])) { //[z]
-                if (kstate[90]) zkey = true;
-            }
-            if (Boolean(kstate[32])) { //[space]
-                if (kstate[32]) zkey = true;
-            }
+            let zkey = input.trigger.weapon;//false; //exit button
 
-            let ckey = false; //dispalyclear
-            if (Boolean(kstate[67])) {
-                if (kstate[67]) { //ckey↓
-                    ckey = true;
-                }
-            }
+            let ckey = input.trigger.jump;//false; //dispalyclear
 
-            let vkey = false; //inventry_view
-            if (Boolean(kstate[86])) {
-                if (kstate[86]) { //vkey↓
-                    vkey = true;
-                }
-            }
+            let vkey = input.vkey;//false; //inventry_view
 
-            let ikey = false; //map_reset
-            if (Boolean(kstate[73])) {
-                if (kstate[73]) { //rkey
-                    ikey = true;
-                }
-            }
+            let xkey = input.trigger.useitem;//false; //map_reset
 
-            let ekey = false; //map_reset
-            if (Boolean(kstate[69])) {
-                if (kstate[69]) { //rkey
-                    ekey = true;
-                }
-            }
+            let ekey = input.trigger.select;//false; //map_reset
 
-            let rkey = false; //map_reset
-            if (Boolean(kstate[82])) {
-                if (kstate[82]) { //rkey
-                    rkey = true;
-                }
-            }
 
-            let numkey = false; //menu select num
-            let arrowkey = false; //list select 
-            for (let i in kstate) {
-                if (Boolean(kstate[i])) {
-                    numkey = ((i >= 48) && (i <= 57)) ? true : false; //Fullkey[0]-[9]
-                    arrowkey = ((i >= 37) && (i <= 40)) ? true : false; //Arrowkey
-                }
-            }
+            let numkey = (input.numkey != -1)? true: false;//((i >= 48) && (i <= 57)) ? true : false; //Fullkey[0]-[9]
+            let arrowkey = (input.up || input.down || input.left || input.right) ? true : false; //Arrowkey
 
-            if (zkey || ckey || ikey || ekey || rkey || vkey || numkey || arrowkey) keywait = 8;
+
+            if (zkey || ckey || xkey || ekey || vkey || numkey || arrowkey) keywait = 8;
 
             // select key function section
             if (zkey) {
@@ -178,22 +126,13 @@ class sceneOption {
             }
 
 
-            if (ikey) {
+            if (xkey) {
                 cmapdf = (cmapdf) ? false : true;
                 //IMPORT
             }
             if (ekey) {
                 //EXPORT
                 state.mapsc.mapexport(nowstage);
-            }
-
-            if (rkey) {
-                /*
-                mapsc.change(state.Game.nowstage);
-                mapsc.reset(state.System.time()); //初期マップ展開
-                retmf = true;
-                ret_code = 2;// TITLE;
-                */
             }
 
             if (numkey) { }
@@ -243,7 +182,7 @@ class sceneOption {
             st.push("Z: " + (retmf ? "RETURN TITLE" : "EXIT"));
             st.push("C: CLEAR_SCREEN");
             st.push("V: MOB  VIEW: " + ((mobvf) ? "ON" : "OFF"));
-            st.push("I: CMAP VIEW: " + ((cmapdf) ? "ON" : "OFF"));
+            st.push("X: CMAP VIEW: " + ((cmapdf) ? "ON" : "OFF"));
 
             //st.push("I: MAP_IMPORT（"+(ikey?"?":"未実装")+"）" );
             st.push("E: MAP_EXPORT");
@@ -264,11 +203,12 @@ class sceneOption {
             //進行
         }
         /**
+         * @method
          * @description
          * オプション画面のUI要素を描画します。<br>\
          * 現在の入力キー、コマンドリスト、マップ表示、オブジェクト表示などを表示します。
          */
-        function scene_draw() {
+        this.draw = () =>{
             //UI_layer.reset();
         }
 

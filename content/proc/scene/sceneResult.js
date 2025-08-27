@@ -154,13 +154,13 @@ class sceneResult {
             BUI_layer.draw();
 
             let dpara = [
-                { keynum: 38, text: "up", icon: "Mayura1", func: nop, x: 320 - 80, y: 200, w: 120, h: 50, keyon: false } //upkey
+                { keynum: "up", text: "up", icon: "Mayura1", func: nop, x: 320 - 80, y: 200, w: 120, h: 50, keyon: false } //upkey
                 ,
-                { keynum: 40, text: "down", icon: "Map", func: nop, x: 320 - 80, y: 326, w: 120, h: 50, keyon: false } //downkey
+                { keynum: "down", text: "down", icon: "Map", func: nop, x: 320 - 80, y: 326, w: 120, h: 50, keyon: false } //downkey
                 ,
-                { keynum: 37, text: "left", icon: "BallB1", func: nop, x: 320 - 80 - 150, y: 255, w: 120, h: 50, keyon: false } //left
+                { keynum: "left", text: "left", icon: "BallB1", func: nop, x: 320 - 80 - 150, y: 255, w: 120, h: 50, keyon: false } //left
                 ,
-                { keynum: 39, text: "right", icon: "TrBox", func: nop, x: 320 - 80 + 150, y: 255, w: 120, h: 50, keyon: false } //right
+                { keynum: "right", text: "right", icon: "TrBox", func: nop, x: 320 - 80 + 150, y: 255, w: 120, h: 50, keyon: false } //right
             ];
 
             for (let i in dpara) { //keycode udlr
@@ -280,23 +280,25 @@ class sceneResult {
             wtxt = [];
 
             //       let mstate = inp.check_last();
-            let kstate = input.keycode; //keys.check();
+            //let kstate = input.keycode; //keys.check();
+            let zkey = input.trigger.weapon;
+            let xkey = input.trigger.useitem;
+            let ckey = input.trigger.jump;
 
-            let zkey = false; if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
-            let xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
-            let ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
+            //let zkey = false; if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
+            //let xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
+            //let ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
 
-            let esckey = false; if (Boolean(kstate[27])) { if (kstate[27]) esckey = true; }
+            //let esckey = false; if (Boolean(kstate[27])) { if (kstate[27]) esckey = true; }
 
             zkey = (zkey || xkey || ckey) ? true : false; //any key
 
-
             // Select時にWASDが効かないことへの対策コード
-            let dc = input; //dev.directionM( kstate );
-            if (dc.up) kstate[38] = true;
-            if (dc.down) kstate[40] = true;
-            if (dc.left) kstate[37] = true;
-            if (dc.right) kstate[39] = true;
+            //let dc = input; //dev.directionM( kstate );
+            //if (dc.up) kstate[38] = true;
+            //if (dc.down) kstate[40] = true;
+            //if (dc.left) kstate[37] = true;
+            //if (dc.right) kstate[39] = true;
 
             //diag.step(kstate);
             //        if ((mstate.button == 0) && (!keylock)) {
@@ -324,10 +326,10 @@ class sceneResult {
                         soundf = true;
                     }
                 }
-                if (esckey) { //restart test
+                //if (esckey) { //restart test
                     //    counter = 0;
                     //    ret_code = 5;
-                }
+                //}
             }
 
             if (!zkey) keylock = false;
@@ -390,7 +392,7 @@ class sceneResult {
             //      wtxt.push("Push rMouse Button to Start");
             if (ret_code != 0) diag.effect();
 
-            if ((zkey) || (diag.step(kstate) != 0)) {
+            if ((zkey) || (diag.step(input) != 0)) {
                 return 0; // wait/pause
             } else {
                 diag.close(dev.graphics[2], 20);
@@ -464,7 +466,7 @@ class sceneResult {
                  * ダイアログの入力処理を1ステップ実行します。<br>\
                  * キーボード入力に応じて選択肢の状態を更新し、選択されている項目数を返します。
                  */
-                this.step = function (keystate) {
+                this.step = function (input) {
 
                     let c = 0;
 
@@ -472,8 +474,8 @@ class sceneResult {
 
                         let m = menulist[i];
 
-                        if (Boolean(keystate[m.keynum])) {
-                            menulist[i].keyon = (keystate[m.keynum]) ? true : false;
+                        if (Boolean(input[m.keynum])) {
+                            menulist[i].keyon = (input[m.keynum]) ? true : false;
 
                             //if (m.keyon) m.func();        
                             if (menulist[i].keyon) c++;

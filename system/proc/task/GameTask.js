@@ -250,16 +250,21 @@ class GameTask_Load extends GameTask {
 
         let startflag = false; 
 
+        const KEYCODE_MODE = (!Boolean(g.code)); 
+        let space = (KEYCODE_MODE)? Boolean(kstate[32]):Boolean(kstate["Space"]);
+        let escape = (KEYCODE_MODE)? Boolean(kstate[27]):Boolean(kstate["Escape"]);
+
+
         if (this.infoflg){ 
-            if (Boolean(kstate[32])||g.gamepad.btn_start||mstate.button==0) {
-                if (kstate[32]||g.gamepad.btn_start||mstate.button==0) {//spacebar↓
+            if (space||g.gamepad.btn_start||mstate.button==0) {
+                if (space||g.gamepad.btn_start||mstate.button==0) {//spacebar↓
                     startflag = true;
                 }
             }
         }
 
-        if (Boolean(kstate[27])||g.gamepad.btn_back) {
-            if (kstate[27]||g.gamepad.btn_back) {//esckey↓
+        if (escape||g.gamepad.btn_back) {
+            if (escape||g.gamepad.btn_back) {//esckey↓
                 this.infoflg = true;
                 this.infodly = g.time();
             }
@@ -461,7 +466,10 @@ class GameTask_Device extends GameTask {
      */
     step(g) {
         let ks = g.keyboard.state();
-        let homekey = false; if (Boolean(ks[36])) homekey = true;
+
+        const KEYCODE_MODE = (!Boolean(g.code)); 
+        let homekey = (KEYCODE_MODE)? Boolean(ks[36]):Boolean(ks["Home"]);
+        //let homekey = false; if (Boolean(ks[36])) homekey = true;
 
 		g.gamepad.check();
 		let backbtn = g.gamepad.btn_back;

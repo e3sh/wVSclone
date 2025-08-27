@@ -151,7 +151,7 @@ class sceneGover {
             wtxt = [];
 
             //let mstate = inp.check_last();
-            let kstate = input.keycode; //keys.check();
+            //let kstate = input.keycode; //keys.check();
 
             let zkey = input.trigger.weapon; //false;
             let xkey = input.trigger.useitem;
@@ -159,22 +159,18 @@ class sceneGover {
 
 
             if (!keylock) {
-                if (Boolean(kstate[38])) {
-                    if (kstate[38]) { //↑
-                        menusel--;
-                        if (menusel < 0) menusel = menu.length - 1;
-                        keylock = true;
-                        keywait = 10;
-                    }
+                if (input.up) { //↑
+                    menusel--;
+                    if (menusel < 0) menusel = menu.length - 1;
+                    keylock = true;
+                    keywait = 10;
                 }
 
-                if ((kstate[40])) {
-                    if (kstate[40]) { //↓
-                        menusel++;
-                        if (menusel > menu.length - 1) menusel = 0;
-                        keylock = true;
-                        keywait = 10;
-                    }
+                if (input.down) { //↓
+                    menusel++;
+                    if (menusel > menu.length - 1) menusel = 0;
+                    keylock = true;
+                    keywait = 10;
                 }
                 zkey = zkey || xkey || ckey; //any key
 
