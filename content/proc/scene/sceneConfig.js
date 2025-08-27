@@ -25,22 +25,6 @@ class sceneConfig {
         const BUI = dev.graphics[state.Constant.layer.BUI];
 
         const text = dev.graphics[state.Constant.layer.BUI];
-        /**
-         * @method
-         */
-        this.init = scene_init;
-        /**
-         * @method
-         */
-        this.reset = scene_reset;
-        /**
-         * @method
-         */
-        this.step = scene_step;
-        /**
-         * @method
-         */
-        this.draw = scene_draw;
 
         this.reset_enable = true;
         this.score = 0;
@@ -59,9 +43,6 @@ class sceneConfig {
         let reset_on = false;
 
         let menusel = 0;
-
-        let wipef;
-        let wipecnt;
 
         let sndtst;
         //
@@ -392,8 +373,32 @@ class sceneConfig {
         }
 
         let m = new btn();
+        m.setup("Import.", 100, 280, 120, 16);
+        m.msg = "キーアサイン設定をインポート";
+        m.func = function () {
+            //save_on = true;
+            state.Config.import();
+            text.kprint("テスト用のキーアサイン設定をインポートしました", 100, 288);
+
+            keylock = true;
+            return 0;
+        };
+        menu.push(m);
+
+        m = new btn();
+        m.setup("Export.", 100, 300, 120, 16);
+        m.msg = "キーアサイン設定をエクスポート";
+        m.func = function () {
+            //reset_on = true;
+            state.Config.export(state.Config.keyAn);
+            text.kprint("現在のキーアサイン設定をエクスポートしました", 100, 308);
+            keylock = true;
+            return 0;
+        };
+        menu.push(m);
+
+        m = new btn();
         m.setup("Save.", 100, 320, 120, 16);
-        m.msg = "Save.";
         m.func = function () {
             save_on = true;
             keylock = true;
@@ -403,7 +408,6 @@ class sceneConfig {
 
         m = new btn();
         m.setup("Reset.", 100, 340, 120, 16);
-        m.msg = "Reset.";
         m.func = function () {
             reset_on = true;
             keylock = true;
@@ -412,8 +416,7 @@ class sceneConfig {
         menu.push(m);
 
         m = new btn();
-        m.setup("Exit.", 100, 360, 120, 16);
-        m.msg = "Exit.";
+        m.setup("Exit.", 100, 364, 120, 16);
         m.jp = state.Constant.scene.TITLE; //Return Scene
         m.func = function () {
             return this.jp;
@@ -422,11 +425,12 @@ class sceneConfig {
 
         //処理部
         /**
+         * @method
          * @description
          * シーンの初期化処理を実行します。<br>\
          * ゲームの設定をロードし、各設定項目に対応する初期値を準備します。
          */
-        function scene_init() {
+        this.init =()=>{
             state.Config.reset();
             state.Config.load();
             //===================
@@ -445,11 +449,12 @@ class sceneConfig {
             //初期化処理
         }
         /**
+         * @method
          * @description
          * 設定シーンの状態をリセットし、UIを初期状態に戻します。<br>\
          * 背景描画の停止、メニューボタンのリセット、設定値の再設定などを行います。
          */
-        function scene_reset() {
+        this.reset =()=>{
             dev.pauseBGSP();
             //dev.graphics[0].setInterval(0);//BG　WORK2
             //dev.graphics[1].setInterval(0);//SPRITE
@@ -459,8 +464,8 @@ class sceneConfig {
                 menu[i].lamp = false;
             }
 
-            wipef = false;
-            wipecnt = 0;
+            //wipef = false;
+            //wipecnt = 0;
             //let cur_cnt = 0;
 
             BUI.setBackgroundcolor("navy");
@@ -493,7 +498,7 @@ class sceneConfig {
             //dev.sound.play(0);
         }
         /**
-         * 
+         * @method
          * @param {Screen} g dev.graphics[x] 
          * @param {inputMainTask} input input 
          * @returns {number} sceneSelectNumber
@@ -502,7 +507,7 @@ class sceneConfig {
          * キーボード入力（方向キー、決定キーなど）を検出し、<br>\
          * メニュー選択の移動、設定値の変更、セーブ/リセット/終了などのアクションを実行します。
          */
-        function scene_step(g, input) {
+        this.step =(g, input)=>{
 
             wtxt = [];
 
@@ -658,13 +663,13 @@ class sceneConfig {
                 w_number[5] = state.Config.startstage;
 
                 text.clear();
-                text.kprint("設定初期化しました。", 100, 280);
+                text.kprint("設定初期化しました。", 100, 348);
 
                 if (Boolean(localStorage)) {
                     localStorage.clear();
-                    text.kprint("ローカルストレージクリア。", 100, 300);
+                    text.kprint("ローカルストレージクリア。", 100, 356);
                 } else {
-                    text.kprint("ローカルストレージが使用できない?", 100, 300);
+                    text.kprint("ローカルストレージが使用できない?", 100, 356);
                 }
                 text.draw();
                 for (let i = 0; i < mtyp.length; i++) {
@@ -685,9 +690,9 @@ class sceneConfig {
                 text.clear();
 
                 if (state.Config.save() == 0) {
-                    text.kprint("設定をセーブしました。", 100, 280);
+                    text.kprint("設定をセーブしました。", 100, 328);
                 } else {
-                    text.kprint("ローカルストレージが使用できない?", 100, 280);
+                    text.kprint("ローカルストレージが使用できない?", 100, 328);
                 }
                 text.draw();
                 //text.reset();
@@ -697,11 +702,12 @@ class sceneConfig {
             //進行
         }
         /**
+         * @method
          * @description
          * 設定画面のUI要素を描画します。<br>\
          * メニュー項目、選択ランプ、ボタン、およびセーブ/リセット時のメッセージなどを表示します。
          */
-        function scene_draw() {
+        this.draw =()=>{
 
             for (let s in wtxt) {
                 //UI.putchr(wtxt[s], 0, 60 + 16 * s);
@@ -720,7 +726,39 @@ class sceneConfig {
                     UI.kprint(menu[i].title, menu[i].x, menu[i].y);
                 }
             }
+            keyassignDisplay(440, 100);
 
+        }
+
+        function keyassignDisplay(x, y){
+
+            const keyAn = state.Config.keyAn;
+
+            let st = [];
+
+            st.push("KeyAssignMap(KeyCode)");
+            st.push("---------------------");
+
+            if (keyAn instanceof Object) {
+
+                let o = Object.entries(keyAn);
+
+                o.forEach(function (element) {
+                    let w = String(element).split(",");
+                    let s = w[0];
+                    if (s.length < 13) {
+                        s = s + " ".repeat(10);
+                        s = s.substring(0, 10);
+                    }
+                    let s2 = "";
+                    for (let i = 1; i<w.length; i++){s2 = s2 + w[i] + ","}
+                    st.push("." + s + ":" + s2);
+                });
+            }
+
+            for (let i in st){
+                UI.kprint(st[i], x, y + i*10);
+            }
         }
     }
 }

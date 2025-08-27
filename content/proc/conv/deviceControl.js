@@ -93,8 +93,25 @@ class deviceControl {
 
         this.game = g;
 
-        let userinput = new mixuserinput(g);
-        this.key_state = userinput;
+        //let userinput = new mixuserinput(g);
+        /**
+         * @method
+         * @description
+         * device mixuserinput resulu key_state;
+         */
+        this.key_state;
+
+        /**
+         * @method
+         * @param {GameCore} g GameCoreインスタンス
+         * @description
+         *  
+         */
+        this.init =function(g){
+
+            const userinput = new mixuserinput(g);
+            this.key_state = userinput;
+        }
 
         /**
          * @method
@@ -105,8 +122,10 @@ class deviceControl {
          * 矢印キー、WASD、テンキーの入力に対応しています。
          * @todo code/keycode select
          */
-        this.directionM = function (keystate) {
+        this.directionM = function () {
 
+            const KEYASSIGN = g.state.Config.keyAn;
+            /*
             const cmap = [
                 38, 40, 37, 39, //↑, ↓, ←, →
                 87, 83, 65, 68, //W, S, A, D
@@ -120,12 +139,47 @@ class deviceControl {
                     result[i] = false;
                 }
             }
+            /*
             return {
                 up: result[0] || result[4] || result[8],
                 down: result[1] || result[5] || result[9],
                 left: result[2] || result[6] || result[10],
                 right: result[3] || result[7] || result[11],
             };
+            */
+
+            const keychecksub =(keylist)=>{
+                const kstate = this.key_state.check();
+                let r = false;
+                for (let i in keylist){
+                    let kc = keylist[i];
+                    if (Boolean(kstate[kc])) r = true;
+                }
+                return r;
+            }
+
+            const input = {};
+            input.up     = keychecksub(KEYASSIGN.UP);
+            input.down   = keychecksub(KEYASSIGN.DOWN);
+            input.left   = keychecksub(KEYASSIGN.LEFT);
+            input.right  = keychecksub(KEYASSIGN.RIGHT);
+            
+            const trigger = {};
+            trigger.weapon  = keychecksub(KEYASSIGN.WEAPON);
+            trigger.useitem = keychecksub(KEYASSIGN.USEITEM);
+            trigger.jump    = keychecksub(KEYASSIGN.JUMP);
+            trigger.select  = keychecksub(KEYASSIGN.SELECT);
+            trigger.tgtlock = keychecksub(KEYASSIGN.CTRL);
+
+            input.trigger = trigger;
+
+            input.quit  = keychecksub(KEYASSIGN.BACK);
+            input.pause = keychecksub(KEYASSIGN.PAUSE);
+            input.start = keychecksub(KEYASSIGN.PAUSE);
+            input.back  = keychecksub(KEYASSIGN.BACK);
+            input.keycode = this.key_state.check();
+
+            return input;
         };
 
         /**
@@ -151,6 +205,9 @@ class deviceControl {
             this.c = false; //    .. action1 
             this.d = false; //    .. action2
             this.e = false; //    .. pause 
+
+            //console.log(g + "," + g.state + "," + g.state.Config);
+            const KEYASSIGN = g.state.Config.keyAn;
 
             /**
              * 
@@ -178,19 +235,19 @@ class deviceControl {
                     this.d = gpd.btn_y;
                     this.e = gpd.btn_start;
 
-                    state[38] = gpd.upkey; // || Boolean(state[38]) ;
-                    state[40] = gpd.downkey; //|| Boolean(state[40]) ;
-                    state[37] = gpd.leftkey; // || Boolean(state[37]) ;;
-                    state[39] = gpd.rightkey; // || Boolean(state[39]) ;
+                    state[KEYASSIGN.GPAD_UP] = gpd.upkey; // || Boolean(state[38]) ;
+                    state[KEYASSIGN.GPAD_DOWN] = gpd.downkey; //|| Boolean(state[40]) ;
+                    state[KEYASSIGN.GPAD_LEFT] = gpd.leftkey; // || Boolean(state[37]) ;;
+                    state[KEYASSIGN.GPAD_RIGHT] = gpd.rightkey; // || Boolean(state[39]) ;
 
-                    state[90] = gpd.btn_x; // || Boolean(state[90]) ;Z ATTACK
-                    state[67] = gpd.btn_a; // || Boolean(state[67]) ;C JUMP 
-                    state[88] = gpd.btn_b; // || Boolean(state[88]) ;X BOMB
+                    state[KEYASSIGN.GPAD_X] = gpd.btn_x; // || Boolean(state[90]) ;Z ATTACK
+                    state[KEYASSIGN.GPAD_A] = gpd.btn_a; // || Boolean(state[67]) ;C JUMP 
+                    state[KEYASSIGN.GPAD_B] = gpd.btn_b; // || Boolean(state[88]) ;X BOMB
 
-                    state[69] = gpd.btn_y; // || Boolean(state[69]) ;E SELECT (GameScene) add 2025/07/11
-                    state[80] = gpd.btn_start; // || Boolean(state[27]) ;ESC->P(state[80]) change 2025/06/26
-                    state[192] = gpd.btn_back; // @key (QuitOperation)back_Btn 2025/06/26
-                    state[17] = gpd.btn_rb; //Controlkey 
+                    state[KEYASSIGN.GPAD_Y] = gpd.btn_y; // || Boolean(state[69]) ;E SELECT (GameScene) add 2025/07/11
+                    state[KEYASSIGN.GPAD_START] = gpd.btn_start; // || Boolean(state[27]) ;ESC->P(state[80]) change 2025/06/26
+                    state[KEYASSIGN.GPAD_BACK] = gpd.btn_back; // @key (QuitOperation)back_Btn 2025/06/26
+                    state[KEYASSIGN.GPAD_RB] = gpd.btn_rb; //Controlkey 
                 }
 
                 mouse.mode(g);

@@ -36,6 +36,8 @@ class taskMainLoop extends GameTask {
         this.state.scene = this.scene;
 
         g.state = this.state;
+
+        g.state.System.dev.init(g);//keyAssign 
     }
    
     /**
@@ -75,10 +77,10 @@ class taskMainLoop extends GameTask {
      */
     step = function (g) {
 
-        let kstate = this.state.System.dev.key_state.check();
-        let arrow = this.state.System.dev.directionM( kstate );
+        //let kstate = this.state.System.dev.key_state.check();
+        //let arrow = this.state.System.dev.directionM( kstate );
         //let pstate = g.gamepad.check();
-
+        /*
         const input = {
             up: arrow.up        // W 
             ,down: arrow.down   // S
@@ -111,8 +113,9 @@ class taskMainLoop extends GameTask {
         //if (Boolean(kstate[81])) input.quit     = kstate[81];//Q, (Y)
         if (Boolean(kstate[192])) input.back     = kstate[192];//@, (Back)
         //if (Boolean(kstate[x])) input.start   = kstate[x];//undefind, (START)
+        */
 
-        this.scene.step(g, input);
+        this.scene.step(g, this.state.System.dev.directionM());
     }
     /**
      * @method

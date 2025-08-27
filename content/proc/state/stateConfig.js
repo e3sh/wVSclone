@@ -29,7 +29,7 @@ class stateConfig {
         this.viewlog;
         this.bulletmode;
 
-        this.keyAn = [];
+        this.keyAn;
 
         /**
          * @description
@@ -49,6 +49,34 @@ class stateConfig {
             this.debug = false; //trueでdebugステータス表示。
             this.viewlog = false; //trueでdebug時にログ表示
             this.bulletmode = false; //trueで画面外から弾が飛んでこなくなる。
+
+            this.keyAn = {
+                UP: [38, 87, 104],    //up    W tenkey8 code ArrowUp    Numpad8        
+                DOWN: [40, 83, 98],   //down  S tenkey2 code ArrowDown  Numpad2  
+                LEFT: [37, 65, 100],  //left  A tenkey4 code ArrowLeft  Numpad4      
+                RIGHT: [39, 68, 102], //right D tenkey6 code ArrowRight Numpad6
+                WEAPON: [90,32], //zkey code"keyZ" "Space"
+                USEITEM:[88], //xkey code"keyX"
+                JUMP:   [67], //ckey code"keyC"
+                SELECT: [69], //ekey code"keyE"
+                PAUSE:  [80], //pkey code"keyP"
+                BACK:  [192],  //@key code"BracketLeft"
+                CTRL:   [17], //ctrlL code"ControlLeft"
+
+                GPAD_UP: 38,    //^
+                GPAD_DOWN: 40,  //v
+                GPAD_LEFT: 37,  //<
+                GPAD_RIGHT: 39, //>
+                GPAD_A: 67, //C
+                GPAD_B: 88, //X
+                GPAD_X: 90, //Z
+                GPAD_Y: 69, //E
+                GPAD_START: 80, //P
+                GPAD_BACK: 192, //@
+                GPAD_LB: 17,    //ControlL
+                GPAD_RB: 17
+
+            }//this paramater not function (keyCode)(code)
         }
 
         configReset();
@@ -131,7 +159,93 @@ class stateConfig {
         //コンフィグの初期化（初期値に設定）
         /**
          * @method
+         * @description
+         * コンフィグの初期化（初期値に設定）
          */
         this.reset = configReset;
+
+        /**
+         * @method
+         * @description
+         * キーアサイン情報をエクスポートする
+         */
+        this.export = function(obj){
+            const filename = "keyAssign.json"
+            //textfile export
+            const json = JSON.stringify(obj, null, 2);
+            const blob = new Blob([json], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        /**
+         * @method
+         * @description
+         * キーアサイン情報をインポートする
+         * @todo
+         * 外部ファイル読み込みの作成
+         * (変な設定のファイルを読み込むと操作できなくなるので不必要かもしれない)
+         */
+        this.import = function(){
+
+            let json = keyassignSampleJsonObj();
+            this.keyAn = JSON.parse(json);
+        }
+
+        function keyassignSampleJsonObj(){
+            //WASDとSPACEを未使用にしてアイテムセレクトをSにするキーアサインサンプル
+            return `{
+                "UP": [
+                    38,
+                    104
+                ],
+                "DOWN": [
+                    40,
+                    98
+                ],
+                "LEFT": [
+                    37,
+                    100
+                ],
+                "RIGHT": [
+                    39,
+                    102
+                ],
+                "WEAPON": [
+                    90
+                ],
+                "USEITEM": [
+                    88
+                ],
+                "JUMP": [
+                    67
+                ],
+                "SELECT": [
+                    83
+                ],
+                "PAUSE": [
+                    80
+                ],
+                "BACK": [
+                    192
+                ],
+                "GPAD_UP": 38,
+                "GPAD_DOWN": 40,
+                "GPAD_LEFT": 37,
+                "GPAD_RIGHT": 39,
+                "GPAD_A": 67,
+                "GPAD_B": 88,
+                "GPAD_X": 90,
+                "GPAD_Y": 83,
+                "GPAD_START": 80,
+                "GPAD_BACK": 192,
+                "GPAD_LB": 17,
+                "GPAD_RB": 17
+            }`
+        } 
     }
 }
