@@ -52,7 +52,7 @@ class stateConfig {
             this.viewlog = false; //trueでdebug時にログ表示
             this.bulletmode = false; //trueで画面外から弾が飛んでこなくなる。
 
-            const KEYCODE_MODE = true;
+            const KEYCODE_MODE = false;
 
             this.keyAn = (KEYCODE_MODE)?{
                 UP: [38, 87, 104],    //up    W tenkey8 code ArrowUp    Numpad8        

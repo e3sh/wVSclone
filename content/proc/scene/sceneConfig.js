@@ -736,8 +736,8 @@ class sceneConfig {
 
             let st = [];
 
-            st.push("KeyAssignMap(KeyCode)");
-            st.push("---------------------");
+            st.push("KeyAssignMap(KeyCode/code)");
+            st.push("--------------------------");
 
             if (keyAn instanceof Object) {
 

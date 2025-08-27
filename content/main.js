@@ -51,10 +51,9 @@ function main_r() {
 	game.task.add(new GameTask_Debug("debug"));
 	game.task.add(new GameTask_Device("device"));
 
-	//game.keyboard.codeMode(true);//change keyCoce->code Mode
-	//game.code = true;
+	game.keyboard.codeMode(true);//change keyCoce->code Mode
+	game.code = true;
 	// stateConfig KEYCODE_MODE true->false
-	//game.screen[0].setBackgroundcolor("red");
 	game.run();
 }
 

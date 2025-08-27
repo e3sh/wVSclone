@@ -144,10 +144,6 @@ class sceneResult {
                     device.stroke();
                 }
             };
-            //ゲーム画面の描画を停止(Flip/Drawを自動で実行するのを停止)
-            //dev.graphics[0].setInterval(0);//BG
-            //dev.graphics[1].setInterval(0);//SPRITE
-            //BUI_layer.setInterval(0);//<-dev.g2　FG
             dev.pauseBGSP();
 
             BUI_layer.putFunc(o);
@@ -279,29 +275,12 @@ class sceneResult {
             //進行
             wtxt = [];
 
-            //       let mstate = inp.check_last();
-            //let kstate = input.keycode; //keys.check();
             let zkey = input.trigger.weapon;
             let xkey = input.trigger.useitem;
             let ckey = input.trigger.jump;
 
-            //let zkey = false; if (Boolean(kstate[90])) { if (kstate[90]) zkey = true; }
-            //let xkey = false; if (Boolean(kstate[88])) { if (kstate[88]) xkey = true; }
-            //let ckey = false; if (Boolean(kstate[67])) { if (kstate[67]) ckey = true; }
-
-            //let esckey = false; if (Boolean(kstate[27])) { if (kstate[27]) esckey = true; }
-
             zkey = (zkey || xkey || ckey) ? true : false; //any key
 
-            // Select時にWASDが効かないことへの対策コード
-            //let dc = input; //dev.directionM( kstate );
-            //if (dc.up) kstate[38] = true;
-            //if (dc.down) kstate[40] = true;
-            //if (dc.left) kstate[37] = true;
-            //if (dc.right) kstate[39] = true;
-
-            //diag.step(kstate);
-            //        if ((mstate.button == 0) && (!keylock)) {
             counter++;
             if (counter > 30) {
                 if (!dev.sound.running()) {
@@ -326,10 +305,6 @@ class sceneResult {
                         soundf = true;
                     }
                 }
-                //if (esckey) { //restart test
-                    //    counter = 0;
-                    //    ret_code = 5;
-                //}
             }
 
             if (!zkey) keylock = false;
@@ -347,7 +322,6 @@ class sceneResult {
                 o.draw = function (device) {
 
                     device.strokeStyle = "black";
-                    //                device.fillStyle = "black";
                     device.beginPath();
                     device.lineWidth = 8;
                     device.moveTo(0, this.y1);
@@ -358,11 +332,9 @@ class sceneResult {
                     device.lineWidth = 8;
                     device.moveTo(0, this.y2);
                     device.lineTo(this.cw, this.y2);
-                    //    device.stroke();
                     device.stroke();
                 };
                 BUI_layer.putFunc(o);
-                //state.obCtrl.keyitem_view_draw(BUI_layer);
                 BUI_layer.draw();
                 BUI_layer.reset();
 
@@ -432,9 +404,7 @@ class sceneResult {
                     };
                     UI_layer.putFunc(o);
                 }
-
                 UI_layer.putchr(menu[i].title, menu[i].x, menu[i].y);
-
             }
 
             for (let s in wtxt) {
@@ -469,7 +439,6 @@ class sceneResult {
                 this.step = function (input) {
 
                     let c = 0;
-
                     for (let i in menulist) {
 
                         let m = menulist[i];
@@ -482,7 +451,6 @@ class sceneResult {
 
                         } else menulist[i].keyon = false;
                     }
-
                     return c;
                 };
                 /**
