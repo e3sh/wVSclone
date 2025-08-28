@@ -96,7 +96,10 @@ class deviceControl {
         //let userinput = new mixuserinput(g);
         /**
          * @method
+         * @returns {inputMain}
          * @description
+         * キーアサイン情報を反映したキーボード/ゲームパッドの入力情報を<br>\
+         * 入力状態プロパティを持つオブジェクトとして返します。
          * device mixuserinput resulu key_state;
          */
         this.key_state;
@@ -105,12 +108,28 @@ class deviceControl {
          * @method
          * @param {GameCore} g GameCoreインスタンス
          * @description
-         *  
+         * stateConfigよりキーアサイン情報を読み込んで<br>\
+         * .key_stateメソッドに割り当てます 
          */
         this.init =function(g){
 
             const userinput = new mixuserinput(g);
             this.key_state = userinput;
+        }
+
+        /**
+         * @method
+         * @param {boolean} codemode codemode/keyCodemode 
+         * @description
+         * GameCoreで処理されるキーボード入力状態を変更する<br>\
+         * キーボード入力をkeyCode/codeどちらで行うのか選択
+        */
+        this.changeKeyboardMode = function(codemode){
+
+            g.keyboard.codeMode(codemode);//select keyCoce or code Mode
+            g.code = codemode; //ここにcodemodeを設定するのは、deviceControlやstateが初期化される前に
+            //動作するGameTask[device]で全画面制御のキー入力を検出している為
+            this.key_state.reflash();
         }
 
         /**
@@ -219,8 +238,15 @@ class deviceControl {
             this.e = false; //    .. pause 
 
             //console.log(g + "," + g.state + "," + g.state.Config);
-            const KEYASSIGN = g.state.Config.keyAn;
+            let KEYASSIGN = g.state.Config.keyAn;
 
+            /**
+             * @description
+             * キーアサインの変更を反映する
+             */
+            this.reflash = function(){
+                KEYASSIGN = g.state.Config.keyAn;
+            }
             /**
              * 
              * @returns {keyState} キー入力状態

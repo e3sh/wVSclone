@@ -31,8 +31,6 @@ class stateConfig {
 
         this.keyAn;
 
-        this.code; 
-
         /**
          * @description
          * 全ての設定パラメータを初期値にリセットします。
@@ -55,6 +53,7 @@ class stateConfig {
             const KEYCODE_MODE = false;
 
             this.keyAn = (KEYCODE_MODE)?{
+                USECODEMODE: false,
                 UP: [38, 87, 104],    //up    W tenkey8 code ArrowUp    Numpad8        
                 DOWN: [40, 83, 98],   //down  S tenkey2 code ArrowDown  Numpad2  
                 LEFT: [37, 65, 100],  //left  A tenkey4 code ArrowLeft  Numpad4      
@@ -87,6 +86,7 @@ class stateConfig {
             }//this paramater not function (keyCode)(code)
             :
             {
+                USECODEMODE: true,
                 UP: ["ArrowUp", "KeyW", "Numpad8"],    //up         
                 DOWN: ["ArrowDown", "KeyS", "Numpad2"], //down  
                 LEFT: ["ArrowLeft", "KeyA", "Numpad4"], //left      
@@ -239,6 +239,7 @@ class stateConfig {
         function keyassignSampleJsonObj(){
             //WASDとSPACEを未使用にしてアイテムセレクトをSにするキーアサインサンプル
             return `{
+                "USECODEMODE": false,
                 "UP": [
                     38,
                     104

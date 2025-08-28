@@ -377,8 +377,9 @@ class sceneConfig {
         m.msg = "キーアサイン設定をインポート";
         m.func = function () {
             //save_on = true;
-            //state.Config.import();
-            text.kprint("（入力不能になるので無効）", 100, 288);
+            state.Config.import();
+            text.kprint("インポートしてキーボードモード変更", 100, 288);
+            state.System.dev.changeKeyboardMode(state.Config.keyAn.USECODEMODE)
 
             keylock = true;
             return 0;
@@ -411,6 +412,7 @@ class sceneConfig {
         m.func = function () {
             reset_on = true;
             keylock = true;
+
             return 0;
         };
         menu.push(m);
@@ -683,6 +685,7 @@ class sceneConfig {
                     }
                 }
 
+                state.System.dev.changeKeyboardMode(state.Config.keyAn.USECODEMODE)
                 reset_on = false;
             }
 
@@ -747,8 +750,8 @@ class sceneConfig {
                     let w = String(element).split(",");
                     let s = w[0];
                     if (s.length < 13) {
-                        s = s + " ".repeat(10);
-                        s = s.substring(0, 10);
+                        s = s + " ".repeat(11);
+                        s = s.substring(0, 11);
                     }
                     let s2 = "";
                     for (let i = 1; i<w.length; i++){s2 = s2 + w[i] + ","}
