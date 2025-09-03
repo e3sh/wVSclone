@@ -248,7 +248,7 @@ class sceneTitle {
                         //dev.sound.play(0);
                         if (n != 0) {
                             wipef = true;
-                            state.Game.mode = psel.mode;
+                            //state.Game.mode = psel.mode;
                             ret_code = n;
                         }
                     }

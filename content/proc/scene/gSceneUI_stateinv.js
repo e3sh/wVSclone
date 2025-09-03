@@ -387,15 +387,16 @@ class gameSceneUI_stateinv {
 				escore.read(obCtrl.score) //obCtrl.score,
 			];
 
+
 			let inste = [
 				//ehighscore.read(state.Result.highscore),//state.Result.highscore,
 				//escore.read(obCtrl.score),//obCtrl.score,
 				state.Game.player.zanki,
 				state.Game.map,
 				state.Game.lamp,
-				obCtrl.item[20], //ball
-				obCtrl.item[22], //key
-				obCtrl.item[35], //coin
+				obCtrl.item[state.Constant.item.BALL], //ball
+				obCtrl.item[state.Constant.item.KEY], //key
+				obCtrl.item[state.Constant.item.COIN], //coin
 				obCtrl.item.length, //アイテム数が変わった場合、何か拾った(keyitem)
 				obCtrl.itemstack.length,
 				state.Game.player.weapon,
@@ -404,7 +405,15 @@ class gameSceneUI_stateinv {
 				//Math.floor((120000 - mapsc.flame) / 1000),
 				state.Game.player.hp,
 				state.Game.player.maxhp,
-				state.Game.player.barrier
+				state.Game.player.barrier,
+				obCtrl.item[state.Constant.item.AMULET_R], 
+				obCtrl.item[state.Constant.item.AMULET_G], 
+				obCtrl.item[state.Constant.item.AMULET_B],
+				obCtrl.item[state.Constant.item.RING_R],
+				obCtrl.item[state.Constant.item.RING_B], 
+				obCtrl.item[state.Constant.item.CANDLE_B],
+				obCtrl.item[state.Constant.item.CANDLE_R], 
+				obCtrl.item[state.Constant.item.MIRROR]
 			];
 
 			let intim = Math.floor((120000 - mapsc.flame) / 1000);
@@ -478,9 +487,9 @@ class gameSceneUI_stateinv {
 
 			minimapDisp.draw(); //submap display
 
-			if (state.Game.mode != 1) {
-				UI_PlayerType();
-			}
+			//if (state.Game.mode != 1) {
+			UI_PlayerType();
+			//}
 		}
 
 		//==========
