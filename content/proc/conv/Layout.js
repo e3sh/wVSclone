@@ -220,7 +220,7 @@ class gameLayout {
 
             this.debugmessage = {
                 x: DSP_SP_X,
-                y: DSP_SP_Y + 150
+                y: DSP_SP_Y + 166
             };
 
             this.debugspriteobject = {
@@ -341,7 +341,7 @@ class gameLayout {
             this.key.x = x + 84;
             this.key.y = y + 20;
             //weapon
-            this.weapon.x = x + 106;
+            this.weapon.x = x + 118;
             this.weapon.y = y + 20;
             //time
             this.time.x = x + GS_SIZE_X - (8 * 9);

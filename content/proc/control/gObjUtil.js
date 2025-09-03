@@ -26,9 +26,88 @@ class gObjectUtility {
         const ch_ptn = state.Database.chrPattern; //character();
         const motion_ptn = state.Database.motionPattern; //motionPattern();
 
+        /**
+         * @class
+         * @classdesc
+         * テキスト行を管理し、指定された行数（`num`）に収まるように<br>\
+         * バッファを制御する内部クラスです。<br>\
+         * ログやメッセージコンソールの表示に使用されます。
+         */
+        class textbufferControl {
+            /**
+             * @constructor
+             * @param {number} [num=20] 行数
+             * @param {boolean} [anim=true] 文字出力時1文字ずつのアニメーション表示をするか
+             * @description
+             * 指定された行数（`num`）の文字列バッファを作成します。(幅40固定)
+            */
+            constructor(num = 20, anim = true) {
+
+                const LINE = num + 1;
+                const WIDTH = 40;
+
+
+                let buffer = [];
+
+                /**
+                 *
+                 * @returns {string[]} テキスト行の配列
+                 * @description
+                 * バッファに格納されている現在のテキスト行の配列を返します。
+                 */
+                this.read = function () {
+
+                    let outbuf = [];
+                    for (let i in buffer){
+                        let bf = false;
+                        if (anim){
+                            if (buffer[i].count < buffer[i].text.length){
+                                buffer[i].count++;
+                                bf = true;
+                            }
+                            outbuf[i] = buffer[i].text.substring(0,buffer[i].count);
+                            if (bf) break;
+                        }else{
+                            outbuf[i] = buffer[i].text;
+                        }
+                    }
+                    return outbuf;
+                };
+
+                /**
+                 *
+                 * @param {string} str 文字列
+                 * @description
+                 * 指定された文字列をバッファに追加します。<br>\
+                 * バッファが最大行数を超えた場合、古い行を削除して新しい行を追加します。
+                 */
+                this.write = function (str) {
+
+                    if (str.length > WIDTH) str = str.substring(0, WIDTH);
+
+                    buffer.push({text:str, count:0});
+
+                    let bfw = [];
+                    for (let i in buffer) {
+                        if (i > (buffer.length - LINE)) {
+                            bfw.push(buffer[i]);
+                        }
+                    }
+                    buffer = bfw;
+                };
+                /**
+                 * @description
+                 * バッファに格納されている全てのテキスト行をクリアします。
+                 */
+                this.clear = function () {
+                    buffer = [];
+                };
+            }
+        }
+
         const msglog = new textbufferControl(25);
-        const msgview = new textbufferControl(26);
-        const msgcnsl = new textbufferControl(21);
+        const msgview = new textbufferControl(24, false);
+        const msgcnsl = new textbufferControl(24);
 
         this.messagelog = msglog;
         this.messageview = msgview;
@@ -73,61 +152,6 @@ class gObjectUtility {
          * @method
          */
         this.tutTable = tutCheck;
-
-        /**
-         * @param {number} num 行数
-         * @description
-         * テキスト行を管理し、指定された行数（`num`）に収まるように<br>\
-         * バッファを制御する内部クラスです。<br>\
-         * ログやメッセージコンソールの表示に使用されます。
-         */
-        function textbufferControl(num = 20) {
-
-            const LINE = num + 1;
-            const WIDTH = 40;
-
-            let buffer = [];
-
-            /**
-             * 
-             * @returns {string[]} テキスト行の配列
-             * @description 
-             * バッファに格納されている現在のテキスト行の配列を返します。
-             */
-            this.read = function () {
-
-                return buffer;
-            };
-
-            /**
-             * 
-             * @param {string} str 文字列
-             * @description
-             * 指定された文字列をバッファに追加します。<br>\
-             * バッファが最大行数を超えた場合、古い行を削除して新しい行を追加します。
-             */
-            this.write = function (str) {
-
-                if (str.length > WIDTH) str = str.substring(0, WIDTH);
-
-                buffer.push(str);
-
-                let bfw = [];
-                for (let i in buffer) {
-                    if (i > (buffer.length - LINE)) {
-                        bfw.push(buffer[i]);
-                    }
-                }
-                buffer = bfw;
-            };
-            /**
-             * @description
-             * バッファに格納されている全てのテキスト行をクリアします。
-             */
-            this.clear = function () {
-                buffer = [];
-            };
-        }
 
         const PLAYER = state.Constant.objtype.PLAYER;
         const FRIEND = state.Constant.objtype.FRIEND;
