@@ -83,21 +83,14 @@ class sceneOption {
 
             // input key section
             let kstate = input.keycode; //dev.key_state.check();
-
             let zkey = input.trigger.weapon;//false; //exit button
-
             let ckey = input.trigger.jump;//false; //dispalyclear
-
             let vkey = input.vkey;//false; //inventry_view
-
             let xkey = input.trigger.useitem;//false; //map_reset
-
             let ekey = input.trigger.select;//false; //map_reset
-
 
             let numkey = (input.numkey != -1)? true: false;//((i >= 48) && (i <= 57)) ? true : false; //Fullkey[0]-[9]
             let arrowkey = (input.up || input.down || input.left || input.right) ? true : false; //Arrowkey
-
 
             if (zkey || ckey || xkey || ekey || vkey || numkey || arrowkey) keywait = 8;
 
@@ -110,7 +103,6 @@ class sceneOption {
 
                 if (retmf) {
                     dev.resumeBGSP();
-
                     //state.Game.cold = true;
                 }
                 return ret_code;
@@ -125,7 +117,6 @@ class sceneOption {
                 mobvf = (!mobvf);
             }
 
-
             if (xkey) {
                 cmapdf = (cmapdf) ? false : true;
                 //IMPORT
@@ -138,29 +129,16 @@ class sceneOption {
             if (numkey) { }
             if (arrowkey) {
                 let s = sel;
-                for (let i in kstate) {
-                    if (Boolean(kstate[i])) {
-                        s = s // + ((i == 37)? -40 :0)//leftkey 
-                            + ((i == 38) ? -1 : 0) //upkey
+                s = s + ((input.up) ? -1 : 0) //upkey
+                    + ((input.down) ? +1 : 0); //downkey
 
-                            //((i == 39)? +40 :0) //rightkey
-                            + ((i == 40) ? +1 : 0); //downkey
-                    }
-
-                }
                 if (s < 0) s = 0;
                 sel = s;
 
                 s = nowstage;
-                for (let i in kstate) {
-                    if (Boolean(kstate[i])) {
-                        s = s + ((i == 37) ? -1 : 0) //leftkey 
+                s = s + ((input.left) ? -1 : 0) //leftkey 
+                    + ((input.right)  ? +1 : 0); //rightkey
 
-                            //+ ((i == 38)? -1 :0) //upkey
-                            + ((i == 39) ? +1 : 0) //rightkey
-                            ;
-                    }
-                }
                 retmf = true;
                 ret_code = state.Constant.scene.TITLE; // TITLE;
 

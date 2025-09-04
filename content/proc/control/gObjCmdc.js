@@ -154,7 +154,11 @@ function ObjCmdDecode(msg, sobj, obj, state, sce){
 
                 if (f) { //useble items
                     let w = msg.src;
-                    objc.itemstack.push(w);
+                    if (Boolean(state.Game.armlock)){
+                        objc.itemstack.unshift(w);
+                    }else{
+                        objc.itemstack.push(w);
+                    }
                 }
             
                 state.obUtil.messageconsole.write(objc.itemTable[msg.src] + ".GET");

@@ -151,7 +151,9 @@ function tutorialCommentTable(){
 	t[103] = ["[MND] HP回復量    (HP RECOVER) "];
 	t[104] = ["[INT] 爆弾ダメージ(BOMB DAMAGE)"];
 
-	t[200] = ["「操作」:武器固定/解除(拾う/拾わない)の切替","[Q]キー (LB)ボタン"
+	t[200] = ["「操作」:武器/アイテムの固定/解除・切替　[Q]キー (LB)ボタン"
+		,"武器：拾ったアイテムを使用する/しないの切替"
+		,"アイテム：使用順序変更(スタック方法(FIFO/FILO)変更)"
 		];//triger player.js
 
 	return t;
