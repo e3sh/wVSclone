@@ -11,6 +11,14 @@
 //  Mirror and Radian -1 -> Object data
 //　オブジェクトの持つラジアン値を使用する。
 //
+/**
+ * @typedef {object} MotionPattern
+ * @property {number} wait アニメーション間隔(フレーム)
+ * @property {pattern} pattern パターン配列 
+ */
+/** 
+ * @returns {MotionPattern[]} motionPatternリスト 
+ */
 function motionPattern(){
 
 	let mp = [];
@@ -52,6 +60,12 @@ function motionPattern(){
 	["Mayura3", 2, 0],
 	["Mayura4", 2, 0]
     ];
+
+	//*8 mayura 右後ろ向き 9 mayura 左後ろ向き
+	//=================================================
+	mp[8] = {wait:18, pattern:[["Mayura1r",0,0],["Mayura2r",0,0],["Mayura3r",0,0],["Mayura4r",0,0]]};
+	mp[9] = {wait:18, pattern:[["Mayura1r",2,0],["Mayura2r",2,0],["Mayura3r",2,0],["Mayura4r",2,0]]};
+
 	//Option
 	//=================================================
     no = 3;
@@ -61,7 +75,7 @@ function motionPattern(){
 	mp[no].pattern = [
 	["miniMay", 0, 0]
     ];
-	//ENEMY
+	//ENEMY右向き
 	//=================================================
 	no = 4;
 
@@ -73,7 +87,7 @@ function motionPattern(){
 	["Unyuu2", 0, 0]
     ];
 
-	//ENEMY
+	//ENEMY左向き
 	//=================================================
 	no = 5;
 
@@ -84,6 +98,12 @@ function motionPattern(){
 	["Unyuu1", 2, 0],
 	["Unyuu2", 2, 0]
     ];
+	
+	//*13 EUnyuu  右後ろ向き 14 EUnyuu 左後ろ向き
+	//=================================================
+	mp[13] = {wait:18, pattern:[["Unyuu1r",0,0],["Unyuu2r",0,0]]};
+	mp[14] = {wait:18, pattern:[["Unyuu1r",2,0],["Unyuu2r",2,0]]};
+
 	//Unyuu右向き
 	//=================================================
     no = 31;
@@ -433,7 +453,7 @@ function motionPattern(){
 	return mp;
 }
 //===================================
-//2023/04/06 check
+// *add 2025/09/04 
 //===================================
 /*
 1 mayura 右向き 2 mayura 左向き
@@ -441,10 +461,11 @@ function motionPattern(){
 4 Unyuu  右向き 5 Unyuu  左向き
 6 BUnyuu 左向き
 7 Bullet 
-8-10 (Reserb)
+*8 mayura 右後ろ向き 9 mayura 左後ろ向き
+10 (Reserb)
 11 Hit 
-12 Bomb 
-13-14 (Reserb)
+12 Bomb
+*13 Unyuu  右後ろ向き 14 Unyuu 左後ろ向き
 15 Knife
 16 Spear
 17 Boom

@@ -64,6 +64,8 @@ function sce_enemy_move_n(num1, num2) {
             default:
                 break;
         }
+
+        if (o.vector > 180) { o.mp = (o.vector <290)? 5:14; } else { o.mp = (o.vector >70)? 4:13; };
         o.frame++;
         //o.frame++; //frame rate *2
         if (o.jump == 1 ) {
@@ -153,6 +155,8 @@ function sce_enemy_turn( num ){
         }
         o.frame++;
 
+        if (o.vector > 180) { o.mp = (o.vector <290)? 5:14; } else { o.mp = (o.vector >70)? 4:13; };
+
         if (o.jump == 1 ) {
             o.shifty = o.shifty + o.jpvec;
             o.jpvec = o.jpvec + 0.4 * o.vecfrm;
@@ -232,7 +236,7 @@ function sce_enemy_moveshot() {
 
         o.vset(4);
 
-        if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
+        if (o.vector > 180) { o.mp = (o.vector <290)? 5:14; } else { o.mp = (o.vector >70)? 4:13; };
 
         if (o.frame % 50 == 5) {
             //inventry check
@@ -316,8 +320,6 @@ function sce_enemy_randomshot() {
 
     this.move = function (scrn, o) {
 
-        if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
-
         switch (o.frame) {
             case 10:
                 o.vset(0);
@@ -367,7 +369,8 @@ function sce_enemy_randomshot() {
             }            
             return o.sc_move();
         }
-        if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
+        //if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
+        if (o.vector > 180) { o.mp = (o.vector <290)? 5:14; } else { o.mp = (o.vector >70)? 4:13; };
 
         if (o.mapCollision) {
             if (o.colcnt > 1) {//連続衝突するとジャンプして回避してみる
@@ -436,7 +439,8 @@ function sce_enemy_move_std(){
             //o.colcnt = 0;
         }
 
-        if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
+        //if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
+        if (o.vector > 180) { o.mp = (o.vector <290)? 5:14; } else { o.mp = (o.vector >70)? 4:13; };
 
         if (o.mapCollision) {
             if (o.colcnt > 1) {//連続衝突するとジャンプして回避してみる
@@ -570,7 +574,12 @@ function sce_enemy_move_std2( intrvl, sdst ) {
             //o.vset(maxspeed);
         }
 
-        if (o.vector > 180) { o.mp = 5; } else { o.mp = 4; }
+        if (o.vector > 180) { o.mp = (o.vector <290)? 5:14; } else { o.mp = (o.vector >70)? 4:13; };
+
+        //
+        //  under 70 upper 290  
+        // 
+        //
 
         if (o.mapCollision) {
             //o.colcnt++;

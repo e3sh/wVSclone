@@ -189,7 +189,7 @@ class sceneTitle {
         }
         /**
          * 
-         * @param {*} g 
+         * @param {GameCore} g GameCoreインスタンス 
          * @param {*} input 
          * @returns returncode (nextScene)
          * @description
@@ -340,8 +340,6 @@ function titleItemListMap(state){
     const chItbl = state.Database.chrItemtable;
 
     const itemTable = [];
-    let mCntWait = [];
-    let mCnt = []; 
 
     for (let i in chPtn){
         const c = chPtn[i]

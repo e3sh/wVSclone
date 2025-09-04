@@ -275,6 +275,8 @@ function sce_player( gObjc ) {
         o.get_item(0);//オープニング説明実施
 
         o.frame = SHIELD_TIME;
+
+        o.vector = 180;
     }
 
     this.draw = damage_gr1;
@@ -360,8 +362,21 @@ function sce_player( gObjc ) {
             o.mvkeytrig = (o.mvkeytrig-o.vecfrm < 0)?0 : o.mvkeytrig;
         }
 
-        if (o.vector > 180) { o.mp = 2; } else { o.mp = 1; }
-        
+        //if (o.vector > 180) { o.mp = 2; } else { o.mp = 1; }
+        if (o.vector >= 180) {
+            if (o.vector == 180 && ((o.mp == 1)||(o.mp == 8))) {
+                o.mp = 1;
+            }else{
+                o.mp = (o.vector <290)? 2:9;
+            } 
+        } else { 
+            if (o.vector == 0 && ((o.mp == 2)||(o.mp == 9))) {
+                o.mp = 9;
+            }else{
+                o.mp = (o.vector >70)? 1:8; 
+            } 
+        };
+
         let hkey = false;//Debug Help action test 
         if (o.input.vkey) { hkey = true; }
 
