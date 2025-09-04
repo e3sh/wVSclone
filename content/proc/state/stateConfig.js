@@ -63,6 +63,7 @@ class stateConfig {
                 JUMP:   [67], //ckey code"keyC"
                 SELECT: [69], //ekey code"keyE"
                 PAUSE:  [80], //pkey code"keyP"
+                LOCK:   [81], //qkey code"keyQ"
                 BACK:  [192],  //@key code"BracketLeft"
                 CTRL:   [17], //ctrlL code"ControlLeft"
 
@@ -96,6 +97,7 @@ class stateConfig {
                 JUMP:   ["KeyC"], //ckey
                 SELECT: ["KeyE"], //ekey
                 PAUSE:  ["KeyP"], //pkey
+                LOCK:   ["KeyQ"], //qkey
                 BACK:  ["BracketLeft"],  //@key
                 CTRL:   ["ControlLeft"], //ctrlL
 
@@ -114,7 +116,7 @@ class stateConfig {
                 GPAD_Y: "KeyE", //E
                 GPAD_START: "KeyP", //P
                 GPAD_BACK: "BracketLeft", //@
-            //  GPAD_LB: "ControlLeft", //ControlL
+                GPAD_LB: "KeyQ", //Q
                 GPAD_RB: "ControlLeft" //ControlL
             };
         }
@@ -271,6 +273,9 @@ class stateConfig {
                 "PAUSE": [
                     80
                 ],
+                "LOCK": [
+                    81
+                ],
                 "BACK": [
                     192
                 ],
@@ -284,7 +289,7 @@ class stateConfig {
                 "GPAD_Y": 83,
                 "GPAD_START": 80,
                 "GPAD_BACK": 192,
-                "GPAD_LB": 17,
+                "GPAD_LB": 81,
                 "GPAD_RB": 17
             }`
         } 

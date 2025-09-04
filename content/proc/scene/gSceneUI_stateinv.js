@@ -640,7 +640,9 @@ class gameSceneUI_stateinv {
 			if (!Boolean(state.Game.player.weapon)) state.Game.player.weapon = 0;
 			if (!Boolean(state.Game.player.level)) state.Game.player.level = 0;
 
-			UI_layer.putchr8("[Z]", dev.layout.weapon.x - 16, dev.layout.weapon.y - 18);
+			let w_keymark = "[Z]";
+			if (Boolean(state.Game.armlock)) w_keymark = `[Z${String.fromCharCode(127)}]`;//lockmark
+			UI_layer.putchr8(w_keymark, dev.layout.weapon.x - 16, dev.layout.weapon.y - 18);
 			UI_layer.put(wweapon[state.Game.player.weapon], dev.layout.weapon.x, dev.layout.weapon.y);
 			if (state.Game.player.level > 0) {
 				let wt = "+" + state.Game.player.level +

@@ -168,6 +168,9 @@ class stateGame {
         this.lamp = false;
         this.map = false;
 
+        //UI weaponLock mode
+        this.armlock = false;
+
         this.mode = 0; //Palyer Type Select //TESTMODE 1
         this.score = 0;
         /**

@@ -18,6 +18,9 @@ https://e3sh.github.io/wVSclone/main.html
 
 ・ 攻撃(Action)操作:玉を消費（WAND:攻撃 / 他武器:画面内アイテム回収)
 
+- 攻撃方向固定:　　[Ctrl] / (RB)（弓と槍装備時のみ押下中方向固定)
+- 武器装備の固定:　[Q]    / (LB) (持ち替え可否の切替)
+
 - 一時停止(Pause):  [P]　/　(START)｜(三) 
 - 全画面表示:   [Home]　/　(BACK)
 

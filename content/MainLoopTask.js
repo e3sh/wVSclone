@@ -61,9 +61,10 @@ class taskMainLoop extends GameTask {
      * @property {boolean} trigger.useitem　X
      * @property {boolean} trigger.jump　C
      * @property {boolean} trigger.select　E
-     * @property {boolean} trigger.tgtlock　L_Ctrl
-     * @property {boolean} quit　Q
+     * @property {boolean} trigger.tgtlock　L_Ctrl RB
+     * @property {boolean} quit　@ back
      * @property {boolean} pause　P-start
+     * @property {boolean} lock　Q-LB
      * @property {boolean} start　(false)
      * @property {boolean} back　@
      * @property {boolean} vkey v

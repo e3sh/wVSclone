@@ -52,7 +52,7 @@ function tutorialCommentTable(){
 		]; //triger player.js
 
 	t[11] = ["「操作」:攻撃方向の固定 (槍・弓の場合)"
-		,"[Ctrl]キー (rb)ボタン(押しながら移動)"
+		,"[Ctrl]キー (RB)ボタン(押しながら移動)"
 		];//triger player.js
 
 	t[12] = ["「操作」:「石の中にいる！」場合の緊急脱出用"
@@ -150,6 +150,9 @@ function tutorialCommentTable(){
 	t[102] = ["[VIT] シールド効果時間 (SHIELD TIME)"];
 	t[103] = ["[MND] HP回復量    (HP RECOVER) "];
 	t[104] = ["[INT] 爆弾ダメージ(BOMB DAMAGE)"];
+
+	t[200] = ["「操作」:武器固定/解除(拾う/拾わない)の切替","[Q]キー (LB)ボタン"
+		];//triger player.js
 
 	return t;
 }

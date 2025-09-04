@@ -196,6 +196,7 @@ class deviceControl {
             input.pause = keychecksub(KEYASSIGN.PAUSE);
             input.start = keychecksub(KEYASSIGN.PAUSE);
             input.back  = keychecksub(KEYASSIGN.BACK);
+            input.lock  = keychecksub(KEYASSIGN.LOCK);
 
             input.vkey = keychecksub(KEYASSIGN.VKEY);
 
@@ -285,6 +286,7 @@ class deviceControl {
                     state[KEYASSIGN.GPAD_Y] = gpd.btn_y; // || Boolean(state[69]) ;E SELECT (GameScene) add 2025/07/11
                     state[KEYASSIGN.GPAD_START] = gpd.btn_start; // || Boolean(state[27]) ;ESC->P(state[80]) change 2025/06/26
                     state[KEYASSIGN.GPAD_BACK] = gpd.btn_back; // @key (QuitOperation)back_Btn 2025/06/26
+                    state[KEYASSIGN.GPAD_LB] = gpd.btn_lb; //Qkey 
                     state[KEYASSIGN.GPAD_RB] = gpd.btn_rb; //Controlkey 
                 }
 

@@ -563,6 +563,17 @@ function sce_player( gObjc ) {
             }
         }
 
+        if (o.input.lock) { //WeaponEquipLock
+            if (o.shot == 0) {
+                o.shot = 1;
+                o.gameState.armlock = !o.gameState.armlock;
+                o.SIGNAL(o.signaltype.FORCE);//UI ForceReflash
+                o.sound.effect(state.Constant.sound.CURSOR);
+                o.triger = TRIG_WAIT;
+                gObjc.tutTable(200);//当キーの説明
+            }
+        }
+
         if (o.jump == 1){
             //o.autoshot = 1;//Jump中、攻撃抑止
             o.jpcount--;
@@ -633,21 +644,34 @@ function sce_player( gObjc ) {
 
             //let ww = //[15, 16, 17, 19, 18, 50];
 
-            let w = state.Constant.item.WEAPONS[o.before_weapon];
-            let wv = ((o.vector + (o.before_weapon - 2)*18) + 180) % 360;
-            //置いたときに重ならないように角度を変える
+            let w, wv, wl;
+            if (!Boolean(o.gameState.armlock)){
+                //持ち替え可能(armlock=false)の場合は使用していた武器を落とす武器に設定
+                w = state.Constant.item.WEAPONS[o.before_weapon];
+                wv = ((o.vector + (o.before_weapon - 2)*18) + 180) % 360;
+                //置いたときに重ならないように角度を変える
+                wl = o.before_wlevel;
+
+                o.before_weapon = o.gameState.player.weapon;
+                o.spec.LV = o.gameState.player.level;
+                //o.before_wlevel = o.gameState.player.level;
+                o.autotrig = 5;//持ち替えた場合にwaitなしに
+            }else{
+                //持ち替え不可(armlock=true)の場合は取得した武器を落として以前使用していた武器に戻す
+                w = state.Constant.item.WEAPONS[o.gameState.player.weapon];
+                wv = ((o.vector + (o.gameState.player.weapon - 2)*18) + 180) % 360;
+                wl = o.gameState.player.level;
+
+                o.gameState.player.weapon = o.before_weapon;
+                o.gameState.player.level = o.before_wlevel; 
+            }
 
             this.set_object_ex(w,
                     o.x + o.Cos(wv) * 30,
                     o.y + o.Sin(wv) * 30,
                     wv, 38//"common_vset0"
-                    ,o.before_wlevel 
+                    ,wl 
             );
-
-            o.before_weapon = o.gameState.player.weapon;
-            o.spec.LV = o.gameState.player.level;
-            //o.before_wlevel = o.gameState.player.level;
-            o.autotrig = 5;//持ち替えた場合にwaitなしに
         }
         o.before_wlevel = o.gameState.player.level;
         
