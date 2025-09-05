@@ -274,7 +274,7 @@ class stateConfig {
                     80
                 ],
                 "LOCK": [
-                    81
+                    65
                 ],
                 "BACK": [
                     192

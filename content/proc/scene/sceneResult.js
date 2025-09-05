@@ -77,26 +77,28 @@ class sceneResult {
         };
 
         const bonusTable = [
-            { ch: 15, text: "杖", sp: "Wand" },
-            { ch: 16, text: "剣", sp: "Knife" },
-            { ch: 17, text: "斧", sp: "Axe" },
-            { ch: 18, text: "槍", sp: "Spear" },
-            { ch: 19, text: "ブーメラン", sp: "Boom" },
-            //{ ch:20, text:"GET 球"  ,sp:"Ball1"  },
-            //{ ch:21, text:"GET 1UP" ,sp:"Mayura1"},
-            //{ ch:22, text:"鍵"  ,sp:"Key"    },
-            { ch: 23, text: "爆弾", sp: "BallB1" },
-            { ch: 24, text: "バリア玉", sp: "BallS1" },
-            { ch: 25, text: "回復玉", sp: "BallL1" },
-            { ch: 26, text: "ランプ", sp: "Lamp" },
-            { ch: 27, text: "地図", sp: "Map" },
-            //{ ch:35, text:"GET ｺｲﾝ" ,sp:"Coin1"  },
-            { ch: 50, text: "弓矢", sp: "Bow" }
+            { ch: 15, cost:10, text: "杖", sp: "Wand" },
+            { ch: 16, cost:10, text: "剣", sp: "Knife" },
+            { ch: 17, cost:10, text: "斧", sp: "Axe" },
+            { ch: 18, cost:10, text: "槍", sp: "Spear" },
+            { ch: 19, cost:10, text: "ブーメラン", sp: "Boom" },
+            //{ ch:20, cost:10, text:"GET 球"  ,sp:"Ball1"  },
+            { ch:21, cost:300, text: "1UP", sp:"Mayura1"},
+            //{ ch:22, cost:10, text:"鍵"  ,sp:"Key"    },
+            { ch: 23, cost: 5, text: "爆弾", sp: "BallB1" },
+            { ch: 24, cost: 5, text: "バリア玉", sp: "BallS1" },
+            { ch: 25, cost: 5, text: "回復玉", sp: "BallL1" },
+            { ch: 26, cost:20, text: "ランプ", sp: "Lamp" },
+            { ch: 27, cost:20, text: "地図", sp: "Map" },
+            //{ ch:35, cost:10, text:"GET ｺｲﾝ" ,sp:"Coin1"  },
+            { ch: 50, cost:10, text: "弓矢", sp: "Bow" }
         ];
 
         let stage;
         let nextstage;
         let zapf;
+
+        let wallet;
 
         //処理部
         /**
@@ -151,23 +153,33 @@ class sceneResult {
 
             let dpara = [
                 { keynum: "up", text: "up", icon: "Mayura1", func: nop, x: 320 - 80, y: 200, w: 120, h: 50, keyon: false } //upkey
-                ,
-                { keynum: "down", text: "down", icon: "Map", func: nop, x: 320 - 80, y: 326, w: 120, h: 50, keyon: false } //downkey
-                ,
-                { keynum: "left", text: "left", icon: "BallB1", func: nop, x: 320 - 80 - 150, y: 255, w: 120, h: 50, keyon: false } //left
-                ,
-                { keynum: "right", text: "right", icon: "TrBox", func: nop, x: 320 - 80 + 150, y: 255, w: 120, h: 50, keyon: false } //right
+                ,{ keynum: "down", text: "down", icon: "Map", func: nop, x: 320 - 80, y: 326, w: 120, h: 50, keyon: false } //downkey
+                ,{ keynum: "left", text: "left", icon: "BallB1", func: nop, x: 320 - 80 - 150, y: 255, w: 120, h: 50, keyon: false } //left
+                ,{ keynum: "right", text: "right", icon: "TrBox", func: nop, x: 320 - 80 + 150, y: 255, w: 120, h: 50, keyon: false } //right
             ];
+
+            //wbt temp work bonusTable / select tut lern done item select
+            let wbt = [];
+            for (let i in bonusTable){
+                let w = bonusTable[i];
+                if (Boolean(state.obUtil.tutorialDone[w.ch])){
+                    wbt.push(w);
+                }
+            }
+            if (wbt.length == 0){
+                wbt.push({ ch:35, cost:0, text:"ｺｲﾝ" ,sp:"Coin1"  });
+            }
 
             for (let i in dpara) { //keycode udlr
                 let p = dpara[i];
 
-                let n = Math.floor(Math.random() * bonusTable.length);
+                let n = Math.floor(Math.random() * wbt.length);
 
-                p.text = bonusTable[n].text;
-                p.icon = bonusTable[n].sp;
+                p.text = wbt[n].text;
+                p.icon = wbt[n].sp;
+                p.cost = wbt[n].cost;
 
-                p.func = { call: getitem, p: bonusTable[n].ch };
+                p.func = { call: getitem, p: wbt[n].ch };
             }
 
             diag = new DialogControl(dpara);
@@ -260,6 +272,12 @@ class sceneResult {
                     }
                 }
             }
+            
+            if (Boolean(state.obCtrl.item[state.Constant.item.COIN])){
+                wallet = state.obCtrl.item[state.Constant.item.COIN];
+            }else{
+                wallet = 0;
+            }
         }
         /**
          * 
@@ -291,9 +309,12 @@ class sceneResult {
                                 let n = menu[i].func();
                                 if (n != 0) {
                                     //wipef = true;
-                                    if (!dexef) { diag.exec(); dexef = true; }
-                                    ret_code = n;
-                                    //return n;//
+                                    if (diag.cost() <= wallet) {
+                                        wallet = wallet - diag.cost();
+                                        state.obCtrl.item[state.Constant.item.COIN] = wallet;
+                                        if (!dexef) { diag.exec(); dexef = true; }
+                                        ret_code = n;
+                                    }
                                 }
                             }
                             //return 2;
@@ -350,16 +371,16 @@ class sceneResult {
             }
 
             //let stage = state.Game.nowstage;
-            wtxt.push(" == Stage -" + state.mapsc.stagename(stage) + "- Clear =="); //+ ret_code);
+            wtxt.push(` == Stage -${state.mapsc.stagename(stage)}- Clear ==`); //+ ret_code);
             wtxt.push(" ");
             if (stage % 15 == 0) {
                 wtxt.push(" == CONGRATULATIONS!& ==");
             } else {
                 wtxt.push(
-                    ((zapf) ? "   WARP! " : "   Goto ") + "Next Stage."
-                    + state.mapsc.stagename(nextstage)
+                    `   ${((zapf) ? "WARP!" : " Goto")} Next Stage.${state.mapsc.stagename(nextstage)}`
                 );
             }
+
             //      wtxt.push("---------------");
             //      wtxt.push("Push rMouse Button to Start");
             if (ret_code != 0) diag.effect();
@@ -385,6 +406,13 @@ class sceneResult {
             UI_layer.fill(w.x - 16, w.y - 16, 32, 32, 0);
             state.obUtil.player_objv(UI_layer);
 
+            UI_layer.fill(menu[0].x, menu[0].y - 16, menu[0].w, menu[0].h, 0);
+            if (!dexef){
+                UI_layer.kprint(
+                    diag.cost() + " /" + wallet + ((diag.cost()>wallet)?" Coin不足":"")
+                , menu[0].x, menu[0].y - 16);
+                //menu[0].title = "[" + diag.cost() + "/" + wallet + "]";
+            }
             for (let i in menu) {
 
                 if (menu[i].sel) {
@@ -427,6 +455,11 @@ class sceneResult {
                 let FLCOLOR = "White";
                 let menulist = mlist;
                 let getflag = new Array(mlist.length);
+
+                let nowcost = 0;
+
+                this.cost = function(){ return nowcost };
+
                 getflag.fill(false);
                 /**
                  * @method
@@ -439,6 +472,7 @@ class sceneResult {
                 this.step = function (input) {
 
                     let c = 0;
+                    nowcost = 0;
                     for (let i in menulist) {
 
                         let m = menulist[i];
@@ -447,7 +481,10 @@ class sceneResult {
                             menulist[i].keyon = (input[m.keynum]) ? true : false;
 
                             //if (m.keyon) m.func();        
-                            if (menulist[i].keyon) c++;
+                            if (menulist[i].keyon) {
+                                c++;
+                                nowcost += menulist[i].cost; 
+                            }
 
                         } else menulist[i].keyon = false;
                     }
@@ -534,6 +571,7 @@ class sceneResult {
 
                         //onsole.log(m);
                         device.kprint(m.text, m.x + 24, m.y + 20);
+                        device.kprint("price:⑤" + m.cost, m.x + 24, m.y + 28);
                         device.put(m.icon, m.x + 10, m.y + 10);
                     }
                 };

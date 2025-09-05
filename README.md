@@ -26,7 +26,7 @@ https://e3sh.github.io/wVSclone/main.html
 - ランプ：敵、アイテム、鍵の位置を地図に表示(Lamp)
 - 地図：マップ表示(Map)
 - 鍵:持った状態で扉に入ると次の面へ(Key)
-- Coin: 得点(石碑ワープ利用料)/Exp）
+- Coin: 得点(石碑ワープやリザルト画面で使用)/取得時Expを得る）
 - 指輪(Ring): 武器攻撃力強化 / 　ステージ10へ行く為に必須
 - 護符(Amulet): レベルアップ効果のいずれか / ステージ15へ行く為に必須
 - 燭台(Candle): 部屋が明るくなる
@@ -104,8 +104,8 @@ PP(PlayerParamater)mode
 - 5 : Get Key　　　　鍵取得
 - 6 : Get Keyitems　上記以外のキーアイテム全取得
 - 7 : Get Extend　　自機Extendアイテム取得
-- 8 :  
-- 9 : 
+- 8 : Get Ball　　　アイテム回収用アイテム取得(SpeedUp/Optionに関連)  　　　
+- 9 : Get Coin　　　コインの取得　　　
 - 0 : Menu Display    本メニューの表示オフオン 　
 
 ### 状態確認(StatusDisplay)画面:

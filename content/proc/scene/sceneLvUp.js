@@ -365,7 +365,8 @@ class sceneLvUp {
                         device.put(m.icon, x + m.x + 10, y + m.y + 10);
 
                         if (Boolean(status[i])) {
-                            for (let j = 0; j < status[i]; j++) {
+                            let sl = (status[i]>12)?12:status[i];
+                            for (let j = 0; j < sl; j++) {
                                 device.fill(x + m.x + 20 + j * 4, y + m.y + 10, 3, 6, m.barcolor);
                             }
                         }

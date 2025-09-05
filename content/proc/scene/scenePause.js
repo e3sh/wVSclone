@@ -35,6 +35,7 @@ class scenePause {
 
         let menuvf = false;
         let dppmode = false; //debug player paramater mode
+        let dppcount = Array(10); //
 
         let keywait = 10;
         //let keylock;
@@ -96,6 +97,8 @@ class scenePause {
             menuvf = false;
 
             state.Game.cold = true;
+
+            dppcount.fill(0);
         }
         /**
          * 
@@ -218,18 +221,22 @@ class scenePause {
                                 if (state.Game.player.hp > state.Game.player.maxhp)
                                     state.Game.player.hp = state.Game.player.maxhp;
                                 dev.sound.effect(state.Constant.sound.USE);
+                                dppcount[inp]++;
                                 break;
                             case 2: //get Lamp
                                 state.obCtrl.get_item(26);
+                                dppcount[inp]++;
                                 break;
                             case 3: //get Map
                                 state.obCtrl.get_item(27);
+                                dppcount[inp]++;
                                 break;
                             case 4:
                                 dppmode = (!dppmode);
                                 break;
                             case 5: //get Key
                                 state.obCtrl.get_item(22);
+                                dppcount[inp]++;
                                 break;
                             case 6: //get KeyItems
                                 for (let i in state.Constant.item.KEYITEMS) {
@@ -237,9 +244,23 @@ class scenePause {
                                     if (!Boolean(state.obCtrl.item[n]))
                                         state.obCtrl.get_item(n); // DEBUG fullItemTest  
                                 }
+                                dppcount[inp]++;
                                 break;
                             case 7: //get ExtendItem
                                 state.obCtrl.get_item(21);
+                                dppcount[inp]++;
+                                break;
+                            case 8: //get Ball
+                                //for (let i in state.Constant.item.USEBLE) {
+                                //    let n = state.Constant.item.USEBLE[i];
+                                //    state.obCtrl.get_item(n);   
+                                //}
+                                state.obCtrl.get_item(20);
+                                dppcount[inp]++;
+                                break;
+                            case 9: //get Coin
+                                state.obCtrl.get_item(35);
+                                dppcount[inp]++;
                                 break;
                             case 0:
                                 menuvf = (!menuvf);
@@ -282,15 +303,15 @@ class scenePause {
                         UI_layer.putchr8("Input [" + inp + "]" + (dppmode ? " PPmode" : ""), 16, 240);
 
                         if (dppmode) {
-                            arr.push("1: Heal HP :" + state.Game.player.hp + "/" + state.Game.player.maxhp);
-                            arr.push("2: Get Lamp       :");
-                            arr.push("3: Get Map        :");
+                            arr.push(`1: Heal HP :${state.Game.player.hp}/${state.Game.player.maxhp}`);
+                            arr.push("2: Get Lamp       :" + (dppcount[2]?"*":""));
+                            arr.push("3: Get Map        :" + (dppcount[3]?"*":""));
                             arr.push("4: Change menu    :->");
-                            arr.push("5: Get Key        :");
-                            arr.push("6: Get Keyitems   :");
-                            arr.push("7: Get Extend     :" + state.Game.player.zanki);
-                            arr.push("8:                :");
-                            arr.push("9:                :");
+                            arr.push("5: Get Key        :" + (dppcount[5]?"*":""));
+                            arr.push("6: Get Keyitems   :" + (dppcount[6]?"*":""));
+                            arr.push("7: Get Extend     :" + (dppcount[7]?"*":""));//+ state.Game.player.zanki);
+                            arr.push("8: Get Ball       :" + dppcount[8]);
+                            arr.push("9: Get Coin       :" + dppcount[9]);
                             arr.push("0: Menu Display   :" + (menuvf ? "ON" : "OFF"));
                         } else {
                             arr.push("1: Debug Display  :" + (state.Config.debug ? "ON" : "OFF"));
