@@ -110,7 +110,9 @@ function character(){
 //以下ExtEventの処理用//今の運用では使用しない方法でも同様なことはできる為、過去互換用
 	[103, 8, 1, BULLET_E, 8, 8, 6, 6, 103,  0,"5Way"],
 //Dummy
-	[  9,11, 1,	BULLET_P, 16, 8, 32, 16,  4,100,"Dummy"]
+	[  9,11, 1,	BULLET_P, 16, 8, 32, 16,  4,100,"Dummy"],
+
+	[200, 0, 0, ITEM	, 0, 0, 0, 0, 0, 0, "name" ,false] //blank( id itemClass)
     ];
 
 

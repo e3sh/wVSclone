@@ -570,7 +570,7 @@ function sce_player( gObjc ) {
                 o.SIGNAL(o.signaltype.FORCE);//UI ForceReflash
                 o.sound.effect(state.Constant.sound.CURSOR);
                 o.triger = TRIG_WAIT;
-                gObjc.tutTable(200);//当キーの説明
+                gObjc.tutTable(110);//当キーの説明
             }
         }
 

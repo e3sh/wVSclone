@@ -305,17 +305,17 @@ class deviceControl {
                     //270 240-300 r 39 210-240 300-330
                     //315 300-330 ur 38 39
                     let d = vstate.deg;
-                    if ((d >= 300) || (d < 60)) state[38] = true; //u
-                    if ((d >= 30) && (d < 150)) state[39] = true; //r
-                    if ((d >= 120) && (d < 240)) state[40] = true; //d
-                    if ((d >= 210) && (d < 330)) state[37] = true; //l
+                    if ((d >= 300) || (d < 60)) state[KEYASSIGN.GPAD_UP] = true; //u
+                    if ((d >= 30) && (d < 150)) state[KEYASSIGN.GPAD_RIGHT] = true; //r
+                    if ((d >= 120) && (d < 240)) state[KEYASSIGN.GPAD_DOWN] = true; //d
+                    if ((d >= 210) && (d < 330)) state[KEYASSIGN.GPAD_LEFT] = true; //l
                 }
                 //vkey のbuttonNoは、←0　↑2　→1　↓3となっている為、
                 //Z:0　C:3　X:1　ESC:2　とする。
-                if (vstate.button[0]) state[90] = vstate.button[0];
-                if (vstate.button[1]) state[88] = vstate.button[1];
-                //if (vstate.button[2]) state[27] = vstate.button[2];//pause?
-                if (vstate.button[3]) state[67] = vstate.button[3];
+                if (vstate.button[0]) state[KEYASSIGN.GPAD_X] = vstate.button[0];
+                if (vstate.button[1]) state[KEYASSIGN.GPAD_B] = vstate.button[1];
+                if (vstate.button[2]) state[KEYASSIGN.GPAD_Y] = vstate.button[2];
+                if (vstate.button[3]) state[KEYASSIGN.GPAD_A] = vstate.button[3];
 
                 let wstate = key.check();
                 for (let i in wstate) {

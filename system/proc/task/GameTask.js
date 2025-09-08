@@ -241,6 +241,9 @@ class GameTask_Load extends GameTask {
     step(g) {
         if (!this.fsf) this.infodly = g.time();
 
+        g.mouse.mode(g);
+        g.touchpad.mode(g);
+
         let kstate = g.keyboard.check();
         let mstate = g.mouse.check();
         let tstate = g.touchpad.check();
@@ -254,7 +257,7 @@ class GameTask_Load extends GameTask {
         let space = (KEYCODE_MODE)? Boolean(kstate[32]):Boolean(kstate["Space"]);
         let escape = (KEYCODE_MODE)? Boolean(kstate[27]):Boolean(kstate["Escape"]);
 
-
+        //インフォメーションモード中の場合、トリガーで開始
         if (this.infoflg){ 
             if (space||g.gamepad.btn_start||mstate.button==0) {
                 if (space||g.gamepad.btn_start||mstate.button==0) {//spacebar↓
@@ -263,6 +266,7 @@ class GameTask_Load extends GameTask {
             }
         }
 
+        //ESC押下してinformationModeに入る
         if (escape||g.gamepad.btn_back) {
             if (escape||g.gamepad.btn_back) {//esckey↓
                 this.infoflg = true;
@@ -270,10 +274,12 @@ class GameTask_Load extends GameTask {
             }
         }
 
+        //キー押下なしで3sec経過した場合
         if (((g.time()-this.infodly) > 3000)&&(!this.infoflg)) {
             startflag = true;
         }
 
+        //開始:タッチパネルを2ポイント以上押す
         if (tstate.pos.length > 2){
             startflag = true;
         }
@@ -297,7 +303,7 @@ class GameTask_Load extends GameTask {
             this.str.push("[Gamepad]");
             this.str.push("Not Ready.");
         }
-
+        //初回ループ完了フラグ
         this.fsf = true;
     }
     /**
@@ -405,6 +411,12 @@ class GameTask_Load extends GameTask {
                 , 320, this.str.length*8 +72 + vy);
                 vy+=8;
             }
+
+            const cv = g.systemCanvas;
+            pfunc(`canvas(w:${cv.width},h:${cv.height})`, 320,  this.scrn.ch-40);
+            pfunc(`canvasClient(w:${cv.clientWidth},h:${cv.clientHeight})`, 320,  this.scrn.ch-32);
+            pfunc(`devicePixelRatio:${window.devicePixelRatio}`, 320,  this.scrn.ch-24);
+
             pfunc("[Fullscreen]" + (document.fullscreenEnabled?"Enable":"Disable"), 320, this.scrn.ch-16);
             pfunc(document.fullscreenElement?"Active":"NonActive", 320, this.scrn.ch-8);
         }

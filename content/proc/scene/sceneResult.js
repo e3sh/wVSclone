@@ -408,10 +408,11 @@ class sceneResult {
 
             UI_layer.fill(menu[0].x, menu[0].y - 16, menu[0].w, menu[0].h, 0);
             if (!dexef){
-                UI_layer.kprint(
-                    diag.cost() + " /" + wallet + ((diag.cost()>wallet)?" Coin不足":"")
-                , menu[0].x, menu[0].y - 16);
-                //menu[0].title = "[" + diag.cost() + "/" + wallet + "]";
+                if (diag.cost() > 0){
+                    UI_layer.kprint(
+                    `${((diag.cost()>wallet)?`⑤不足(${wallet-diag.cost()})`:`⑤${diag.cost()}`)}`
+                    , menu[0].x, menu[0].y - 16);
+                }
             }
             for (let i in menu) {
 
